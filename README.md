@@ -1,1 +1,1 @@
-sample_project
+generic python project
