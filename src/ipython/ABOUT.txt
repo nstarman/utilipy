@@ -1,0 +1,16 @@
+TITLE   : ipython
+AUTHOR  : Nathaniel Starkman
+
+The functions in this folder are meant to be used in conjunction with iPython,
+Jupyter Notebook/Lab/Hub in particular.
+
+Files:
+.__init__ : the main initialization file
+	from IPython imports: InteractiveShell, display, Latex, Markdown, set_trace
+	from .printing imports: printmd, printltx
+
+.printing : functions for enhanced printing in an iPython environment
+- printmd  : markdown printing
+- printltx : latex printing
+	
+

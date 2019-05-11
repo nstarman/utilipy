@@ -1,0 +1,3 @@
+Sample script folder
+
+When a previously-evaluated script changes, make a folder with the date and put the old script inside, along with the output
