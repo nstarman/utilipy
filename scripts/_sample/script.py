@@ -11,6 +11,7 @@
 
 ### Docstring and Metadata
 """script: **DOCSTRING**
+WARN: a version using the python logger is under development
 """
 
 __author__ = "Nathaniel Starkman"
@@ -20,7 +21,6 @@ __author__ = "Nathaniel Starkman"
 
 ## General
 import os, sys, time, pdb, copy
-from loguru import logger
 # import numpy as np
 
 ## Astropy
@@ -37,12 +37,7 @@ sys.path.insert(0, '../../src')
 _PLOT = True                                # Plot the output
 
 # Log file
-# _LOGFILE = open('./log.txt', 'w')           # Log file
-_LOGFILE = logging.getLogger(__name__)
-_LOGFILE.addHandler(logging.NullHandler())
-_LOGFILE.setLevel(logging.INFO)
-
-# logger.basicConfig(filename='./log.txt', level=logging.INFO)
+_LOGFILE = open('./log.txt', 'w')
 _VERBOSE = 0                                # Degree of verbosity
 
 # ----------------------------------------------------------------------------
@@ -52,8 +47,8 @@ _VERBOSE = 0                                # Degree of verbosity
 ##############################################################################
 ### Running the Script
 
-_LOGFILE.info('Logg \n this is info')
+_LOGFILE.write('Log \nthis is info')
 
 ##############################################################################
 ### Closing
-# _LOGFILE.close()
+_LOGFILE.close()

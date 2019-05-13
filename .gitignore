@@ -7,9 +7,9 @@
 # Large Data Files
 # (* ignores contents, not the directory)
 
+scratch/
 
 # un-comment these for projects
-# scratch/
 # notebooks/_sample/
 # scripts/_sample/
 # src/_sample/
