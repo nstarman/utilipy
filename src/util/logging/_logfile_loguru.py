@@ -45,23 +45,59 @@ _READWRITEMODES = ('+', )
 ### Code
 
 class LogFile(_LogFile):
-    """docstring for LogFile
+    """a logger which can both print and record to a file
+    ** this class uses loguru, a 3rd party logging package
+
+    The arguments filename - opener are all for `open`
+    their descriptions are in
+        https://docs.python.org/3/library/functions.html#open
+
+    Parameters
+    ----------
+    filename : str
+        the file name / path at which to save this log
+    mode : str  (default 'w')
+        recommend either 'w' or 'a'
+    sec_div : str
+        the section divider used in `newsection'
+    header : None, str  (default None)
+        the header for the file
+        None -> filename
+    ...
+
+    # Notes
+    # -----
+    # mode options:
+    #     'r' open for reading
+    #     'w' open for writing, truncating the file first
+    #     'x' open for exclusive creation, failing if the file already exists
+    #     'a' open for writing, appending to the end of the file if it exists
+    #     'b' binary mode
+    #     't' text mode
+    #     '+' open a disk file for updating (reading and writing)
     """
 
-    def __init__(self, filename, mode='w', buffering=-1, encoding=None,
-                 errors=None, newline=None, closefd=True, opener=None,
-                 sec_div='-'):
+    def __init__(self, filename, mode='w', sec_div='-', header=None,
+                 buffering=-1, encoding=None, errors=None, newline=None,
+                 closefd=True, opener=None):
+        """Initialize LogFile
+        set the filename and make the file
+        start the file header (both printing and writing)
+        """
 
         # use LogFile from _logfile_print if reading
+        # because it requires `open' to read
         if mode not in _WRITEMODES:
             super().__init__(
-                filename, mode=mode, buffering=buffering, encoding=encoding,
-                errors=errors, newline=newline, closefd=closefd, opener=opener,
-                sec_div=sec_div
+                filename, mode=mode, sec_div=sec_div, header=header,
+                buffering=buffering, encoding=encoding, errors=errors,
+                newline=newline, closefd=closefd, opener=opener
             )
 
         # use loguru
         else:
+
+            # TODO delete old file?
 
             # keeping input arguments
             self.filename = filename
@@ -70,22 +106,68 @@ class LogFile(_LogFile):
             # the file
             config = {
                 "handlers": [
-                    {"sink": sys.stdout, "format": "{time} - {message}"},
-                    {"sink": filename, "format": "{level} {message}", "serialize": False},
+                    {"sink": sys.stdout, "format": "{message}"},
+                    # {"sink": filename, "format": "{icon} {message}", "serialize": False},
+                    {"sink": filename, "format": "{message}", "serialize": False},
                 ],
             }
             logger.add(filename)
             logger.configure(**config)
 
-            # new_level = logger.level("SNAKY", no=38, color="<yellow>", icon="🐍")
+            logger.level('write', no=38, color="<black>")
+
+            # updating levels
+            for lvl in ('TRACE', 'DEBUG', 'INFO', 'SUCCESS',
+                        'WARNING', 'ERROR', 'CRITICAL'):
+                logger.level(lvl, icon=logger.level(lvl).icon + ': ')
 
             self.file = logger
 
             # making file header
-            self.write(f'{filename} Log:\n\n', endsection='=')
+            if header is None:
+                header = filename
+            self.write(f"{header} Log:", endsection='=')
+    # /def
 
-    def _write(self, str):
-        self.file.info(str)
+    def _write(self, *string, start='', sep=' ', end='\n'):
+        r"""writer method
+        this is used by all write methods
+        implemented so it can be overriden easily
+        **Note: end='' does nothing. Write automatically does '\n'
+        """
+        if len(string) == 0:  # checking there is a string
+            raise ValueError('needs a value')
+
+        self.file.log('write', start)  # start
+
+        # write to file
+        if len(string) == 1:
+            self.file.log('write', str(string[0]) + end)
+
+        else:
+            for s in string[:-1]:
+                self.file.log('write', str(s) + sep)
+            self.file.log('write', str(s) + end)
+    # /def
+
+    def _print_and_write(self, *string, start='', sep=' ', end='\n'):
+        """helper method to print and call _write
+        """
+        self._write(*string, start=start, sep=sep, end=end)  # writing
+    # /def
+
+    def record(self, *text, start='', end='\n',
+               startsection=False, endsection=False):
+        """same as write, but doesn't print as well as write to file
+
+        TODO write w/out also printing
+        """
+        self.write(*text, start=start, sep=sep, end=end,
+                   startsection=startsection, endsection=endsection)
+    # /def
+
+    def close(self):
+        print('closing file')
     # /def
 # /class
 

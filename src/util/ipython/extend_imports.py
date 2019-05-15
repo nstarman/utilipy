@@ -3,26 +3,36 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : util initialization file
+# TITLE   : Extending the Standard Import File
 # AUTHOR  : Nathaniel Starkman
+# PROJECT :
 #
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-r"""initialization file for util
+r"""extending the standard import file.
+imports:
+
+NUMPY
+-----
+.linalg.norm
+
+SCIPY
+-----
+.stats.binned_statistic -> binned_stats
+
 """
 
 __author__ = "Nathaniel Starkman"
 
+
 ##############################################################################
 ### Imports
 
-# General
+## numpy
+from numpy.linalg import norm
 
-# Custom
-from .logging import LogFile, LoggerFile
+## scipy
+from scipy.stats import binned_statistic as binned-stats
 
-# Project-Specific
-
-
-##############################################################################
+## astropy

@@ -1,0 +1,13 @@
+name: sample_project
+channels:
+  - conda-forge
+dependencies:
+  - python=3.5
+  - ipython
+  - jupyter
+  - pip
+  - numpy
+  - scipy
+  - matplotlib
+  - conda-forge::astropy>=2
+  # - conda-forge::loguru

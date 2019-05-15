@@ -31,7 +31,7 @@ from .printing import printmd, printltx
 
 
 ##############################################################################
-# Running
+### Running
 
 InteractiveShell.ast_node_interactivity = "all"
 
@@ -41,4 +41,4 @@ get_ipython().magic("config InlineBackend.figure_format='retina'")
 
 
 ##############################################################################
-# Code
+### Code

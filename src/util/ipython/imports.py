@@ -24,9 +24,8 @@ numpy -> np
 
 # scipy
 scipy
-.stats.binned_statistic -> binned_stats
 
-tqdm.autonotebook.tqdm -> tqdm
+tqdm.tqdm_notebook -> tqdm
 
 
 ASTROPY
@@ -75,25 +74,24 @@ __author__ = "Nathaniel Starkman"
 
 import os, sys                        # operating system
 import time                           # timing
-import pdb                            # debugging 
+import pdb                            # debugging
 import warnings                       # warning
-import logging                        # for logging
 # warnings.filterwarnings('ignore', RuntimeWarning)
 
 # Numpy
 import numpy as np  # numerical python
-import scipy        # scientific python    
+import scipy        # scientific python
 
 # +------------------------+
-# TODO filter TqdmExperimentalWarning
-from tqdm.autonotebook import tqdm
+# from tqdm.autonotebook import tqdm  # TODO implement when no TqdmExperimentalWarning
+from tqdm import tqdm_notebook as tqdm
 
 # +---------------------------------------------------------------------------+
 # Astropy
 import astropy
 
 from astropy import units as u             # units TODO replace with mine
-from astropy import coordinates as coords  # coordinates 
+from astropy import coordinates as coords  # coordinates
 
 from astropy.coordinates import SkyCoord
 from astropy.table import Table, QTable  # table data structure
@@ -104,37 +102,55 @@ from astropy.visualization import quantity_support, astropy_mpl_style
 # +---------------------------------------------------------------------------+
 # Plotting
 
-import starkplot as plt
-from starkplot import mpl_decorator
+try:
+    import starkplot as plt
+except ImportError as e:
+    warnings.warn('Cannot import starkplot, using matplotlib.pyplot instead.' +
+                  '\nmpl_decorator will not work.')
+    from matplotlib import pyplot as plt
+else:
+    from starkplot import mpl_decorator
 
-# import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib import colors
 from matplotlib import cm
 
-# try:  # improve matploblib backend
-#     import seaborn
-# except ImportError:
-#     print("can't import seaborn, using default matplotlib.")
-
-# +---------------------------------------------------------------------------+
+# +--------------------------------------------------------------------------+
 # IPython Magic
-try:
-    get_ipython()  # checks inside iPython environment
-except:  # TODO correct exception
-    pass
-else:
-    # %run runs in the main namespace
-    from src.ipython import display, Latex, Markdown, set_trace, printmd
-    # this also does:
-    #     %matplotlib inline
-    #     %config InlineBackend.figure_format = 'retina'
-    #     InteractiveShell.ast_node_interactivity = "all"
 
+# %run runs in the main namespace, so need to run as 'src.', not '.''
+from src.util.ipython import (
+    display, Latex, Markdown,
+    set_trace,
+    printmd, printltx
+)
+# this also does: %matplotlib inline,
+#                 %config InlineBackend.figure_format = 'retina'
+#                 InteractiveShell.ast_node_interactivity = "all"
+
+# +--------------------------------------------------------------------------+
+# Logging
+
+import logging                                    # for logging
+from src.util.logging import LogFile, LoggerFile  # custom logging
 
 ##############################################################################
-### Code
+### Running Imported Functions
 
 # astropy changes
 quantity_support()
 plt.style.use(astropy_mpl_style)
+
+# cleaning up
+# del quantity_support, astropy_mpl_style
+
+##############################################################################
+### Priting Information
+
+print("""Imported:
+Base: os, sys, time, pdb, warnings, numpy -> np, scipy
+Astropy: astropy, .units->u, .coordinates->coords, .SkyCoord, .Table, .QTable
+Plot: starkplot->plt, .mpl_decorator
+      matplotlib->mpl, .colors, .cm
+IPython: display, Latex, Markdown, set_trace, printmd, printltx
+""")

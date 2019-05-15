@@ -30,11 +30,11 @@ except ImportError as e:
     print(e)
     print('using standard logging instead')
 
-    from _logfile_logger import LogFile as LoggerFile  # TODO better name
+    from ._logfile_logger import LogFile as LoggerFile  # TODO better name
 
 else:
     _LOGURU = True
-    from _logfile_loguru import LogFile as LoggerFile  # TODO better name
+    from ._logfile_loguru import LogFile as LoggerFile  # TODO better name
 
 
 from ._logfile_print import LogFile
