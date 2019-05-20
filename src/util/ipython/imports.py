@@ -21,8 +21,6 @@ pdb
 warnings
 
 numpy -> np
-
-# scipy
 scipy
 
 tqdm.tqdm_notebook -> tqdm
@@ -51,6 +49,14 @@ matplotlib -> mpl
 .colors
 .cm
 
+Logging
+-------
+logging
+.util.logging.LogFile, LoggerFile
+
+Misc
+-------
+.util.InfoContainer
 
 IPYTHON
 -------
@@ -134,6 +140,10 @@ from src.util.ipython import (
 import logging                                    # for logging
 from src.util.logging import LogFile, LoggerFile  # custom logging
 
+# +--------------------------------------------------------------------------+
+# Custom Functions
+from src.util import InfoContainer
+
 ##############################################################################
 ### Running Imported Functions
 
@@ -152,5 +162,7 @@ Base: os, sys, time, pdb, warnings, numpy -> np, scipy
 Astropy: astropy, .units->u, .coordinates->coords, .SkyCoord, .Table, .QTable
 Plot: starkplot->plt, .mpl_decorator
       matplotlib->mpl, .colors, .cm
+Logging: logging, .LogFile, .LoggerFile
+Misc: InfoContainer
 IPython: display, Latex, Markdown, set_trace, printmd, printltx
 """)

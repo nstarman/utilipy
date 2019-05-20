@@ -33,6 +33,14 @@ __author__ = "Nathaniel Starkman"
 from numpy.linalg import norm
 
 ## scipy
-from scipy.stats import binned_statistic as binned-stats
+from scipy.stats import binned_statistic as binned_stats
 
 ## astropy
+
+##############################################################################
+### Priting Information
+
+print("""Imported:
+numpy: linalg.norm
+scipy stats.binned_statistic->binned_stats
+""")
