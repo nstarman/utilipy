@@ -20,10 +20,10 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 ### Imports
 
-# General
+## General
 # from _io import TextIOWrapper
 
-# Project-Specific
+## Project-Specific
 
 
 ##############################################################################
@@ -141,7 +141,7 @@ class PrintLog(object):
         """redirects to write, which goes to print
         this is implemented solely for compatibility
         """
-        self.write(*text, start=start, sep=sep, end=end,
+        self.write(*text, start=start, end=end,
                    startsection=startsection, endsection=endsection,
                    _print=False)
     # /def
@@ -257,7 +257,7 @@ class LogFile(PrintLog):
         else:
             self = super().__new__(cls)
             return self
-
+    # /def
 
     def __init__(self, filename, verbose=0, mode='w', sec_div='-', header=None,
                  buffering=-1, encoding=None, errors=None, newline=None,

@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-r"""initialization file for jupyter notebook functions
+"""initialization file for jupyter notebook functions
 """
 
 __author__ = "Nathaniel Starkman"
@@ -18,16 +18,16 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 ### Imports
 
-# General
+## General
 from IPython.core.interactiveshell import InteractiveShell
 from IPython.display import display
 from IPython.display import Latex, Markdown  # display is a better print
 from IPython.core.debugger import set_trace
 
-# Custom
+## Custom
 from .printing import printmd, printltx
 
-# Project-Specific
+## Project-Specific
 
 
 ##############################################################################

@@ -3,9 +3,8 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : iPython printing
+# TITLE   : IPython printing
 # AUTHOR  : Nathaniel Starkman
-# PROJECT :
 #
 # ----------------------------------------------------------------------------
 
@@ -19,11 +18,11 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 ### Imports
 
-# General
+## General
 from IPython.display import display
 from IPython.display import Latex, Markdown  # display is a better print
 
-# Project-Specific
+## Project-Specific
 
 
 ##############################################################################

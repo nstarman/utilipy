@@ -20,16 +20,16 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 ### Imports
 
-# General
+## General
 import sys
 
 # Loguru
 from loguru import logger
 
-# Custom
+## Custom
 from ._logfile_print import LogFile as _LogFile
 
-# Project-Specific
+## Project-Specific
 
 
 ##############################################################################

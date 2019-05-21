@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-r"""initialization file for util
+"""initialization file for util
 """
 
 __author__ = "Nathaniel Starkman"
@@ -27,6 +27,7 @@ from .logging import LogFile, LoggerFile
 
 
 ##############################################################################
+### InfoContainer
 
 class InfoContainer(OrderedDict):
     """InfoContainer
