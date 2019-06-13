@@ -23,7 +23,7 @@ warnings
 numpy -> np
 scipy
 
-tqdm.tqdm_notebook -> tqdm
+tqdm.tqdm_notebook -> tqdm_nb
 
 
 ASTROPY
@@ -56,7 +56,7 @@ logging
 
 Misc
 -------
-.util.InfoContainer
+.util.ObjDict
 
 IPYTHON
 -------
@@ -90,7 +90,7 @@ import scipy        # scientific python
 
 # +------------------------+
 # from tqdm.autonotebook import tqdm  # TODO implement when no TqdmExperimentalWarning
-from tqdm import tqdm_notebook as tqdm
+from tqdm import tqdm_notebook as tqdm_nb
 
 # +---------------------------------------------------------------------------+
 # Astropy
@@ -137,12 +137,15 @@ from src.util.ipython import (
 # +--------------------------------------------------------------------------+
 # Logging
 
-import logging                                    # for logging
-from src.util.logging import LogFile, LoggerFile  # custom logging
+from src.util.logging import (
+    logging,                          # standard logging
+    LogFile,                          # custom minimal logging
+    LoggerFile                        # custom extended logger
+)
 
 # +--------------------------------------------------------------------------+
 # Custom Functions
-from src.util import InfoContainer
+from src.util import ObjDict
 
 ##############################################################################
 ### Running Imported Functions
@@ -163,6 +166,6 @@ Astropy: astropy, .units->u, .coordinates->coords, .SkyCoord, .Table, .QTable
 Plot: starkplot->plt, .mpl_decorator
       matplotlib->mpl, .colors, .cm
 Logging: logging, .LogFile, .LoggerFile
-Misc: InfoContainer
+Misc: ObjDict
 IPython: display, Latex, Markdown, set_trace, printmd, printltx
 """)

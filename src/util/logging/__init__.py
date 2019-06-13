@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-r"""initialization file for logging
+"""initialization file for logging
 """
 
 __author__ = "Nathaniel Starkman"
