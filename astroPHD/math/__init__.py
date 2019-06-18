@@ -3,44 +3,22 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : logging initialization file
+# TITLE   : math initialization file
 # AUTHOR  : Nathaniel Starkman
 #
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-"""initialization file for logging
+"""initialization file for math
 """
 
 __author__ = "Nathaniel Starkman"
 
-
 ##############################################################################
 ### IMPORTS
 
-## General
-import logging
-
-## Custom
-# try:
-#     import loguru
-
-# except ImportError as e:
-#     _LOGURU = False
-#     print(e)
-#     print('using standard logging instead')
-
-#     from ._logfile_logger import LogFile as LoggerFile  # TODO better name
-
-# else:
-#     _LOGURU = True
-#     from ._logfile_loguru import LogFile as LoggerFile  # TODO better name
-
-
-from ._logfile_print import LogFile
-
 ## Project-Specific
-
+from .util import quadrature
 
 ##############################################################################
-# Code
+### DONE

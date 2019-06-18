@@ -106,6 +106,8 @@ class PrintLog(object):
               startsection=False, endsection=False, print=True):
         """print text
 
+        TODO implement sep method for write
+
         Parameters
         ----------
         text: str
