@@ -4,12 +4,14 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : logging
-# AUTHOR  : Nathaniel Starkman
 #
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
 """functions for logging
+
+TODO:
+change LogFile to FileLog ?
 """
 
 __author__ = "Nathaniel Starkman"
@@ -46,6 +48,47 @@ class PrintLog(object):
                 header += ' '
 
             self.write(f"{header}Log:", endsection='=', print=show_header)
+    # /def
+
+    @classmethod
+    def open(cls, verbose=0, sec_div='-', header=None, show_header=True, **kw):
+        """
+        TODO
+        **kw absorbs all extra kwargs to be consistent with LogFile
+        """
+        return cls(verbose=verbose, sec_div=sec_div, header=header,
+                   show_header=show_header)
+    # /def
+
+    @classmethod
+    def open_to_write(cls, verbose=0, sec_div='-', header=None, show_header=True, **kw):
+        """TODO
+        **kw absorbs all extra kwargs to be consistent with LogFile
+        """
+
+        return cls(verbose=verbose, sec_div=sec_div, header=header,
+                   show_header=show_header)
+    # /def
+
+    @classmethod
+    def open_to_read(cls, filename, buffering=-1, encoding=None,
+                     errors=None, newline=None, closefd=True, opener=None):
+        """open a logfile to read
+        ** this class uses `open', not a more extensive logger, like `logging'
+
+        The arguments filename - opener are all for `open`
+        their descriptions are in
+            https://docs.python.org/3/library/functions.html#open
+
+        Parameters
+        ----------
+        filename: str
+            the file name / path at which to save this log
+        ...
+        """
+        return LogFile(filename, mode='r', buffering=buffering, encoding=encoding,
+                       errors=errors, newline=newline, closefd=closefd,
+                       opener=opener)
     # /def
 
     def print(self, *text, start='', sep=' ', end='\n'):
@@ -192,6 +235,31 @@ class PrintLog(object):
                 self.print(msg, **kw)
     # /def
 
+    def report(self, *msgs, verbose=None, print=True, write=True,
+               start_at=1, **kw):
+        """a report function whose message is determined by the *verbose*
+
+        Parameters
+        ----------
+        *msgs : str(s)
+            the verbosity-ordered messages
+            blank messages can be <None>, not only ''
+        verbose : int, optional
+            which message to record
+            None (default) uses self.verbose (default = 0, unless specified)
+        print : bool
+            whether to print, or just record
+        write : bool
+            whether to write to logger file
+            write redirects to print in this class
+        start_at : int
+            what level of verbosity is the first *msg*
+            ex: verbort('test', start_at=3) means 'test' is at verbose=3
+        **kw: kwargs for self.write or self.print
+        """
+        return self.verbort(*msgs, verbose=None, print=True, write=True,
+                            start_at=1, **kw)
+
     def close(self):
         """close the non-existent file
         this is implemented solely to be overwritten by child classes
@@ -226,10 +294,9 @@ class PrintLog(object):
 
 
 ##############################################################################
-### LogFile
+### FileLog
 
-
-class LogFile(PrintLog):
+class FileLog(PrintLog):
     """a basic logger which can both print and record to a file
     ** this class uses `open', not a more extensive logger, like `logging'
 
@@ -242,6 +309,8 @@ class LogFile(PrintLog):
     filename : str, optional
         the file name / path at which to save this log
         If no filename, makes a PrintLog() instead
+    verbose : int
+        the verbosity level to use in .report / .verbort 
     mode : str  (default 'w')
         recommend either 'w' or 'a'
     sec_div : str
@@ -249,6 +318,8 @@ class LogFile(PrintLog):
     header : None, str  (default None)
         the header for the file
         None -> filename
+    show_header : bool  (default True)
+        whether to print the header
     ...
 
     Notes
@@ -333,8 +404,8 @@ class LogFile(PrintLog):
 
     @classmethod
     def open(cls, filename, verbose=0, mode='w', sec_div='-', header=None,
-             buffering=-1, encoding=None, errors=None, newline=None,
-             closefd=True, opener=None):
+             show_header=True, buffering=-1, encoding=None, errors=None,
+             newline=None, closefd=True, opener=None):
         """a basic logger which can both print and record to a file
         ** this class uses `open', not a more extensive logger, like `logging'
 
@@ -366,15 +437,15 @@ class LogFile(PrintLog):
             't' text mode
             '+' open a disk file for updating (reading and writing)
         """
-        return cls(filename, verbose=verbose, mode=mode, sec_div=sec_div, header=header,
+        return cls(filename, verbose=verbose, mode=mode, sec_div=sec_div, header=header, show_header=show_header,
                    buffering=buffering, encoding=encoding, errors=errors,
                    newline=newline, closefd=closefd, opener=opener)
     # /def
 
     @classmethod
     def open_to_write(cls, filename, verbose=0, mode='w', sec_div='-', header=None,
-                      buffering=-1, encoding=None, errors=None, newline=None,
-                      closefd=True, opener=None):
+                      show_header=True, buffering=-1, encoding=None, errors=None,
+                      newline=None, closefd=True, opener=None):
         """a basic logger which can both print and record to a file
         ** this class uses `open', not a more extensive logger, like `logging'
 
@@ -409,7 +480,7 @@ class LogFile(PrintLog):
         if mode == 'r':
             raise ValueError('mode must be set to write')
 
-        return cls(filename, verbose=verbose, mode=mode, sec_div=sec_div, header=header,
+        return cls(filename, verbose=verbose, mode=mode, sec_div=sec_div, header=header, show_header=show_header,
                    buffering=buffering, encoding=encoding, errors=errors,
                    newline=newline, closefd=closefd, opener=opener)
     # /def
@@ -525,6 +596,33 @@ class LogFile(PrintLog):
         super().verbort(*msgs, verbose=verbose, print=print, write=write,
                         start_at=start_at, **kw)
     # /def
+
+    def report(self, *msgs, verbose=None, print=True, write=True,
+                start_at=1, **kw):
+        """a report function whose message is determined by the *verbose*
+
+        Parameters
+        ----------
+        *msgs : str(s)
+            the verbosity-ordered messages
+            blank messages can be <None>, not only ''
+        verbose : int, optional
+            which message to record
+            None (default) uses self.verbose (default = 0, unless specified)
+        print : bool
+            whether to print, or just record
+        write : bool
+            whether to write to logger file
+        start_at : int
+            what level of verbosity is the first *msg*
+            ex: verbort('test', start_at=3) means 'test' is at verbose=3
+        **kw: kwargs for self.write or self.print
+        """
+        self.verbort(*msgs, verbose=verbose, print=print, write=write,
+                     start_at=start_at, **kw)
+    # /def
+
+    # newsection  # from PrintLog
 
     def close(self):
         """close the file
