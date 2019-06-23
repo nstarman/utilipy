@@ -15,7 +15,7 @@
 ### IMPORTS
 
 ## Custom
-from .util.logging import LogFile
+from .util.logging import FileLog
 
 ## Project-Specific
 # import top level packages
