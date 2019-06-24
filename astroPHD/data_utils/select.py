@@ -101,18 +101,15 @@ def inRange(*args, rng=None, lbi=True, ubi=False):
     Parameters
     ----------
     args : list
-        either list of values along each dimension or list of values & bounds
-        the input type depends on rng
-    rng : None, list    (default None)
-        if rng is not None:
-            for domains x
-            args = [[x1], [x2], ...]
-            rng =   [1st [lower, upper],
-                     2nd [lower, upper],
-                     ...]
-        else:
-            args are the lists
-            list of (x, [lower, upper])
+        list of values along each dimension
+        must be the same length
+    rng : None, list  (default None)
+        the domain for each arg in *args
+        ** cannot be None **
+        args = [[x1], [x2], ...]
+        rng =   [1st [lower, upper],
+                 2nd [lower, upper],
+                 ...]
     lbi : bool  (default True)
         Lower Bound Inclusive, whether to be inclusive on the lower bound
     ubi : bool  (default False)
@@ -121,34 +118,42 @@ def inRange(*args, rng=None, lbi=True, ubi=False):
         whether to return bool array or the indices (where(bool array == True))
         sets the default behavior for the wrapped fnction *func*
 
+    ** Upcoming
+    allow lbi & rbi to be lists, matching args, for individual adjustment
 
     Returns
     -------
     inrange : bool ndarray
         boolean array to select values in box selection
 
-    upcoming
+    Examples
     --------
-    allow lbi & rbi to be lists, matching args, for individual adjustment
+    list of args:
+    >>> x = np.arange(5)
+        y = np.arange(5) + 10
+        inRange(x, y, rng=[[0, 3], [10, 15]])
+    array([ True,  True,  True, False, False])
+
+    multidimensional arg:
+    >> x = array([[ 0,  1],
+                  [10, 11]])
+       rng = [[0, 3], [9, 11]]
+    >> inRange(x, rng=rng)
+       array([[True, True ],
+              [True, False]])
     """
-    # Compare
-    # If args contains lists of [list, [low, up]]
-    if rng is None:
-        rowbool = np.array([_inRange(v, lu, lbi=lbi, ubi=ubi)
-                            for v, lu in args])
-        numtrues = len(args)
+    if range is None:
+        raise ValueError()
 
-    # If args and low,up are in separate lists
-    else:
+    # if only one arg
+    if len(args) == 1:
+        # args = (args[0], )
+        rng = (rng, )
 
-        # if only one arg
-        if len(args) == 1:
-            # args = (args[0], )
-            rng = (rng, )
+    rowbool = np.array([_inRange(v, lu, lbi=lbi, ubi=ubi)
+                        for v, lu in zip(args, rng)])
 
-        rowbool = np.array([_inRange(v, lu, lbi=lbi, ubi=ubi)
-                            for v, lu in zip(args, rng)])
-        numtrues = len(args)
+    numtrues = len(args)
 
     # now getting where all the dimensions are inside the bounds
     # collapses column to 1 row
