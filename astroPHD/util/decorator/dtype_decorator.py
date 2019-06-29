@@ -39,9 +39,111 @@ except ImportError as e:
     print("could not import wraps from astropy. using functools' instead")
     from functools import wraps
 
+#############################################################################
+# MAKING DECORATORS
+
+class dtypeDecorator():
+    """ensure arguments are type *dtype*
+
+    Parameters
+    ----------
+    func : function, optional
+        function to decorate
+    inargs : list
+        [(index, dtype), ...]
+
+    outargs : list
+        [(index, dtype), ...]
+
+    these arguments, except func, should be specified by key word
+    if inargs is forgotten and func is not a function, then func is
+    assumed to be inargs.
+
+    Examples
+    --------
+    intDecorator = dtypeDecoratorMaker(int)
+    @intDecorator(inargs=[(0, int), (1, float)], outargs=[(2, int),])
+    def func(x, y, z):
+        print(x, y, z)
+        return x, y, z
+    # /def
+
+    x, y, z = func(1.1, 2.2, 3.3)
+    >>> 1, 2.2, 3.3  # x -> int, y, z remain float within the function
+    print(z, y, z)  # z->int before returned
+    >>> 1, 2.2, 3
+    """
+
+    def __new__(cls, func=None, inargs=None, outargs=None):
+        """"""
+        self = super().__new__(cls)  # making instance of self
+
+        # correcting if forgot to specify inargs= and did not provide a function
+        # in this case, *inargs* is stored in *func*
+        # need to do func->None, inarags<-func, and outargs<-inargs
+        if not isinstance(func, types.FunctionType):
+            # moving arguments 'forward'
+            outargs = inargs
+            inargs = func
+            func = None
+
+        # allowing for wrapping with calling the class
+        if func is not None:
+            self.__init__(inargs, outargs)
+            return self(func)
+        else:
+            return self
+    # /def
+
+    def __init__(self, inargs=None, outargs=None):
+        super().__init__()
+
+        # inargs
+        # TODO check inargs is list of lists
+        self._inargs = inargs
+
+        # outargs
+        # TODO check outargs is list of lists
+        self._outargs = outargs
+
+        return
+    # /def
+
+    def __call__(self, wrapped_func):
+        # print(self._inargs)
+
+        @wraps(wrapped_func)
+        def wrapper(*args, **kw):
+            # PRE
+            # making arguments self._dtype
+            if self._inargs is None:  # no conversion needed
+                pass
+            else:
+                args = list(args)  # allowing modifications
+                for i, dtype in self._inargs:
+                    args[i] = dtype(args[i])  # converting to desired dtype
+            # /PRE
+
+            # CALLING
+            return_ = wrapped_func(*args, **kw)
+            # /CALLING
+
+            # POST
+            if self._outargs is None:  # no conversion needed
+                pass
+            else:
+                return_ = list(return_)  # allowing modifications
+                for i, dtype in self._outargs:
+                    return_[i] = dtype(return_[i])  # converting to desired dtype
+
+                return return_
+            # /POST
+            # /def
+        return wrapper
+    # /def
 
 #############################################################################
-### CODE
+### SINGLE-DECORATOR MAKER
 
 def dtypeDecoratorMaker(dtype):
     """function to make a dtype decorator

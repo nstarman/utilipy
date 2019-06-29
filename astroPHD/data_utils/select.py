@@ -29,8 +29,7 @@ __author__ = "Nathaniel Starkman"
 import numpy as np
 
 ## Project-Specific
-from ..util.decorator.idx_decorator import idxDecorator
-from ..util.decorator.dtype_decorator import ndarrayDecorator
+from ..util.decorator import idxDecorator, ndarrayDecorator
 
 
 #############################################################################
