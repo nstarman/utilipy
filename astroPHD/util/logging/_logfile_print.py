@@ -194,6 +194,31 @@ class PrintLog(object):
                 self.print(msg, **kw)
     # /def
 
+    def report(self, *msgs, verbose=None, print=True, write=True,
+               start_at=1, **kw):
+        """a report function whose message is determined by the *verbose*
+
+        Parameters
+        ----------
+        *msgs : str(s)
+            the verbosity-ordered messages
+            blank messages can be <None>, not only ''
+        verbose : int, optional
+            which message to record
+            None (default) uses self.verbose (default = 0, unless specified)
+        print : bool
+            whether to print, or just record
+        write : bool
+            whether to write to logger file
+            write redirects to print in this class
+        start_at : int
+            what level of verbosity is the first *msg*
+            ex: verbort('test', start_at=3) means 'test' is at verbose=3
+        **kw: kwargs for self.write or self.print
+        """
+        return self.verbort(*msgs, verbose=None, print=True, write=True,
+                            start_at=1, **kw)
+
     def close(self):
         """close the non-existent file
         this is implemented solely to be overwritten by child classes
@@ -526,6 +551,31 @@ class LogFile(PrintLog):
         """
         super().verbort(*msgs, verbose=verbose, print=print, write=write,
                         start_at=start_at, **kw)
+    # /def
+
+    def report(self, *msgs, verbose=None, print=True, write=True,
+                start_at=1, **kw):
+        """a report function whose message is determined by the *verbose*
+
+        Parameters
+        ----------
+        *msgs : str(s)
+            the verbosity-ordered messages
+            blank messages can be <None>, not only ''
+        verbose : int, optional
+            which message to record
+            None (default) uses self.verbose (default = 0, unless specified)
+        print : bool
+            whether to print, or just record
+        write : bool
+            whether to write to logger file
+        start_at : int
+            what level of verbosity is the first *msg*
+            ex: verbort('test', start_at=3) means 'test' is at verbose=3
+        **kw: kwargs for self.write or self.print
+        """
+        self.verbort(*msgs, verbose=verbose, print=print, write=write,
+                     start_at=start_at, **kw)
     # /def
 
     def close(self):

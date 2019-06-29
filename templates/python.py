@@ -4,7 +4,7 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   :
-# AUTHOR  :
+# AUTHOR  : Nathaniel Starkman
 # PROJECT :
 #
 # ----------------------------------------------------------------------------
@@ -13,18 +13,18 @@
 """**DOCSTRING**
 """
 
-__author__ = ""
+__author__ = "Nathaniel Starkman"
 # __copyright__ = "Copyright 2018, "
 # __credits__ = [""]
 # __license__ = "GPL3"
 # __version__ = "0.0.0"
-# __maintainer__ = ""
-# __email__ = ""
+# __maintainer__ = "Nathaniel Starkman"
+# __email__ = "n.starkman@mail.utoronto.ca"
 # __status__ = "Production"
 
 
 ##############################################################################
-### Imports
+### IMPORTS
 
 ## General
 
