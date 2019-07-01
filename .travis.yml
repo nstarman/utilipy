@@ -1,0 +1,55 @@
+dist: xenial   # required for Python >= 3.7
+sudo: false
+language: python
+python:
+    # 3.5.2 is interesting because it's the version in ubuntu 16.04, and due to python's
+    # "provisional feature" rules there are significant differences between patch
+    # versions for asyncio and typing.
+    # - 3.5.2
+    # supported python versions
+    - "3.5"
+    - "3.6"
+    - "3.7"
+
+# blocklist
+branches:
+  except:
+  - nstarman
+
+# safelist
+branches:
+  only:
+  - master
+  - dev
+
+before_install:
+ # skip travis build if [skip travis] or [travis skip] in commit message
+ - if git show -s HEAD | grep -F -q "[skip travis]" ; then echo "skip travis" && exit 0 ; fi
+ - if git show -s HEAD | grep -F -q "[travis skip]" ; then echo "skip travis" && exit 0 ; fi
+# Setup conda for faster installs
+ - wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+ - bash miniconda.sh -b -p $HOME/miniconda
+ - export PATH="$HOME/miniconda/bin:$PATH"
+ - hash -r
+ - conda config --set always_yes yes --set changeps1 no
+ - conda update conda
+ - conda config --add channels conda-forge
+ - conda create -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib setuptools pip pytest astropy
+ - source activate test-environment
+# Switch to conda defaults python, because conda-forge python has issues with gcc compiler similar to https://github.com/conda/conda/issues/6030
+ - conda install python=$TRAVIS_PYTHON_VERSION -c defaults
+
+
+# command to install dependencies
+install:
+    - python setup.py develop
+
+script: true
+    - pytest tests
+
+notifications:
+  email:
+    recipients:
+      - n.starkman@mail.utoronto.ca
+    on_success: change
+    on_failure: change
