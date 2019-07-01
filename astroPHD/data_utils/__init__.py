@@ -11,8 +11,6 @@
 """util initialization file
 """
 
-__author__ = "Nathaniel Starkman"
-
 ##############################################################################
 ### IMPORTS
 

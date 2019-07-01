@@ -13,7 +13,6 @@
 """functions for jupyter notebook / lab / hub
 """
 
-__author__ = "Nathaniel Starkman"
 __credits__ = ["Jo Bovy"]
 
 

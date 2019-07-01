@@ -4,15 +4,12 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : ipython initialization file
-# AUTHOR  : Nathaniel Starkman
 #
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
 """initialization file for jupyter notebook functions
 """
-
-__author__ = "Nathaniel Starkman"
 
 
 ##############################################################################

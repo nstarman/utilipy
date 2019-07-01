@@ -4,15 +4,12 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : IPython printing
-# AUTHOR  : Nathaniel Starkman
 #
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
 r"""functions for enhanced printing in an iPython environment
 """
-
-__author__ = "Nathaniel Starkman"
 
 
 ##############################################################################

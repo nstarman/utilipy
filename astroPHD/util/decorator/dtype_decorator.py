@@ -4,16 +4,21 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : decorators
-# AUTHOR  : Nathaniel Starkman
-# PROJECT : AST1500
 #
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
 """decorators
+
+TODO for dtypeDecorator
+-----------------------
+support argument 'all' in [(index, dtype),] as the IndexError
+supoort single argumens so that (index, dtype) works w/out [(), ]
+full support of numpy.dtype
+add in_dtype and out_dtype kwargs to wrapped functions which override
+    defaults
 """
 
-__author__ = "Nathaniel Starkman"
 __all__ = [
     'dtypeDecoratorMaker',
     # built-in types
@@ -74,69 +79,76 @@ class dtypeDecorator():
     >>> 1, 2.2, 3
     """
 
-    def __new__(cls, func=None, inargs=None, outargs=None):
+    def __new__(cls, func=None, in_dtype=None, out_dtype=None):
         """"""
         self = super().__new__(cls)  # making instance of self
 
-        # correcting if forgot to specify inargs= and did not provide a function
-        # in this case, *inargs* is stored in *func*
-        # need to do func->None, inarags<-func, and outargs<-inargs
+        # correcting if forgot to specify in_dtype= and did not provide a function
+        # in this case, *in_dtype* is stored in *func*
+        # need to do func->None, inarags<-func, and out_dtype<-in_dtype
         if not isinstance(func, types.FunctionType):
             # moving arguments 'forward'
-            outargs = inargs
-            inargs = func
+            out_dtype = in_dtype
+            in_dtype = func
             func = None
 
         # allowing for wrapping with calling the class
         if func is not None:
-            self.__init__(inargs, outargs)
+            self.__init__(in_dtype, out_dtype)
             return self(func)
         else:
             return self
     # /def
 
-    def __init__(self, inargs=None, outargs=None):
+    def __init__(self, in_dtype=None, out_dtype=None):
         super().__init__()
 
-        # inargs
-        # TODO check inargs is list of lists
-        self._inargs = inargs
+        # in_dtype
+        # TODO check in_dtype is list of lists
+        self._in_dtype = in_dtype
 
-        # outargs
-        # TODO check outargs is list of lists
-        self._outargs = outargs
+        # out_dtype
+        # TODO check out_dtype is list of lists
+        self._out_dtype = out_dtype
 
         return
     # /def
 
     def __call__(self, wrapped_func):
-        # print(self._inargs)
+        # print(self._in_dtype)
 
         @wraps(wrapped_func)
         def wrapper(*args, **kw):
-            # PRE
             # making arguments self._dtype
-            if self._inargs is None:  # no conversion needed
-                pass
+            if self._in_dtype is None:  # no conversion needed
+                return_ = wrapped_func(*args, **kw)
+            elif len(args) == 0:
+                return_ = wrapped_func(**kw)
+            elif len(args) == 1:
+                if len(self._in_dtype) != 1 or self._in_dtype[0][0] != 0:  # TODO better
+                    raise IndexError('too many indices')
+                arg = self._in_dtype[0][1](args[0])
+                return_ = wrapped_func(arg, **kw)
             else:
                 args = list(args)  # allowing modifications
-                for i, dtype in self._inargs:
-                    args[i] = dtype(args[i])  # converting to desired dtype
-            # /PRE
-
-            # CALLING
-            return_ = wrapped_func(*args, **kw)
-            # /CALLING
+                for i, dtype in self._in_dtype:
+                    args[i] = dtype(args[i])  # converting to desired dtype`
+                return_ = wrapped_func(*args, **kw)
 
             # POST
-            if self._outargs is None:  # no conversion needed
+            if self._out_dtype is None:  # no conversion needed
                 pass
             else:
-                return_ = list(return_)  # allowing modifications
-                for i, dtype in self._outargs:
-                    return_[i] = dtype(return_[i])  # converting to desired dtype
+                if not np.isscalar(return_):
+                    return_ = list(return_)  # allowing modifications
+                    for i, dtype in self._out_dtype:
+                        return_[i] = dtype(return_[i])  # converting to desired dtype
+                else:
+                    if len(self._out_dtype) != 1:  # TODO do this check?
+                        raise ValueError('out_dtype has too many indices')
+                    return_ = self._out_dtype[0][1](return_)
 
-                return return_
+            return return_
             # /POST
             # /def
         return wrapper

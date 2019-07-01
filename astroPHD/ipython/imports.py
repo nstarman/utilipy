@@ -4,7 +4,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : Standard Import File
-# AUTHOR  : Nathaniel Starkman
 #
 # ----------------------------------------------------------------------------
 
@@ -69,8 +68,6 @@ configure_matplotlib
 %config InlineBackend.figure_format = 'retina'
 InteractiveShell.ast_node_interactivity = "all"
 """
-
-__author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
