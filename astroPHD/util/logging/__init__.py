@@ -22,7 +22,8 @@ __author__ = "Nathaniel Starkman"
 import logging
 
 ## Custom
-from ._logfile_print import PrintLog, FileLog
+from ._logfile_print import PrintLog
+from ._logfile_write import FileLog
 
 
 ##############################################################################
