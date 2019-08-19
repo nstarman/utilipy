@@ -4,15 +4,12 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : util initialization file
-# AUTHOR  : Nathaniel Starkman
 #
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-"""initialization file for util
+"""util initialization file
 """
-
-__author__ = "Nathaniel Starkman"
 
 ##############################################################################
 ### IMPORTS
@@ -22,8 +19,6 @@ from .logging import LogPrint, LogFile  #, LoggerFile
 from .collections import ObjDict
 
 ## Project-Specific
-from ._domain_factory import domain_factory
 
-
-##############################################################################
-### DONE
+#############################################################################
+### END

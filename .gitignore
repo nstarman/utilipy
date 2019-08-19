@@ -4,12 +4,11 @@
 ###############################################################################
 # Project-Specific
 
-# Large Data Files
-# (* ignores contents, not the directory)
-
+# scratch files
+scratch/
+*_old
 
 # un-comment these for projects
-scratch/
 # notebooks/_sample/
 # scripts/_sample/
 # src/_sample/

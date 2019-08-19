@@ -3,19 +3,33 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : util initialization file
+# TITLE   : decorator initialization file
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-"""util initialization file
+"""initialization file for __________
 """
 
 ##############################################################################
 ### IMPORTS
 
-from .select import inRange
+## General
+
+## Project-Specific
+
+from .dtype_decorator import (
+    dtypeDecorator,
+    dtypeDecoratorMaker,
+    # standard types
+    intDecorator, floatDecorator, strDecorator, boolDecorator,
+    # numpy
+    ndarrayDecorator, ndfloat64Decorator
+)
+
+from .idx_decorator import idxDecorator
 
 
 ##############################################################################
-### DONE
+### END

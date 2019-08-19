@@ -36,7 +36,7 @@ from matplotlib import cm, colors
 # +--------------------------------------------------------------------------+
 # IPython Magic
 
-from astroPHD.ipython.plot import configure_matplotlib
+from starkython.ipython.plot import configure_matplotlib
 
 
 ##############################################################################
