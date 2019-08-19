@@ -22,9 +22,26 @@ __author__ = "Nathaniel Starkman"
 import logging
 
 ## Custom
-from ._logfile_print import PrintLog
-from ._logfile_write import FileLog
+# try:
+#     import loguru
+
+# except ImportError as e:
+#     _LOGURU = False
+#     print(e)
+#     print('using standard logging instead')
+
+#     from ._logfile_logger import LogFile as LoggerFile  # TODO better name
+
+# else:
+#     _LOGURU = True
+#     from ._logfile_loguru import LogFile as LoggerFile  # TODO better name
+
+
+from ._LogPrint import LogPrint
+from ._LogFile import LogFile
+
+## Project-Specific
 
 
 ##############################################################################
-# END
+### END

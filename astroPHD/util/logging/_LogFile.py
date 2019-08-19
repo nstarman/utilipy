@@ -3,7 +3,7 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : logging
+# TITLE   : LogFile
 #
 # ----------------------------------------------------------------------------
 
@@ -19,13 +19,14 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 ### IMPORTS
 
-from ._logfile_print import PrintLog
-from ._inheritdocstrings import InheritDocstrings
+from ._LogPrint import LogPrint
+from ..decorator.inherit_docstrings import InheritDocstrings
+
 
 ##############################################################################
-### FileLog
+### LogFile
 
-class FileLog(PrintLog, metaclass=InheritDocstrings):
+class LogFile(LogPrint, metaclass=InheritDocstrings):
     """a basic logger which can both print and record to a file
     ** this class uses `open', not a more extensive logger, like `logging'
 
@@ -37,7 +38,7 @@ class FileLog(PrintLog, metaclass=InheritDocstrings):
     ----------
     filename : str, optional
         the file name / path at which to save this log
-        If no filename, makes a PrintLog() instead
+        If no filename, makes a LogPrint() instead
     verbose : int
         the verbosity level to use in .report / .verbort
     mode : str  (default 'w')
@@ -82,13 +83,13 @@ class FileLog(PrintLog, metaclass=InheritDocstrings):
                 mode='w', buffering=-1, encoding=None, errors=None,
                 newline=None, closefd=True, opener=None):
         """New LogFile
-        If no filename, makes a PrintLog instead
+        If no filename, makes a LogPrint instead
         """
         if mode == '+':
             raise ValueError('+ not allowed')
 
         if filename is None:
-            return PrintLog(verbose=verbose, sec_div=sec_div,
+            return LogPrint(verbose=verbose, sec_div=sec_div,
                             header=header, show_header=show_header)
         else:
             self = super().__new__(cls)
@@ -103,14 +104,15 @@ class FileLog(PrintLog, metaclass=InheritDocstrings):
         """LogFile
         set the filename and make the file
         """
-        # section divider and srart file header
-        # not at start b/c needs .file for .write to work
+
+        # instantiate without writing
+        # section divider and file header
         super().__init__(verbose=verbose, sec_div=sec_div, header=False)
 
         # keeping input arguments
         self.filename = filename
 
-        # the file
+        # the Logger
         self.file = open(
             filename, mode=mode, buffering=buffering, encoding=encoding,
             errors=errors, newline=newline, closefd=closefd, opener=opener
@@ -120,17 +122,19 @@ class FileLog(PrintLog, metaclass=InheritDocstrings):
             return
 
         # making file header
-        if header is False:
+        if header is False:  # no header
             self.write(f"{''} Log:", endsection='=', print=False)
-        else:
-            if header is None:
+        else:  # there is a header
+            if header is None:  # header should be filename
                 header = filename + ' '
-            elif header is True:
+            elif header is True:  # blank header
                 header = ''
             elif header[-1] != ' ':  # making sure ends in space
                 header += ' '
 
             self.write(f"{header}Log:", endsection='=', print=show_header)
+
+        return
     # /def
 
     @classmethod
@@ -170,12 +174,10 @@ class FileLog(PrintLog, metaclass=InheritDocstrings):
             't' text mode
             '+' open a disk file for updating (reading and writing)
         """
-        return cls(filename, verbose=verbose, sec_div=sec_div,
+        return cls(filename, verbose=verbose, mode=mode, sec_div=sec_div,
                    header=header, show_header=show_header,
-                   # for open
-                   mode=mode, buffering=buffering, encoding=encoding,
-                   errors=errors, newline=newline, closefd=closefd,
-                   opener=opener)
+                   buffering=buffering, encoding=encoding, errors=errors,
+                   newline=newline, closefd=closefd, opener=opener)
     # /def
 
     @classmethod
@@ -218,17 +220,17 @@ class FileLog(PrintLog, metaclass=InheritDocstrings):
         if mode == 'r':
             raise ValueError('mode must be set to write')
 
-        return cls(filename, verbose=verbose, sec_div=sec_div,
+        return cls(filename, verbose=verbose, mode=mode, sec_div=sec_div,
                    header=header, show_header=show_header,
-                   # for open
-                   mode=mode, buffering=buffering, encoding=encoding,
-                   errors=errors, newline=newline, closefd=closefd,
-                   opener=opener)
+                   buffering=buffering, encoding=encoding, errors=errors,
+                   newline=newline, closefd=closefd, opener=opener)
     # /def
 
     @classmethod
-    def open_to_read(cls, filename, buffering=-1, encoding=None,
-                     errors=None, newline=None, closefd=True, opener=None):
+    def open_to_read(cls, filename,
+                     # for open
+                     buffering=-1, encoding=None, errors=None,
+                     newline=None, closefd=True, opener=None):
         """a basic logger which can both print and record to a file
         ** this class uses `open', not a more extensive logger, like `logging'
 
@@ -254,7 +256,10 @@ class FileLog(PrintLog, metaclass=InheritDocstrings):
     # /def
 
     def _write(self, *string, start='', sep=' ', end='\n'):
-        r"""writer method helper function
+        r"""writer method
+        this is used by all write methods
+        implemented so it can be overriden easily
+        **Note: end='' does nothing. Write automatically does '\n'
         """
         if len(string) == 0:  # checking there is a string
             raise ValueError('needs a value')
@@ -360,7 +365,7 @@ class FileLog(PrintLog, metaclass=InheritDocstrings):
                      start_at=start_at, **kw)
     # /def
 
-    # newsection  # from PrintLog
+    # newsection  # from LogPrint
 
     def close(self):
         """close the file

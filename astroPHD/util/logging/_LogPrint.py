@@ -3,32 +3,26 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : logging
+# TITLE   : logfile_print
 #
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-"""functions for logging
-
-TODO:
+"""LogPrint function for logging to the console
 """
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+### LogPrint
 
-
-##############################################################################
-### PRINTLOG
-
-class PrintLog(object):
+class LogPrint(object):
     """a basic logger wrapper for print
     """
 
     def __init__(self, verbose=0, sec_div='-', header=None, show_header=True):
-        """Initialize PrintLog
+        """Initialize LogPrint
         start the file header (just printing)
         """
         super().__init__()
@@ -49,6 +43,8 @@ class PrintLog(object):
             self.write(f"{header}Log:", endsection='=', print=show_header)
     # /def
 
+    # ------------------------------------------------------------------------
+
     @classmethod
     def open(cls, verbose=0, sec_div='-', header=None, show_header=True, **kw):
         """
@@ -60,7 +56,8 @@ class PrintLog(object):
     # /def
 
     @classmethod
-    def open_to_write(cls, verbose=0, sec_div='-', header=None, show_header=True, **kw):
+    def open_to_write(cls, verbose=0, sec_div='-', header=None,
+                      show_header=True, **kw):
         """TODO
         **kw absorbs all extra kwargs to be consistent with LogFile
         """
@@ -85,10 +82,12 @@ class PrintLog(object):
             the file name / path at which to save this log
         ...
         """
-        return LogFile(filename, mode='r', buffering=buffering, encoding=encoding,
-                       errors=errors, newline=newline, closefd=closefd,
-                       opener=opener)
+        return cls(filename, mode='r', buffering=buffering,
+                   encoding=encoding, errors=errors, newline=newline,
+                   closefd=closefd, opener=opener)
     # /def
+
+    # ------------------------------------------------------------------------
 
     def print(self, *text, start='', sep=' ', end='\n'):
         r"""wrapper for print
@@ -108,7 +107,6 @@ class PrintLog(object):
 
     def _write(self, *string, start='', sep=' ', end='\n'):
         r"""writer method
-        does nothing
         this is implemented solely to be overwritten by child classes
         """
         pass
@@ -140,7 +138,8 @@ class PrintLog(object):
         full_div = div * int(79 / len(div))  # round out to full line length
 
         if print:
-            self._print_and_write(full_div, title, start='\n', sep='\n', end='\n')
+            self._print_and_write(full_div, title,
+                                  start='\n', sep='\n', end='\n')
         else:
             self._write(full_div, title, start='\n', sep='\n', end='\n\n')
     # /def
@@ -185,12 +184,14 @@ class PrintLog(object):
     def record(self, *text, start='', sep=' ', end='\n',
                startsection=False, endsection=False):
         """redirects to write, which goes to print
-        this is implemented solely for compatibility
+        this is implemented solely for compatibility with LogFile
         """
         self.write(*text, start=start, sep=sep, end=end,
                    startsection=startsection, endsection=endsection,
                    print=False)
     # /def
+
+    # ------------------------------------------------------------------------
 
     def verbort(self, *msgs, verbose=None, print=True, write=True,
                 start_at=1, **kw):
@@ -260,6 +261,8 @@ class PrintLog(object):
         return self.verbort(*msgs, verbose=None, print=True, write=True,
                             start_at=1, **kw)
 
+    # ------------------------------------------------------------------------
+
     def close(self):
         """close the non-existent file
         this is implemented solely to be overwritten by child classes
@@ -291,7 +294,6 @@ class PrintLog(object):
     # /def
 
 # /class
-
 
 ##############################################################################
 ### END

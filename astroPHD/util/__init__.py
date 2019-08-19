@@ -15,7 +15,7 @@
 ### IMPORTS
 
 ## Custom
-from .logging import FileLog
+from .logging import LogFile
 
 ## Project-Specific
 
