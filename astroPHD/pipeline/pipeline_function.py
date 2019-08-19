@@ -27,7 +27,7 @@ __author__ = "Nathaniel Starkman"
 ## General
 # import decorator
 # import functools
-import wrapt
+from wrapt import ObjectProxy
 
 ## Project-Specific
 from ..util.dict_util import split_dictionary
@@ -37,7 +37,7 @@ from ..util.inspect import getfullerargspec
 ##############################################################################
 ### CODE
 
-class PipelineFunction(wrapt.ObjectProxy):
+class PipelineFunction(ObjectProxy):
     """Node of a Pipeline
 
     INFO

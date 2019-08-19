@@ -36,10 +36,10 @@ from wrapt import ObjectProxy
 ##############################################################################
 ### CODE
 
-def scipy_residual_to_lmfit(var_order:list):
+class scipy_residual_to_lmfit(ObjectProxy):
     """decorator to make scipy residual functions compatible with lmfit
     (see https://lmfit.github.io/lmfit-py/fitting.html)
-    
+
     Parameters
     ----------
     var_order : list of strs
@@ -62,48 +62,60 @@ def scipy_residual_to_lmfit(var_order:list):
         def residual(vars, x, data, eps_data):
             amp, phase, freq, decay = vars
             ...
-            def res
-    
-    TODO:
-    - make this a class so that it supports
-      scipy_residual_to_lmfit(func, var_order)
-      then it can be used to replace functions like
-      func = scipy_residual_to_lmfit(func, var_order)
+            return res
+
+    TODO
     - since using ObjectProxy, make it compatible with bound functions
       see https://wrapt.readthedocs.io/en/latest/wrappers.html#function-wrappers
-    - not have to define a class inside this function
     """
 
-    class scipy_residual_to_lmfit(ObjectProxy):
+    # def __call__(self, vars, *args, **kwargs):
+    #     return self.__wrapped__(vars, *args, **kwargs)
+    # # /def
+
+    def __new__(cls, func=None, var_order:list=None):
         """
-
-        Parameters
-        ----------
-        wrapped : function
-
-        defaulted
-        ---------
-        var_order : list
-            the variable order used by lmfit
         """
+        if var_order is None:
+            raise ValueError('var_order cannot be None')
 
-        def __init__(self, wrapped):
-            super().__init__(wrapped)
-            self.var_order = var_order
-            return
+        self = super().__new__(cls)  # inherit class information
+
+        # assigning documentation as function documentation
+        self.__doc__ = func.__doc__
+
+        # allowing scipy_residual_to_lmfit to act as a decorator
+        if func is None:
+            return self.decorator(var_order)
+        return self
+    # /def
+
+    @classmethod
+    def decorator(cls, var_order:list):
+        """TODO
+        """
+        # @functools.wraps(cls)  # not needed when using ObjectProxy
+        def wrapper(func):
+            """scipy_residual_to_lmfit wrapper"""
+            return cls(func, var_order=var_order)
         # /def
 
-        def __call__(self, vars, *args, **kwargs):
-            return self.__wrapped__(vars, *args, **kwargs)
-        # /def
+        return wrapper
+    # /def
 
-        def lmfit(self, params, *args, **kwargs):
-            vars = [params[n].value for n in self.var_order]
-            return self.__wrapped__(vars, *args, **kwargs)
-        # /def
-    
-    return scipy_residual_to_lmfit
-# /def
+    def __init__(self, func, var_order:list):
+
+        super().__init__(func)  # inializing function into wrapt.ObjectProxy
+
+        self.var_order = var_order
+        return
+    # /def
+
+    def lmfit(self, params, *args, **kwargs):
+        vars = [params[n].value for n in self.var_order]
+        return self.__wrapped__(vars, *args, **kwargs)
+    # /def
+# /class
 
 
 ##############################################################################
