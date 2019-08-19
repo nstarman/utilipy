@@ -18,7 +18,7 @@ __author__ = "Nathaniel Starkman"
 ### IMPORTS
 
 ## Custom
-from .logging import LogFile  #, LoggerFile
+from .logging import LogPrint, LogFile  #, LoggerFile
 from .collections import ObjDict
 
 ## Project-Specific

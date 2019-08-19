@@ -25,7 +25,7 @@ from . import LogFile
 #############################################################################
 ### PARAMETERS
 
-_LOGFILE = LogFile(header=False)  # PrintLog, which is compatible with LogFile
+_LOGFILE = LogFile(header=False)  # LogPrint, which is compatible with LogFile
 
 
 #############################################################################

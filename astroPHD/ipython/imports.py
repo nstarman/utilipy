@@ -3,71 +3,13 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : Standard Import File
+# TITLE   : ipython imports file
 # AUTHOR  : Nathaniel Starkman
 #
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-"""standard import file.
-imports:
-
-GENERAL
--------
-os, sys  # operating system
-time
-pdb
-warnings
-
-numpy -> np
-scipy
-
-tqdm.tqdm_notebook -> tqdm
-
-
-ASTROPY
--------
-astropy
-.units -> u
-.coordinates -> coords
-    .SkyCoord
-.table.Table, QTable
-.visualization.quantity_support, astropy_mpl_style
-
-**also does:
-quantity_support()
-plt.style -> astropy_mpl_style
-
-
-PLOTTING
---------
-starkplot -> plt
-.mpl_decorator
-
-matplotlib -> mpl
-.cm
-.colors
-
-Logging
--------
-logging
-.util.logging.LogFile
-
-Misc
--------
-.util.ObjDict
-
-IPYTHON
--------
-display, Latex, Markdown, set_trace,
-printmd, printMD, printltx, printLaTeX
-set_autoreload, # aimport, aimports
-configure_matplotlib
-
-**also does:
-%matplotlib inline
-%config InlineBackend.figure_format = 'retina'
-InteractiveShell.ast_node_interactivity = "all"
+"""
 """
 
 __author__ = "Nathaniel Starkman"
@@ -76,109 +18,168 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 ### IMPORTS
 
-# +---------------------------------------------------------------------------+
-# Basic
-
-import os, sys                        # operating system
-import time                           # timing
-import pdb                            # debugging
-import warnings                       # warning
-# warnings.filterwarnings('ignore', RuntimeWarning)
-
-# Numpy
-import numpy as np  # numerical python
-import scipy        # scientific python
-
-# from tqdm.autonotebook import tqdm  # TODO implement when no TqdmExperimentalWarning
-from tqdm import tqdm_notebook as tqdm
-
-## Custom
-from starkython.util import ObjDict  # custom dictionary-like object
-# import logging                                    # for logging
-from starkython.util.logging import LogFile  #, LoggerFile  # custom loggin
-
-# +---------------------------------------------------------------------------+
-# Astropy
-import astropy
-
-from astropy import units as u             # units TODO replace with mine
-from astropy import coordinates as coords  # coordinates
-
-from astropy.coordinates import SkyCoord
-from astropy.table import Table, QTable  # table data structure
-
-# Allowing quantities in matplotlib
-from astropy.visualization import quantity_support, astropy_mpl_style
-
-# +---------------------------------------------------------------------------+
-# Plotting
-
-try:
-    import starkplot as plt
-except ImportError:
-    warnings.warn('Cannot import starkplot, using matplotlib.pyplot instead.' +
-                  '\nmpl_decorator will not work.')
-    from matplotlib import pyplot as plt
-else:
-    from starkplot import mpl_decorator
-
-import matplotlib as mpl
-from matplotlib import cm
-from matplotlib import colors
-
-# +--------------------------------------------------------------------------+
-# IPython Magic
-
-from IPython.core.interactiveshell import InteractiveShell
-
-from starkython.ipython.aimport import set_autoreload #, aimport, aimports
-from starkython.ipython.plot import configure_matplotlib
-
-# %run runs in the main namespace, so need to run as 'src.', not '.''
-from starkython.ipython import (
-    display, Latex, Markdown,
-    set_trace,
-    printmd, printMD,
-    printltx, printLaTeX
+from ..util.logging import LogPrint
+from ..util.paths import (
+    get_absolute_path as _gap,
+    parent_file_directory as _pfd
 )
-# this also does: %matplotlib inline,
-#                 %config InlineBackend.figure_format = 'retina'
-#                 InteractiveShell.ast_node_interactivity = "all"
-
-##############################################################################
-### Running Imported Functions
-
-InteractiveShell.ast_node_interactivity = "all"
-
-configure_matplotlib(backend='inline', figure_format='retina')
-
-# astropy changes
-quantity_support()
-plt.style.use(astropy_mpl_style)
 
 
 ##############################################################################
-### Cleaning Up
+### SETUP
 
-# # cleaning up
-del InteractiveShell
-del quantity_support, astropy_mpl_style
+_LOGFILE = LogPrint(header=False, verbose=0)
 
 
 ##############################################################################
-### Printing Information
+### CODE
 
-print("""Imported:
-Base: os, sys, time, pdb, warnings,
-      numpy -> np, scipy,
-      tqdm_notebook -> tqdm
-Astropy: astropy, .units->u, .coordinates->coords, .SkyCoord, .Table, .QTable
-Plot: starkplot->plt, .mpl_decorator
-      matplotlib->mpl, .colors, .cm
-Logging: .LogFile
-Misc: ObjDict
-IPython: display, Latex, Markdown, set_trace,
-         printmd, printMD, printltx, printLaTeX,
-         configure_matplotlib,
-         set_autoreload  #, aimport, aimports
-""")
+def import_from_file(*files, relative:bool=True) -> None:
+    """run import(s) from a file(s)
+
+    Parameters
+    ----------
+    *files: str(s)
+        strings for files to import
+        need to include file suffix
+    """
+
+    for file in files:
+        print(file)
+        if relative:
+            file = _gap(file)
+        get_ipython().magic(f"run {file}")
+
+        _LOGFILE.write(f'imported {file}')
+
+    return
+# /def
+
+
+# ----------------------------------------------------------------------------
+
+def run_imports(*files, relative:bool=True,
+                base:bool=False, astropy:bool=False, matplotlib:bool=False,
+                extended:bool=False) -> None:
+    """runs .imports file using ipython magic
+
+    Info
+    ----
+    if `astropy` & `matplotlib`, sets matplotlib style to astropy_mpl_style
+
+    Parameters
+    ----------
+    *files: str(s)
+        strings for files to import
+        need to include file suffix
+    relative: bool
+        whether the `*files` paths are relative or absolute
+    base: bool
+        run_base_imports() -> `astroPHD/ipython/import_files/base_imports.py'
+    astropy: bool
+        run_astropy_imports() -> `astroPHD/ipython/import_files/astropy_imports.py'
+    matplotlib: bool
+        run_matplotlib_imports() -> `astroPHD/ipython/import_files/matplotlib_imports.py'
+    extended: bool
+        run_extended_imports() -> `astroPHD/ipython/import_files/extended_imports.py'
+    """
+
+    # running imports file
+    if base:
+        run_base_imports()
+
+    if astropy:
+        run_astropy_imports()
+
+    if matplotlib:
+        run_matplotlib_imports()
+
+    if extended:
+        run_extended_imports()
+
+    # when combined
+    if astropy & matplotlib:
+        plt.style.use(astropy_mpl_style)
+
+    # other import filess
+    if files:  # True if not empty
+        import_from_file(*files, relative=relative)
+
+    return
+# /def
+
+
+# ----------------------------------------------------------------------------
+
+def _join_pfd(path):
+    # TODO better way to get this file directory & join path file
+    return _pfd(__file__).joinpath(path)
+# /def
+
+
+def run_standard_imports() -> None:
+    """
+    """
+
+    import_from_file(_join_pfd('import_files/full_standard_imports.py'),
+                     relative=False)
+
+    return
+# /def
+
+
+##############################################################################
+### Specific Imports
+
+def run_base_imports() -> None:
+    """
+    """
+
+    import_from_file(_join_pfd('import_files/base_imports.py'),
+                     relative=False)
+
+    return
+# /def
+
+
+# ----------------------------------------------------------------------------
+
+def run_extended_imports() -> None:
+    """
+    """
+
+    import_from_file(_join_pfd('import_files/extended_imports.py'),
+                     relative=False)
+
+    return
+# /def
+
+
+# ----------------------------------------------------------------------------
+
+def run_astropy_imports() -> None:
+    """
+    """
+
+    import_from_file(_join_pfd('import_files/astropy_imports.py'),
+                     relative=False)
+
+    return
+# /def
+
+
+# ----------------------------------------------------------------------------
+
+def run_matplotlib_imports() -> None:
+    """
+    """
+
+    import_from_file(_join_pfd('import_files/matplotlib_imports.py'),
+                     relative=False)
+
+    return
+# /def
+
+
+##############################################################################
+### END

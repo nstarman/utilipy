@@ -10,27 +10,28 @@
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-"""**DOCSTRING**
+"""
+## General
+pathlib, .Path
+
+## Custom
+get_absolute_path
 """
 
 __author__ = "Nathaniel Starkman"
-# __copyright__ = "Copyright 2018, "
-# __credits__ = [""]
-# __license__ = "GPL3"
-# __version__ = "0.0.0"
-# __maintainer__ = "Nathaniel Starkman"
-# __email__ = "n.starkman@mail.utoronto.ca"
-# __status__ = "Production"
 
 
 ##############################################################################
 ### IMPORTS
 
 ## General
+import pathlib
+from pathlib import Path
 
 ## Custom
 
 ## Project-Specific
+
 
 ##############################################################################
 ### PARAMETERS
@@ -39,10 +40,21 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 ### CODE
 
-def current_file_directory(__file__):
-    s = __file__.split('/')
-    s = '/'.join(s[:-1])
-    return s
+def get_absolute_path(path:str) -> Path:
+    """
+    """
+
+    return Path(path).resolve()
+# /def
+
+
+def parent_file_directory(path:str) -> Path:
+    """
+    """
+
+    path = Path(path)
+    return path.parent
+# /def
 
 ##############################################################################
 ### END

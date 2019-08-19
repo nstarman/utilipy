@@ -5,7 +5,7 @@
 #
 # TITLE   : lmfit
 # AUTHOR  : Nathaniel Starkman
-# PROJECT : starkython
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ from wrapt import ObjectProxy
 ##############################################################################
 ### PARAMETERS
 
-# _LOGFILE = LogFile(header=False)  # PrintLog, compatible with LogFile
+# _LOGFILE = LogFile(header=False)  # LogPrint, compatible with LogFile
 
 
 ##############################################################################

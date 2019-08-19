@@ -5,7 +5,7 @@
 #
 # TITLE   : initialization file
 # AUTHOR  : Nathaniel Starkman
-# PROJECT : starkython
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 

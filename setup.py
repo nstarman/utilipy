@@ -87,14 +87,13 @@ requirements = [
 ]
 
 classifiers = [
-    "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
 ]
 
 setup(
     # Metadata
-    name='astroPHD',
+    name='starkython',
     version=VERSION,
     author='Nathaniel Starkman',
     author_email='n.starkman@mail.utoronto.ca',

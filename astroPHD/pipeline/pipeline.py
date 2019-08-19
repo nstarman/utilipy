@@ -21,70 +21,101 @@ __author__ = "Nathaniel Starkman"
 ### Imports
 
 # Project-Specific
-from .util import LogFile, ObjDict
+# from .util import LogFile, ObjDict
 
 
 ###############################################################################
 ### Parameters
 
-_LOGFILE = LogFile(header=False)  # PrintLog, which is compatible with LogFile
+# _LOGFILE = LogFile(header=False)  # LogPrint, which is compatible with LogFile
+
+
+##############################################################################
+### Multi-Linked List
+
+# TODO implement many-to-many version
+
+class Node:
+    """
+    """
+
+    def __init__(self, data):
+        self.item = data
+        self.nref = None
+        self.pref = None
+    # /def
+
+
+# -------------------------------------------------------------------------
+# from https://stackabuse.com/doubly-linked-list-with-python-examples/
+
+# TODO implement many-to-many version
+# but this requires being able to resolve call order based on dependency
+
+class DoublyLinkedList:
+    def __init__(self, start_node=None):
+        self.start_node = start_node
+
+    # TODO
 
 
 ##############################################################################
 ### Pipeline
 
-class SequentialPipeline(object):
-    """docstring for ClassName"""
+class Pipeline(object):
 
-    def __init__(self, steps):
+    def __init__(self, *steps):
         """
         steps : list
-            (name, action)
             action class needs a .run method
         """
+
         self.steps = steps
+        # TODO process functions which are not PipelineFunctions as (name, func)
+        # TODO steps should be a multi-linked list
 
         return
     # /def
 
-    def run(startkw, # **stepsargs
-            ):
+    def run(self, startkw={}, **stepsargs):
         """
-        startkw :
-            starting kwargs
-        # stepsargs: dict
-        #     {step name: {dict of kwargs}}
-
-        TODO
-            options on the steps?
-            right now each step can only pass input directly to next event
         """
-        res = startkw  # input for first step
 
-        for name, step in steps:
+        kw = startkw  # input for first step
 
-            inreskw = {k: res[k] for k in step._input_kwargs_names}
-            inreskw.update(stepsargs.get(name, {}))
+        #
+        if set(startkw.keys()).difference(self.steps[0]._inargnames):
+            raise ValueError
 
-            res = step.run(pipeline_mode=True, **inreskw)
+        for step in self.steps:
 
-        return res
+#             stepkw = {k: kw[k] for k in step._inargnames if k in kw}
+            stepkw = kw  # TODO some check that a) passing right args b) not passing extra args?
+            stepkw.update(stepsargs.get(step.name, {}))
+
+            # print(step.name, stepkw, step._defaults, step._outargnames)
+
+            # TODO put this inside step.run()
+            for n1, n2 in step._inargnames.items():
+                if n1 in kw:
+                    stepkw[n2] = stepkw.pop(n1)
+
+            # print(step.name, stepkw, step._defaults)
+
+            kw = step.run(**stepkw)
+
+            # print('kw:', kw)
+
+        return kw
     # /def
-
-    def describe_pipeline():
-        print('TODO')
-
-    # @classmethod
-    # def decorator(cls, func=None):
-    #     print('TODO')
-    #     return
 
 
 # -------------------------------------------------------------------------
 
-def make_pipeline(steps):
-    # TODO get name of each step automatically using inspect
-    return SequentialPipeline(steps)
+# def make_pipeline(steps):
+#     # TODO get name of each step automatically using inspect
+#     return SequentialPipeline(steps)
+# # /def 
 
 # -------------------------------------------------------------------------
 

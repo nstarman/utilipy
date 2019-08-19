@@ -37,10 +37,11 @@ import logging
 #     from ._logfile_loguru import LogFile as LoggerFile  # TODO better name
 
 
-from ._logfile_print import LogFile
+from ._LogPrint import LogPrint
+from ._LogFile import LogFile
 
 ## Project-Specific
 
 
 ##############################################################################
-# Code
+### END

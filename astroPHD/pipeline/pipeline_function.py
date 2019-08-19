@@ -25,45 +25,29 @@ __author__ = "Nathaniel Starkman"
 ### IMPORTS
 
 ## General
-from decorator import decorator
-import functools
-from types import FunctionType
+# import decorator
+# import functools
+import wrapt
 
 ## Project-Specific
-# from .util import ObjDict, LogFile
 from ..util.dict_util import split_dictionary
 from ..util.inspect import getfullerargspec
-
-
-###############################################################################
-### PARAMETERS
-
-_DOC = """
-
-current call signature : # TODO
-
-Parameters
-----------
-func : function
-    defualt : {func}
-
-"""
-
-# _LOGFILE = LogFile(header=False)  # PrintLog, which is compatible with LogFile
 
 
 ##############################################################################
 ### CODE
 
-class PipelineFunction(object):
-    """
+class PipelineFunction(wrapt.ObjectProxy):
+    """Node of a Pipeline
 
-    current call signature : # TODO
+    INFO
+    ----
+    The signature is that of the underlying function
+    The defaults for the pipeline can be seen in self._defaults  # TODO better method
 
     Parameters
     ----------
     func : function
-        default : {func}
 
     outargnames: tuple, None
         the names of the outputs of *func*
@@ -86,47 +70,67 @@ class PipelineFunction(object):
             ex: for func(x, y, z) & inargnames = dict(x='a')
                 this tries to do func(y, y, z), which is not permitted
 
+    TODO
+    ----
+    have a register_function_connection
     """
 
-    def __new__(cls, func, outargnames, inargnames=None, **kw):
+    def __call__(self, *args, **kwargs):
+        """pass the call to the function
+        """
+        return self._func(*args, **kwargs)
+    # /def
 
-        # # catching when this should be a decorator
-        # if not isinstance(func, FunctionType):
-        #     return cls.decorator(outargnames, inargnames, **kw)
+    def __new__(cls, func=None, outargnames=None, inargnames=None, name=None,
+                **kw):
+        """
+        """
+        if outargnames is None:
+            raise ValueError('outargnames cannot be None')
 
-        self = super().__new__(cls)
-        # Call function
-        # implemented in here to be able to preserve the call signature
-        # @decorator
-        # def call_func(func, *args, **kwargs):
-        #     return func(*args, **kwargs)
-        # self.__call__ = call_func(func)
-        # Run function
-        # self.run.__doc__ = """setting run"""
-        # changing documention to reflect
-        # TODO do this in a metaclass?
-        self.__doc__ = self.__doc__.format(func=func, )
+        self = super().__new__(cls)  # inherit class information
 
+        # assigning documentation as function documentation
+        self.__doc__ = func.__doc__
+
+        # allowing PipelineFunction to act as a decorator
+        if func is None:
+            return self.decorator(outargnames, inargnames=inargnames,
+                                  name=name, **kw)
         return self
     # /def
 
-    def __call__(self, *args, **kwargs):
-        return self._func(*args, **kwargs)
-
     @classmethod
-    def decorator(cls, outargnames, inargnames=None, **kw):
-        # FIXME
+    def decorator(cls, outargnames, inargnames=None, name=None, **kw):
+        """TODO
+        """
+        # @functools.wraps(cls)  # not needed when using ObjectProxy
+        def wrapper(func):
+            """PipelineFunction wrapper"""
+            return cls(func, outargnames=outargnames, inargnames=inargnames,
+                       name=name, **kw)
+        # /def
 
-        @functools.wraps(cls)  # TODO implement from decorator package?
-        def wrap(func):
-            return cls(func, outargnames, inargnames, **kw)
-
-        return wrap
+        return wrapper
     # /def
 
-    def __init__(self, func, outargnames, inargnames=None, **kw):
-        # super().__init__(func)
+    def __init__(self, func, outargnames, inargnames=None, name=None, **kw):
+        """Node of a Pipeline
+
+        Defaults
+        --------
+        The defaults for the pipeline can be seen in self._defaults  # TODO better method
+
+        PipelineFunction Parameters
+        ---------------------------
+
+        """
+
+        super().__init__(func)  # inializing function into wrapt.ObjectProxy
+
+        # storing function
         self._func = func
+        self.name = func.__name__ if name is None else name
 
         self._spec = getfullerargspec(func)  # detailed info on the function
 
@@ -144,17 +148,20 @@ class PipelineFunction(object):
         # TODO some check its a list or tuple
         self._outargnames = outargnames
 
-        # initialize
-        self.initialize(**kw)
+        # initialize defaults
+        self.set_defaults(**kw)
         return
     # /def
 
-    def initialize(self, **kw):
+    def set_defaults(self, **kw):
+        """
+        """
         self._defaults = kw
     # /def
 
     def _split_into_args_kwargs(self, kw):
-
+        """
+        """
         kwset = set(kw.keys())
         args = []
         # mandatory arguments
@@ -163,7 +170,8 @@ class PipelineFunction(object):
             # checking all required arguments are present
             argset = set(self._spec.args)
             if not argset.issubset(kwset):
-                raise Exception(f'{self._func.__name__} needs argument(s): {argset.difference(kwset)}')
+                raise Exception(f'{self._func.__name__} needs argument(s): \
+                                  {argset.difference(kwset)}')
             # ... they are, proceeding
             # splitting out the args and removing the keys from kw
             argsdict, kw = split_dictionary(kw, keys=self._spec.args)
@@ -190,11 +198,17 @@ class PipelineFunction(object):
     def run(self, **kw):
         """fun the function
         """
-        kwd = self._defaults  # TODO check copying is necessary
+        kwd = self._defaults.copy()  # copying is necessary
+
+        # mapping keys using _inargnames
+        for n1, n2 in self._inargnames.items():
+            if n1 in kw:
+                kw[n2] = kw.pop(n1)
+
         kwd.update(kw)
 
         args, kwargs = self._split_into_args_kwargs(kwd)
-        print(args, kwargs)
+        # print(args, kwargs)
 
         res = self._func(*args, **kwargs)
 

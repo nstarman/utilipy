@@ -27,13 +27,13 @@ import sys
 from loguru import logger
 
 ## Custom
-from ._logfile_print import LogFile as _LogFile
+from ._LogFile import LogFile as _LogFile
 
 ## Project-Specific
 
 
 ##############################################################################
-### Setup
+### SETUP
 
 
 _READMODES = ('r', )
