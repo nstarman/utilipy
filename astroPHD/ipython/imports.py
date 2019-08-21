@@ -99,7 +99,9 @@ def run_imports(*files, relative:bool=True,
 
     # when combined
     if astropy & matplotlib:
-        plt.style.use(astropy_mpl_style)
+        from matplotlib import pyplot
+        from astropy.visualization import astropy_mpl_style
+        pyplot.style.use(astropy_mpl_style)
 
     # other import filess
     if files:  # True if not empty

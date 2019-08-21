@@ -93,8 +93,8 @@ import scipy        # scientific python
 from tqdm import tqdm_notebook as tqdm
 
 ## Custom
-from starkython.util import ObjDict  # custom dictionary-like object
-from starkython.util.logging import LogFile  #, LoggerFile  # custom logging
+from astroPHD.util import ObjDict  # custom dictionary-like object
+from astroPHD.util.logging import LogFile  #, LoggerFile  # custom logging
 
 # +---------------------------------------------------------------------------+
 # Astropy
@@ -129,11 +129,11 @@ from matplotlib import cm, colors
 
 from IPython.core.interactiveshell import InteractiveShell
 
-from starkython.ipython.autoreload import set_autoreload, aimport
-from starkython.ipython.plot import configure_matplotlib
+from astroPHD.ipython.autoreload import set_autoreload, aimport
+from astroPHD.ipython.plot import configure_matplotlib
 
 # %run runs in the main namespace, so need to run as 'src.', not '.''
-from starkython.ipython import (
+from astroPHD.ipython import (
     display, Latex, Markdown,
     set_trace,
     printmd, printMD,

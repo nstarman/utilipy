@@ -137,6 +137,14 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         return
     # /def
 
+    def __getattr__(self, name):
+        """redirect non-defined attributes to self.file
+        """
+        return getattr(self.file, name)
+    # /def
+
+    # ------------------------------------------------------------------------
+
     @classmethod
     def open(cls, filename, verbose=0, sec_div='-',
              header=None, show_header=True,
@@ -249,11 +257,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
                    opener=opener)
     # /def
 
-    def __getattr__(self, name):
-        """redirect non-defined attributes to self.file
-        """
-        return getattr(self.file, name)
-    # /def
+    # ------------------------------------------------------------------------
 
     def _write(self, *string, start='', sep=' ', end='\n'):
         r"""writer method
@@ -261,6 +265,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         implemented so it can be overriden easily
         **Note: end='' does nothing. Write automatically does '\n'
         """
+
         if len(string) == 0:  # checking there is a string
             raise ValueError('needs a value')
 
@@ -271,17 +276,10 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
             self.file.write(str(string[0]) + end)
 
         else:
-            for s in string[:-1]:
+            for s in string[:-1]:  # all strings with sep
                 self.file.write(str(s) + sep)
-            self.file.write(str(s) + end)
+            self.file.write(str(string[-1]) + end)  # last string
     # /def
-
-    # def _print_and_write(self, *string, start='', sep=' ', end='\n'):
-    #     """helper method to print and call _write
-    #     """
-    #     self.print(*string, start=start, sep=sep, end=end)  # printing
-    #     self._write(*string, start=start, sep=sep, end=end)  # writing
-    # # /def
 
     def write(self, *text, start='', sep=' ', end='\n',
               startsection=False, endsection=False, print=True):
@@ -314,6 +312,8 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         super().record(*text, start=start, end=end,
                        startsection=startsection, endsection=endsection)
     # /def
+
+    # ------------------------------------------------------------------------
 
     def verbort(self, *msgs, verbose=None, print=True, write=True,
                 start_at=1, **kw):
@@ -365,14 +365,15 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
                      start_at=start_at, **kw)
     # /def
 
-    # newsection  # from LogPrint
+    # ------------------------------------------------------------------------
 
     def close(self):
         """close the file
         """
-        print('closing file')
+        self.newsection(title='closing file', div='=')
         self.file.close()
     # /def
+
 # /class
 
 ##############################################################################

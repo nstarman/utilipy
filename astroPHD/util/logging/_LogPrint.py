@@ -32,8 +32,6 @@ class LogPrint(object):
         self.sec_div = sec_div
 
         # making file header
-        # header = False skips the header
-        # header = None, True makes a blank heaader
         if header is not False:
             if header in (None, True):
                 header = ''

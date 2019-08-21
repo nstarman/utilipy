@@ -35,8 +35,8 @@ import scipy        # scientific python
 from tqdm import tqdm_notebook as tqdm
 
 ## Custom
-from starkython.util import ObjDict          # custom dictionary-like object
-from starkython.util.logging import LogFile  #, LoggerFile  # custom logging
+from astroPHD.util import ObjDict          # custom dictionary-like object
+from astroPHD.util.logging import LogFile  #, LoggerFile  # custom logging
 
 
 # +--------------------------------------------------------------------------+
@@ -50,10 +50,10 @@ from IPython.display import (
 )
 
 # %run runs in the main namespace, so need to run as 'src.', not '.''
-from starkython.ipython import (
+from astroPHD.ipython import (
     printmd, printMD,               # markdown printing
-    printltx, printLaTeX            # LaTeX printing
-    set_autoreload, aimport,        #
+    printltx, printLaTeX,           # LaTeX printing
+    set_autoreload, aimport,        # imports
     run_imports, import_from_file,  # imports
     add_raw_code_toggle,            # notebook
     configure_matplotlib            # plotting
