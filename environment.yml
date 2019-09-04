@@ -1,8 +1,8 @@
-name: sample_project
+name: template_project
 channels:
   - conda-forge
 dependencies:
-  - python=3.5
+  - python=3.7
   - ipython
   - jupyter
   - pip
@@ -10,4 +10,3 @@ dependencies:
   - scipy
   - matplotlib
   - conda-forge::astropy>=2
-  # - conda-forge::loguru
