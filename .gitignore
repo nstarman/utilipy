@@ -10,9 +10,18 @@
 scratch/
 
 # un-comment these for projects
-# notebooks/_sample/
-# scripts/_sample/
-# src/_sample/
+notebooks/_sample/
+#papers/_sample/
+#presentations/_sample/
+scripts/_sample/
+src/_sample/
+
+## Presentations
+/presentations/**
+!/presentations/**/figures/
+!/presentations/**/figures/*
+# to add a presentation, add the path
+# ex !/presentations/_sample/
 
 
 ###############################################################################
@@ -72,7 +81,6 @@ coverage.xml
 *.pot
 
 # Django stuff:
-*.log
 local_settings.py
 db.sqlite3
 

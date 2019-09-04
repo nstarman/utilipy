@@ -1,5 +1,5 @@
 TITLE   : ipython
-AUTHOR  : Nathaniel Starkman
+AUTHOR  : 
 
 The functions in this folder are meant to be used in conjunction with iPython,
 Jupyter Notebook/Lab/Hub in particular.

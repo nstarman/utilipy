@@ -4,7 +4,7 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : logging
-# AUTHOR  : Nathaniel Starkman
+# AUTHOR  : 
 #
 # ----------------------------------------------------------------------------
 
@@ -22,12 +22,12 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 ### PRINTLOG
 
-class PrintLog(object):
+class LogPrint(object):
     """a basic logger wrapper for print
     """
 
     def __init__(self, verbose=0, sec_div='-', header=None, show_header=True):
-        """Initialize PrintLog
+        """Initialize LogPrint
         start the file header (just printing)
         """
         super().__init__()
@@ -229,7 +229,7 @@ class PrintLog(object):
 ### LogFile
 
 
-class LogFile(PrintLog):
+class LogFile(LogPrint):
     """a basic logger which can both print and record to a file
     ** this class uses `open', not a more extensive logger, like `logging'
 
@@ -241,7 +241,7 @@ class LogFile(PrintLog):
     ----------
     filename : str, optional
         the file name / path at which to save this log
-        If no filename, makes a PrintLog() instead
+        If no filename, makes a LogPrint() instead
     mode : str  (default 'w')
         recommend either 'w' or 'a'
     sec_div : str
@@ -281,13 +281,13 @@ class LogFile(PrintLog):
                 buffering=-1, encoding=None, errors=None, newline=None,
                 closefd=True, opener=None):
         """New LogFile
-        If no filename, makes a PrintLog instead
+        If no filename, makes a LogPrint instead
         """
         if mode == '+':
             raise ValueError('+ not allowed')
 
         if filename is None:
-            return PrintLog(verbose=verbose, sec_div=sec_div, header=header)
+            return LogPrint(verbose=verbose, sec_div=sec_div, header=header)
         else:
             self = super().__new__(cls)
             return self

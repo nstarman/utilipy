@@ -1,8 +1,9 @@
-TITLE   : src
+TITLE   : 
+AUTHOR  : 
 
 DESCRIPTION:
 ————————————
-Project-specific code
+The most important figures made in the notebooks
 
 FILES:
 ——————

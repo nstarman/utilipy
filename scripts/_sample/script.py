@@ -4,7 +4,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   :
-# AUTHOR  : Nathaniel Starkman
 # PROJECT :
 #
 # ----------------------------------------------------------------------------
@@ -14,7 +13,7 @@
 WARN: a version using the python logger is under development
 """
 
-__author__ = "Nathaniel Starkman"
+__author__ = "AUTHOR"
 
 ##############################################################################
 ### Imports
@@ -27,11 +26,10 @@ import os, sys, time, pdb, copy
 # from astropy import units as u
 
 ## Custom
-sys.path.insert(0, '../../')
-# from src.util.logging import LogFile
-from src.util.logging._logfile_loguru import LogFile
 
 ## Project-Specific
+sys.path.insert(0, '../../')
+from src.util.logging import LogFile
 
 
 ##############################################################################
@@ -41,9 +39,11 @@ from src.util.logging._logfile_loguru import LogFile
 _PLOT = True                                # Plot the output
 
 # Log file
-_LOGFILE = LogFile.open('./log.txt', 'w',   # File
-                        header='script')
-_VERBOSE = 0                                # Degree of verbosity
+_VERBOSE = 0  # Degree of verbosity
+_LOGFILE = LogFile.open(f'./{__file__}.log',  # File
+                        header='script',  # script header
+                        verbose=_VERBOSE)  # setting as default
+
 
 # ----------------------------------------------------------------------------
 ### Setup
@@ -52,9 +52,7 @@ _VERBOSE = 0                                # Degree of verbosity
 ##############################################################################
 ### Running the Script
 
-_LOGFILE.write('Log \nthis is info')
-
-_LOGFILE.info('Log this info', 'and this', 'and this', sep='__')
+_LOGFILE.write('Log this info', 'and this', 'and this', sep='__')
 
 ##############################################################################
 ### Closing

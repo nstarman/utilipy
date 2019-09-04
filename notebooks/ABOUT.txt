@@ -1,1 +1,10 @@
-Describe the functions in this folder
+TITLE   : 
+
+DESCRIPTION:
+————————————
+Jupyter Notebooks
+
+FILES:
+——————
+/ folder
+. file
