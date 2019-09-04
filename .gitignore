@@ -10,23 +10,25 @@
 scratch/
 
 # un-comment these for projects
-notebooks/_sample/
-papers/_sample/
-presentations/_sample/
-scripts/_sample/
-src/_sample/
+#notebooks/_sample/
+#papers/_sample/
+#presentations/_sample/
+#scripts/_sample/
+#src/_sample/
 
 ## Papers
-# ignores all contents except the figures
+# ignores all contents except the figures & ABOUT.txt
 /papers/*/*
+!/papers/**/ABOUT.txt
 !/papers/**/figures/
 !/papers/**/figures/*
 # to add a paper, add the path
 # ex: !/papers/_sample/
 
 ## Presentations
-# ignores all contents except the figures
+# ignores all contents except the figures & ABOUT.txt
 /presentations/*/*
+!/presentations/**/ABOUT.txt
 !/presentations/**/figures/
 !/presentations/**/figures/*
 # to add a presentation, add the path
