@@ -11,18 +11,26 @@ scratch/
 
 # un-comment these for projects
 notebooks/_sample/
-#papers/_sample/
-#presentations/_sample/
+papers/_sample/
+presentations/_sample/
 scripts/_sample/
 src/_sample/
 
+## Papers
+# ignores all contents except the figures
+/papers/*/*
+!/papers/**/figures/
+!/papers/**/figures/*
+# to add a paper, add the path
+# ex: !/papers/_sample/
+
 ## Presentations
-/presentations/**
+# ignores all contents except the figures
+/presentations/*/*
 !/presentations/**/figures/
 !/presentations/**/figures/*
 # to add a presentation, add the path
-# ex !/presentations/_sample/
-
+# ex: !/presentations/_sample/
 
 ###############################################################################
 # Default
