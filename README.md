@@ -22,7 +22,7 @@ One Paragraph of project description goes here
 
 ## Using this Work
 
-This project is licensed under the BSD-3 License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the BSD-3 License - see the [LICENSE](LICENSE.md) file for details
 
 
 ## Citing This Work
