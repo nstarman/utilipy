@@ -1,9 +1,10 @@
-TITLE   : 
-AUTHOR  : 
+TITLE   : figure 1
+
 
 DESCRIPTION:
 ————————————
-The most important figures made in the notebooks
+Add description of folder contents here
+
 
 FILES:
 ——————
