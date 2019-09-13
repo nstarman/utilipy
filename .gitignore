@@ -1,3 +1,43 @@
+# git-ignore file
+# split into default python and project-specific sections
+
+###############################################################################
+# Project-Specific
+
+# Large Data Files
+# (* ignores contents, not the directory)
+
+scratch/
+**/_old
+
+# un-comment these for projects
+#notebooks/_sample/
+#papers/_sample/
+#presentations/_sample/
+#scripts/_sample/
+#src/_sample/
+
+## Papers
+# ignores all contents except the figures & ABOUT.txt
+/papers/*/*
+!/papers/**/ABOUT.txt
+!/papers/**/figures/
+!/papers/**/figures/*
+# to add a paper, add the path
+# ex: !/papers/_sample/
+
+## Presentations
+# ignores all contents except the figures & ABOUT.txt
+/presentations/*/*
+!/presentations/**/ABOUT.txt
+!/presentations/**/figures/
+!/presentations/**/figures/*
+# to add a presentation, add the path
+# ex: !/presentations/_sample/
+
+###############################################################################
+# Default
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -52,7 +92,6 @@ coverage.xml
 *.pot
 
 # Django stuff:
-*.log
 local_settings.py
 db.sqlite3
 
@@ -102,3 +141,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# DS_Store
+*.DS_Store
