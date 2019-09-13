@@ -84,6 +84,7 @@ VERSION = find_version(os.path.join('astroPHD', '__init__.py'))
 
 requirements = [
     'numpy>=1.7',
+    'wrapt'
 ]
 
 classifiers = [
