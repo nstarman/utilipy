@@ -9,7 +9,12 @@
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-r"""functions for enhanced printing in an iPython environment
+r"""functions for enhanced printing in an IPython environment
+
+Functions:
+- printmd / printMD / printHTML
+- printltx / printLaTeX
+
 """
 
 __author__ = "Nathaniel Starkman"
@@ -19,10 +24,8 @@ __author__ = "Nathaniel Starkman"
 ### IMPORTS
 
 ## General
-from IPython.display import display
-from IPython.display import Latex, Markdown  # display is a better print
-
-## Project-Specific
+from IPython.display import display  # display is a better print
+from IPython.display import Latex, Markdown
 
 
 ##############################################################################
@@ -87,6 +90,8 @@ def printmd(s, color=None, size=None, bold=False, italic=False,
 
 
 printMD = printmd
+
+printHTML = printmd
 
 
 # ----------------------------------------------------------------------------

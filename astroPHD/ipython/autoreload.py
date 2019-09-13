@@ -79,12 +79,12 @@ def aimport(*modules, autoreload: (bool, list, tuple)=True):  # TODO support any
     else:
         raise ValueError('len(autoreload) != len(modules)')
 
-    for module, reload in modules, autoreload:
+    for module, reload_type in zip(modules, autoreload):
         # testing correct data types
         assert isinstance(module, str)
         assert isinstance(autoreload, bool)
 
-        if not reload:
+        if not reload_type:
             module = '-' + module  # mark for not autoreloading
 
         # import

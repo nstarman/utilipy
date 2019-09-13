@@ -51,6 +51,7 @@ configure_matplotlib(backend='inline', figure_format='retina')
 print("""Imported from Matplotlib:
     starkplot->plt, .mpl_decorator
     matplotlib->mpl, .colors, .cm
+    configure_matplotlib
 """)
 
 

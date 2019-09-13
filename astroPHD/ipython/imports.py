@@ -18,7 +18,7 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 ### IMPORTS
 
-from ..util.logging import LogPrint
+from ..util.logging import LogFile
 from ..util.paths import (
     get_absolute_path as _gap,
     parent_file_directory as _pfd
@@ -28,13 +28,16 @@ from ..util.paths import (
 ##############################################################################
 ### SETUP
 
-_LOGFILE = LogPrint(header=False, verbose=0)
+_LOGFILE = LogFile(header=False, verbose=0)
+# _LOGGER_KW = {'print': False}
 
 
 ##############################################################################
 ### CODE
 
-def import_from_file(*files, relative:bool=True) -> None:
+def import_from_file(*files, relative:bool=True,
+                     logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+                     ) -> None:
     """run import(s) from a file(s)
 
     Parameters
@@ -42,15 +45,27 @@ def import_from_file(*files, relative:bool=True) -> None:
     *files: str(s)
         strings for files to import
         need to include file suffix
+    relative: bool, list of bools
+        whether the `*files` paths are relative or absolute
     """
 
-    for file in files:
-        print(file)
+    # broadcasting relative to same length as files
+    if isinstance(relative, bool):
+        relatives = [relative] * len(files)
+    else:  # already a list
+        if len(relative) != len(files):  # checking correct length
+            raise ValueError("len(relative) != len(files)")
+        relatives = relative
+
+    # importing
+    for file, relative in zip(files, relatives):
         if relative:
             file = _gap(file)
-        get_ipython().magic(f"run {file}")
+        get_ipython().magic(f"run {file}")  # get_ipython inbuilt to jupyter
 
-        _LOGFILE.write(f'imported {file}')
+        # logging
+        # implemented separately b/c files often have own print statements
+        logger.report(f'imported {file}', verbose=verbose, **logger_kw)
 
     return
 # /def
@@ -60,7 +75,8 @@ def import_from_file(*files, relative:bool=True) -> None:
 
 def run_imports(*files, relative:bool=True,
                 base:bool=False, astropy:bool=False, matplotlib:bool=False,
-                extended:bool=False) -> None:
+                extended:bool=False, galpy:bool=False,
+                logger=_LOGFILE, verbose=0, logger_kw={}) -> None:
     """runs .imports file using ipython magic
 
     Info
@@ -72,30 +88,36 @@ def run_imports(*files, relative:bool=True,
     *files: str(s)
         strings for files to import
         need to include file suffix
-    relative: bool
+    relative: bool, list of bools
         whether the `*files` paths are relative or absolute
+
     base: bool
-        run_base_imports() -> `astroPHD/ipython/import_files/base_imports.py'
+        import_base -> `astroPHD/ipython/imports/base_imports.py'
     astropy: bool
-        run_astropy_imports() -> `astroPHD/ipython/import_files/astropy_imports.py'
+        import_astropy -> `astroPHD/imports/astropy_imports.py'
     matplotlib: bool
-        run_matplotlib_imports() -> `astroPHD/ipython/import_files/matplotlib_imports.py'
+        import_matplotlib -> `astroPHD/imports/matplotlib_imports.py'
     extended: bool
-        run_extended_imports() -> `astroPHD/ipython/import_files/extended_imports.py'
+        import_extended -> `astroPHD/imports/extended_imports.py'
+    galpy: bool
+        import_galpy -> `astroPHD/imports/galpy_imports.py'
     """
 
     # running imports file
     if base:
-        run_base_imports()
+        import_base(logger=logger, verbose=verbose)
 
     if astropy:
-        run_astropy_imports()
+        import_astropy(logger=logger, verbose=verbose)
 
     if matplotlib:
-        run_matplotlib_imports()
+        import_matplotlib(logger=logger, verbose=verbose)
 
     if extended:
-        run_extended_imports()
+        import_extended(logger=logger, verbose=verbose)
+
+    if galpy:
+        import_galpy(logger=logger, verbose=verbose)
 
     # when combined
     if astropy & matplotlib:
@@ -105,13 +127,13 @@ def run_imports(*files, relative:bool=True,
 
     # other import filess
     if files:  # True if not empty
-        import_from_file(*files, relative=relative)
+        import_from_file(*files, relative=relative,
+                         logger=logger, verbose=verbose,
+                         logger_kw=logger_kw)
 
     return
 # /def
 
-
-# ----------------------------------------------------------------------------
 
 def _join_pfd(path):
     # TODO better way to get this file directory & join path file
@@ -122,6 +144,8 @@ def _join_pfd(path):
 def run_standard_imports() -> None:
     """
     """
+    raise DeprecationWarning("use run_imports() with options instead,"
+                             "or './import_files/full_standard_imports.py'")
 
     import_from_file(_join_pfd('import_files/full_standard_imports.py'),
                      relative=False)
@@ -133,12 +157,17 @@ def run_standard_imports() -> None:
 ##############################################################################
 ### Specific Imports
 
-def run_base_imports() -> None:
+
+# ----------------------------------------------------------------------------
+
+def import_base(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+                ) -> None:
     """
     """
 
     import_from_file(_join_pfd('import_files/base_imports.py'),
-                     relative=False)
+                     relative=False,
+                     logger=logger, verbose=verbose, logger_kw=logger_kw)
 
     return
 # /def
@@ -146,12 +175,14 @@ def run_base_imports() -> None:
 
 # ----------------------------------------------------------------------------
 
-def run_extended_imports() -> None:
+def import_extended(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+                    ) -> None:
     """
     """
 
     import_from_file(_join_pfd('import_files/extended_imports.py'),
-                     relative=False)
+                     relative=False,
+                     logger=logger, verbose=verbose, logger_kw=logger_kw)
 
     return
 # /def
@@ -159,12 +190,14 @@ def run_extended_imports() -> None:
 
 # ----------------------------------------------------------------------------
 
-def run_astropy_imports() -> None:
+def import_astropy(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+                   ) -> None:
     """
     """
 
     import_from_file(_join_pfd('import_files/astropy_imports.py'),
-                     relative=False)
+                     relative=False,
+                     logger=logger, verbose=verbose, logger_kw=logger_kw)
 
     return
 # /def
@@ -172,12 +205,29 @@ def run_astropy_imports() -> None:
 
 # ----------------------------------------------------------------------------
 
-def run_matplotlib_imports() -> None:
+def import_matplotlib(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+                      ) -> None:
     """
     """
 
     import_from_file(_join_pfd('import_files/matplotlib_imports.py'),
-                     relative=False)
+                     relative=False,
+                     logger=logger, verbose=verbose, logger_kw=logger_kw)
+
+    return
+# /def
+
+
+# ----------------------------------------------------------------------------
+
+def import_galpy(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+                 ) -> None:
+    """
+    """
+
+    import_from_file(_join_pfd('import_files/galpy_imports.py'),
+                     relative=False,
+                     logger=logger, verbose=verbose, logger_kw=logger_kw)
 
     return
 # /def
