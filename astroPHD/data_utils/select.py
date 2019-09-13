@@ -27,7 +27,7 @@ METHODS
 import numpy as np
 
 ## Project-Specific
-from ..util.decorator import idxDecorator, ndarrayDecorator
+from ..util.decorators import idxDecorator, ndarrayDecorator
 
 
 #############################################################################

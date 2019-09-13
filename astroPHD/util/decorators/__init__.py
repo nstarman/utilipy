@@ -3,25 +3,33 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : ipython initialization file
-# AUTHOR  : Nathaniel Starkman
+# TITLE   : decorator initialization file
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-"""initialization file for collections
+"""initialization file for __________
 """
-
-__author__ = "Nathaniel Starkman"
-
 
 ##############################################################################
 ### IMPORTS
 
-## Custom Packages
-from ._degree_decs import degreeDecorator
-from ._domain_decs import domainDecorator, domainMapDecorator
-from dtypedecorators import *
+## General
 
-#############################################################################
-### DONE
+## Project-Specific
+
+from .dtype_decorator import (
+    dtypeDecorator,
+    dtypeDecoratorMaker,
+    # standard types
+    intDecorator, floatDecorator, strDecorator, boolDecorator,
+    # numpy
+    ndarrayDecorator, ndfloat64Decorator
+)
+
+from .idx_decorator import idxDecorator
+
+
+##############################################################################
+### END
