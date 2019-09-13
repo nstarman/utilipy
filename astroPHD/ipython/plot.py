@@ -22,8 +22,7 @@ __author__ = "Nathaniel Starkman"
 ### IMPORTS
 
 ## General
-
-## Custom
+from IPython import get_ipython
 
 ## Project-Specific
 
@@ -39,6 +38,10 @@ def configure_matplotlib(backend='inline', figure_format='retina'):
     backend : str, optional  (defualt 'inline')
         set the matplotlib backend
     """
+    if get_ipython() is None:
+        raise Warning('not in an IPython environment,'
+                      'cannot configure matplotlib')
+
     # set matplotlib backend
     get_ipython().magic(f"matplotlib {backend}")
 

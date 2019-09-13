@@ -22,6 +22,7 @@ __author__ = "Nathaniel Starkman"
 ### IMPORTS
 
 ## General
+from IPython import get_ipython
 from IPython.core.interactiveshell import InteractiveShell
 from IPython.core.debugger import set_trace
 from IPython.display import (
@@ -48,7 +49,9 @@ from .plot import configure_matplotlib
 
 # Running Imported Functions
 InteractiveShell.ast_node_interactivity = "all"
-configure_matplotlib(backend='inline', figure_format='retina')
+
+if get_ipython() is not None:
+    configure_matplotlib(backend='inline', figure_format='retina')
 
 
 ##############################################################################

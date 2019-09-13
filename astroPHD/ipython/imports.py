@@ -18,6 +18,10 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 ### IMPORTS
 
+## General
+from IPython import get_ipython
+
+## Project-Specific
 from ..util.logging import LogFile
 from ..util.paths import (
     get_absolute_path as _gap,

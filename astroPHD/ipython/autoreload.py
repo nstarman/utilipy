@@ -18,18 +18,18 @@ __author__ = "Nathaniel Starkman"
 ### IMPORTS
 
 ## General
-
-## Custom
-from ..util.logging import LogPrint
+from IPython import get_ipython
 
 ## Project-Specific
+from ..util.logging import LogPrint
 
 ##############################################################################
 ### PARAMETERS
 
 _LOGFILE = LogPrint(header=False, verbose=0)
 
-get_ipython().magic('load_ext autoreload')  # autoreload extensions
+if get_ipython() is not None:
+    get_ipython().magic('load_ext autoreload')  # autoreload extensions
 
 
 ##############################################################################
