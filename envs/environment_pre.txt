@@ -1,12 +1,16 @@
-name: template_project
+name: ENV_NAME_HERE
 channels:
   - conda-forge
+  - nodefaults
 dependencies:
   - python=3.7
+  - pip
   - ipython
   - jupyter
-  - pip
+  - jupyterlab
   - numpy
   - scipy
   - matplotlib
   - conda-forge::astropy>=2
+  - pip:
+    - git+git://github.com/nstarman/astroPHD.git#egg=astroPHD

@@ -2,6 +2,12 @@
 
 One Paragraph of project description goes here
 
+## Installing
+
+clone this repository
+run ./envs/project_start_script.sh
+this will make the correct conda environment and install it into IPython
+
 
 ## Notebooks
 

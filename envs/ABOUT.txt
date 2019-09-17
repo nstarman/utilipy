@@ -1,0 +1,12 @@
+TITLE   : env
+
+
+DESCRIPTION:
+————————————
+If you want to make a 
+
+
+FILES:
+——————
+. project_start_script
+. file

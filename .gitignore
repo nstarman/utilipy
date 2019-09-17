@@ -4,17 +4,10 @@
 ###############################################################################
 # Project-Specific
 
-# Large Data Files
-# (* ignores contents, not the directory)
-
 scratch/
 
-# un-comment these for projects
-#notebooks/_sample/
-#papers/_sample/
-#presentations/_sample/
-#scripts/_sample/
-#src/_sample/
+# Large Data Files
+# ex: data/
 
 ## Papers
 # ignores all contents except the figures & ABOUT.txt
@@ -22,7 +15,7 @@ scratch/
 !/papers/**/ABOUT.txt
 !/papers/**/figures/
 !/papers/**/figures/*
-# to add a paper, add the path
+# to not ignore a paper, add the path
 # ex: !/papers/_sample/
 
 ## Presentations
@@ -31,8 +24,15 @@ scratch/
 !/presentations/**/ABOUT.txt
 !/presentations/**/figures/
 !/presentations/**/figures/*
-# to add a presentation, add the path
+# to not ignore a presentation, add the path
 # ex: !/presentations/_sample/
+
+# un-comment these for projects before committing
+notebooks/_sample/*
+!papers/_sample/*
+presentations/_sample/*
+scripts/_sample/*
+src/_sample/*
 
 ###############################################################################
 # Default
