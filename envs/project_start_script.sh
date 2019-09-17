@@ -51,6 +51,7 @@ conda env create -f ${env_name}_environment.yml -p $env_name --json --verbose
 
 # change name from full path to just $env_name
 conda config --set env_prompt '({name})'
+echo "configured conda environment name"
 
 # install into environment
 # python ../setup.py install

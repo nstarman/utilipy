@@ -9,6 +9,9 @@ scratch/
 # Large Data Files
 # ex: data/
 
+# Environments subfolders
+envs/*/**
+
 ## Papers
 # ignores all contents except the figures & ABOUT.txt
 /papers/*/*
