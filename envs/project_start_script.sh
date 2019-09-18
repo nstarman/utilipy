@@ -19,13 +19,6 @@ if [ -z "$main_env" ]
 then
     echo main_env=$env_name > ./main_env.sh
 else
- #    echo "make project's main ipython environment?"
- #    select make_main in "Yes" "No"; do
-	# 	case $make_main in  
-	# 		Yes ) echo main_env="${env_name}" > main_env.sh; break;; 
-	# 		No ) echo kept $main_env; exit;; 
-	# 	esac
-	# done
 	while true; do
 	    read -p "make project's main ipython environment? [y, N]: " yn
 	    case $yn in
@@ -61,12 +54,6 @@ echo "configured conda environment name"
 
 # install env into ipython
 # echo "install env into ipython?"
-# select make_main in "y" "n"; do
-# 	case $ipy_install in  
-# 	  y) ipython kernel install --user --name=$env_name; break ;; 
-# 	  n) echo "not installed"; exit ;; 
-# 	esac
-# done
 while true; do
     read -p "install env into ipython? [y, N]: " yn
     case $yn in
