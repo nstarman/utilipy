@@ -104,9 +104,7 @@ class scipy_residual_to_lmfit(ObjectProxy):
     # /def
 
     def __init__(self, func, var_order:list):
-
         super().__init__(func)  # inializing function into wrapt.ObjectProxy
-
         self.var_order = var_order
         return
     # /def
