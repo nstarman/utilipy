@@ -20,6 +20,9 @@ __author__ = "Nathaniel Starkman"
 ## General
 from collections import OrderedDict
 
+## Project-Specific
+from ..pickle import dump as _dump, load as _load
+
 
 ##############################################################################
 ### CODE
@@ -30,6 +33,18 @@ class ObjDict(OrderedDict):
     instantiated with a name (str)
     supports __getattr__ as a redirect to __getitem__.
 
+    Parameters
+    ----------
+    name: str
+        the name of the object
+    **kw
+        items for ObjDict
+
+    Examples
+    --------
+    obj = ObjDict('NAME', a=1, b=2)
+    print(obj.name, obj.a, obj['b'])
+    >> NAME, 1, 2
     """
 
     def __init__(self, name='', **kw):
@@ -43,47 +58,98 @@ class ObjDict(OrderedDict):
 
         for key, value in kw.items():
             self[key] = value
+    # /def
+
+    # ----------------------------------
+    # item get / set
+
+    def __getitem__(self, keys, _as_generator=False):
+        """
+        Parameters
+        ----------
+        keys: str, list of str
+            the keys into ObjDict
+            if str: just the value from key-value pair
+            if list: list of values
+        _as_generator: bool  (default False)
+            whether to return as a generator
+            only if keys is a list
+
+        Returns
+        -------
+        value(s): anything
+            if str: just the value from key-value pair
+            if list: list of values
+            if _as_generator: generator for list
+
+        Examples
+        --------
+        obj = ObjDict('NAME', a=1, b=2)
+        print(obj['a'])
+        >> 1, [NAME, 2]
+        print(obj['name', 'b'])
+        >> [NAME, 2]
+        """
+        if isinstance(keys, str):  # single key
+            return super().__getitem__(keys)
+        else:  # multiple keys
+            if _as_generator:  # return generator
+                return(OrderedDict.__getitem__(self, k) for k in keys)
+            return [OrderedDict.__getitem__(self, k) for k in keys]
+    # /def
+
+    # ----------------------------------
+    # attribute get / set
+    # redirects to item get / set
 
     def __setattr__(self, key, value):
         self[key] = value
+    # /def
 
     def __getattr__(self, key):
         return self[key]
+    # /def
 
-    def __getitem__(self, keys):
-        if isinstance(keys, str):
-            return super().__getitem__(keys)
-        else:
-            return [OrderedDict.__getitem__(self, key) for key in keys]
+    # ----------------------------------
+    # Printing
 
     def __repr__(self):
         if self.name == '':
             return super().__repr__()
         else:
             return self.name + super().__repr__().replace('ObjDict', '')
+    # /def
+
+    # ----------------------------------
 
     def values(self, *names):
         if not names:
             return super().values()
         else:
             return [self[k] for k in names]
+    # /def
 
     def items(self, *names):
         if not names:
             return super().items()
         else:
             return {k: self[k] for k in names}.items()
+    # /def
 
     def subset(self, *names):
         if not names:
             return self
         else:
             return {k: self[k] for k in names}
+    # /def
 
     def keyslist(self):
         return list(self.keys())
+    # /def
 
-    # +-------- Serialize --------+
+    # ----------------------------------
+    # Serialize (I/O)
+
     def __reduce__(self):
         return (self.__class__,
                 (self.name, ),
@@ -110,6 +176,11 @@ class ObjDict(OrderedDict):
                      encoding=encoding, errors=errors)
         return self
     # /def
+
+    # ----------------------------------
+
 # /class
 
-# --------------------------------------------------------------------------
+
+##############################################################################
+### END

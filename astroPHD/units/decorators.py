@@ -1,49 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#############################################################################
-r"""
+# ----------------------------------------------------------------------------
+#
+# TITLE   :
+# PROJECT :
+#
+# ----------------------------------------------------------------------------
 
-#############################################################################
-
-Copyright (c) 2018 - Nathaniel Starkman
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-  Redistributions of source code must retain the above copyright notice,
-     this list of conditions and the following disclaimer.
-  Redistributions in binary form must reproduce the above copyright notice,
-     this list of conditions and the following disclaimer in the
-     documentation and/or other materials provided with the distribution.
-  The name of the author may not be used to endorse or promote products
-     derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
-AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
-WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-
-#############################################################################
-Planned Features
+### Docstring and Metadata
+"""**DOCSTRING**
 """
 
-#############################################################################
-# Imports
+__author__ = "Nathaniel Starkman"
 
+##############################################################################
+### IMPORTS
+
+## General
 import inspect
 from warnings import warn
 
-# 3rd Party Imports
 from astropy.units import Unit, dimensionless_unscaled
 from astropy.units.decorators import _validate_arg_value, _get_allowed_units
 from astropy.units.core import add_enabled_equivalencies
@@ -52,21 +29,16 @@ from astropy.units.physical import _unit_physical_mapping
 from astropy.utils.decorators import wraps
 from astropy.utils.misc import isiterable
 
-#############################################################################
-# Info
 
-__author__ = "Nathaniel Starkman"
-__copyright__ = "Copyright 2018, "
-__credits__ = [""]
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Nathaniel Starkman"
-__email__ = "n.starkman@mail.utoronto.ca"
-__status__ = "Production"
+###############################################################################
+### PARAMETERS
+
+_aioattrs = ('unit', 'to_value', 'equivalencies', 'decompose',
+             'default_units', 'annot2dfu')
 
 
 ###############################################################################
-# Helper Functions
+### CODE
 
 def unit_helper(res, unit=None, to_value=False,
                 equivalencies=[], decompose=False):
@@ -148,6 +120,7 @@ def unit_helper(res, unit=None, to_value=False,
         return res.to_value(unit, equivalencies)
     else:  # return with unit
         return res.to(unit, equivalencies)
+# /def
 
 
 def _simple_unit_decorator(unit=None, to_value=False,
@@ -225,10 +198,7 @@ def _simple_unit_decorator(unit=None, to_value=False,
 
         return wrapped
     return wrapper
-
-
-_aioattrs = ('unit', 'to_value', 'equivalencies', 'decompose',
-             'default_units', 'annot2dfu')
+# /def
 
 
 class QuantityInputOutput(object):
@@ -409,6 +379,7 @@ class QuantityInputOutput(object):
         equivalencies
         decompose
         default_units
+        _skip_decorator: skip decorator, do func(*func_args, **func_kwargs)
         **func_kwargs: function key-word argument
 
         Decorator Arguments
@@ -576,7 +547,12 @@ class QuantityInputOutput(object):
                     unit=self.unit, to_value=self.to_value,
                     equivalencies=self.equivalencies, decompose=self.decompose,
                     default_units=self.default_units,
+                    _skip_decorator=False,
                     **func_kwargs):
+
+            # skip the decorator
+            if _skip_decorator:
+                return wrapped_function(*func_args, **func_kwargs)
 
             # make func_args editable
             func_args = list(func_args)
@@ -764,6 +740,7 @@ quantity_io = QuantityInputOutput.as_decorator
 
 
 ###############################################################################
+### UNIT TEST
 
 if __name__ == '__main__':
 
@@ -810,3 +787,6 @@ if __name__ == '__main__':
 
     print(returndistance(2 * u.kpc))
     # print(returndistance(2, unit=u.m, to_value=True)
+
+###############################################################################
+### END
