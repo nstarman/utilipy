@@ -1,0 +1,14 @@
+TITLE   : inspect
+
+
+DESCRIPTION:
+————————————
+functions for the `inspect` package of base python
+Adds:
+	FullerArgSpec
+	getfullerargspec	
+
+
+FILES:
+——————
+. _getfullerargspec
