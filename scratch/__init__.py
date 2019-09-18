@@ -4,8 +4,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : scratch initialization file
-# AUTHOR  : 
-# PROJECT :
 #
 # ----------------------------------------------------------------------------
 
@@ -13,16 +11,16 @@
 r"""initialization file for scratch folder
 """
 
-__author__ = "Nathaniel Starkman"
+__author__ = ""
 __status__ = "Development"
 
 ##############################################################################
 ### Imports
 
-# General
+## General
 
 
-# Project-Specific
+## Project-Specific
 
 
 ##############################################################################
