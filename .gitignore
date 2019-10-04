@@ -5,17 +5,7 @@
 # Project-Specific
 
 # Large Data Files
-# (* ignores contents, not the directory)
-
-scratch/
-**/_old
-
-# un-comment these for projects
-#notebooks/_sample/
-#papers/_sample/
-#presentations/_sample/
-#scripts/_sample/
-#src/_sample/
+# ex: data/
 
 ## Papers
 # ignores all contents except the figures & ABOUT.txt
@@ -23,7 +13,7 @@ scratch/
 !/papers/**/ABOUT.txt
 !/papers/**/figures/
 !/papers/**/figures/*
-# to add a paper, add the path
+# to not ignore a paper, add the path
 # ex: !/papers/_sample/
 
 ## Presentations
@@ -32,8 +22,30 @@ scratch/
 !/presentations/**/ABOUT.txt
 !/presentations/**/figures/
 !/presentations/**/figures/*
-# to add a presentation, add the path
+# to not ignore a presentation, add the path
 # ex: !/presentations/_sample/
+
+# scratch folder
+scratch/
+
+# _old
+**/_old
+
+# scripts
+scripts/**/output
+
+# Environments
+envs/*
+
+# comment when done with public projects
+notebooks/**/*.png
+
+# un-comment these for projects before committing
+notebooks/_sample/*
+!papers/_sample/*
+presentations/_sample/*
+scripts/_sample/*
+src/_sample/*
 
 ###############################################################################
 # Default
@@ -109,7 +121,7 @@ docs/_build/
 target/
 
 # Jupyter Notebook
-.ipynb_checkpoints
+**.ipynb_checkpoints
 
 # pyenv
 .python-version
@@ -144,3 +156,16 @@ venv.bak/
 
 # DS_Store
 *.DS_Store
+
+# FTP
+sftp-config\.json
+*.ftp*
+
+# Latex Files
+*.aux
+*.bbl
+*.blg
+*.gz
+*.out
+*.fls
+*.fdb_latexmk
