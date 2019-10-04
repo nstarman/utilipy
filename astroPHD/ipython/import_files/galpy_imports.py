@@ -33,6 +33,9 @@ from galpy.potential import MWPotential2014
 # orbit
 from galpy.orbit import Orbit
 
+# util
+from galpy.util import bovy_conversion, bovy_coords
+
 
 ##############################################################################
 ### INFORMATION
@@ -40,6 +43,7 @@ from galpy.orbit import Orbit
 print("""Imported from galpy:
     potential, .MWPotential2014
     galpy.orbit.Orbit
+    galpy.util: bovy_conversion, bovy_coords
 """
 )
 
