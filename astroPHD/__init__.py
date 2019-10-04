@@ -18,8 +18,8 @@
 # import top level packages
 from . import (
     data_utils,
-    # fitting,
-    # imports,
+    fitting,
+    imports,
     ipython,
     math,
     plot,

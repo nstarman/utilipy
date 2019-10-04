@@ -29,7 +29,7 @@ __author__ = ""
 
 
 ## Project-Specific
-from starkplot import starkplot
+from .starkplot import starkplot
 
 
 ##############################################################################
