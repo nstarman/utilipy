@@ -20,7 +20,7 @@ __author__ = "Nathaniel Starkman"
 ### IMPORTS
 
 from ._LogPrint import LogPrint
-from ..decorators.inherit_docstrings import InheritDocstrings
+from ..metaclasses import InheritDocstrings
 
 
 ##############################################################################

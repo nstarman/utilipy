@@ -14,9 +14,6 @@
 ##############################################################################
 ### IMPORTS
 
-## Custom
-from .util.logging import LogFile
-
 ## Project-Specific
 # import top level packages
 from . import (
@@ -30,6 +27,8 @@ from . import (
 )
 
 # import commonly used functions
+from .util.logging import LogFile
+from .util.collections import ObjDict
 
 
 #############################################################################

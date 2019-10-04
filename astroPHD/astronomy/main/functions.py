@@ -230,10 +230,15 @@ def distanceModulus(arg, A=0 * u.mag, obs=True, **kw):
             A *= -1
 
         return (5 * u.mag) * (np.log10(arg.to_value(u.pc)) - 1) + A
+        # return distanceModulus_magnitude(arg, A=A, obs=obs,
+        #                                  _skip_decorator=True)
 
     else:
         return np.power(10., np.divide(arg, 5. * u.mag) + 1) * u.pc
+        # return distanceModulus_distance(arg, _skip_decorator=True)
 # /def
+
+
 
 
 ##############################################################################
