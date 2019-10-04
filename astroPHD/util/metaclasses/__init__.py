@@ -27,7 +27,7 @@ __author__ = "Nathaniel Starkman"
 
 
 ## Project-Specific
-from inherit_docstrings import InheritDocstrings
+from .inherit_docstrings import InheritDocstrings
 
 
 ##############################################################################
