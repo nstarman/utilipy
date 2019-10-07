@@ -1,0 +1,73 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% TITLE: notes.tex
+% AUTHOR: Jo Bovy, modified by Nathaniel Starkman
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define notes using todonotes package
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages
+
+\usepackage{xparse}
+\usepackage{ifthen}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+% Increase margins for margin comments
+\ifthenelse{\@todonotes@enable=1 \AND \@todonotes@inline=0}
+		   {\paperwidth=\dimexpr\paperwidth + 6cm\relax
+			%\textwidth=\dimexpr \textwidth - 6cm\relax
+			\oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
+			\evensidemargin=\dimexpr\evensidemargin + 3cm\relax
+			\marginparwidth=\dimexpr \marginparwidth + 2.5cm\relax}
+		   {}
+
+\ifthenelse{\@todonotes@enable=1}
+		   {\usepackage[textwidth=\dimexpr\evensidemargin + 2.25cm]{todonotes}}
+		   {\usepackage[disable]{todonotes}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Colors for comment boxes
+
+\definecolor{gold}{RGB}{255,215,0}
+\definecolor{salmon}{rgb}{0.95,0.5,0.25}
+\definecolor{darkgreen}{rgb}{0.0, 0.5, 0.0}
+\definecolor{darkblue}{rgb}{0.0, 0., 0.7}
+\definecolor{vlightblue}{rgb}{0.68,0.84,0.9}
+\definecolor{purple}{rgb}{0.7, 0., 0.7}
+\definecolor{lavender}{rgb}{0.9, 0.9, 0.98}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Defining Notes
+
+\newcommand{\@todonotes@loaded}{0}
+\@ifpackageloaded{todonotes}
+  {\renewcommand{\@todonotes@loaded}{1}}
+  {\renewcommand{\@todonotes@loaded}{0}}
+% Deal with inline: hack
+\ifthenelse{\@todonotes@inline=0}
+  {\renewcommand{\@todonotes@loaded}{1}}
+  {\renewcommand{\@todonotes@loaded}{0}}
+\@ifpackagewith{todonotes}{disable}
+  {\renewcommand{\@todonotes@loaded}{0}}
+  {}
+
+% Increase margins for margin comments
+%\ifthenelse{\@todonotes@loaded=1}{
+%\textwidth=\dimexpr \textwidth - 6cm\relax
+%\oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
+%\evensidemargin=\dimexpr\evensidemargin + 3cm\relax
+%\marginparwidth=\dimexpr \marginparwidth + 2.5cm\relax}{}
+
+\ifthenelse{\@todonotes@inline=1}{
+\NewDocumentCommand{\note}{O{black} O{gold} m}{\todo[inline,backgroundcolor={#2},linecolor={#2},bordercolor={#1}]{{\protect\footnotesize #3}}}}
+{\NewDocumentCommand{\note}{O{black} O{gold} m}{\todo[backgroundcolor={#2},linecolor={#2},bordercolor={#1}]{{\protect\footnotesize #3}}}}
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% END
