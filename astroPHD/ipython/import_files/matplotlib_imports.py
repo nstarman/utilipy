@@ -24,6 +24,7 @@ __author__ = "Nathaniel Starkman"
 try:
     import starkplot as plt
 except ImportError:
+    import warnings
     warnings.warn('Cannot import starkplot, using matplotlib.pyplot instead.' +
                   '\nmpl_decorator will not work.')
     from matplotlib import pyplot as plt
