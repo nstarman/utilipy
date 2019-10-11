@@ -26,6 +26,8 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 ### IMPORTS
 
+import galpy
+
 # potential
 from galpy import potential
 from galpy.potential import MWPotential2014

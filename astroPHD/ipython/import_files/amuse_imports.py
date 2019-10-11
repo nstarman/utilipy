@@ -19,7 +19,13 @@ __author__ = "Nathaniel Starkman"
 
 import amuse
 
-from amuse.lab import *
+# lab
+from amuse import lab
+# from amuse.lab import *
+
+# units
+from amuse import units as units
+
 
 
 ##############################################################################
@@ -27,7 +33,8 @@ from amuse.lab import *
 
 print("""Imported from amuse:
 	amuse
-    lab *
+    lab
+    units
 """
 )
 
