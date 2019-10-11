@@ -82,7 +82,7 @@ def aimport(*modules, autoreload: (bool, list, tuple)=True):  # TODO support any
     for module, reload_type in zip(modules, autoreload):
         # testing correct data types
         assert isinstance(module, str)
-        assert isinstance(autoreload, bool)
+        assert isinstance(reload_type, bool)
 
         if not reload_type:
             module = '-' + module  # mark for not autoreloading
