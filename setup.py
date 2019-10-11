@@ -55,7 +55,8 @@ VERSION = find_version(os.path.join('astroPHD', '__init__.py'))
 
 requirements = [
     'numpy>=1.7',
-    'wrapt'
+    'wrapt',
+    'astropy'
 ]
 
 classifiers = [
@@ -81,6 +82,6 @@ setup(
     install_requires=requirements,
     extras_require={
         "scipy": ["scipy"],
-        "astropy": ["astropy"],
+        "lmfit": ['lmfit']
     },
 )
