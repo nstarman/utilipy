@@ -28,9 +28,6 @@ from ..util.logging import LogPrint
 
 _LOGFILE = LogPrint(header=False, verbose=0)
 
-if get_ipython() is not None:
-    get_ipython().magic('load_ext autoreload')  # autoreload extensions
-
 
 ##############################################################################
 ### CODE
@@ -93,6 +90,13 @@ def aimport(*modules, autoreload: (bool, list, tuple)=True):  # TODO support any
     return
 # /def
 
+
+##############################################################################
+# Setting State
+
+if get_ipython() is not None:
+    get_ipython().magic('load_ext autoreload')  # autoreload extensions
+    set_autoreload(1)
 
 ##############################################################################
 ### END
