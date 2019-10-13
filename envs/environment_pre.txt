@@ -1,7 +1,7 @@
 name: ENV_NAME_HERE
 channels:
-  - conda-forge
   - nodefaults
+  - conda-forge
 dependencies:
   - python=3.7
   - pip

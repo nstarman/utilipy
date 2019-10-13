@@ -23,7 +23,7 @@ else
 	    read -p "make project's main ipython environment? [y, N]: " yn
 	    case $yn in
 	        [Yy]* ) echo main_env="${env_name}" > main_env.sh; break;;
-	        [Nn]* ) echo "kept ${main_env}"; exit;;
+	        [Nn]* ) echo "kept ${main_env}"; break;;
 	        * ) echo "Please answer yes or no.";;
 	    esac
 	done
@@ -52,12 +52,14 @@ echo "configured conda environment name"
 ###############################################################################
 ## IPYTHON
 
+source activate ./$env_name
+
 # install env into ipython
 # echo "install env into ipython?"
 while true; do
     read -p "install env into ipython? [y, N]: " yn
     case $yn in
-        [Yy]* ) ipython kernel install --user --name=$env_name; break;; 
+        [Yy]* ) python -m ipykernel install --user --name=$env_name; break;; 
         [Nn]* ) echo "not installed"; exit;; 
         * ) echo "Please answer yes or no.";;
     esac
@@ -65,11 +67,6 @@ done
 
 # TODO Ipython profile configuration
 
-
-###############################################################################
-## TEST
-
-source activate ./$env_name
 
 ###############################################################################
 ### END
