@@ -4,13 +4,8 @@
 ###############################################################################
 # Project-Specific
 
-scratch/
-
 # Large Data Files
 # ex: data/
-
-# Environments subfolders
-envs/*/**
 
 ## Papers
 # ignores all contents except the figures & ABOUT.txt
@@ -29,6 +24,21 @@ envs/*/**
 !/presentations/**/figures/*
 # to not ignore a presentation, add the path
 # ex: !/presentations/_sample/
+
+# scratch folder
+scratch/
+
+# _old
+**/_old
+
+# scripts
+scripts/**/output
+
+# Environments subfolders
+envs/*/**
+
+# comment when done with public projects
+notebooks/**/*.png
 
 # un-comment these for projects before committing
 notebooks/_sample/*
@@ -111,7 +121,7 @@ docs/_build/
 target/
 
 # Jupyter Notebook
-.ipynb_checkpoints
+**.ipynb_checkpoints
 
 # pyenv
 .python-version
@@ -146,3 +156,16 @@ venv.bak/
 
 # DS_Store
 *.DS_Store
+
+# FTP
+sftp-config\.json
+*.ftp*
+
+# Latex Files
+*.aux
+*.bbl
+*.blg
+*.gz
+*.out
+*.fls
+*.fdb_latexmk
