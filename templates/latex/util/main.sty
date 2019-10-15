@@ -1,0 +1,138 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% main.sty
+% main style sheet
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SETUP
+
+\def\@version{1.0}
+\def\@releasedate{2019/09/10}
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{main}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                 PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Importing Packages
+
+% -----------------------------------------------------------------------------
+%% Custom Packages
+
+% NEED TO PROVIDE A `mystyleloc` COMMAND!
+% ex \providecommand{\mystyleloc}{.}
+
+\usepackage{\mystyleloc/base}
+\usepackage{\mystyleloc/astronomy}  % (imports maths as well)
+
+
+% -----------------------------------------------------------------------------
+%% Packages
+
+\usepackage{subfiles}
+
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{color}
+\usepackage{titlesec}
+% \usepackage{titling}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                 SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Implementing Package Settings
+
+\geometry{total={210mm,297mm},
+          left=25mm,right=25mm,
+          top=20mm,bottom=20mm,
+          bindingoffset=0mm}
+
+\raggedbottom
+\raggedright
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                 COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Defining Commands
+
+
+\newcommand{\questiontext}[1]{\textit {#1}}
+
+\titleformat{\chapter}{\normalfont\huge}{\thechapter.}{20pt}{\huge\bf}
+
+\titleformat{\section}{
+    \newpage\scshape\raggedright\Large
+    }{}{0em}{}[\color{black}\titlerule \vspace{-4pt}]
+
+\titleformat{\subsection}{
+    \vspace{-5pt}\normalfont\fontsize{13}{15}\bfseries
+    }{}{0em}{}[\color{black}\vspace{-3pt}]
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% -----------------------------------------------------------------------------
+% From Jessica Campbell
+\newcommand{\linia}{\rule{\linewidth}{0.5pt}}
+\AtBeginDocument{%
+   \setlength\abovedisplayskip{-3pt}
+   \setlength\belowdisplayskip{5pt}}
+
+% my own titles
+% \makeatletter
+% \renewcommand{\maketitle}{
+% \begin{center}
+% \vspace{2ex}
+% {\huge \textsc{\@title}}
+% \vspace{1ex}
+% \\
+% \linia\\
+% \@author
+% \vspace{4ex}
+% \end{center}
+% }
+% \makeatother
+
+% custom footers and headers
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\renewcommand{\headrulewidth}{0pt}
+\lfoot{General Qualifying Exam Solutions}
+\cfoot{}
+\rfoot{Page \thepage\ /\ \pageref*{LastPage}}
+
+
+% -----------------------------------------------------------------------------
+%% Notes
+% \makeatletter
+% % Set this option to 1 for notes, 0 to disable notes
+% \newcommand{\@todonotes@enable}{1}
+% % Set this option to 1 for inline comments, 0 for margin comments
+% \newcommand{\@todonotes@inline}{1}
+% \makeatother
+% \input{notes.tex}
+% \newcommand{\me}[1]{\note[red][salmon]{Me: #1}}
+% \newcommand{\sugfig}[1]{\note[darkblue][vlightblue]{Suggested Figure: #1}}
+% \newcommand{\sugtable}[1]{\note[purple][lavender]{Suggested Table: #1}}
+
+
+
+% -----------------------------------------------------------------------------
+%% Sections formatting
+
+\titleformat{\section}{
+  \vspace{-15pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-4pt}]
+
+\titleformat{\subsection}{
+  \vspace{-5pt}\normalfont\fontsize{13}{15}\bfseries
+}{}{0em}{}[\color{black}\vspace{-3pt}]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

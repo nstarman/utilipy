@@ -1,110 +1,43 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Basic setup.  Most papers should leave these options alone.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% <TITLE>
+% <DESCRIPTION HERE>
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \documentclass[12pt,letterpaper,twoside,titlepage,fleqn]{article}
-\documentclass[12pt,letterpaper,onecolumn]{article}
-\usepackage[margin=1.87cm]{geometry}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SETUP
 
-% Expanding commands
-\usepackage{xparse}
-\usepackage{xstring}
+\documentclass[12pt, english]{article}
 
-% Math
-\usepackage{amsmath,amstext,amssymb}
-\usepackage{gensymb}
-\usepackage{textcomp} % for \textdegree
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                 PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Importing Packages
 
-% Use vector fonts, so it zooms properly in on-screen viewing software
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{ae,aecompl}
-
-% Code
-\usepackage{listings}
-
-% Figures
-% \usepackage[figure,figure*]{hypcap}
-\usepackage{float}
-\usepackage{graphicx}   % Including figure files
-\usepackage{subfigure}
-
-% Tables
-\usepackage{booktabs}
-\usepackage{dcolumn}
-\usepackage{longtable}
-
-% PDF pages
-\usepackage{pdfpages}
-
-% Citations
-\usepackage{natbib}
-
-% Links
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=false,
-    linkcolor=blue,
-    filecolor=magenta,
-    urlcolor=cyan}
+\providecommand{\main}{.}  % for subfiles
+\providecommand{\mystyleloc}{./util}
+\usepackage{\mystyleloc/main}
 
 
-\lstset{frame=tb,
-	language=SQL,
-	aboveskip=3mm,
-	belowskip=3mm,
-	showstringspaces=false,
-	columns=fullflexible,
-	basicstyle={\small\ttfamily},
-	numbers=none,
-	numberstyle=\tiny\color{gray},
-	keywordstyle=\color{blue},
-	commentstyle=\color{darkgreen},
-	stringstyle=\color{mauve},
-	breaklines=true,
-	postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
-	breakatwhitespace=true,
-	tabsize=3,
-	emph={dec}
-}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                 SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Implementing Package Settings
 
-%%%%% EXTRA PACKAGES %%%%%
-\usepackage{times} 
-\usepackage{fancyhdr}
-\usepackage{color}
-\usepackage{titlesec}
+\graphicspath{{images/}{../images/}}
 
-\linespread{1.00375} % no more than 6 lines of text per inch
-% \linespread{0.898} % Alyssa
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                  DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Sections formatting
-\titleformat{\section}{
-  \vspace{-15pt}\scshape\raggedright\large
-}{}{0em}{}[\color{black}\titlerule \vspace{-4pt}]
+\begin{document}
 
-\titleformat{\subsection}{
-  \vspace{-5pt}\normalfont\fontsize{13}{15}\bfseries
-}{}{0em}{}[\color{black}\vspace{-3pt}]
 
-%%%%% EXTRA COMMANDS %%%%%
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-
-\makeatletter
-% Set this option to 1 for notes, 0 to disable notes
-\newcommand{\@todonotes@enable}{1}
-% Set this option to 1 for inline comments, 0 for margin comments
-\newcommand{\@todonotes@inline}{1}
-\makeatother
-\input{notes.tex}
-\newcommand{\me}[1]{\note[red][salmon]{Me: #1}}
-\newcommand{\sugfig}[1]{\note[darkblue][vlightblue]{Suggested Figure: #1}}
-\newcommand{\sugtable}[1]{\note[purple][lavender]{Suggested Table: #1}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -----------------------------------------------------------------------------
+%                                  TITLE PAGE
+% -----------------------------------------------------------------------------
 
 \begin{document}
 \pagestyle{fancy}
@@ -112,17 +45,33 @@
 \rhead{\thepage}
 \cfoot{} % get rid of the bottom page number
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -----------------------------------------------------------------------------
+%                                     TOC
+% -----------------------------------------------------------------------------
+
+% \tableofcontents
+% \let\tableofcontents\relax
+% \listoffigures
+% \listoftables
+
+% -----------------------------------------------------------------------------
+%                                  CONTENT
+% -----------------------------------------------------------------------------
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIGRAPHY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -----------------------------------------------------------------------------
+%                                BIBLIGRAPHY
+% -----------------------------------------------------------------------------
 
 \newpage
 \setlength{\bibsep}{6pt}
 \bibliographystyle{abbrv}
 \bibliography{main}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%------------------------------------------------------------------------------
 \end{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#

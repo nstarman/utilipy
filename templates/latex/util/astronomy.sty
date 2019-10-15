@@ -1,67 +1,54 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
-% main.cls
-% MNRAS-style journal document class file
+% astronomy.sty
+% astronomy style sheet
 % 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SETUP
 
 \def\@version{1.0}
 \def\@releasedate{2019/09/01}
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{main}[\@releasedate\ v\@version\ LaTeX2e document class]
+\ProvidesPackage{astronomy}
 
-% \typeout{generic document style v\@version, released \@releasedate}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% \@twosidetrue
-% \@twocolumntrue
-% \@mparswitchtrue
-% \def\ds@draft{\overfullrule 5pt}
-% \def\ds@twocolumn{\@twocolumntrue}
-% \def\ds@onecolumn{\@twocolumnfalse}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Prevent fleqn throwing an 'unknown option' warning
-% \newif\if@fleqn
-% \def\ds@fleqn{\@fleqntrue}
-
-% Error message for unknown options
-\DeclareOption*{\PackageWarning{main}{Unknown option `\CurrentOption'}}
-% \DeclareOption{hyperref}{
-% 	% Include hyperref, so we can have clickable links
-% 	\usepackage[pdfpagelabels=false]{hyperref}	% Hyperlinks
-% 	\hypersetup{
-% 		colorlinks=false,
-% 		linkcolor=blue,
-% 		citecolor=blue,
-% 		filecolor=blue,
-% 		urlcolor=blue}
-}
-\ProcessOptions\relax
-
-% Before we do anything else with layout, ensure that the paper is A4
-% \usepackage[a4paper]{geometry}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% MATH SYMBOLS
+%                                 PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Importing Packages
 
-\newcommand{\rmn}[1]{{\mathrm{#1}}}
-\newcommand{\itl}[1]{{\mathit{#1}}}
-\newcommand{\bld}[1]{{\mathbf{#1}}}
+% -----------------------------------------------------------------------------
+%% Custom 
 
-\newcommand{\lessim}{\lesssim}  % allow a 2-l version of lesssim
+% NEED TO PROVIDE A `mystyleloc` COMMAND!
+% ex \providecommand{\mystyleloc}{.}
 
-% These must be here because \newif and \newtoks are defined \outer.
-% \newif\iffirstta
-% \newtoks\math@groups
-% \newif\ifd@f
+\usepackage{\mystyleloc/maths}
+
+% -----------------------------------------------------------------------------
+%% Packages
+
+\usepackage{amsmath,amstext,amssymb}
+\usepackage{gensymb}
+\usepackage{xparse}  % for making commands
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Astronomy and Astrophysics Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                 SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Implementing Package Settings
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                 COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Defining Commands
+
+% -----------------------------------------------------------------------------
+%% Astronomy and Astrophysics Symbols
 
 % Planets
 \newcommand{\sun}{\hbox{$\odot$}}
@@ -74,7 +61,8 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Journals
+%                                JOURNALS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Standard journal abbreviations
 % Mostly as used by ADS, with a few additions for journals where MNRAS does not
@@ -148,6 +136,8 @@
 \newcommand\ssr{Space Sci. Rev.}     % Space Science Reviews
 \newcommand\zap{Z.~Astrophys.}       % Zeitschrift fuer Astrophysik
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %  ****************************************
 %  *              Change log              *
