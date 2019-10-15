@@ -32,7 +32,8 @@ import scipy        # scientific python
 
 # TODO implement when no TqdmExperimentalWarning
 # from tqdm.autonotebook import tqdm
-from tqdm import tqdm_notebook as tqdm
+import tqdm as TQDM
+from tqdm import tqdm as tqdm, tqdm_notebook as tqdmn
 
 ## Custom
 from astroPHD.util import ObjDict          # custom dictionary-like object
