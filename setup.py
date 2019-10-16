@@ -70,7 +70,7 @@ setup(
     version=VERSION,
     author='Nathaniel Starkman',
     author_email='n.starkman@mail.utoronto.ca',
-    url='https://github.com/nstarman/astroPHD',
+    url='https://github.com/nstarman/astroPHD.git',
     description='assorted functions and packages',
     long_description=readme,
     license='New BSD',

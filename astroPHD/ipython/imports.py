@@ -16,12 +16,12 @@ __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 from IPython import get_ipython
 
-## Project-Specific
+# Project-Specific
 from ..util.logging import LogFile
 from ..util.paths import (
     get_absolute_path as _gap,
@@ -30,16 +30,16 @@ from ..util.paths import (
 
 
 ##############################################################################
-### SETUP
+# SETUP
 
 _LOGFILE = LogFile(header=False, verbose=0)
 # _LOGGER_KW = {'print': False}
 
 
 ##############################################################################
-### CODE
+# CODE
 
-def import_from_file(*files, relative:bool=True,
+def import_from_file(*files, relative: bool=True,
                      logger=_LOGFILE, verbose=None, logger_kw={'print': False}
                      ) -> None:
     """run import(s) from a file(s)
@@ -77,9 +77,9 @@ def import_from_file(*files, relative:bool=True,
 
 # ----------------------------------------------------------------------------
 
-def run_imports(*files, relative:bool=True,
-                base:bool=False, astropy:bool=False, matplotlib:bool=False,
-                extended:bool=False, galpy:bool=False,
+def run_imports(*files, relative: bool=True,
+                base: bool=False, astropy: bool=False, matplotlib: bool=False,
+                extended: bool=False, galpy: bool=False, amuse: bool=False,
                 logger=_LOGFILE, verbose=0, logger_kw={}) -> None:
     """runs .imports file using ipython magic
 
@@ -105,6 +105,8 @@ def run_imports(*files, relative:bool=True,
         import_extended -> `astroPHD/imports/extended_imports.py'
     galpy: bool
         import_galpy -> `astroPHD/imports/galpy_imports.py'
+    amuse: bool
+        import_amuse -> `astroPHD/imports/amuse_imports.py'
     """
 
     # running imports file
@@ -122,6 +124,9 @@ def run_imports(*files, relative:bool=True,
 
     if galpy:
         import_galpy(logger=logger, verbose=verbose)
+
+    if amuse:
+        import_amuse(logger=logger, verbose=verbose)
 
     # when combined
     if astropy & matplotlib:
@@ -159,7 +164,7 @@ def run_standard_imports() -> None:
 
 
 ##############################################################################
-### Specific Imports
+# Specific Imports
 
 
 # ----------------------------------------------------------------------------
@@ -237,5 +242,20 @@ def import_galpy(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
 # /def
 
 
+# ----------------------------------------------------------------------------
+
+def import_amuse(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+                 ) -> None:
+    """
+    """
+
+    import_from_file(_join_pfd('import_files/amuse_imports.py'),
+                     relative=False,
+                     logger=logger, verbose=verbose, logger_kw=logger_kw)
+
+    return
+# /def
+
+
 ##############################################################################
-### END
+# END

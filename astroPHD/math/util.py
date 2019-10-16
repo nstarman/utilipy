@@ -38,6 +38,10 @@ import numpy as np
 def quadrature(*args, axis=0):
     r"""return arguments summed in quadrature
     """
+    if len(args) == 0:
+        raise ValueError
+    if len(args) == 1:
+        args = args[0]
     return np.sqrt(np.sum(np.square(args), axis=axis))
 
 

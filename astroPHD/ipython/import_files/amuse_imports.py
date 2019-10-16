@@ -21,10 +21,10 @@ import amuse
 
 # lab
 from amuse import lab
-# from amuse.lab import *
+from amuse.units import units, constants
+from amuse.couple import bridge
 
-# units
-from amuse import units as units
+
 
 
 

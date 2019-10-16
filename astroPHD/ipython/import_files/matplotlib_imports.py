@@ -21,17 +21,8 @@ __author__ = "Nathaniel Starkman"
 # +---------------------------------------------------------------------------+
 # Plotting
 
-try:
-    import starkplot as plt
-except ImportError:
-    import warnings
-    warnings.warn('Cannot import starkplot, using matplotlib.pyplot instead.' +
-                  '\nmpl_decorator will not work.')
-    from matplotlib import pyplot as plt
-else:
-    from starkplot import mpl_decorator
-
 import matplotlib as mpl
+from matplotlib import pyplot as plt
 from matplotlib import cm, colors
 
 # +--------------------------------------------------------------------------+
@@ -50,7 +41,7 @@ configure_matplotlib(backend='inline', figure_format='retina')
 ### Printing Information
 
 print("""Imported from Matplotlib:
-    starkplot->plt, .mpl_decorator
+    pyplot->plt
     matplotlib->mpl, .colors, .cm
     configure_matplotlib
 """)
