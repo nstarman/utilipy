@@ -1,33 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   :
-#
-# ----------------------------------------------------------------------------
-
-### Docstring and Metadata
-"""**DOCSTRING**
-"""
+"""metaclass to inherit docstrings."""
 
 __credits__ = ["astropy"]
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 import inspect
-
-## Project-Specific
 
 
 ##############################################################################
-### CODE
+# CODE
 
 class InheritDocstrings(type):
-    """
+    """Docstring inheritance metaclass.
+
     This metaclass makes methods of a class automatically have their
     docstrings filled in from the methods they override in the base
     class.
@@ -47,9 +38,13 @@ class InheritDocstrings(type):
         ...         pass
         >>> B.wiggle.__doc__
         u'Wiggle the thingamajig'
+
+    taken from astropy
+
     """
 
     def __init__(cls, name, bases, dct):
+        """Set up docstring inheritance."""
         def is_public_member(key):
             return (
                 (key.startswith('__') and key.endswith('__') and
@@ -74,4 +69,4 @@ class InheritDocstrings(type):
 # /class
 
 ##############################################################################
-### END
+# END

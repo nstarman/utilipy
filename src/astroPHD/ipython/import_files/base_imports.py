@@ -72,14 +72,14 @@ InteractiveShell.ast_node_interactivity = "all"
 print("""base_imports:
     Base: os, sys, time, pdb, warnings,
           numpy -> np, scipy,
-          tqdm_notebook -> tqdm
+          tqdm -> TQDM, .tqdm, .tqdm_notebook ->. tqdmn
     Logging: .LogFile
     Misc: ObjDict
     IPython: display, Latex, Markdown, set_trace,
              printmd, printMD, printltx, printLaTeX,
-             configure_matplotlib,
              set_autoreload, aimport,
              run_imports, import_from_file,
+             add_raw_code_toggle
 """)
 
 ##############################################################################

@@ -134,6 +134,9 @@ def run_imports(*files, relative: bool=True,
         from astropy.visualization import astropy_mpl_style
         pyplot.style.use(astropy_mpl_style)
 
+    # if galpy & amuse:  # TODO, embed in galpy_imports using argparse
+    #     from galpy.potential import to_amuse
+
     # other import filess
     if files:  # True if not empty
         import_from_file(*files, relative=relative,
@@ -166,14 +169,21 @@ def run_standard_imports() -> None:
 ##############################################################################
 # Specific Imports
 
-
-# ----------------------------------------------------------------------------
-
 def import_base(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
                 ) -> None:
-    """
-    """
+    """Import base packages.
 
+    Base: os, sys, time, pdb, warnings,
+          numpy -> np, scipy,
+          tqdm -> TQDM, .tqdm, .tqdm_notebook ->. tqdmn
+    Logging: .LogFile
+    Misc: ObjDict
+    IPython: display, Latex, Markdown, set_trace,
+             printmd, printMD, printltx, printLaTeX,
+             set_autoreload, aimport,
+             run_imports, import_from_file,
+             add_raw_code_toggle
+    """
     import_from_file(_join_pfd('import_files/base_imports.py'),
                      relative=False,
                      logger=logger, verbose=verbose, logger_kw=logger_kw)
@@ -186,9 +196,11 @@ def import_base(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
 
 def import_extended(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
                     ) -> None:
-    """
-    """
+    """Import extended packages.
 
+    numpy: linalg.norm
+    scipy stats.binned_statistic->binned_stats
+    """
     import_from_file(_join_pfd('import_files/extended_imports.py'),
                      relative=False,
                      logger=logger, verbose=verbose, logger_kw=logger_kw)
@@ -203,7 +215,6 @@ def import_astropy(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
                    ) -> None:
     """
     """
-
     import_from_file(_join_pfd('import_files/astropy_imports.py'),
                      relative=False,
                      logger=logger, verbose=verbose, logger_kw=logger_kw)
@@ -218,7 +229,6 @@ def import_matplotlib(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
                       ) -> None:
     """
     """
-
     import_from_file(_join_pfd('import_files/matplotlib_imports.py'),
                      relative=False,
                      logger=logger, verbose=verbose, logger_kw=logger_kw)
@@ -233,7 +243,6 @@ def import_galpy(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
                  ) -> None:
     """
     """
-
     import_from_file(_join_pfd('import_files/galpy_imports.py'),
                      relative=False,
                      logger=logger, verbose=verbose, logger_kw=logger_kw)
@@ -248,7 +257,6 @@ def import_amuse(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
                  ) -> None:
     """
     """
-
     import_from_file(_join_pfd('import_files/amuse_imports.py'),
                      relative=False,
                      logger=logger, verbose=verbose, logger_kw=logger_kw)

@@ -51,7 +51,7 @@ def find_version(*file_paths):
 
 readme = open('README.md').read()
 
-VERSION = find_version(os.path.join('astroPHD', '__init__.py'))
+VERSION = find_version(os.path.join('src/astroPHD/', '__init__.py'))
 
 requirements = [
     'numpy>=1.7',
@@ -76,7 +76,8 @@ setup(
     license='New BSD',
 
     # Package info
-    packages=find_packages(exclude=('tests',)),
+    package_dir={'': 'src'},
+    packages=find_packages(exclude=('tests', 'scratch')),
 
     zip_safe=True,
     install_requires=requirements,

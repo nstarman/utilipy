@@ -15,21 +15,22 @@
 __author__ = "Nathaniel Starkman"
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 from collections import OrderedDict
 
-## Project-Specific
+# Project-Specific
 from ..pickle import dump as _dump, load as _load
+from ..decorators.docstring import replace_docstring
 
 
 ##############################################################################
-### CODE
+# CODE
 
 class ObjDict(OrderedDict):
-    """ObjDict
-    a basic dictionary-like object intended to store information.
+    """Dictionary-like object intended to store information.
+
     instantiated with a name (str)
     supports __getattr__ as a redirect to __getitem__.
 
@@ -45,13 +46,11 @@ class ObjDict(OrderedDict):
     obj = ObjDict('NAME', a=1, b=2)
     print(obj.name, obj.a, obj['b'])
     >> NAME, 1, 2
+
     """
 
     def __init__(self, name='', **kw):
-        """__init__
-        initialize with a name for the container and kwargs for the dict
-        # the name is stored in the dictionary as well
-        """
+        """Initialize ObjDict."""
         super().__init__()
 
         object.__setattr__(self, 'name', name)
@@ -64,7 +63,8 @@ class ObjDict(OrderedDict):
     # item get / set
 
     def __getitem__(self, keys, _as_generator=False):
-        """
+        """Override __getitem__.
+
         Parameters
         ----------
         keys: str, list of str
@@ -89,13 +89,21 @@ class ObjDict(OrderedDict):
         >> 1, [NAME, 2]
         print(obj['name', 'b'])
         >> [NAME, 2]
+
         """
-        if isinstance(keys, str):  # single key
+        # single key
+        if isinstance(keys, str):
             return super().__getitem__(keys)
-        else:  # multiple keys
-            if _as_generator:  # return generator
-                return(OrderedDict.__getitem__(self, k) for k in keys)
-            return [OrderedDict.__getitem__(self, k) for k in keys]
+        # multiple keys
+        if _as_generator:  # return generator
+            return(OrderedDict.__getitem__(self, k) for k in keys)
+        return [OrderedDict.__getitem__(self, k) for k in keys]
+    # /def
+
+    @replace_docstring(docstring=__getitem__.__doc__)
+    def getitem(self, keys, _as_generator=False):
+        """Docstring from __getitem__."""
+        return self.__getitem__(keys, _as_generator=_as_generator)
     # /def
 
     # ----------------------------------
@@ -103,10 +111,12 @@ class ObjDict(OrderedDict):
     # redirects to item get / set
 
     def __setattr__(self, key, value):
+        """Setattr -> setitem."""
         self[key] = value
     # /def
 
     def __getattr__(self, key):
+        """Getattr -> getitem."""
         return self[key]
     # /def
 
@@ -114,6 +124,7 @@ class ObjDict(OrderedDict):
     # Printing
 
     def __repr__(self):
+        """__repr__."""
         if self.name == '':
             return super().__repr__()
         else:
@@ -122,28 +133,73 @@ class ObjDict(OrderedDict):
 
     # ----------------------------------
 
-    def values(self, *names):
-        if not names:
+    def values(self, *keys):
+        """Values.
+
+        Parameters
+        ----------
+        *keys: keys for values subset, default is all keys
+
+        Returns
+        -------
+        values: list
+            list of values for `*keys`
+
+        """
+        if not keys:  # if no specific keys provided
             return super().values()
-        else:
-            return [self[k] for k in names]
+        return [self[k] for k in keys]
     # /def
 
-    def items(self, *names):
-        if not names:
+    def items(self, *keys):
+        """Items.
+
+        Parameters
+        ----------
+        *keys: keys for items subset, default is all keys
+
+        Returns
+        -------
+        items: dictionary
+            items for `*keys`
+
+        """
+        if not keys:
             return super().items()
-        else:
-            return {k: self[k] for k in names}.items()
+        return self.subset(*keys).items()
     # /def
 
-    def subset(self, *names):
-        if not names:
+    def subset(self, *keys):
+        """Subset.
+
+        Parameters
+        ----------
+        *keys: keys for subset dictionary, default is all keys
+
+        Returns
+        -------
+        subset: list
+            items for `*keys`
+
+        """
+        if not keys:
             return self
-        else:
-            return {k: self[k] for k in names}
+        return {k: self[k] for k in keys}
     # /def
 
     def keyslist(self):
+        """Keys in list form.
+
+        Parameters
+        ----------
+        *keys: keys for subset dictionary, default is all keys
+
+        Returns
+        -------
+        subset: list
+            items for `*keys`
+
+        """
         return list(self.keys())
     # /def
 
@@ -151,27 +207,58 @@ class ObjDict(OrderedDict):
     # Serialize (I/O)
 
     def __reduce__(self):
+        """Reduction method for serialization.
+
+        Info
+        ----
+        structured as:
+        1. the class
+        2. (ObjDict name, )
+        3. items
+
+        """
         return (self.__class__,
                 (self.name, ),
                 OrderedDict(self.items()))
 
     def __setstate__(self, state):
+        """Set-state method for loading from pickle.
+
+        sets by key, value pairs
+
+        """
         for key, value in state.items():
             self[key] = value
     # /def
 
     def dump(self, fname, protocol=None, *, fopt='b', fix_imports=True):
+        """Dump to pickle file.
+
+        Info
+        ----
+        uses .util.pickle.dump
+
+        """
         _dump(self, fname, protocol=protocol, fopt=fopt,
               fix_imports=fix_imports)
     # /def
 
+    @replace_docstring(docstring=dump.__doc__)
     def save(self, fname, protocol=None, *, fopt='b', fix_imports=True):
+        """.Dump alias."""
         self.dump(fname, protocol=protocol, fopt=fopt, fix_imports=fix_imports)
     # /def
 
     @staticmethod
     def load(fname, *, fopt='b', fix_imports=True, encoding='ASCII',
              errors='strict'):
+        """Load from pickle file.
+
+        Info
+        ----
+        uses .util.pickle.load
+
+        """
         self = _load(fname, fopt=fopt, fix_imports=fix_imports,
                      encoding=encoding, errors=errors)
         return self
@@ -183,4 +270,4 @@ class ObjDict(OrderedDict):
 
 
 ##############################################################################
-### END
+# END

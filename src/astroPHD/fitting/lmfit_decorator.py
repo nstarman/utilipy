@@ -11,30 +11,32 @@
 
 ### Docstring and Metadata
 """decorators for converting scipy residual functions to lmfit functions
+
+TODO redo with my decorator method
 """
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 from wrapt import ObjectProxy
 
-## Custom
+# Custom
 # from .. import ObjDict, LogFile
 
-## Project-Specific
+# Project-Specific
 
 ##############################################################################
-### PARAMETERS
+# PARAMETERS
 
 # _LOGFILE = LogFile(header=False)  # LogPrint, compatible with LogFile
 
 
 ##############################################################################
-### CODE
+# CODE
 
 class scipy_residual_to_lmfit(ObjectProxy):
     """decorator to make scipy residual functions compatible with lmfit
@@ -69,11 +71,7 @@ class scipy_residual_to_lmfit(ObjectProxy):
       see https://wrapt.readthedocs.io/en/latest/wrappers.html#function-wrappers
     """
 
-    # def __call__(self, vars, *args, **kwargs):
-    #     return self.__wrapped__(vars, *args, **kwargs)
-    # # /def
-
-    def __new__(cls, func=None, var_order:list=None):
+    def __new__(cls, func=None, var_order: list=None):
         """
         """
         if var_order is None:
@@ -91,7 +89,7 @@ class scipy_residual_to_lmfit(ObjectProxy):
     # /def
 
     @classmethod
-    def decorator(cls, var_order:list):
+    def decorator(cls, var_order: list):
         """TODO
         """
         # @functools.wraps(cls)  # not needed when using ObjectProxy
@@ -103,7 +101,7 @@ class scipy_residual_to_lmfit(ObjectProxy):
         return wrapper
     # /def
 
-    def __init__(self, func, var_order:list):
+    def __init__(self, func, var_order: list):
         super().__init__(func)  # inializing function into wrapt.ObjectProxy
         self.var_order = var_order
         return
@@ -117,4 +115,4 @@ class scipy_residual_to_lmfit(ObjectProxy):
 
 
 ##############################################################################
-### END
+# END

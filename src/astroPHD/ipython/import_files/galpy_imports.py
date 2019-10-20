@@ -46,8 +46,7 @@ print("""Imported from galpy:
     potential, .MWPotential2014
     galpy.orbit.Orbit
     galpy.util: bovy_conversion, bovy_coords
-"""
-)
+""")
 
 
 ##############################################################################
