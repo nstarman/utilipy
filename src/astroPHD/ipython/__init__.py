@@ -8,20 +8,17 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
+# Docstring and Metadata
 """initialization file for jupyter notebook functions
-
-TODO:
-determine which backend and figure_format to use automatically
 """
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 from IPython import get_ipython
 from IPython.core.interactiveshell import InteractiveShell
 from IPython.core.debugger import set_trace
@@ -30,7 +27,7 @@ from IPython.display import (
     Latex, Markdown       # for printing LaTeX or Markdown strings
 )
 
-## Project-Specific
+# Project-Specific
 from ..util.logging import LogPrint, LogFile
 
 from .printing import (
@@ -45,7 +42,7 @@ from .plot import configure_matplotlib
 
 
 ##############################################################################
-### SETUP
+# SETUP
 
 # Running Imported Functions
 InteractiveShell.ast_node_interactivity = "all"
@@ -55,36 +52,75 @@ if get_ipython() is not None:
 
 
 ##############################################################################
-### CODE
+# CODE
 
-def reference():
+def help():
+    """Help for ipython module.
+
+    Imported
+    ========
+    IPython:display.display, .Latex, .Markdown
+           .core.interactiveshell.InteractiveShell
+                .debugger.set_trace
+
+    astroPHD.util.logging.LogPrint, .LogFile
+            .ipython.autoreload.set_autoreload, aimport
+                    .imports.run_imports, import_from_file
+                    .notebook.add_raw_code_toggle
+                    .plot.configure_matplotlib
+                    .printing.printmd, printMD, printltx, printLaTeX
+
+    Modules
+    =======
+
+    autoreload
+    ----------
+    set_autoreload: set the notebook's autoreload state for modules
+    aimport: import a module with autoreload options
+
+    imports
+    -------
+    import_from_file
+    run_imports
+    import_base, import_extended, import_astropy, import_matplotlib, import_galpy, import_amuse
+    aimport from .autoreload
+
+    notebook
+    --------
+    add_raw_code_toggle
+
+    plot
+    ----
+    configure_matplotlib
+
+    printing
+    --------
+    printmd / printMD
+    printltx / printLaTeX
+
     """
-    TODO
-    """
-
-    print("""
-    """)
-
+    print(__doc__)
     return
 # /def
 
 
 ##############################################################################
-### Printing Information
+# Printing Information
 
-# print("""Imported:
-#     IPython:display.display, .Latex, .Markdown
-#            .core.interactiveshell.InteractiveShell
-#                 .debugger.set_trace
-#
-#     astroPHD.util.logging.LogPrint, .LogFile
-#             .ipython.autoreload.set_autoreload, aimport
-#                     .imports.run_imports, import_from_file
-#                     .notebook.add_raw_code_toggle
-#                     .plot.configure_matplotlib
-#                     .printing.printmd, printMD, printltx, printLaTeX
-# """)
+# if .astrophd_profile.printhelp:
+#     print("""Imported:
+#         IPython:display.display, .Latex, .Markdown
+#                .core.interactiveshell.InteractiveShell
+#                     .debugger.set_trace
+
+#         astroPHD.util.logging.LogPrint, .LogFile
+#                 .ipython.autoreload.set_autoreload, aimport
+#                         .imports.run_imports, import_from_file
+#                         .notebook.add_raw_code_toggle
+#                         .plot.configure_matplotlib
+#                         .printing.printmd, printMD, printltx, printLaTeX
+#     """)
 
 
 ##############################################################################
-### END
+# END

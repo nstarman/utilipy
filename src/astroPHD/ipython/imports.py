@@ -28,6 +28,7 @@ from ..util.paths import (
     parent_file_directory as _pfd
 )
 
+from .autoreload import aimport
 
 ##############################################################################
 # SETUP

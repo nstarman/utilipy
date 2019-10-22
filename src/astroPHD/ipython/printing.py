@@ -91,7 +91,7 @@ def printmd(s, color=None, size=None, bold=False, italic=False,
 
 printMD = printmd
 
-printHTML = printmd
+# printHTML = printmd
 
 
 # ----------------------------------------------------------------------------
