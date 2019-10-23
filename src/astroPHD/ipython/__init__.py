@@ -47,8 +47,14 @@ from .plot import configure_matplotlib
 # Running Imported Functions
 InteractiveShell.ast_node_interactivity = "all"
 
-if get_ipython() is not None:
-    configure_matplotlib(backend='inline', figure_format='retina')
+try:
+    get_ipython()
+except NameError:
+    import warnings
+    warnings.warn('cannot call get_ipython! this module is pretty much useless')
+else:
+    if get_ipython() is not None:
+        configure_matplotlib(backend='inline', figure_format='retina')
 
 
 ##############################################################################

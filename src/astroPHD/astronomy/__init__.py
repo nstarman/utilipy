@@ -20,7 +20,7 @@
 
 
 ## Project-Specific
-from . import fast, filtertransforms, instruments, main, sc, util
+from . import fast, instruments, main, sc
 
 from .main.functions import (
     # distance modulus

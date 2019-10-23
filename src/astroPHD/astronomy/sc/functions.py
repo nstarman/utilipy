@@ -24,7 +24,7 @@ import numpy as np
 from functools import wraps
 
 ## Custom Imports
-from ..util.starkopy import units as u
+from ... import units as u
 
 
 ###############################################################################

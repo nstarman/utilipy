@@ -125,13 +125,13 @@ plt.style.use(astropy_mpl_style)
 ### Printing Information
 
 _import = {
-    base: "os, sys, time, pdb, warnings,"
+    'base': "os, sys, time, pdb, warnings,"
     "      numpy -> np, scipy,"
     "      tqdm_notebook -> tqdm",
-    astropy: "astropy, .units->u, .coordinates->coords, .SkyCoord, .Table, .QTable",
-    plot: "starkplot->plt, .mpl_decorator"
+    'astropy': "astropy, .units->u, .coordinates->coords, .SkyCoord, .Table, .QTable",
+    'plot': "starkplot->plt, .mpl_decorator"
     "      matplotlib->mpl, .colors, .cm",
-    logging: ".LogFile"
+    'logging': ".LogFile"
 }
 
 if __name__ == "__main__":

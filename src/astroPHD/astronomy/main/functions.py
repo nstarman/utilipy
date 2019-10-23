@@ -24,7 +24,7 @@ from functools import wraps
 import numpy as np
 
 ## Custom Imports
-from astropy import units as u
+from ... import units as u
 
 
 ##############################################################################
