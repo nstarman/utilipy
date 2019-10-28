@@ -1,16 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : Full Standard Import File
-# AUTHOR  : Nathaniel Starkman
-#
-# ----------------------------------------------------------------------------
-
-### Docstring and Metadata
-"""standard import file.
-imports:
+"""full standard import file.
 
 GENERAL
 -------

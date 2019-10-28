@@ -1,15 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : initialization file
-# AUTHOR  : 
-# PROJECT :
-#
-# ----------------------------------------------------------------------------
-
-### Docstring and Metadata
 """initialization file for __________
 """
 
@@ -29,7 +20,7 @@ __author__ = ""
 
 
 ## Project-Specific
-from .starkplot import starkplot
+# from .starkplot import starkplot
 
 
 ##############################################################################

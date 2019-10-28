@@ -1,16 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : fast functions
-# AUTHOR  : Nathaniel Starkman
-# PROJECT : astronat
-#
-# ----------------------------------------------------------------------------
-### Docstring and Metadata
-r"""fast astronomy functions
-"""
+"""fast astronomy functions."""
 
 __author__ = "Nathaniel Starkman"
 

@@ -1,15 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : ipython imports file
-# AUTHOR  : Nathaniel Starkman
-#
-# ----------------------------------------------------------------------------
-
-### Docstring and Metadata
-"""
+"""IPython Imports.
 """
 
 __author__ = "Nathaniel Starkman"
