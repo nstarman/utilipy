@@ -27,20 +27,30 @@ from collections import namedtuple
 ##############################################################################
 ### Types
 
-FullerArgSpec = namedtuple('FullerArgSpec',
-                           ['args', 'defaultargs', 'argdefaults', 'varargs',
-                            'kwonlyargs', 'kwonlydefaults', 'varkw',
-                            'annotations'])
+FullerArgSpec = namedtuple(
+    "FullerArgSpec",
+    [
+        "args",
+        "defaultargs",
+        "argdefaults",
+        "varargs",
+        "kwonlyargs",
+        "kwonlydefaults",
+        "varkw",
+        "annotations",
+        "docstring"
+    ],
+)
 
 
 ##############################################################################
 ### Functions
 
 def getfullerargspec(func):
-    """getfullerargspec
+    """Separated version of FullerArgSpec.
 
     fullargspec with separation of mandatory and optional arguments
-    adds *defargs* with corresponding *defaults*
+    adds *defargs* which corresponds *defaults*
 
     Parameters
     ----------
@@ -58,23 +68,34 @@ def getfullerargspec(func):
         kwonlydefaults   : key-word only argmunent defaults
         varkw            : variable key-word arguments (**kwargs)
         annotations      : function annotations
-    """
-    spec = getfullargspec(func)
+        docstring        : function docstring
 
-    if spec.defaults is not None:
+    """
+    spec = getfullargspec(func)  # get argspec
+
+    if spec.defaults is not None:  # separate out argument types
 
         args = spec.args[:-len(spec.defaults)]
         defargs = spec.args[-len(spec.defaults):]
         defaults = {k: v for k, v in zip(defargs, spec.defaults)}
 
-    else:
+    else:  # nothing to separate
         args = spec.args
         defargs = None
         defaults = None
 
-    return FullerArgSpec(args, defargs, defaults, spec.varargs,
-                         spec.kwonlyargs, spec.kwonlydefaults, spec.varkw,
-                         spec.annotations)
+    # build FullerArgSpec
+    return FullerArgSpec(
+        args,
+        defargs,
+        defaults,
+        spec.varargs,
+        spec.kwonlyargs,
+        spec.kwonlydefaults,
+        spec.varkw,
+        spec.annotations,
+        func.__doc__,
+    )
 # /def
 
 

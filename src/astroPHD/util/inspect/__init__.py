@@ -1,27 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : inspect initialization file
-#
-# ----------------------------------------------------------------------------
-
-### Docstring and Metadata
 """initialization file for `inspect`
 """
 
 __author__ = "Nathaniel Starkman"
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 from inspect import *
 
-## Project-Specific
+# Project-Specific
 from ._getfullerargspec import FullerArgSpec, getfullerargspec
+from .signature import (Signature,
+                        get_annotations_from_signature,
+                        get_defaults_from_signature,
+                        get_kwdefaults_from_signature,
+                        get_kwonlydefaults_from_signature)
 
 
 ##############################################################################
-### END
+# END
