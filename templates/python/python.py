@@ -1,22 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   :
-# AUTHOR  :
-# PROJECT :
-#
-# ----------------------------------------------------------------------------
+"""**DOCSTRING**.
 
-### Docstring and Metadata
-"""**DOCSTRING**
+description
+
 """
 
-__author__ = ""
-# __copyright__ = "Copyright 2018, "
+__author__ = "Nathaniel Starkman"
+# __copyright__ = "Copyright 2019, "
 # __credits__ = [""]
-# __license__ = "GPL3"
+# __license__ = "MIT"
 # __version__ = "0.0.0"
 # __maintainer__ = ""
 # __email__ = ""
@@ -24,20 +18,22 @@ __author__ = ""
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 
-## Project-Specific
+# Project-Specific
 
 
-##############################################################################
-### CODE
+###############################################################################
+# CODE
+###############################################################################
 
 class ClassName(object):
-    """docstring for ClassName"""
+    """Docstring for ClassName."""
 
     def __init__(self, arg):
+        """Docstring."""
         super().__init__()
         self.arg = arg
 # /class
@@ -46,10 +42,9 @@ class ClassName(object):
 # --------------------------------------------------------------------------
 
 def function():
-    """docstring
-    """
+    """Docstring."""
     pass
 # /def
 
 ##############################################################################
-### END
+# END

@@ -1,35 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : initialization file
-# AUTHOR  : 
-# PROJECT :
-#
-# ----------------------------------------------------------------------------
+"""initialization file for __________.
 
-### Docstring and Metadata
-"""initialization file for __________
+description
+
 """
 
 __author__ = ""
 # __copyright__ = "Copyright 2018, "
 # __credits__ = [""]
-# __license__ = "GPL3"
+# __license__ = "MIT"
 # __version__ = "0.0.0"
 # __maintainer__ = ""
 # __email__ = ""
 # __status__ = "Production"
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 
 
-## Project-Specific
+# Project-Specific
 
 
 ##############################################################################
-### END
+# END
