@@ -20,6 +20,8 @@
 
 
 ## Project-Specific
+from .. import units
+
 from . import fast, instruments, main, sc
 
 from .main.functions import (

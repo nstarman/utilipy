@@ -1,39 +1,36 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : autoreload
-#
-# ----------------------------------------------------------------------------
+"""functions for working with autoreload extension.
 
-### Docstring and Metadata
-"""functions for working with autoreload extension
+set_autoreload
+aimport
+
 """
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 from IPython import get_ipython
 
-## Project-Specific
+# Project-Specific
 from ..util.logging import LogPrint
 
 ##############################################################################
-### PARAMETERS
+# PARAMETERS
 
 _LOGFILE = LogPrint(header=False, verbose=0)
 
 
 ##############################################################################
-### CODE
+# CODE
 
-def set_autoreload(reload_type:int=1):
-    """global imports setting
+def set_autoreload(reload_type: int=1):
+    """Global imports setting.
 
     Parameters
     ----------
@@ -43,8 +40,8 @@ def set_autoreload(reload_type:int=1):
            before executing the Python code typed.
         2: Reload all modules (except those excluded by %aimport)
            every time before executing the Python code typed.
-    """
 
+    """
     # set autoreload type
     get_ipython().magic(f'autoreload {reload_type}')
 
@@ -57,8 +54,9 @@ def set_autoreload(reload_type:int=1):
 ##############################################################################
 
 
-def aimport(*modules, autoreload: (bool, list, tuple)=True):  # TODO support any list
-    """jupyter magic aimport
+# TODO support any list
+def aimport(*modules, autoreload: (bool, list, tuple)=True):
+    """Jupyter magic aimport.
 
     Parameters
     ----------
@@ -67,6 +65,7 @@ def aimport(*modules, autoreload: (bool, list, tuple)=True):  # TODO support any
     autoreload : bool, list, optional  (default True)
         whether the imported modules are marked for autoreloading
         if its a list, it must be the same length as **modules*
+
     """
     # making autoreload compatible with modules
     if isinstance(autoreload, bool):
@@ -99,4 +98,4 @@ if get_ipython() is not None:
     set_autoreload(1)
 
 ##############################################################################
-### END
+# END
