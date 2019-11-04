@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -7,9 +6,8 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""added units to astropy units
-"""
+# Docstring and Metadata
+"""Added units to astropy units."""
 
 __author__ = "Nathaniel Starkman"
 
@@ -19,6 +17,7 @@ __author__ = "Nathaniel Starkman"
 from fractions import Fraction
 from astropy.units.core import UnitBase, def_unit
 from astropy import units
+from astropy.units.utils import generate_unit_summary as _gen_summary
 
 _ns = globals()
 
@@ -58,6 +57,22 @@ def_unit(['maspyr', 'mas_yr'], represents=units.mas / units.yr,
          namespace=_ns)
 
 
+###########################################################################
+# AMUSE compatibility
+
+def_unit(['kms'], represents=units.km / units.s,
+         doc='kilometer per second composite unit',
+         format={'latex': r'\frac{km}{s}',
+                 'latex_inline': r'km\,s^{-1}'},
+         namespace=_ns)
+
+
+def_unit(['MSun'], represents=units.solMass,
+         doc='kilometer per second composite unit',
+         format={'latex': r'\rm{M}_{\odot}',
+                 'latex_inline': r'\rm{M}_{\odot}'},
+         namespace=_ns)
+
 
 ###########################################################################
 # CLEANUP
@@ -72,9 +87,8 @@ del Fraction
 
 # This generates a docstring for this module that describes all of the
 # standard units defined here.
-from astropy.units.utils import generate_unit_summary as _generate_unit_summary
 if __doc__ is not None:
-    __doc__ += _generate_unit_summary(globals())
+    __doc__ += _gen_summary(globals())
 
 
 ###########################################################################

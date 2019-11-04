@@ -3,24 +3,25 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   :
+# TITLE   : unit decorators
 # PROJECT :
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
+### Dotring and Metadata
 """**DOCSTRING**
 """
 
 __author__ = "Nathaniel Starkman"
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 import inspect
 from warnings import warn
 
+# astropy
 from astropy.units import Unit, dimensionless_unscaled
 from astropy.units.decorators import _validate_arg_value, _get_allowed_units
 from astropy.units.core import add_enabled_equivalencies
@@ -29,118 +30,26 @@ from astropy.units.physical import _unit_physical_mapping
 from astropy.utils.decorators import wraps
 from astropy.utils.misc import isiterable
 
+# Project-Specific
+from .util import unit_output
 
 ###############################################################################
-### PARAMETERS
+# PARAMETERS
 
 _aioattrs = ('unit', 'to_value', 'equivalencies', 'decompose',
              'default_units', 'annot2dfu')
 
 
 ###############################################################################
-### CODE
-
-def unit_helper(res, unit=None, to_value=False,
-                equivalencies=[], decompose=False):
-    r"""helper function for return of Quantities
-    ex: How to apply in a function directly
-        def func(*args, **kw):
-            result = do stuff
-            return unit_helper(result,
-                               unit=kw.get('unit', None),
-                               to_value=kw.get('to_value', False),
-                               equivalencies=kw.get('equivalencies', []),
-                               decompose=kw.get('decompose', [])
-                               )
-
-
-    Arguments
-    ----------
-    res: Quantity
-        the result
-    unit: Astropy Unit
-        sets the unit for the returned res
-        if None, returns res unchanged, unless to_value is used
-        if '', decomposes
-    to_value: bool
-        whether to return .to_value(unit)
-        see Astropy.units.Quantity.to_value
-    equivalencies: list
-        equivalencies for .to() and .to_value()
-        only used if `unit' to `to_value' are not None/False
-    decompose: bool, list
-        if bool:
-            True, False for decomposing
-        if list:
-            bases for .decompose(bases=[])
-            will first decompose, then apply unit, to_value, equivalencies
-        Decomposing then converting wastes time, since .to(unit, equivalencies) internally does conversions
-        the only use for combining decompose with other unit_helper params is with:
-            unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
-            since this will dcompose to desired bases then return the value in those bases
-        ** experimental feature
-            for things which are not (u.Unit, u.core.IrreducibleUnit), tries wrapping in Unit()
-            this allows things such as:
-                x = 5 * u.kpc * u.s
-                bases = [2 * u.lyr, u.s]
-                x.decompose(bases=basesConversionFunction(bases))
-            this would normally return an error
-
-    Returns
-    -------
-    res: function output
-        function output, converted / decomposed / evaluated to desired units
-
-    Exceptions
-    ----------
-    ValueError: if unit not astropy compatible
-    UnitConversionError: if conversion not legit
-    ...
-    """
-
-    # fast check to do nothing
-    if (unit is None) & (to_value is False) & (equivalencies == []) & (decompose is False):
-        return res
-
-    # First decomposing
-    if decompose is True:
-        res = res.decompose()
-    elif decompose:  # decompose is NOT empty list
-        cls = (Unit, u.core.IrreducibleUnit)
-        bases = [Unit(x) if not issubclass(x.__class__, cls) else x
-                 for x in decompose]
-        res = res.decompose(bases=bases)
-    # else:  # decompose is False or empty list
-    #    pass
-
-    # Now Converting
-    if (unit is None) and (to_value is False):  # nothing required
-        return res
-    elif to_value is True:  # return value
-        return res.to_value(unit, equivalencies)
-    else:  # return with unit
-        return res.to(unit, equivalencies)
-# /def
-
+# CODE
 
 def _simple_unit_decorator(unit=None, to_value=False,
                            equivalencies=[], decompose=False):
-    r"""Decorator for unit_helper
+    r"""Decorator for unit_output.
+
     Any wrapped function accepts the additional key-word arguments:
         unit, to_value, equivalencies, decompose
         see `Wrapped-Arguments' for details
-
-     ex:
-        @unit_decorator
-        def func(*args, **kw):
-            result = do stuff
-            return result
-
-        is equivalent to
-
-        def func(*args, unit=None, to_value=False, equivalencies=[], decompose=False, **kw):
-            result = do stuff w/ *args, and **kw
-            return unit_helper(result, unit, to_value, equivalencies, decompose)
 
     Wrapped-Arguments
     -----------------
@@ -166,7 +75,7 @@ def _simple_unit_decorator(unit=None, to_value=False,
             bases for .decompose(bases=[])
             will first decompose, then apply unit, to_value, equivalencies
         Decomposing then converting wastes time, since .to(unit, equivalencies) internally does conversions
-        the only use for combining decompose with other unit_helper params is with:
+        the only use for combining decompose with other unit_output params is with:
             unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
             since this will dcompose to desired bases then return the value in those bases
         ** experimental feature
@@ -180,7 +89,21 @@ def _simple_unit_decorator(unit=None, to_value=False,
     Returns
     -------
     res: function result
-        result of wrapped function, with the unit operations performed by unit_helper
+        result of wrapped function, with the unit operations performed by unit_output
+
+    Examples
+    --------
+    >>> @unit_decorator
+        def func(*args, **kw):
+            result = do stuff
+            return result
+
+    is equivalent to
+
+    >>> def func(*args, unit=None, to_value=False, equivalencies=[], decompose=False, **kw):
+            result = do stuff w/ *args, and **kw
+            return unit_output(result, unit, to_value, equivalencies, decompose)
+
     """
 
     def wrapper(func):
@@ -193,13 +116,15 @@ def _simple_unit_decorator(unit=None, to_value=False,
             # evaluated function
             res = func(*args, **kw)
 
-            return unit_helper(res, unit=unit, to_value=to_value,
+            return unit_output(res, unit=unit, to_value=to_value,
                                equivalencies=equivalencies, decompose=decompose)
 
         return wrapped
     return wrapper
 # /def
 
+
+###############################################################################
 
 class QuantityInputOutput(object):
     r"""A decorator for validating the units of arguments to functions.
@@ -255,7 +180,7 @@ class QuantityInputOutput(object):
             bases for .decompose(bases=[])
             will first decompose, then apply unit, to_value, equivalencies
         Decomposing then converting wastes time, since .to(unit, equivalencies) internally does conversions
-        the only use for combining decompose with other unit_helper params is with:
+        the only use for combining decompose with other unit_output params is with:
             unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
             since this will dcompose to desired bases then return the value in those bases
         ** experimental feature
@@ -310,7 +235,7 @@ class QuantityInputOutput(object):
 
     Examples
     --------
-    # Simple Example
+    This is a simple example
     @quantity_io()
     def func(x: 'km', **kw) -> 2 * u.m:
         return x
@@ -349,9 +274,8 @@ class QuantityInputOutput(object):
 
     print(func(2, 2))
     print(func(2, 2, unit=2 * u.km / u.s))
-    """
 
-    __name__ = 'QuantityInputOutput'
+    """
 
     @classmethod
     def as_decorator(cls, func=None, unit=None, to_value=False,
@@ -407,7 +331,7 @@ class QuantityInputOutput(object):
                 bases for .decompose(bases=[])
                 will first decompose, then apply unit, to_value, equivalencies
             Decomposing then converting wastes time, since .to(unit, equivalencies) internally does conversions
-            the only use for combining decompose with other unit_helper params is with:
+            the only use for combining decompose with other unit_output params is with:
                 unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
                 since this will dcompose to desired bases then return the value in those bases
             ** experimental feature
@@ -513,7 +437,7 @@ class QuantityInputOutput(object):
                       equivalencies=equivalencies, decompose=decompose,
                       default_units=default_units, annot2dfu=annot2dfu,
                       **decorator_kwargs
-        )
+                      )
 
         if func is not None:
             return self(func)
@@ -673,7 +597,7 @@ class QuantityInputOutput(object):
             if wrapped_signature.return_annotation not in (inspect.Signature.empty, None) and unit is None:
                 unit = wrapped_signature.return_annotation
 
-            return unit_helper(return_, unit=unit, to_value=to_value,
+            return unit_output(return_, unit=unit, to_value=to_value,
                                equivalencies=equivalencies,
                                decompose=decompose)
 
@@ -714,7 +638,7 @@ _funcdec = r"""\n\n\tDecorator Docstring\n\t-------------------
                 bases for .decompose(bases=[])
                 will first decompose, then apply unit, to_value, equivalencies
             Decomposing then converting wastes time, since .to(unit, equivalencies) internally does conversions
-            the only use for combining decompose with other unit_helper params is with:
+            the only use for combining decompose with other unit_output params is with:
                 unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
                 since this will dcompose to desired bases then return the value in those bases
             ** experimental feature
@@ -740,53 +664,4 @@ quantity_io = QuantityInputOutput.as_decorator
 
 
 ###############################################################################
-### UNIT TEST
-
-if __name__ == '__main__':
-
-    # @u.quantity_input(distance='length')
-    # @quantity_io(unit=u.m**2, distance=('length', None))
-    # @quantity_io(unit=u.m**2, default_units={'distance2': u.kpc})
-    # def testfunc(distance: 'kpc', distance2: 'm', extra=None, **kw):
-
-    #     return distance * distance2
-
-    # print(testfunc(2 * u.pc, 2, test=4))
-    # print(testfunc(2 * u.Hz))
-    from astropy import units as u
-
-    @quantity_io()
-    def func(dist: 'km', **kw) -> 2 * u.m:
-        return dist
-    print(func(2 * u.km))
-    # print(func(2000 * u.m))
-    # # print(func(2000 * u.s))
-    # print(func(2000 * u.m, unit=2 * u.km))
-
-
-    @quantity_io(x='length', annot2dfu=True,
-                default_units={'t': u.s})
-    def func(x: 'km', t, **kw) -> 2 * u.m / u.s:
-        r"""test
-        """
-        return x / t
-
-    print(func(2, 2))
-    print(func(2, 2 * u.ms, unit=2 * u.km / u.s))
-    # print(func(2000 * u.m))
-    # # print(func(2000 * u.s))
-    # print(func(2000 * u.m, unit=2 * u.km))
-
-    # +------------------------------+
-    @quantity_io(annot2dfu=True)
-    # @QuantityInputOutput()
-    # @simple_unit_decorator()
-    # @quantityIO()
-    def returndistance(distance: 'km', **kw) -> 2 * u.m:
-        return distance
-
-    print(returndistance(2 * u.kpc))
-    # print(returndistance(2, unit=u.m, to_value=True)
-
-###############################################################################
-### END
+# END
