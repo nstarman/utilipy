@@ -3,22 +3,21 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : Standard Import File
+# TITLE   : astropy_imports
 # AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""
-"""
+# Docstring and Metadata
+"""Base set of imports for the astropy code."""
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-# +---------------------------------------------------------------------------+
 # Astropy
 import astropy
 
@@ -33,14 +32,14 @@ from astropy.visualization import quantity_support, astropy_mpl_style
 
 
 ##############################################################################
-### Cleaning Up
+# Cleaning Up
 
-# astropy changes
+# astropy changes to matplotlib
 quantity_support()
 
 
 ##############################################################################
-### Printing Information
+# Printing Information
 
 print("""Imported from Astropy:
     astropy, .units->u, .coordinates->coords, .SkyCoord, .Table, .QTable

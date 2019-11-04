@@ -3,25 +3,26 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : Base Import File
+# TITLE   : base_imports
 # AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""
-"""
+# Docstring and Metadata
+"""Base set of imports."""
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
 # +---------------------------------------------------------------------------+
 # Basic
 
-import os, sys                        # operating system
+import os
+import sys                        # operating system
 import time                           # timing
 import pdb                            # debugging
 import warnings                       # warning
@@ -35,7 +36,7 @@ import scipy        # scientific python
 import tqdm as TQDM
 from tqdm import tqdm as tqdm, tqdm_notebook as tqdmn
 
-## Custom
+# Custom
 from astroPHD.util import ObjDict          # custom dictionary-like object
 from astroPHD.util.logging import LogFile  # LoggerFile  # custom logging
 
@@ -61,13 +62,13 @@ from astroPHD.ipython import (
 
 
 ##############################################################################
-### Running Imported Functions
+# Running Imported Functions
 
 InteractiveShell.ast_node_interactivity = "all"
 
 
 ##############################################################################
-### Printing Information
+# Printing Information
 
 print("""base_imports:
     Base: os, sys, time, pdb, warnings,
@@ -83,4 +84,4 @@ print("""base_imports:
 """)
 
 ##############################################################################
-### END
+# END

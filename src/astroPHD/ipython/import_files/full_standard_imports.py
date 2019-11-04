@@ -20,12 +20,11 @@ ASTROPY
 -------
 astropy
 .units -> u
-.coordinates -> coords
-    .SkyCoord
+.coordinates -> coords, .SkyCoord
 .table.Table, QTable
 .visualization.quantity_support, astropy_mpl_style
 
-**also does:
+also does:
 quantity_support()
 plt.style -> astropy_mpl_style
 
@@ -45,17 +44,17 @@ logging
 .util.logging.LogFile
 
 Misc
--------
+----
 .util.ObjDict
 
 IPYTHON
 -------
-display, Latex, Markdown, set_trace,
+display, Latex, Markdown, set_trace
 printmd, printMD, printltx, printLaTeX
-set_autoreload, # aimport, aimports
+set_autoreload, aimport
 configure_matplotlib
 
-**also does:
+also does:
 %matplotlib inline
 %config InlineBackend.figure_format = 'retina'
 InteractiveShell.ast_node_interactivity = "all"

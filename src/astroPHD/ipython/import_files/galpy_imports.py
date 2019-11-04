@@ -1,46 +1,39 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   :
-# AUTHOR  :
-# PROJECT :
+# TITLE   : galpy_imports
+# AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""**DOCSTRING**
-"""
+# Docstring and Metadata
+"""Base set of imports for the galpy code."""
 
 __author__ = "Nathaniel Starkman"
-# __copyright__ = "Copyright 2018, "
-# __credits__ = [""]
-# __license__ = "GPL3"
-# __version__ = "0.0.0"
-# __maintainer__ = "Nathaniel Starkman"
-# __email__ = "n.starkman@mail.utoronto.ca"
-# __status__ = "Production"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-import galpy
+if __name__ == '__main__':
 
-# potential
-from galpy import potential
-from galpy.potential import MWPotential2014
+    import galpy
 
-# orbit
-from galpy.orbit import Orbit
+    # potential
+    from galpy import potential
+    from galpy.potential import MWPotential2014
 
-# util
-from galpy.util import bovy_conversion, bovy_coords
+    # orbit
+    from galpy.orbit import Orbit
+
+    # util
+    from galpy.util import bovy_conversion, bovy_coords
 
 
 ##############################################################################
-### INFORMATION
+# INFORMATION
 
 print("""Imported from galpy:
     potential, .MWPotential2014
@@ -50,4 +43,4 @@ print("""Imported from galpy:
 
 
 ##############################################################################
-### END
+# END
