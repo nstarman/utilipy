@@ -31,24 +31,33 @@ import warnings
 ##############################################################################
 ### CODE
 
-def configure_matplotlib(backend='inline', figure_format='retina'):
-    """configure matplotlib jupyter magic
+def configure_matplotlib(backend: str='inline', figure_format: str='retina'):
+    """Configure matplotlib jupyter magic.
 
     Parameters
     ----------
     backend : str, optional  (defualt 'inline')
         set the matplotlib backend
+
     """
     if get_ipython() is None:
         warnings.warn('not in an IPython environment,'
                       'cannot configure matplotlib')
         return
 
-    # set matplotlib backend
-    get_ipython().magic(f"matplotlib {backend}")
+    from IPython.terminal.pt_inputhooks import UnknownBackend
 
-    # set the resolution
-    get_ipython().magic("config InlineBackend.figure_format='{figure_format}'")
+    try:
+        # set matplotlib backend
+        get_ipython().magic(f"matplotlib {backend}")
+
+    except UnknownBackend:
+        warnings.warn('not a valid backed. Please try again.')
+
+    else:
+        # set the resolution
+        get_ipython().magic("config InlineBackend.figure_format"
+                            f"='{figure_format}'")
 
     return
 # /def
