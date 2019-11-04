@@ -18,9 +18,8 @@
 # import top level packages
 from . import (
     data_utils,
-    # fitting,  commented out b/c tries to import lmfit, not always present
     imports,
-    ipython,
+    # ipython  # not imported b/c not always in an IPython env
     math,
     plot,
     util

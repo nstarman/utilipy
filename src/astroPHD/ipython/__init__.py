@@ -9,7 +9,49 @@
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""initialization file for jupyter notebook functions
+"""initialization file for IPython envionments.
+
+Methods
+-------
+autoreload:
+    set_autoreload: set the notebook's autoreload state for modules
+    aimport: import a module with autoreload options
+imports:
+    import_from_file
+    run_imports
+    import_base, import_extended, import_astropy, import_matplotlib
+    aimport from .autoreload
+notebook:
+    add_raw_code_toggle
+plot:
+    configure_matplotlib
+printing:
+    printmd / printMD
+    printHTML
+    printltx / printLaTeX
+
+Returns
+-------
+IPython
+    get_ipython
+    core.interactiveshell.InteractiveShell
+        .debugger.set_trace
+    display.display, Latex, Markdown, HTML
+astroPHD
+    ipython.autoreload.set_autoreload, aimport
+           .imports.run_imports, import_from_file
+           .notebook.add_raw_code_toggle
+           .plot.configure_matplotlib
+           .printing.printmd, printMD, printltx, printLaTeX
+    util.logging.LogPrint, LogFile
+
+Info
+----
+will set the display setting to all output lines
+and set the matplotlib backend to inline with retina resolution
+`InteractiveShell.ast_node_interactivity = "all"`
+`configure_matplotlib(backend='inline', figure_format='retina')`
+
 """
 
 __author__ = "Nathaniel Starkman"
@@ -23,22 +65,22 @@ from IPython import get_ipython
 from IPython.core.interactiveshell import InteractiveShell
 from IPython.core.debugger import set_trace
 from IPython.display import (
-    display,               # display is a better print
-    Latex, Markdown       # for printing LaTeX or Markdown strings
+    display,        # display is a better print
+    Latex,          # for printing LaTeX
+    Markdown, HTML  # for printing Markdown & HTML
 )
 
 # Project-Specific
 from ..util.logging import LogPrint, LogFile
 
-from .printing import (
-    printmd, printMD,     # markdown printing
-    printltx, printLaTeX  # LaTeX printing
-)
-
 from .autoreload import set_autoreload, aimport
 from .imports import run_imports, import_from_file
 from .notebook import add_raw_code_toggle
 from .plot import configure_matplotlib
+from .printing import (
+    printmd, printMD,     # markdown printing
+    printltx, printLaTeX  # LaTeX printing
+)
 
 
 ##############################################################################
@@ -63,8 +105,8 @@ else:
 def help():
     """Help for ipython module.
 
-    Imported
-    ========
+    Returns
+    -------
     IPython:display.display, .Latex, .Markdown
            .core.interactiveshell.InteractiveShell
                 .debugger.set_trace
@@ -76,33 +118,28 @@ def help():
                     .plot.configure_matplotlib
                     .printing.printmd, printMD, printltx, printLaTeX
 
-    Modules
-    =======
-
-    autoreload
-    ----------
-    set_autoreload: set the notebook's autoreload state for modules
-    aimport: import a module with autoreload options
-
-    imports
+    Methods
     -------
-    import_from_file
-    run_imports
-    import_base, import_extended, import_astropy, import_matplotlib, import_galpy, import_amuse
-    aimport from .autoreload
+    autoreload:
+        set_autoreload: set the notebook's autoreload state for modules
+        aimport: import a module with autoreload options
 
-    notebook
-    --------
-    add_raw_code_toggle
+    imports:
+        import_from_file
+        run_imports
+        import_base, import_extended, import_astropy, import_matplotlib
+        aimport from .autoreload
 
-    plot
-    ----
-    configure_matplotlib
+    notebook:
+        add_raw_code_toggle
 
-    printing
-    --------
-    printmd / printMD
-    printltx / printLaTeX
+    plot:
+        configure_matplotlib
+
+    printing:
+        printmd / printMD
+        printHTML
+        printltx / printLaTeX
 
     """
     print(__doc__)
