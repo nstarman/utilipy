@@ -1,21 +1,25 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """signature.
 
-TODO
-----
+Notes
+-----
 ? have the get_ methods use Signature.___ if it is my custom signature object
+
 """
 
 __author__ = "Nathaniel Starkman"
 
 __all__ = [
+    # Signature
+    'Signature',
+    # Signature / ArgSpec Interface
     'get_annotations_from_signature',
     'get_defaults_from_signature',
     'get_kwdefaults_from_signature',
     'get_kwonlydefaults_from_signature',
-    'Signature'
+    # Signature Methods
+    'replace_parameter',
+    'insert_parameter',
+    'drop_parameter',
 ]
 
 
@@ -146,22 +150,22 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
 
     # ------------------------------------------
 
-    def __init__(self, parameters=None, *, return_annotation,
-                 # docstring=None,
-                 __validate_parameters__=True):
-        super().__init__(parameters=parameters,
-                         return_annotation=return_annotation,
-                         __validate_parameters__=__validate_parameters__)
-        # self.docstring = docstring
-        return
-    # /def
+    # def __init__(self, parameters=None, *, return_annotation,
+    #              # docstring=None,
+    #              __validate_parameters__=True):
+    #     super().__init__(parameters=parameters,
+    #                      return_annotation=return_annotation,
+    #                      __validate_parameters__=__validate_parameters__)
+    #     # self.docstring = docstring
+    #     return
+    # # /def
 
-    @classmethod
-    def from_callable(cls, obj, *, follow_wrapped=True):
-        sig = super().from_callable(obj, follow_wrapped=follow_wrapped)
-        # sig.docstring = obj.__doc__
-        return sig
-    # /def
+    # @classmethod
+    # def from_callable(cls, obj, *, follow_wrapped=True):
+    #     sig = super().from_callable(obj, follow_wrapped=follow_wrapped)
+    #     # sig.docstring = obj.__doc__
+    #     return sig
+    # # /def
 
     # ------------------------------------------
 
@@ -248,7 +252,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         """
         return self.kwdefaults()
     # /def
-    
+
 
 #     (args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations).
 #     'args' is a list of the parameter names.
@@ -304,8 +308,8 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
                                       annotation=annotation)
 
         return self.replace(parameters=params)
+    # /def
 
-#     @np.vectorize  # TODO
     def insert_parameter(self, index: int, parameter: inspect.Parameter):
         """Insert a new Parameter.
 
@@ -327,7 +331,139 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         """
         params = list(self.parameters.values())
         params.insert(index, parameter)
+
         return self.replace(parameters=params)
+    # /def
+
+    def drop_parameter(self, param):
+        """Drop a Parameter.
+
+        Parameters
+        ----------
+        param: str
+            the parameter name in self.parameters
+
+        Returns
+        -------
+        Signature:
+            a new Signature object with the replaced parameter
+
+        """
+        # setup
+        index = list(self.parameters.keys()).index(param)
+        params = list(self.parameters.values())
+
+        # drop
+        del params[index]
+
+        return self.replace(parameters=params)
+    # /def
+
+
+##############################################################################
+# Signature Methods
+# TODO replace as method versions from Signature, can use semi-static for this
+
+
+def replace_parameter(signature, param, name=None, kind=None,
+                      default=None, annotation=None, return_annotation=None):
+    """Replace a Parameter.
+
+    Similar to .replace, but more convenient for modifying a single parameter
+    Parameters are immutable, so will create a new Signature object
+
+    Parameters
+    ----------
+    signature:  Signature
+        Signature object
+    param: str
+        the parameter name in self.parameters
+    name: str  (default None)
+        new parameter name, defaults to old parameter name
+    kind: type  (default None)
+        new parameter kind, defaults to old parameter kind
+    default: any  (default None)
+        new parameter default, defaults to old parameter default
+    annotation: any  (default None)
+        new parameter annotation, defaults to old parameter annotation
+
+    Returns
+    -------
+    Signature:
+        a new Signature object with the replaced parameter
+
+    """
+    # setup
+    index = list(signature.parameters.keys()).index(param)
+    params = list(signature.parameters.values())
+    param = params[index]
+
+    # replace
+    name = param.name if name is None else name
+    kind = param.kind if kind is None else kind
+    default = param.default if name is None else default
+    annotation = param.annotation if name is None else annotation
+
+    # adjust parameter list
+    params[index] = param.replace(name=name, kind=kind, default=default,
+                                  annotation=annotation,
+                                  return_annotation=return_annotation)
+
+    return signature.replace(parameters=params)
+# /def
+
+
+def insert_parameter(signature, index: int, parameter: inspect.Parameter):
+    """Insert a new Parameter.
+
+    Similar to .replace, but more convenient for adding a single parameter
+    Parameters are immutable, so will create a new Signature object
+
+    Parameters
+    ----------
+    index: int
+        index into Signature.parameters at which to insert new parameter
+    parameter: inspect.Parameter
+        parameter to insert at index
+
+    Returns
+    -------
+    Signature:
+        a new Signature object with the inserted parameter
+
+    """
+    params = list(signature.parameters.values())
+    params.insert(index, parameter)
+
+    return signature.replace(parameters=params)
+# /def
+
+
+def drop_parameter(signature, param):
+    """Drop a Parameter.
+
+    Parameters
+    ----------
+    signature:  Signature
+        Signature object
+    param: str
+        the parameter name in self.parameters
+
+    Returns
+    -------
+    Signature:
+        a new Signature object with the replaced parameter
+
+    """
+    # setup
+    index = list(signature.parameters.keys()).index(param)
+    params = list(signature.parameters.values())
+
+    # drop
+    del params[index]
+
+    return signature.replace(parameters=params)
+# /def
 
 
 ##############################################################################
