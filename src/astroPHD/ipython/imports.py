@@ -26,16 +26,16 @@ from .autoreload import aimport
 # SETUP
 
 _LOGFILE = LogFile(header=False, verbose=0)
-# _LOGGER_KW = {'print': False}
+_LOGGER_KW = {'print': False}
 
 
 ##############################################################################
 # CODE
 
 def import_from_file(*files, relative: bool=True,
-                     logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+                     logger=_LOGFILE, verbose=None, logger_kw=_LOGGER_KW
                      ) -> None:
-    """run import(s) from a file(s)
+    """Run import(s) from a file(s).
 
     Parameters
     ----------
@@ -44,8 +44,8 @@ def import_from_file(*files, relative: bool=True,
         need to include file suffix
     relative: bool, list of bools
         whether the `*files` paths are relative or absolute
-    """
 
+    """
     # broadcasting relative to same length as files
     if isinstance(relative, bool):
         relatives = [relative] * len(files)
@@ -72,36 +72,34 @@ def import_from_file(*files, relative: bool=True,
 
 def run_imports(*files, relative: bool=True,
                 base: bool=False, astropy: bool=False, matplotlib: bool=False,
-                extended: bool=False, galpy: bool=False, amuse: bool=False,
+                extended: bool=False,
+                # galpy: bool=False, amuse: bool=False,
                 logger=_LOGFILE, verbose=0, logger_kw={}) -> None:
-    """runs .imports file using ipython magic
+    """Run .imports file using ipython magic.
 
-    Info
-    ----
     if `astropy` & `matplotlib`, sets matplotlib style to astropy_mpl_style
 
     Parameters
     ----------
-    *files: str(s)
+    files: str(s)
         strings for files to import
         need to include file suffix
-    relative: bool, list of bools
-        whether the `*files` paths are relative or absolute
-
+    relative: bool, bool list
+        whether the `files` paths are relative or absolute
     base: bool
-        import_base -> `astroPHD/ipython/imports/base_imports.py'
+        import_base -> `astroPHD/ipython/imports/base_imports.py`
     astropy: bool
-        import_astropy -> `astroPHD/imports/astropy_imports.py'
+        import_astropy -> `astroPHD/imports/astropy_imports.py`
     matplotlib: bool
-        import_matplotlib -> `astroPHD/imports/matplotlib_imports.py'
+        import_matplotlib -> `astroPHD/imports/matplotlib_imports.py`
     extended: bool
-        import_extended -> `astroPHD/imports/extended_imports.py'
-    galpy: bool
-        import_galpy -> `astroPHD/imports/galpy_imports.py'
-    amuse: bool
-        import_amuse -> `astroPHD/imports/amuse_imports.py'
-    """
+        import_extended -> `astroPHD/imports/extended_imports.py`
+    # galpy: bool
+    #     import_galpy -> `astroPHD/imports/galpy_imports.py`
+    # amuse: bool
+    #     import_amuse -> `astroPHD/imports/amuse_imports.py`
 
+    """
     # running imports file
     if base:
         import_base(logger=logger, verbose=verbose)
@@ -115,11 +113,11 @@ def run_imports(*files, relative: bool=True,
     if extended:
         import_extended(logger=logger, verbose=verbose)
 
-    if galpy:
-        import_galpy(logger=logger, verbose=verbose)
+    # if galpy:
+    #     import_galpy(logger=logger, verbose=verbose)
 
-    if amuse:
-        import_amuse(logger=logger, verbose=verbose)
+    # if amuse:
+    #     import_amuse(logger=logger, verbose=verbose)
 
     # when combined
     if astropy & matplotlib:
@@ -147,8 +145,7 @@ def _join_pfd(path):
 
 
 def run_standard_imports() -> None:
-    """
-    """
+    """Deprecated."""
     raise DeprecationWarning("use run_imports() with options instead,"
                              "or './import_files/full_standard_imports.py'")
 
@@ -162,20 +159,27 @@ def run_standard_imports() -> None:
 ##############################################################################
 # Specific Imports
 
-def import_base(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+def import_base(logger=_LOGFILE, verbose=None, logger_kw=_LOGGER_KW
                 ) -> None:
     """Import base packages.
 
-    Base: os, sys, time, pdb, warnings,
-          numpy -> np, scipy,
-          tqdm -> TQDM, .tqdm, .tqdm_notebook ->. tqdmn
-    Logging: .LogFile
-    Misc: ObjDict
-    IPython: display, Latex, Markdown, set_trace,
-             printmd, printMD, printltx, printLaTeX,
-             set_autoreload, aimport,
-             run_imports, import_from_file,
-             add_raw_code_toggle
+    Returns
+    -------
+    Base:
+        os, sys, time, pdb, warnings,
+        numpy -> np, scipy,
+        tqdm -> TQDM, .tqdm, .tqdm_notebook -> tqdmn
+    IPython:
+        display, Latex, Markdown, set_trace,
+        printmd, printMD, printltx, printLaTeX,
+        set_autoreload, aimport,
+        run_imports, import_from_file,
+        add_raw_code_toggle
+    Logging:
+        LogFile
+    Misc:
+        ObjDict
+
     """
     import_from_file(_join_pfd('import_files/base_imports.py'),
                      relative=False,
@@ -187,12 +191,17 @@ def import_base(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
 
 # ----------------------------------------------------------------------------
 
-def import_extended(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+def import_extended(logger=_LOGFILE, verbose=None, logger_kw=_LOGGER_KW
                     ) -> None:
     """Import extended packages.
 
-    numpy: linalg.norm
-    scipy stats.binned_statistic->binned_stats
+    Returns
+    -------
+    numpy:
+        linalg.norm
+    scipy:
+        stats.binned_statistic->binned_stats
+
     """
     import_from_file(_join_pfd('import_files/extended_imports.py'),
                      relative=False,
@@ -204,9 +213,19 @@ def import_extended(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
 
 # ----------------------------------------------------------------------------
 
-def import_astropy(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+def import_astropy(logger=_LOGFILE, verbose=None, logger_kw=_LOGGER_KW
                    ) -> None:
-    """
+    """Import basic Astropy packages.
+
+    Returns
+    -------
+    astropy:
+        .astropy
+        units -> u
+        coordinates -> coords, .SkyCoord
+        table.Table, QTable
+        visualization.quantity_support, astropy_mpl_style
+
     """
     import_from_file(_join_pfd('import_files/astropy_imports.py'),
                      relative=False,
@@ -218,9 +237,20 @@ def import_astropy(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
 
 # ----------------------------------------------------------------------------
 
-def import_matplotlib(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+def import_matplotlib(logger=_LOGFILE, verbose=None, logger_kw=_LOGGER_KW
                       ) -> None:
-    """
+    """Import basic Matplotlib packages.
+
+    Returns
+    -------
+    matplotlib:
+        -> mpl
+        pyplot -> plt
+        cm, colors
+    astroPHD:
+        ipython.plot.configure_matplotlib
+        configure_matplotlib(backend='inline', figure_format='retina')
+
     """
     import_from_file(_join_pfd('import_files/matplotlib_imports.py'),
                      relative=False,
@@ -232,30 +262,30 @@ def import_matplotlib(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
 
 # ----------------------------------------------------------------------------
 
-def import_galpy(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
-                 ) -> None:
-    """
-    """
-    import_from_file(_join_pfd('import_files/galpy_imports.py'),
-                     relative=False,
-                     logger=logger, verbose=verbose, logger_kw=logger_kw)
+# def import_galpy(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+#                  ) -> None:
+#     """
+#     """
+#     import_from_file(_join_pfd('import_files/galpy_imports.py'),
+#                      relative=False,
+#                      logger=logger, verbose=verbose, logger_kw=logger_kw)
 
-    return
-# /def
+#     return
+# # /def
 
 
 # ----------------------------------------------------------------------------
 
-def import_amuse(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
-                 ) -> None:
-    """
-    """
-    import_from_file(_join_pfd('import_files/amuse_imports.py'),
-                     relative=False,
-                     logger=logger, verbose=verbose, logger_kw=logger_kw)
+# def import_amuse(logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+#                  ) -> None:
+#     """
+#     """
+#     import_from_file(_join_pfd('import_files/amuse_imports.py'),
+#                      relative=False,
+#                      logger=logger, verbose=verbose, logger_kw=logger_kw)
 
-    return
-# /def
+#     return
+# # /def
 
 
 ##############################################################################

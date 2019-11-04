@@ -8,7 +8,7 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
+# Docstring and Metadata
 r"""functions for enhanced printing in an IPython environment
 
 Functions:
@@ -21,19 +21,21 @@ __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 from IPython.display import display  # display is a better print
 from IPython.display import Latex, Markdown
 
 
 ##############################################################################
 # CODE
+##############################################################################
 
 def printmd(s, color=None, size=None, bold=False, italic=False,
             fontweight=None, fontstyle=None):
-    """print in markdown
+    """Print in Markdown.
+
     uses <span>
 
     Parameters
@@ -60,6 +62,7 @@ def printmd(s, color=None, size=None, bold=False, italic=False,
         sets the 'style:font-style'
         see https://www.w3schools.com/cssref/pr_font_font-style.asp
         str options: normal, italic, oblique, initial, inherit
+
     """
     # doing style
     styleattrs = []
@@ -97,7 +100,7 @@ printMD = printmd
 # ----------------------------------------------------------------------------
 
 def printltx(s, math=False, equation=False, matrix=False, label=''):
-    r"""print in latex
+    r"""Print in latex.
 
     Parameters
     ----------
@@ -111,11 +114,11 @@ def printltx(s, math=False, equation=False, matrix=False, label=''):
         if None: then '\equation*'
     matrix: bool, str  (default False)
         whether the whole string should be wrapped in $\matrix$
-        True: 'matrix'
-        if str: use that matrix type, like 'bmatrix'
-            shortcuts: 'b' -> 'bmatrix'
+        if str, use that matrix type, like 'bmatrix'
+        shortcuts) 'b' -> 'bmatrix'
     label: the label of the equation, etc.
         only used in equation or matrix
+
     """
     if label == '':
         pass

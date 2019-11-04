@@ -8,22 +8,24 @@
 # PROJECT : astronat
 #
 # ----------------------------------------------------------------------------
-### Docstring and Metadata
-r"""astronomy functions
+
+# Docstring and Metadata
+r"""Astronomy functions.
 
 TODO incorporate astropy cosmology
+
 """
 
 __author__ = "Nathaniel Starkman"
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 from functools import wraps
 import numpy as np
 
-## Custom Imports
+# Custom Imports
 from ... import units as u
 
 
@@ -31,33 +33,33 @@ from ... import units as u
 # Angular Distance
 
 @u.quantity_io()
-def angular_distance(lon1:u.deg, lat1:u.deg, lon2:u.deg, lat2:u.deg):
-    r"""the angular distance on-sky
+def angular_distance(lon1: u.deg, lat1: u.deg, lon2: u.deg, lat2: u.deg):
+    r"""Angular distance on-sky.
 
-    equation:
     for longitude (ra) \alpha and latitude (dec) \delta
-    \cos{\theta} = \left[\sin(\delta_1)\sin(\delta_2) +
-                         \cos(\delta_1)\cos(\delta_2)\cos(\alpha_1-\alpha_2)
-                   \right]
+    .. math::
+        \cos{\theta} = \left[\sin(\delta_1)\sin(\delta_2) +
+                             \cos(\delta_1)\cos(\delta_2)\cos(\alpha_1-\alpha_2)
+                       \right]
 
     Parameters
     ----------
-    lon1 : scalar, array
+    lon1 : scalar or array
         the longitude of the 1st point
         if array, lat1, lon2, lat2 must be same-size arrays, or scalars
-    lat1 : scalar, array
+    lat1 : scalar or array
         the latitude of the 1st point
         if array, lon1, lon2, lat2 must be same-size arrays, or scalars
-    lon2 : scalar, array
+    lon2 : scalar or array
         the longitude of the 2nd point
         if array, lon1, lat1, lat2 must be same-size arrays, or scalars
-    lat2 : scalar, array
+    lat2 : scalar or array
         the latitude of the 2nd point
         if array, lon1, lat1, lon2 must be same-size arrays, or scalars
 
     Returns
     -------
-    out : scalar, array
+    res : scalar or array
         the angular distance on-sky
         same shape as largest of lon1, lat1, lon2, lat2
 
@@ -65,14 +67,14 @@ def angular_distance(lon1:u.deg, lat1:u.deg, lon2:u.deg, lat2:u.deg):
     ----
     for reference:
         ICRS: lon=ra, lat=dec
+
     """
+    latcomp = np.sin(lat1) * np.sin(lat2)  # latitude component
+    loncomp = np.cos(lat1) * np.cos(lat2) * np.cos(lon1 - lon2)  # longitude component
 
-    latcomp = np.sin(lat1) * np.sin(lat2)
-    loncomp = np.cos(lat1) * np.cos(lat2) * np.cos(lon1 - lon2)
+    res = np.arccos(latcomp + loncomp)
 
-    out = np.arccos(latcomp + loncomp)
-
-    return out
+    return res
 # /def
 
 
@@ -239,8 +241,6 @@ def distanceModulus(arg, A=0 * u.mag, obs=True, **kw):
 # /def
 
 
-
-
 ##############################################################################
 # Parallax
 
@@ -253,6 +253,7 @@ def parallax_angle(d: u.pc, **kw) -> u.deg:
 
 # --------------------------------------------------------------------------
 
+
 @u.quantity_io(p='angle')
 def parallax_distance(p: u.deg, **kw) -> u.pc:
     r"""compyte parallax distance
@@ -261,6 +262,7 @@ def parallax_distance(p: u.deg, **kw) -> u.pc:
 # /def
 
 # --------------------------------------------------------------------------
+
 
 @u.quantity_io(arg=('angle', 'length'))
 def parallax(arg, **kw):

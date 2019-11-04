@@ -9,7 +9,7 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
+# Docstring and Metadata
 """functions for jupyter notebook / lab / hub
 """
 
@@ -18,30 +18,23 @@ __credits__ = ["Jo Bovy"]
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 from IPython.display import HTML
 
-## Project-Specific
-
-##############################################################################
-### PARAMETERS
+# Project-Specific
 
 
 ##############################################################################
-### CODE
-
-# --------------------------------------------------------------------------
+# CODE
 
 def add_raw_code_toggle():  # TODO test works as a function
-    """
+    """Add a toggle for code.
 
-    Info
-    ----
     code from Jo Bovy
-    """
 
+    """
     return HTML("""<script>
     code_show=true;
     function code_toggle() {
@@ -54,9 +47,10 @@ def add_raw_code_toggle():  # TODO test works as a function
     }
     $( document ).ready(code_toggle);
     </script>
-    <form action="javascript:code_toggle()"><input type="submit" value="Click here to toggle on/off the raw code."></form>"""
-    )
+    <form action="javascript:code_toggle()">
+    <input type="submit" value="Click here to toggle on/off the raw code.">
+    </form>""")
 # /def
 
 ##############################################################################
-### END
+# END

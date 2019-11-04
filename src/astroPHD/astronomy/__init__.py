@@ -4,22 +4,21 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : initialization file
-# AUTHOR  : 
-# PROJECT :
+# AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""initialization file for astronomy/
-"""
+# Docstring and Metadata
+"""Initialization file for astronomy."""
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 
 
-## Project-Specific
+# Project-Specific
 from .. import units
 
 from . import fast, instruments, main, sc
@@ -36,4 +35,4 @@ from .main.functions import (
 
 
 ##############################################################################
-### END
+# END
