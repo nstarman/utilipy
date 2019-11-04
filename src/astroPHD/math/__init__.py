@@ -18,7 +18,7 @@ __author__ = "Nathaniel Starkman"
 ### IMPORTS
 
 ## Project-Specific
-from .util import quadrature
+from .math import quadrature, logsumexp
 
 ##############################################################################
 ### DONE

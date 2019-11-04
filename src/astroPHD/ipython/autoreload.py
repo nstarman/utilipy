@@ -34,11 +34,11 @@ def set_autoreload(reload_type: int=1):
 
     Parameters
     ----------
-    reload_type : int
-        0: Disable automatic reloading.
-        1: Reload all modules imported with %aimport every time
+    reload_type: int
+        0) Disable automatic reloading.
+        1) Reload all modules imported with %aimport every time
            before executing the Python code typed.
-        2: Reload all modules (except those excluded by %aimport)
+        2) Reload all modules (except those excluded by %aimport)
            every time before executing the Python code typed.
 
     """
@@ -60,11 +60,11 @@ def aimport(*modules, autoreload: (bool, list, tuple)=True):
 
     Parameters
     ----------
-    *modules : list of strs
+    modules: list of strs
         the modules to be imported
-    autoreload : bool, list, optional  (default True)
+    autoreload: bool, list, optional  (default True)
         whether the imported modules are marked for autoreloading
-        if its a list, it must be the same length as **modules*
+        if its a list, it must be the same length as *modules*
 
     """
     # making autoreload compatible with modules
