@@ -24,7 +24,7 @@ except:  # pragma: no cover
 ##############################################################################
 
 # The default configuration
-default_configuration = {'verbose': {'verbose-imports': 'True',
+default_configuration = {'verbosity': {'verbose-imports': 'True',
                                      'warnings': 'True'},
                          'plot': {'seaborn-defaults': 'False', }
                          }
@@ -85,15 +85,15 @@ if not check_config(__config__):
 ##############################################################################
 # Set configuration variables on the fly
 
-def set_import_verbosity(key: bool):
+def set_import_verbosity(key: (bool, {'True', 'False'})):
     """Set whether the full import information is printed or not."""
-    assert isinstance(key, bool)
-    __config__.set('verbosity', 'verbose-imports', key)
+    assert str(key) in ('True', 'False')
+    __config__.set('verbosity', 'verbose-imports', str(key))
 # /def
 
 
-def set_warnings_verbosity(key: bool):
+def set_warnings_verbosity(key: (bool, str)):
     """Set warnings verbosity."""
-    assert isinstance(key, bool)
-    __config__.set('verbosity', 'warnings', key)
+    assert str(key) in ('True', 'False')
+    __config__.set('verbosity', 'warnings', str(key))
 # /def
