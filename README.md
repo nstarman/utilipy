@@ -2,11 +2,12 @@
 
 Welcome to 	`astroPHD`, a collection of useful python codes.
 
+[![Build Status](https://travis-ci.org/nstarman/astroPHD.svg?branch=master)](https://travis-ci.org/nstarman/astroPHD)
+[![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
+
 ## Attribution
 
 [![DOI](https://zenodo.org/badge/192425953.svg)](https://zenodo.org/badge/latestdoi/192425953)
-[![Build Status](https://travis-ci.org/nstarman/astroPHD.svg?branch=master)](https://travis-ci.org/nstarman/astroPHD)
-
 Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://www.astro.utoronto.ca/~starkman/) -- [github](https://github.com/nstarman)
 
 
