@@ -9,15 +9,42 @@
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""Base set of imports for the galpy code."""
+"""Base set of imports for the galpy code.
+
+Returns
+-------
+galpy
+potential, .MWPotential2014
+galpy.orbit.Orbit
+galpy.util: bovy_conversion, bovy_coords
+
+References
+----------
+Galpy reference is [1]_
+
+.. [1] galpy: A Python Library for Galactic Dynamics, Jo Bovy (2015),
+    Astrophys. J. Supp., 216, 29 (arXiv/1412.3451)
+
+"""
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
+# HELPER FUNCTIONS
+
+from astroPHD.util.config import __config__
+from astroPHD.util.decorators.docstring import (
+    _set_docstring_import_file_helper,
+    _import_file_docstring_helper
+)
+
+
+
+##############################################################################
 # IMPORTS
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # protect if galpy not installed
 
     import galpy
 
@@ -31,16 +58,20 @@ if __name__ == '__main__':
     # util
     from galpy.util import bovy_conversion, bovy_coords
 
+# /if
 
 ##############################################################################
-# INFORMATION
+# Printing Information
 
-print("""Imported from galpy:
-    potential, .MWPotential2014
-    galpy.orbit.Orbit
-    galpy.util: bovy_conversion, bovy_coords
-""")
+@_set_docstring_import_file_helper('galpy', __doc__)  # doc from __doc__
+def galpy_imports_help():
+    """Help for galpy base imports."""
+    _import_file_docstring_helper(galpy_imports_help.__doc__)  # formatting
+# /def
 
+
+if __config__.getboolean('verbosity', 'verbose-imports'):
+    galpy_imports_help()
 
 ##############################################################################
 # END
