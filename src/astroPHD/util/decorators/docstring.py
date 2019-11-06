@@ -104,5 +104,7 @@ class replace_docstring(DecoratorBaseClass):
     # /def
 
 
+set_docstring = replace_docstring
+
 ##############################################################################
 # END

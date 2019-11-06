@@ -13,7 +13,7 @@
 
 Returns
 -------
- Base: os, sys, time, pdb, warnings,
+Base: os, sys, time, pdb, warnings,
       numpy -> np, scipy,
       tqdm -> TQDM, .tqdm, .tqdm_notebook ->. tqdmn
 Logging: .LogFile
@@ -66,7 +66,6 @@ from astroPHD.util.decorators.docstring import (
     _set_docstring_import_file_helper,
     _import_file_docstring_helper
 )
-
 
 
 ##############################################################################
