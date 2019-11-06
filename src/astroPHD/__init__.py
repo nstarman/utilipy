@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -8,8 +7,7 @@
 # ----------------------------------------------------------------------------
 
 ### Docstring and Metadata
-"""main initialization file
-"""
+"""Main initialization file."""
 
 ##############################################################################
 ### IMPORTS
@@ -19,7 +17,7 @@
 from . import (
     data_utils,
     imports,
-    # ipython  # not imported b/c not always in an IPython env
+    ipython,
     math,
     plot,
     util
@@ -28,6 +26,9 @@ from . import (
 # import commonly used functions
 from .util.logging import LogFile
 from .util.collections import ObjDict
+
+# configuration
+from .util import config
 
 
 #############################################################################
