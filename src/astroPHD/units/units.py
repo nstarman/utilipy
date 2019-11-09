@@ -7,7 +7,9 @@
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""Added units to astropy units."""
+"""Added units to Astropy units.
+
+"""
 
 __author__ = "Nathaniel Starkman"
 

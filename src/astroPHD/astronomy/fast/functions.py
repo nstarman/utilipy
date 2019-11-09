@@ -100,8 +100,8 @@ def distanceModulus_magnitude(distance):
 
     equation:  DM = 5 log10(d / 10)
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     distance: scalar, array
         in parsecs
         if Quantity, pass as distance.to_value('pc')
@@ -125,8 +125,8 @@ def distanceModulus_distance(DM):
     equation:  DM = 5 log10(d / 10)
     d = 10^{\frac{DM}{5}+1}
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     DM: scalar, array
         in magnitudes
         if Quantity, pass as distance.to_value('mag')
@@ -154,8 +154,8 @@ def distanceModulus(arg, d2dm=True):
 
     not as fast as calling distanceModulus_magnitude(distance) directly
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     arg: scalar, array
         either distance (d) in pc (.value) or  DM in magnitudes (.value)
         determined by `d2dm`
@@ -181,8 +181,8 @@ def distanceModulus(arg, d2dm=True):
 def parallax_angle(d):
     r"""Compute parallax angle.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     d: pc
         distance
         1 AU = 0.000004848137 pc
@@ -202,8 +202,8 @@ def parallax_angle(d):
 def parallax_distance(p):
     r"""Compute parallax distance.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     p: radian
         parallax angle
 
@@ -225,8 +225,8 @@ def parallax(arg, d2p=True):
 
     Not as fast as calling parallax_angle(distance) directly
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     arg: scalar, array
         either distance (d) in pc (.value)
         or  parallax_angle (p) in radians (.value)

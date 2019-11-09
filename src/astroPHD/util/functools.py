@@ -1,12 +1,32 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""functools
+"""Added functionality to ``functools``.
+
+Routine Listings
+----------------
+makeFunction
+    make a function from an existing code object.
+
+copy_function
+    Copy a function.
+
+update_wrapper
+    this overrides the default ``functools`` `update_wrapper`
+    and adds signature and docstring overriding
+
+wraps
+    this overrides the default ``functools`` `update_wrapper`
+    and adds signature and docstring overriding
+
+References
+----------
+Some functions modified from https://docs.python.org/3/library/functools.html
 
 TODO
 ----
 improve makeFunction call signature
 test makeFunction-made function speeds
+
 """
 
 __author__ = "Nathaniel Starkman"
@@ -28,7 +48,7 @@ from .inspect import (Signature,
 
 
 ################################################################################
-# Signature / ArgSpec Interface
+# CODE
 ################################################################################
 
 def makeFunction(code, globals_, name=None, signature=None, docstring=None,
@@ -110,16 +130,35 @@ def update_wrapper(wrapper, wrapped,
                    updated=WRAPPER_UPDATES):
     """Update a wrapper function to look like the wrapped function.
 
-    Info
-    ----
-       wrapper is the function to be updated
-       wrapped is the original function
-       assigned is a tuple naming the attributes assigned directly
+    Parameters
+    ----------
+    wrapper
+        the function to be updated
+
+    wrapped
+       the original function
+
+    signature : Signature or None
+      signature to impose on `wrapper`. None defaults to `wrapped`'s signature.
+
+    docstring : str or None
+      docstring to impose on `wrapper`. None defaults to `wrapped`'s docstring.
+
+    assigned : tuple
+       tuple naming the attributes assigned directly
        from the wrapped function to the wrapper function (defaults to
-       functools.WRAPPER_ASSIGNMENTS)
-       updated is a tuple naming the attributes of the wrapper that
+       ``functools.WRAPPER_ASSIGNMENTS``)
+
+    updated : tuple
+       is a tuple naming the attributes of the wrapper that
        are updated with the corresponding attribute from the wrapped
-       function (defaults to functools.WRAPPER_UPDATES)
+       function (defaults to ``functools.WRAPPER_UPDATES``)
+
+    Returns
+    -------
+    wrapper : FunctionType
+        `wrapper` function updated by the `wrapped` function's attributes and
+        also the provided `signature` and `docstring`.
 
     """
     if signature is None:  # get function signature if None
@@ -175,12 +214,14 @@ def wraps(wrapped,
           docstring: (str, None)=None,
           assigned=WRAPPER_ASSIGNMENTS,
           updated=WRAPPER_UPDATES):
-    """Decorator factory to apply update_wrapper() to a wrapper function
-       Returns a decorator that invokes update_wrapper() with the decorated
-       function as the wrapper argument and the arguments to wraps() as the
-       remaining arguments. Default arguments are as for update_wrapper().
-       This is a convenience function to simplify applying partial() to
-       update_wrapper().
+    """Decorator factory to apply ``update_wrapper()`` to a wrapper function.
+
+    Returns a decorator that invokes ``update_wrapper()`` with the decorated
+    function as the wrapper argument and the arguments to ``wraps()`` as the
+    remaining arguments. Default arguments are as for ``update_wrapper()``.
+    This is a convenience function to simplify applying ``partial()`` to
+    ``update_wrapper()``.
+
     """
     return partial(update_wrapper, wrapped=wrapped,
                    signature=signature, docstring=docstring,

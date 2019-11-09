@@ -17,13 +17,13 @@ TODO incorporate astropy cosmology
 __author__ = "Nathaniel Starkman"
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 import numpy as np
 from functools import wraps
 
-## Custom Imports
+# Custom Imports
 from ... import units as u
 
 
@@ -32,9 +32,9 @@ from ... import units as u
 
 @u.quantity_io(m=u.mag)
 def apparent_to_absolute_magnitude(sc, m: u.mag, **kw) -> u.mag:
-    """
-    calculate the absolute magnitude
-    M = m - 5 log10(d) + 5
+    """Calculate absolute magnitude.
+
+    .. math::  M = m - 5 log10(d) + 5
 
     Parameters
     ----------
@@ -46,92 +46,81 @@ def apparent_to_absolute_magnitude(sc, m: u.mag, **kw) -> u.mag:
 
     Returns
     -------
-    M: ndarray
+    M: array_like
         absolute magnitudes
+
     """
-
     M = m - 5.0 * np.log10(sc.spherical.distance) + 5.0
-
     return M
 # /def
 
 
 @u.quantity_io(M=u.mag)
 def absolute_to_apparent_magnitude(sc, M: u.mag, **kw) -> u.mag:
-    """
-    calculate the apparent magnitude
-    m = M + 5 log10(d) - 5
+    """Calculate apparent magnitude.
+
+    .. math:: m = M + 5 log10(d) - 5
 
     Parameters
     ----------
     M: array_like
         absolute magnitude
     sc: SkyCoord
-        ** warning: check if skycoord frame centered on Earth
         gets sc.spherical.distance
+        .. warning:: check if skycoord frame centered on Earth
 
     Returns
     -------
     m: ndarray
         apparent magnitudes
     """
-
     m = M + 5.0 * np.log10(sc.spherical.distance) - 5.0
-
     return m
 # /def
 
 
 @u.quantity_io()
 def distanceModulus_magnitude(sc, **kw) -> u.mag:
-    r"""distance modulus from distance in skycoord
-    equation:  DM = 5 log10(d / 10) + A
+    r"""distance modulus from distance in Skycoord.
+    
+    .. math::  DM = 5 log10(d / 10) + A
 
-    the skycoord already has the distance
-    equivalent to
-        sc.spherical.distance.distmod
+    the Skycoord already has the distance
+    equivalent to `sc.spherical.distance.distmod`
 
     Arguments
     ---------
     sc: SkyCoord
-        ** warning: check if skycoord frame centered on Earth
+        .. warning:: check if Skycoord frame centered on Earth
 
     Returns
     -------
     DM: scalar, array
         default units: u.mag
 
-    # TODO
-        A, obs
-        skycoord frame. what if skycoord not centered at earth?
     """
-
     return sc.spherical.distance.distmod
 # /def
 
 
 @u.quantity_io()
 def distanceModulus_distance(sc, **kw) -> u.pc:
-    r"""distance from distance modulus in skycoord
-    equation:  DM = 5 log10(d / 10) + A
+    r"""Distance from distance modulus in Skycoord.
+    
+    .. math::  DM = 5 log10(d / 10) + A
 
-    the skycoord already has the distance,
-    equivalent to
-        sc.spherical.distance
+    the Skycoord already has the distance,
+    equivalent to `sc.spherical.distance`
 
     Arguments
     ---------
     sc: SkyCoord
-        ** warning: check if skycoord frame centered on Earth
+        .. warning:: check if Skycoord frame centered on Earth
 
     Returns
     -------
     DM: scalar, array
         default units: u.mag
-
-    # TODO
-        A, obs
-        skycoord frame. what if skycoord not centered at earth?
     """
 
     return sc.spherical.distance

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -9,11 +8,8 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""decorators for converting scipy residual functions to lmfit functions
-
-TODO redo with my decorator method
-"""
+# Docstring and Metadata
+"""decorators for converting scipy residual functions to lmfit functions."""
 
 __author__ = "Nathaniel Starkman"
 
@@ -21,25 +17,18 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# General
+# GENERAL
 from wrapt import ObjectProxy
 
-# Custom
-# from .. import ObjDict, LogFile
-
-# Project-Specific
-
-##############################################################################
-# PARAMETERS
-
-# _LOGFILE = LogFile(header=False)  # LogPrint, compatible with LogFile
+# PROJECT-SPECIFIC
 
 
 ##############################################################################
 # CODE
 
 class scipy_residual_to_lmfit(ObjectProxy):
-    """decorator to make scipy residual functions compatible with lmfit
+    """decorator to make scipy residual functions compatible with lmfit.
+
     (see https://lmfit.github.io/lmfit-py/fitting.html)
 
     Parameters
@@ -59,21 +48,22 @@ class scipy_residual_to_lmfit(ObjectProxy):
     the function can be called as normal
     add a .lmfit function for use in lmfit minimizations
     see https://lmfit.github.io/lmfit-py/fitting.html
-    ex:
-        @scipy_residual_to_lmfit(['amp', 'phase', 'freq', 'decay'])
-        def residual(vars, x, data, eps_data):
-            amp, phase, freq, decay = vars
-            ...
-            return res
+
+    >>> @scipy_residual_to_lmfit(['amp', 'phase', 'freq', 'decay'])
+    ... def residual(vars, x, data, eps_data):
+    ...     amp, phase, freq, decay = vars
+    ...     # calculate residual here
+    ...     return res
 
     TODO
-    - since using ObjectProxy, make it compatible with bound functions
-      see https://wrapt.readthedocs.io/en/latest/wrappers.html#function-wrappers
+    ----
+    since using ObjectProxy, make it compatible with bound functions
+    see https://wrapt.readthedocs.io/en/latest/wrappers.html#function-wrappers
+
     """
 
     def __new__(cls, func=None, var_order: list=None):
-        """
-        """
+        """Create Proxy."""
         if var_order is None:
             raise ValueError('var_order cannot be None')
 
@@ -90,11 +80,10 @@ class scipy_residual_to_lmfit(ObjectProxy):
 
     @classmethod
     def decorator(cls, var_order: list):
-        """TODO
-        """
+        """Decorator."""
         # @functools.wraps(cls)  # not needed when using ObjectProxy
         def wrapper(func):
-            """scipy_residual_to_lmfit wrapper"""
+            """scipy_residual_to_lmfit wrapper."""
             return cls(func, var_order=var_order)
         # /def
 
@@ -102,12 +91,14 @@ class scipy_residual_to_lmfit(ObjectProxy):
     # /def
 
     def __init__(self, func, var_order: list):
+        """Initialize Proxy."""
         super().__init__(func)  # inializing function into wrapt.ObjectProxy
         self.var_order = var_order
         return
     # /def
 
     def lmfit(self, params, *args, **kwargs):
+        """`lmfit` version of function."""
         vars = [params[n].value for n in self.var_order]
         return self.__wrapped__(vars, *args, **kwargs)
     # /def

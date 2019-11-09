@@ -1,8 +1,27 @@
-"""signature.
+"""Added functionality to ``inspect.signature``.
 
-Notes
------
-? have the get_ methods use Signature.___ if it is my custom signature object
+Routine Listings
+----------------
+Signature
+
+get_annotations_from_signature
+
+get_defaults_from_signature
+
+get_kwdefaults_from_signature
+
+get_kwonlydefaults_from_signature
+
+replace_parameter
+
+insert_parameter
+
+drop_parameter
+
+
+TODO
+----
+have the `get_` methods use `Signature.method` if it is my custom signature object
 
 """
 
@@ -46,10 +65,6 @@ KEYWORD_ONLY = inspect.Parameter.KEYWORD_ONLY
 def get_annotations_from_signature(signature):
     """Get annotations from Signature object.
 
-    ex: def f(x: 'x annotation') -> 'return annotation':
-            pass
-    -> {'x': 'x annotation', 'return': 'return annotation'}
-
     Parameters
     ----------
     signature: Signature
@@ -60,6 +75,13 @@ def get_annotations_from_signature(signature):
     annotations: dict
         argument {name: annotation} values
         return annotations under key 'return'
+
+    Examples
+    --------
+    >>> def func(x: 'x annotation') -> 'return annotation':
+    ...   pass
+    >>> Signature(func).annotations
+    {'x': 'x annotation', 'return': 'return annotation'}
 
     """
     annotations = {k: v.annotation for k, v in signature.parameters.items()
@@ -72,10 +94,6 @@ def get_annotations_from_signature(signature):
 def get_defaults_from_signature(signature):
     """Get defaults from Signature object.
 
-    ex: def f(x=2):
-            pass
-    -> (2,)
-
     Parameters
     ----------
     signature: Signature
@@ -85,6 +103,13 @@ def get_defaults_from_signature(signature):
     -------
     defaults: tuple
         n-tuple for n defaulted positional parameters
+
+    Examples
+    --------
+    >>> def func(x=2,):
+    ...     pass
+    >>> Signature(func).defaults
+    (2,)
 
     """
     return tuple([p.default for p in signature.parameters.values()
@@ -98,10 +123,6 @@ def get_defaults_from_signature(signature):
 def get_kwdefaults_from_signature(signature):
     """Get key-word only defaults from Signature object.
 
-    ex: def f(x=2):
-            pass
-    -> (2,)
-
     Parameters
     ----------
     signature: Signature
@@ -111,6 +132,13 @@ def get_kwdefaults_from_signature(signature):
     -------
     defaults: dict
         argument {name: default}
+
+    Examples
+    --------
+    >>> def func(*, x=2):
+    ...     pass
+    >>> Signature(func).kwdefaults
+    (2,)
 
     """
     return {n: p.default for n, p in signature.parameters.items()
@@ -126,25 +154,23 @@ get_kwonlydefaults_from_signature = get_kwdefaults_from_signature
 # Signature
 
 class Signature(inspect.Signature, metaclass=InheritDocstrings):
-    """Signature with better ArgSpec bridges.
+    """Signature with better ArgSpec compatibility.
 
-    Though Signature is the new object, python still largely
-    uses the outputs  as  defined by getfullargspec
+    Though `Signature` is the new object, python still largely
+    uses the outputs  as  defined by ``getfullargspec``
     This serves as a bridge, providing methods that return
-    the same output as getfullargspec
+    the same output as ``getfullargspec``
 
-    New Methods
-    -----------
+    Methods
+    -------
+    signature
     annotations
     defaults
-    kwdefaults / kwonlydefaults
+    kwdefaults
+    kwonlydefaults
     replace_parameter
     insert_parameter
-
-    Modified Methods
-    ----------------
-    __init__
-    from_callable
+    drop_parameter
 
     """
 
@@ -179,15 +205,18 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     def annotations(self):
         """Get annotations from Signature object.
 
-        ex: def f(x: 'x annotation') -> 'return annotation':
-                pass
-        -> {'x': 'x annotation', 'return': 'return annotation'}
-
         Returns
         -------
         annotations: dict
             argument {name: annotation} values
             return annotations under key 'return'
+
+        Examples
+        --------
+        >>> def func(x: 'x annotation') -> 'return annotation':
+        ...   pass
+        >>> Signature(func).annotations
+        {'x': 'x annotation', 'return': 'return annotation'}
 
         """
         res = {k: v.annotation for k, v in self.parameters.items()
@@ -200,14 +229,17 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     def defaults(self):
         """Get defaults.
 
-        ex: def f(x=2):
-                pass
-        -> (2,)
-
         Returns
         -------
         defaults: tuple
             n-tuple for n defaulted positional parameters
+
+        Examples
+        --------
+        >>> def func(x=2,):
+        ...     pass
+        >>> Signature(func).defaults
+        (2,)
 
         """
         return tuple([p.default for p in self.parameters.values()
@@ -221,14 +253,17 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     def kwdefaults(self):
         """Get key-word only defaults.
 
-        ex: def f(x=2):
-                pass
-        -> (2,)
-
         Returns
         -------
         defaults: dict
             argument {name: default}
+
+        Examples
+        --------
+        >>> def func(*, x=2):
+        ...     pass
+        >>> Signature(func).kwdefaults
+        (2,)
 
         """
         return {n: p.default for n, p in self.parameters.items()
@@ -240,17 +275,20 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     def kwonlydefaults(self):
         """Get key-word only defaults.
 
-        ex: def f(x=2):
-                pass
-        -> (2,)
-
         Returns
         -------
         defaults: dict
             argument {name: default}
 
+        Examples
+        --------
+        >>> def func(*, x=2):
+        ...     pass
+        >>> Signature(func).kwdefaults
+        (2,)
+
         """
-        return self.kwdefaults()
+        return self.kwdefaults
     # /def
 
 
@@ -271,21 +309,25 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
                           annotation=None):
         """Replace a Parameter.
 
-        Similar to .replace, but more convenient for modifying a single parameter
-        Parameters are immutable, so will create a new Signature object
+        Similar to `.replace,` but more convenient for modifying a single parameter
+        Parameters are immutable, so will create a new `Signature` object
 
         Parameters
         ----------
         param: str
-            the parameter name in self.parameters
-        name: str  (default None)
+            the parameter name in `self.parameters`
+        name: str
             new parameter name, defaults to old parameter name
-        kind: type  (default None)
+            **default: None**
+        kind: type
             new parameter kind, defaults to old parameter kind
-        default: any  (default None)
+            **default: None**
+        default: any
             new parameter default, defaults to old parameter default
-        annotation: any  (default None)
+            **default: None**
+        annotation: any
             new parameter annotation, defaults to old parameter annotation
+            **default: None**
 
         Returns
         -------
@@ -321,12 +363,12 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         index: int
             index into Signature.parameters at which to insert new parameter
         parameter: inspect.Parameter
-            parameter to insert at index
+            parameter to insert at `index`
 
         Returns
         -------
-        Signature:
-            a new Signature object with the inserted parameter
+        Signature: Signature
+            a new `Signature` object with the inserted `parameter`
 
         """
         params = list(self.parameters.values())
@@ -444,7 +486,7 @@ def drop_parameter(signature, param):
 
     Parameters
     ----------
-    signature:  Signature
+    signature : Signature
         Signature object
     param: str
         the parameter name in self.parameters

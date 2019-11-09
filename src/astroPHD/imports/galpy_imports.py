@@ -11,18 +11,19 @@
 # Docstring and Metadata
 """Base set of imports for the galpy code.
 
-Returns
--------
-galpy
-potential, .MWPotential2014
-galpy.orbit.Orbit
-galpy.util: bovy_conversion, bovy_coords
+Routine Listings
+----------------
+Galpy : imports
+
+    - potential, .MWPotential2014
+    - galpy.orbit.Orbit
+    - galpy.util: bovy_conversion, bovy_coords
 
 References
 ----------
-Galpy reference is [1]_
+Galpy reference [#]_.
 
-.. [1] galpy: A Python Library for Galactic Dynamics, Jo Bovy (2015),
+.. [#] galpy: A Python Library for Galactic Dynamics, Jo Bovy (2015),
     Astrophys. J. Supp., 216, 29 (arXiv/1412.3451)
 
 """

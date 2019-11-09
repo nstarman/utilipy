@@ -29,23 +29,32 @@ _LOGFILE = LogPrint(header=False, verbose=0)
 ##############################################################################
 # CODE
 
-def set_autoreload(reload_type: int=1):
+def set_autoreload(reload_type: (int, None)=None):
     """Global imports setting.
 
     Parameters
     ----------
-    reload_type: int
-        0) Disable automatic reloading.
-        1) Reload all modules imported with %aimport every time
-           before executing the Python code typed.
-        2) Reload all modules (except those excluded by %aimport)
-           every time before executing the Python code typed.
+    reload_type: {0, 1, 2} or None
+        (default None)
+
+        - **0**) Disable automatic reloading.
+        - **1**) Reload all modules imported with %aimport before executing the Python code typed.
+        - **2**) Reload all modules (except those excluded by %aimport) before executing the Python code typed.
+        - **None**) null. do not change current setting.
+
+    See Also
+    --------
+    autoreload: module
+        `%load_ext autoreload`
+        `%aimport`
 
     """
-    # set autoreload type
-    get_ipython().magic(f'autoreload {reload_type}')
+    if reload_type is not None:
 
-    _LOGFILE.write(f'set autoreload to {reload_type}')
+        # set autoreload type
+        get_ipython().magic(f'autoreload {reload_type}')
+
+        _LOGFILE.write(f'set autoreload to {reload_type}')
 
     return
 # /def
@@ -62,9 +71,10 @@ def aimport(*modules, autoreload: (bool, list, tuple)=True):
     ----------
     modules: list of strs
         the modules to be imported
-    autoreload: bool, list, optional  (default True)
+    autoreload: bool or list, optional
+        (default True)
         whether the imported modules are marked for autoreloading
-        if its a list, it must be the same length as *modules*
+        if its a list, it must be the same length as `modules`
 
     """
     # making autoreload compatible with modules
@@ -91,7 +101,7 @@ def aimport(*modules, autoreload: (bool, list, tuple)=True):
 
 
 ##############################################################################
-# Setting State
+# SETTING STATE
 
 if get_ipython() is not None:
     get_ipython().magic('load_ext autoreload')  # autoreload extensions

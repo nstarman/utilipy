@@ -25,7 +25,7 @@ except:  # pragma: no cover
 
 # The default configuration
 default_configuration = {'verbosity': {'verbose-imports': 'True',
-                                     'warnings': 'True'},
+                                       'warnings': 'True'},
                          'plot': {'seaborn-defaults': 'False', }
                          }
 

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -7,66 +6,75 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""Selection Functions
+# Docstring and Metadata
+"""Selection Functions.
 
-METHODS
--------
-.box
-.circle
-.ellipse
-.inRange
-.ioRange
-.outRange
+Routine Listings
+----------------
+- box
+- circle
+- ellipse
+- inRange
+- ioRange
+- outRange
+
+Examples
+--------
+do some examples here
+
+TODO
+----
+more tests for ND arrays as inputs
+
 """
 
 #############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 import numpy as np
 
-## Project-Specific
+# Project-Specific
 from ..util.decorators import idxDecorator, ndarrayDecorator
 
 
 #############################################################################
-## Functions
+# Functions
 
-# @ndarrayDecorator(inargs=[0, 1])  # ensuring x, rng are arrays
 def _inRange(x, rng, lbi=True, ubi=False):
-    """helper function for inRange
+    """`inRange` helper function.
 
     Parameters
     ----------
-    x   : array
+    x : array_like
         the array on which to test for membership in the range
         supports multiple dimension
-    rng : array
-        the range. (lower, upper)
+    rng : list
+        the range (lower, upper)
         when applied to ND array, must match the number of rows
         ex : for x [NxM], rng must be [Nx2]
-    lbi : bool  (default True)
+    lbi : bool
+        (default True)
         Lower Bound Inclusive, whether to be inclusive on the lower bound
-    ubi : bool  (default False)
+    ubi : bool
+        (default False)
         Upper Bound Inclusive, whether to be inclusive on the upper bound
 
     Returns
     -------
     idx: bool array
         bool index array
-        shape matches *x*
+        shape matches `x`
 
     Examples
     --------
-    >> x = array([[ 0,  1],
-                  [10, 11]])
-    >> rng = [[0, 3], [9, 11]]
-    >> _inRange(x, rng)
-       array([[True, True s],
-              [True, False]])
-    """
+    >>> x = array([[ 0,  1],
+    ...            [10, 11]])
+    >>> rng = [[0, 3], [9, 11]]
+    >>> _inRange(x, rng)
+    array([[True, True], [True, False]])
 
+    """
     if len(x.shape) == 1:  # 1D
 
         if lbi and ubi:  # both true
@@ -91,60 +99,69 @@ def _inRange(x, rng, lbi=True, ubi=False):
 
 # -----------------------------------------------------------------------------
 
-@idxDecorator
-def inRange(*args, rng=None, lbi=True, ubi=False):
-    """multidimensional box selection
+@idxDecorator()
+def inRange(*args, rng=Ellipsis, lbi=True, ubi=False):
+    """Multidimensional box selection.
 
     Parameters
     ----------
     args : list
         list of values along each dimension
         must be the same length
-    rng : None, list  (default None)
-        the domain for each arg in *args
-        ** cannot be None **
-        args = [[x1], [x2], ...]
-        rng =   [1st [lower, upper],
-                 2nd [lower, upper],
-                 ...]
-    lbi : bool  (default True)
+    rng : list
+        (default Ellipsis)
+        the domain for each argument in `args`::
+
+            args = [[x1], [x2], ...]
+            rng =   [1st [lower, upper],
+                     2nd [lower, upper],
+                     ...]
+    lbi : bool
+        (default True)
         Lower Bound Inclusive, whether to be inclusive on the lower bound
-    ubi : bool  (default False)
+    ubi : bool
+        (default False)
         Upper Bound Inclusive, whether to be inclusive on the upper bound
     as_ind : bool  (default False)
         whether to return bool array or the indices (where(bool array == True))
         sets the default behavior for the wrapped fnction *func*
-
-    ** Upcoming
-    allow lbi & rbi to be lists, matching args, for individual adjustment
 
     Returns
     -------
     inrange : bool ndarray
         boolean array to select values in box selection
 
+    See Also
+    --------
+    outRange :  multidimensional box exclusion
+    ioRange : `inRange` and `outRange` combined
+
     Examples
     --------
     list of args:
+
     >>> x = np.arange(5)
-        y = np.arange(5) + 10
-        inRange(x, y, rng=[[0, 3], [10, 15]])
+    >>> y = np.arange(5) + 10
+    >>> inRange(x, y, rng=[[0, 3], [10, 15]])
     array([ True,  True,  True, False, False])
 
     multidimensional arg:
-    >> x = array([[ 0,  1],
-                  [10, 11]])
-       rng = [[0, 3], [9, 11]]
-    >> inRange(x, rng=rng)
-       array([[True, True ],
-              [True, False]])
+
+    >>> x = array([[ 0,  1], [10, 11]])
+    >>> rng = [[0, 3], [9, 11]]
+    >>> inRange(x, rng=rng)
+    array([[True, True ], [True, False]])
+
+    TODO
+    ----
+    allow lbi & rbi to be lists, matching args, for individual adjustment
+
     """
-    if range is None:
+    if rng is None:
         raise ValueError()
 
     # if only one arg
     if len(args) == 1:
-        # args = (args[0], )
         rng = (rng, )
 
     rowbool = np.array([_inRange(v, lu, lbi=lbi, ubi=ubi)
@@ -168,42 +185,48 @@ def inRange(*args, rng=None, lbi=True, ubi=False):
 
 # -----------------------------------------------------------------------------
 
-@idxDecorator
+@idxDecorator()
 def outRange(*args, rng=None, lbi=False, ubi=True):
-    """multidimensional box exclusion
+    """Multidimensional box exclusion.
+
     equivelent to ~inRange
 
     Parameters
     ----------
     args : list
         either list of values along each dimension or list of values & bounds
-        the input type depends on rng
-    rng : None, list    (default None)
-        if rng is not None:
-            for domains x
+        the input type depends on `rng`
+    rng : None or list
+        (default None)
+        if rng is not None::
+
             args = [[x1], [x2], ...]
             rng =   [1st [lower, upper],
                      2nd [lower, upper],
                      ...]
-        else:
-            args are the lists
-            list of (x, [lower, upper]
-    lbi : bool  (default False)
+
+        else, args are the list of (x, [lower bound, upper. bound])
+    lbi : bool
+        (default False)
         Lower Bound Inclusive, whether to be inclusive on the lower bound
-    ubi : bool  (default True)
+    ubi : bool
+        (default True)
         Upper Bound Inclusive, whether to be inclusive on the upper bound
-    as_ind : bool  (default False)
+    as_ind : bool
+        (default False)
         whether to return bool array or the indices (where(bool array == True))
         sets the default behavior for the wrapped fnction *func*
 
     Returns
     -------
-    outrange : bool ndarray
+    outrange : ndarray of bool or ndarray of int
         boolean array to select values outside box selection
+        if as_ind, then index array of same
 
-    Planned
-    -------
-    allow lbi & rbi to be lists, matching args, for individual adjustment
+    TODO
+    ----
+    allow `lbi` & `rbi` to be lists, matching `args`, for individual adjustment
+
     """
     outrange = ~inRange(*args, rng=rng, lbi=lbi, ubi=ubi)
     return outrange
@@ -214,25 +237,28 @@ def outRange(*args, rng=None, lbi=False, ubi=True):
 
 @idxDecorator
 def ioRange(incl=None, excl=None, rng=None):
-    """Supports inRange and outRange
+    """Supports inRange and outRange.
 
     Parameters
     ----------
-    incl : list
-        list of inRange args
-    excl : list
-        list of notinRange args
-    rng : list
-        concatenated list of (not)inRange rng
-        must be in orgder of [*inRange rng, *notinRange rng]
-    as_ind : bool  (default False)
-        whether to return bool array or the indices (where(bool array == True))
-        sets the default behavior for the wrapped fnction *func*
+    incl : array_like
+        args into `inRange`
+    excl : array_like
+        args into `outRange`
+    rng : array_like
+        concatenated list of (in)outRange rng
+        must be in orgder of [inRange rng, outRange rng]
+    as_ind : bool
+        (default False)
+        whether to return bool array or the indices (``where(bool array == True``))
+        sets the default behavior for the wrapped function
 
     Returns
     -------
-    out : bool ndarray
+    out : ndarray of bool or ndarray of ints
         boolean array to select values inside / outside box selection
+        if as_ind, then index array of same
+
     """
     # Nothing passed. Raise error
     if (incl is None) & (excl is None):
@@ -257,28 +283,35 @@ def ioRange(incl=None, excl=None, rng=None):
 
 @idxDecorator
 def ellipse(*x, x0=0., dx=1.):
-    """elliptical selection of data in many dimensions
+    r"""Elliptical selection of data in many dimensions.
 
-    sel = np.sqrt(((x - x0) / dx)**2 + ...) < 1
+    Supports selection with variable center and radius::
+
+        np.sum((x[i] - x0[i]) / dx[i])^2) < 1^2
 
     Parameters
     ----------
-    *x: m x (n, 1) arrays
-    x0: scalar, (m, 1) array   (default = 0.)
+    x: m x (n, 1) array_like
+        values along each dimension
+    x0: scalar or (m, 1) array
+        (default = 0.)
         the center position of each x.
         can broadcast a scalar to apply to all
-    dx: scalar, (m, 1) array   (default = 0.)
+    dx: scalar or (m, 1) array
+        (default = 0.)
         the radius in each dimension
-    as_ind : bool  (default False)
-        whether to return bool array or the indices (where(bool array == True))
+    as_ind : bool
+        (default False)
+        whether to return bool array or the indices (``where(bool array == True)``)
         sets the default behavior for the wrapped fnction *func*
 
     Returns
     -------
-    sel: bool
+    sel: array_like of bool
         bool array selecting data w/in ellipse
-    """
+        if as_ind is True, then array_like of indices
 
+    """
     shape = (len(x[0]), len(x))
 
     x0 = np.broadcast_to(x0, shape).T  # reshape x0 correctly
@@ -294,29 +327,39 @@ def ellipse(*x, x0=0., dx=1.):
 
 @idxDecorator
 def circle(*x, x0=0., radius=1.):
-    """circular selection of data in many dimensions
+    """Circular selection of data in many dimensions.
 
-    sel = np.sqrt(((x - x0) / radius)**2 + ...) < 1
+    Elliptical selection with fixed radius::
+
+        np.sum((x[i] - x0[i]) / radius)^2) < 1^2
 
     Parameters
     ----------
-    *x: m x (n, 1) arrays
-    x0: scalar, (m, 1) array   (default = 0.)
+    x: (m x (n, 1)) arrays
+        values along each dimension
+    x0: scalar, (m, 1) array
+        (default = 0.)
         the center position of each x.
         can broadcast a scalar to apply to all
     dx: scalar
         the radius
     as_ind : bool  (default False)
-        whether to return bool array or the indices (where(bool array == True))
-        sets the default behavior for the wrapped fnction *func*
+        whether to return bool array or the indices (``where(bool array == True``))
+        sets the default behavior for the wrapped function
 
     Returns
     -------
-    sel: bool
+    sel: array_like of bool
         bool array selecting data w/in circle
+        if as_ind is True, then array_like of indices
+
+    See Also
+    --------
+    ellipse : elliptical selection
+
     """
     return ellipse(*x, x0=x0, dx=radius)
 # /def
 
 #############################################################################
-### END
+# END

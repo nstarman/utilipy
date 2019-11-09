@@ -7,9 +7,8 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""util initialization file
-"""
+# Docstring and Metadata
+"""util initialization file"""
 
 ##############################################################################
 # IMPORTS

@@ -1,355 +1,68 @@
-"""PanSTARRS 1 bands from Mega-Cam gen1 bands.
-"""
+# -*- coding: utf-8 -*-
 
-#############################################################################
-# Imports
-
-import warnings
-from astropy.table import Table, QTable
-from .. import units
-
-#############################################################################
-# Info
+"""PanSTARRS 1 bands from Mega-Cam gen1 bands."""
 
 __author__ = "Nathaniel Starkman"
 __credits__ = [
     "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
 ]
 
+__all__ = [
+    'U_MP9302', 'G_MP9402', 'R_MP9602', 'I_MP9703', 'Z_MP9901', 'GRI_MP9605'
+]
+
 
 #############################################################################
-# Code
+# IMPORTS
 
-@units.quantity_io()
-def U_MP9301(ps, **kw) -> units.mag:
-    """U_MP9301
-    gmi = (gPS-iPS)
-    uCFHT - gPS = .523 - .343 gmi + 2.44 gmi^2 - .998 gmi^3
+# GENERAL
+import warnings
 
-    limited to .3 mag < gmi < 1.5 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. Top row, 1st plot
-
-    Arguments
-    ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
-
-    KeyWord Arguments
-    -----------------
-    g: str
-        g column
-    i: str
-        i column
-    gmi: str
-        g-i column
-    """
-    g, i = kw.get('g', 'g'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
-
-    if gmi in ps.colnames:
-        gmi = ps[gmi]
-    else:
-        gmi = ps[g] - ps[i]
-
-    ind = (.3 * units.mag < gmi) & (gmi < 1.5 * units.mag)
-    if not all(ind):
-        warnings.warn('MCg1.U: not all .3 mag < (g-i)_ps < 1.5 mag')
-
-    c0 = .523 * units.mag
-    c1 = -.343
-    c2 = 2.44 / units.mag
-    c3 = -.998 / units.mag**2
-    g_ps = ps[g]
-
-    u_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
-    return u_cfht
-# /def
+# PROJECT-SPECIFIC
+from astropy.table import Table, QTable
+from .. import units
 
 
-@units.quantity_io()
-def G_MP9401(ps, **kw) -> units.mag:
-    """G_MP9401
-    gmi = (gPS-iPS)
-    gCFHT - gPS = -.001 - .004 gmi - .0056 gmi^2 + .00292 gmi^3
-
-    limited to -1 mag < gmi < 4 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. Top row, 2nd plot
-
-    Arguments
-    ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
-
-    KeyWord Arguments
-    -----------------
-    g: str
-        g column
-    i: str
-        i column
-    gmi: str
-        g-i column
-    """
-    g, i = kw.get('g', 'g'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
-
-    if gmi in ps.colnames:
-        gmi = ps[gmi]
-    else:
-        gmi = ps[g] - ps[i]
-
-    ind = (-1. * units.mag < gmi) & (gmi < 4 * units.mag)
-    if not all(ind):
-        warnings.warn('MCg1.G: not all -1 mag < (g-i)_ps < 4 mag')
-
-    c0 = -.001 * units.mag
-    c1 = -.004
-    c2 = -.0056 / units.mag
-    c3 = .00292 / units.mag**2
-    g_ps = ps[g]
-
-    g_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
-    return g_cfht
-# /def
-
-
-@units.quantity_io()
-def R_MP9601(ps, **kw) -> units.mag:
-    """R_MP9601
-    gmi = (gPS-iPS)
-    rCFHT - rPS = .002 - .017 gmi + .00554 gmi^2 - .000692 gmi^3
-
-    limited to -1 mag < gmi < 4 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. Top row, 3rd plot
-
-    Arguments
-    ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
-
-    KeyWord Arguments
-    -----------------
-    g: str
-        g column
-    r: str
-        r column
-    i: str
-        i column
-    gmi: str
-        g-i column
-    """
-    g, r, i = kw.get('g', 'g'), kw.get('r', 'r'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
-
-    if gmi in ps.colnames:
-        gmi = ps[gmi]
-    else:
-        gmi = ps[g] - ps[i]
-
-    ind = (-1. * units.mag < gmi) & (gmi < 4 * units.mag)
-    if not all(ind):
-        warnings.warn('MCg1.R: not all -1 mag < (g-i)_ps < 4 mag')
-
-    c0 = .002 * units.mag
-    c1 = -.017
-    c2 = .00554 / units.mag
-    c3 = -.000692 / units.mag**2
-    r_ps = ps[r]
-
-    r_cfht = r_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
-    return r_cfht
-# /def
-
-
-@units.quantity_io()
-def I_MP9701(ps, **kw) -> units.mag:
-    """I_MP9701
-    gmi = (gPS-iPS)
-    iCFHT - iPS = .001 - .021 gmi + .00398 gmi^2 - .00369 gmi^3
-
-    limited to -1 mag < gmi < 4 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. 2nd row, 1st plot
-
-    Arguments
-    ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
-
-    KeyWord Arguments
-    -----------------
-    g: str
-        g column
-    i: str
-        i column
-    gmi: str
-        g-i column
-    """
-    g, i = kw.get('g', 'g'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
-
-    if gmi in ps.colnames:
-        gmi = ps[gmi]
-    else:
-        gmi = ps[g] - ps[i]
-
-    ind = (-1. * units.mag < gmi) & (gmi < 4 * units.mag)
-    if not all(ind):
-        warnings.warn('MCg1.I: not all -1 mag < (g-i)_ps < 4 mag')
-
-    c0 = .001 * units.mag
-    c1 = -.021
-    c2 = .00398 / units.mag
-    c3 = -.00369 / units.mag**2
-    i_ps = ps[i]
-
-    i_cfht = i_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
-    return i_cfht
-# /def
-
-
-@units.quantity_io()
-def Z_MP9801(ps, **kw) -> units.mag:
-    """Z_MP9801
-    gmi = (gPS-iPS)
-    zCFHT - zPS = -.009 - .029 gmi + .012 gmi^2 - .00367 gmi^3
-
-    limited to -1 mag < gmi < 4 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. 2nd row, 2nd plot
-
-    Arguments
-    ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
-
-    KeyWord Arguments
-    -----------------
-    g: str
-        g column
-    i: str
-        i column
-    z: str
-        z column
-    gmi: str
-        g-i column
-    """
-    g, i, z = kw.get('g', 'g'), kw.get('i', 'i'), kw.get('z', 'z')
-    gmi = kw.get('gmi', 'g-i')
-
-    if gmi in ps.colnames:
-        gmi = ps[gmi]
-    else:
-        gmi = ps[g] - ps[i]
-
-    ind = (-1. * units.mag < gmi) & (gmi < 4 * units.mag)
-    if not all(ind):
-        warnings.warn('MCg1.Z: not all -1 mag < (g-i)_ps < 4 mag')
-
-    c0 = -.009 * units.mag
-    c1 = -.029
-    c2 = .012 / units.mag
-    c3 = -.00367 / units.mag**2
-    z_ps = ps[z]
-
-    z_cfht = z_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
-    return z_cfht
-# /def
-
-
-@units.quantity_io()
-def I_MP9702(ps, **kw) -> units.mag:
-    """I_MP9702
-    gmi = (gPS-iPS)
-    iCFHT - iPS = -.005 + .004 gmi + .0124 gmi^2 - .0048 gmi^3
-
-    limited to -1 mag < gmi < 4 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. 2nd row, 3rd plot
-
-    Arguments
-    ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
-
-    KeyWord Arguments
-    -----------------
-    g: str
-        g column
-    i: str
-        i column
-    gmi: str
-        g-i column
-    """
-    g, i = kw.get('g', 'g'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
-
-    if gmi in ps.colnames:
-        gmi = ps[gmi]
-    else:
-        gmi = ps[g] - ps[i]
-
-    ind = (-1. * units.mag < gmi) & (gmi < 4 * units.mag)
-    if not all(ind):
-        warnings.warn('MCg1.I: not all -1 mag < (g-i)_ps < 4 mag')
-
-    c0 = -.005 * units.mag
-    c1 = -.004
-    c2 = .0124 / units.mag
-    c3 = -.0048 / units.mag**2
-    i_ps = ps[i]
-
-    z_cfht = i_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
-    return z_cfht
-# /def
-
+#############################################################################
+# CODE
+#############################################################################
 
 @units.quantity_io()
 def U_MP9302(ps, **kw) -> units.mag:
-    """I_MP9702
-    gmi = (gPS-iPS)
-    uCFHT - gPS = .823 - 1.36 gmi + 4.18 gmi^2 - 1.64 gmi^3
+    r"""Convert Pan-STARRS1 bands to CFHT U-MP9302 band.
 
-    limited to .3 mag < gmi < 1.5 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. 3rd row, 1st plot
-
-    Arguments
+    Parameters
     ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
-
-    KeyWord Arguments
-    -----------------
+    ps: astropy Table
+        need: g col
+        either: i, g-i col
     g: str
-        g column
+        (default 'g')
+        g column name
     i: str
-        i column
+        (default 'i')
+        i column name
     gmi: str
-        g-i column
+        (default 'g-i')
+        g-i column name
+
+    Returns
+    -------
+    U_MP9302 : Quantity array_like
+        CFHT u-band
+
+    Notes
+    -----
+    .. math::
+
+        u_{CFHT} = g_{PS} +.823 - 1.36 gmi + 4.18 gmi^2 - 1.64 gmi^3
+
+    where :math:`gmi \equiv g_{PS}-i_{PS}`
+    in the range :math:`.3 \rm{mag} < g-i < 1.5 \rm{mag}`
+
+    filter transformations from `Pan-STARRS to MegaCam plots. 3rd row, 1st plot
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
     """
     g, i = kw.get('g', 'g'), kw.get('i', 'i')
     gmi = kw.get('gmi', 'g-i')
@@ -364,7 +77,7 @@ def U_MP9302(ps, **kw) -> units.mag:
         warnings.warn('MCg1.U: not all .3 mag < (g-i)_ps < 1.5 mag')
 
     c0 = .823 * units.mag
-    c1 = -1.36
+    c1 = -1.360
     c2 = 4.18 / units.mag
     c3 = -1.64 / units.mag**2
     g_ps = ps[g]
@@ -376,30 +89,40 @@ def U_MP9302(ps, **kw) -> units.mag:
 
 @units.quantity_io()
 def G_MP9402(ps, **kw) -> units.mag:
-    """G_MP9402
-    gmi = (gPS-iPS)
-    gCFHT - gPS = .014 - .059 gmi - .00313 gmi^2 - .00178 gmi^3
+    r"""Convert Pan-STARRS1 bands to CFHT G-MP9402 band.
 
-    limited to -1 mag < gmi < 4 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. 3rd row, 2nd plot
-
-    Arguments
+    Parameters
     ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
-
-    KeyWord Arguments
-    -----------------
+    ps: astropy Table
+        need: g col
+        either: i, g-i col
     g: str
-        g column
+        (default 'g')
+        g column name
     i: str
-        i column
+        (default 'i')
+        i column name
     gmi: str
-        g-i column
+        (default 'g-i')
+        g-i column name
+
+    Returns
+    -------
+    G_MP9402 : Quantity array_like
+        CFHT g-band
+
+    Notes
+    -----
+    .. math::
+
+        g_{CFHT} = g_{PS} +.014 - .059 gmi - .00313 gmi^2 - .00178 gmi^3
+
+    where :math:`gmi \equiv g_{PS}-i_{PS}`
+    in the range :math:`-1 \rm{mag} < g-i < 4 \rm{mag}`
+
+    filter transformations from `Pan-STARRS to MegaCam plots. 3rd row, 2nd plot
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
     """
     g, i = kw.get('g', 'g'), kw.get('i', 'i')
     gmi = kw.get('gmi', 'g-i')
@@ -426,32 +149,43 @@ def G_MP9402(ps, **kw) -> units.mag:
 
 @units.quantity_io()
 def R_MP9602(ps, **kw) -> units.mag:
-    """G_MP9402
-    gmi = (gPS-iPS)
-    rCFHT - rPS = .003 - .05 gmi - .0125 gmi^2 - .00699 gmi^3
+    r"""Convert Pan-STARRS1 bands to CFHT R-MP9602 band.
 
-    limited to -1 mag < gmi < 3 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. 3rd row, 2nd plot
-
-    Arguments
+    Parameters
     ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
-
-    KeyWord Arguments
-    -----------------
+    ps: astropy Table
+        need: r col
+        either: (g & i), g-i col
     g: str
-        g column
+        (default 'g')
+        g column name
     r: str
-        r column
+        (default 'r')
+        r column name
     i: str
-        i column
+        (default 'i')
+        i column name
     gmi: str
-        g-i column
+        (default 'g-i')
+        g-i column name
+
+    Returns
+    -------
+    R_MP9602 : Quantity array_like
+        CFHT r-band
+
+    Notes
+    -----
+    .. math::
+
+        r_{CFHT} = r_{PS} + .003 - .05 gmi - .0125 gmi^2 - .00699 gmi^3
+
+    where :math:`gmi \equiv g_{PS}-i_{PS}`
+    in the range :math:`-1 \rm{mag} < g-i < 3 \rm{mag}`
+
+    filter transformations from `Pan-STARRS to MegaCam plots. 3rd row, 3rd plot
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
     """
     g, r, i = kw.get('g', 'g'), kw.get('r', 'r'), kw.get('i', 'i')
     gmi = kw.get('gmi', 'g-i')
@@ -466,7 +200,7 @@ def R_MP9602(ps, **kw) -> units.mag:
         warnings.warn('MCg1.R: not all -1 mag < (g-i)_ps < 3 mag')
 
     c0 = .003 * units.mag
-    c1 = -.05
+    c1 = -.050
     c2 = .0125 / units.mag
     c3 = -.00699 / units.mag**2
     r_ps = ps[r]
@@ -478,30 +212,40 @@ def R_MP9602(ps, **kw) -> units.mag:
 
 @units.quantity_io()
 def I_MP9703(ps, **kw) -> units.mag:
-    """I_MP9703
-    gmi = (gPS-iPS)
-    iCFHT - iPS = .006 - .024 gmi + .00627 gmi^2 - .00523 gmi^3
+    r"""Convert Pan-STARRS1 bands to CFHT I-MP9703 band.
 
-    limited to -1 mag < gmi < 3.6 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. 3rd row, 2nd plot
-
-    Arguments
+    Parameters
     ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
-
-    KeyWord Arguments
-    -----------------
+    ps: astropy Table
+        need: i col
+        either: g, g-i col
     g: str
-        g column
+        (default 'g')
+        g column name
     i: str
-        i column
+        (default 'i')
+        i column name
     gmi: str
-        g-i column
+        (default 'g-i')
+        g-i column name
+
+    Returns
+    -------
+    I_MP9703 : Quantity array_like
+        CFHT i-band
+
+    Notes
+    -----
+    .. math::
+
+        i_{CFHT} = i_{PS} + .006 - .024 gmi + .00627 gmi^2 - .00523 gmi^3
+
+    where :math:`gmi \equiv g_{PS}-i_{PS}`
+    in the range :math:`-1 \rm{mag} < g-i < 3 \rm{mag}`
+
+    filter transformations from `Pan-STARRS to MegaCam plots. 4th row, 1st plot
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
     """
     g, i = kw.get('g', 'g'), kw.get('i', 'i')
     gmi = kw.get('gmi', 'g-i')
@@ -527,37 +271,45 @@ def I_MP9703(ps, **kw) -> units.mag:
 
 
 @units.quantity_io()
-def Z_MP9901(ps, **kw) -> units.mag:
-    """Z_MP9901
-    gmi = (gPS-iPS)
-    zCFHT - zPS = -.016 - .069 gmi + .0239 gmi^2 - .0056 gmi^3
+def Z_MP9901(ps, g='g', i='i', z='z', gmi='g-i', **kw) -> units.mag:
+    r"""Convert Pan-STARRS1 bands to CFHT Z-MP9901 band.
 
-    limited to -1 mag < gmi < 4 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. 3rd row, 2nd plot
-
-    Arguments
+    Parameters
     ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
-
-    KeyWord Arguments
-    -----------------
+    ps: astropy Table
+        need: z col
+        either: (g & i), g-i col
     g: str
-        g column
+        (default 'g')
+        i column name
     i: str
-        i column
+        (default 'i')
+        i column name
     z: str
-        z column
+        (default 'z')
+        z column name
     gmi: str
-        g-i column
-    """
-    g, i, z = kw.get('g', 'g'), kw.get('i', 'i'), kw.get('z', 'z')
-    gmi = kw.get('gmi', 'g-i')
+        (default 'g-i')
+        g-i column name
 
+    Returns
+    -------
+    Z_MP9901 : Quantity array_like
+        CFHT z-band
+
+    Notes
+    -----
+    .. math::
+
+        z_{CFHT} = z_{PS} - .016 - .069 gmi + .0239 gmi^2 - .0056 gmi^3
+
+    where :math:`gmi \equiv g_{PS}-i_{PS}`
+    in the range :math:`-1 \rm{mag} < g-i < 4 \rm{mag}`
+
+    filter transformations from `Pan-STARRS to MegaCam plots. 4th row, 2nd plot
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
+    """
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
@@ -579,33 +331,44 @@ def Z_MP9901(ps, **kw) -> units.mag:
 
 
 @units.quantity_io()
-def G_MP9605(ps, **kw) -> units.mag:
-    """G_MP9605
-    gmi = (gPS-iPS)
-    gCFHT - rPS = .005 + .244 gmi - .0692 gmi^2 - .0014 gmi^3
+def GRI_MP9605(ps, **kw) -> units.mag:
+    r"""Convert Pan-STARRS1 bands to CFHT R-MP9605 band.
 
-    limited to -1 mag < gmi < 1.2 mag
-
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
-    Pan-STARRS to MegaCam plots. 3rd row, 2nd plot
-
-    Arguments
+    Parameters
     ----------
-    ps: Astropy Table
-        needs g, i cols
-        optional: g-i col
+    ps: astropy Table
+        need: r col
+        either: (g & i), g-i col
+    g: str, optional
+        g column name
+        (default 'g')
+    r: str, optional
+        r column name
+        (default 'r')
+    i: str, optional
+        i column name
+        (default 'i')
+    gmi: str, optional
+        g-i column name
+        (default 'g-i')
 
-    KeyWord Arguments
-    -----------------
-    g: str
-        g column
-    r: str
-        r column
-    i: str
-        i column
-    gmi: str
-        g-i column
+    Returns
+    -------
+    R_MP9605 : Quantity array_like
+        CFHT r-band
+
+    Notes
+    -----
+    .. math::
+
+        f_{CFHT} = rPS + .005 + .244 gmi - .0692 gmi^2 - .0014 gmi^3
+
+    where :math:`gmi \equiv g_{PS}-i_{PS}`
+    in the range :math:`-1 \rm{mag} < g-i < 1.2 \rm{mag}`
+
+    filter transformations from `Pan-STARRS to MegaCam plots: 4th row, 3rd plot
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_
+
     """
     g, r, i = kw.get('g', 'g'), kw.get('r', 'r'), kw.get('i', 'i')
     gmi = kw.get('gmi', 'g-i')
@@ -626,5 +389,9 @@ def G_MP9605(ps, **kw) -> units.mag:
     r_ps = ps[r]
 
     r_cfht = r_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+
     return r_cfht
 # /def
+
+#############################################################################
+# END
