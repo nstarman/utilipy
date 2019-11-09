@@ -10,6 +10,7 @@ Welcome to 	`astroPHD`, a collection of useful python codes.
 Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://www.astro.utoronto.ca/~starkman/) -- [github](https://github.com/nstarman)
 
 [![DOI](https://zenodo.org/badge/192425953.svg)](https://zenodo.org/badge/latestdoi/192425953)
+[![Build Status](https://travis-ci.org/nstarman/astroPHD.svg?branch=master)](https://travis-ci.org/nstarman/astroPHD)
 
 
 ##  Table of Contents
@@ -33,6 +34,10 @@ Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://ww
 <!-- /MarkdownTOC -->
 
 
+<br><br>
+- - -
+- - -
+<br><br>
 
 <a id="modules"></a>
 # Modules
@@ -157,6 +162,10 @@ This module deals with auto-reloading packages / modules / functions in IPython.
 > Import using `from  astroPHD import util`
 
 
+<br><br>
+- - -
+- - -
+<br><br>
 
 <a id="templates"></a>
 # Templates

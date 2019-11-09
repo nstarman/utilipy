@@ -33,7 +33,7 @@ from .config import __config__
 ##############################################################################
 # PARAMETERS
 
-_SHOW_WARNINGS = __config__.getboolean('warnings', 'verbose')
+_SHOW_WARNINGS = __config__.getboolean('verbosity', 'warnings')
 
 ###############################################################################
 # CODE
@@ -49,6 +49,7 @@ class astroPHDWarning(Warning):
 
 class astroPHDWarningVerbose(Warning):
     pass
+# /class
 
 
 # ----------------------------------------------------------------------------

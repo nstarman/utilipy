@@ -1,7 +1,6 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Combining relevant function
+"""Combining relevant functions.
 
 Functions
 ---------
@@ -18,21 +17,23 @@ MegaCamGen1_from_PS1:
 PS1_from_MegaCamGen1:
 - gPS
 - gmrPS
+
 """
-
-#############################################################################
-# Imports
-
-from . import Mixed_MegaCamGen2_PS1 as mixed
-
-from .MegaCamGen2_from_PS1 import G_MP9401 as gCFHT, R_MP9601 as rCFHT
-
-from .PS1_from_MegaCamGen2 import G as gPS, I as iPS, GmR as gmrPS
-
-#############################################################################
-# Info
 
 __author__ = "Nathaniel Starkman"
 __credits__ = [
     "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
 ]
+
+
+#############################################################################
+# IMPORTS
+
+from . import Mixed_MegaCamGen2_PS1 as mixed
+
+from .MegaCamGen2_from_PS1 import I_MP9702, I_MP9702 as i_MC
+
+# from .PS1_from_MegaCamGen2 import
+
+#############################################################################
+# END

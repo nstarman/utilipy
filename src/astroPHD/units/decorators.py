@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -8,30 +7,30 @@
 #
 # ----------------------------------------------------------------------------
 
-### Dotring and Metadata
-"""**DOCSTRING**
-"""
+# Docstring and Metadata
+"""Decorators for functions acceptingAstropy Quantities."""
 
 __author__ = "Nathaniel Starkman"
+__credit__ = "astropy"
 
 ##############################################################################
 # IMPORTS
 
-# General
+# GENERAL
 import inspect
-from warnings import warn
+# from warnings import warn
 
-# astropy
-from astropy.units import Unit, dimensionless_unscaled
+from astropy.units import dimensionless_unscaled
 from astropy.units.decorators import _validate_arg_value, _get_allowed_units
 from astropy.units.core import add_enabled_equivalencies
-from astropy.units.physical import _unit_physical_mapping
+# from astropy.units.physical import _unit_physical_mapping
 
 from astropy.utils.decorators import wraps
 from astropy.utils.misc import isiterable
 
-# Project-Specific
+# PROJECT-SPECIFIC
 from .util import unit_output
+from ..util.decorators.docstring import format_doc
 
 ###############################################################################
 # PARAMETERS
@@ -45,46 +44,56 @@ _aioattrs = ('unit', 'to_value', 'equivalencies', 'decompose',
 
 def _simple_unit_decorator(unit=None, to_value=False,
                            equivalencies=[], decompose=False):
-    r"""Decorator for unit_output.
+    r"""Decorate functions for unit output.
 
     Any wrapped function accepts the additional key-word arguments:
-        unit, to_value, equivalencies, decompose
-        see `Wrapped-Arguments' for details
+        ``unit``, ``to_value``, ``equivalencies``, ``decompose``
 
-    Wrapped-Arguments
-    -----------------
-    If provided to the decorator (ex: @unit_decorator(unit=`unit')),
-        then `unit' becomes the default value
-    If provided when calling the function (ex: myfunc(*args, **kwargs, unit=`unit')),
+    If provided to the decorator (ex: ``@unit_decorator(unit=unit)``),
+        then `unit` becomes the default value
+    If provided when calling the function (ex: ``myfunc(*args, **kwargs, unit=unit)``),
         this unit is used in the conversion
 
-    unit: Astropy Unit
-        sets the unit for the returned res
-        if None, returns res unchanged, unless to_value is used
+    Parameters
+    ----------
+    unit: Unit, optional
+        sets the unit for the returned `res`
+        if None, returns `res` unchanged, unless `to_value` is used
         if '', decomposes
-    to_value: bool
-        whether to return .to_value(unit)
+    to_value: bool, optional
+        whether to return ``.to_value(unit)``
         see Astropy.units.Quantity.to_value
-    equivalencies: list
-        equivalencies for .to() and .to_value()
-        only used if `unit' to `to_value' are not None/False
-    decompose: bool, list
-        if bool:
-            True, False for decomposing
-        if list:
-            bases for .decompose(bases=[])
-            will first decompose, then apply unit, to_value, equivalencies
-        Decomposing then converting wastes time, since .to(unit, equivalencies) internally does conversions
-        the only use for combining decompose with other unit_output params is with:
+    equivalencies: list, optional
+        equivalencies for ``.to()`` and ``.to_value()``
+        only used if `unit' to `to_value` are not None/False
+    decompose: bool or list, optional
+        unit decomposition
+        default, False
+
+        * bool: True, False for decomposing.
+        * list: bases for ``.decompose(bases=[])``
+
+            will first decompose, then apply ``unit``, ``to_value``, ``equivalencies``
+
+        Decomposing then converting wastes time, since
+        ``.to(unit, equivalencies)`` internally does conversions.
+        The only use for combining decompose with other `unit_output`
+        parameters is with::
+
             unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
-            since this will dcompose to desired bases then return the value in those bases
-        ** experimental feature
-            for things which are not (u.Unit, u.core.IrreducibleUnit), tries wrapping in Unit()
-            this allows things such as:
-                x = 5 * u.kpc * u.s
-                bases = [2 * u.lyr, u.s]
-                x.decompose(bases=basesConversionFunction(bases))
-            this would normally return an error
+            since this will decompose to desired bases then return the value in those bases
+
+        .. note::
+
+            **experimental feature:**
+            for things which are not (astropy.unit.Unit, astropy.unit.core.IrreducibleUnit),
+            tries wrapping in ``Unit()``. This would normally return an error, but now
+            allows for conversions such as:
+
+            >>> x = 10 * u.km * u.s
+            >>> bases = [2 * u.km, u.s]
+            >>> x.decompose(bases=basesConversionFunction(bases))
+            5  (2 km s)
 
     Returns
     -------
@@ -94,18 +103,18 @@ def _simple_unit_decorator(unit=None, to_value=False,
     Examples
     --------
     >>> @unit_decorator
-        def func(*args, **kw):
-            result = do stuff
-            return result
+    ... def func(x, y, **kw):
+    ...     return x + y
 
     is equivalent to
 
-    >>> def func(*args, unit=None, to_value=False, equivalencies=[], decompose=False, **kw):
-            result = do stuff w/ *args, and **kw
-            return unit_output(result, unit, to_value, equivalencies, decompose)
+    >>> def func(x, y, unit=None, to_value=False, equivalencies=[],
+    ...          decompose=False, **kw):
+    ...     result = x + y
+    ...     return unit_output(result, unit, to_value, equivalencies,
+    ...                        decompose)
 
     """
-
     def wrapper(func):
         @wraps(func)
         def wrapped(*args,
@@ -129,303 +138,126 @@ def _simple_unit_decorator(unit=None, to_value=False,
 class QuantityInputOutput(object):
     r"""A decorator for validating the units of arguments to functions.
 
+    Parameters
+    ----------
+    func: function
+        the function to decorate
+        (default None)
+    unit: astropy Unit or Quantity or str
+        sets the unit for the function evaluation
+        (default {unit})
+        must be astropy-compatible unit specification
+        equivalent to ``func(*args, **kw).to(unit)``
+        if None, skips unit conversion
+    to_value: bool
+        whether to return .to_value(unit)
+        (default {to_value})
+        see Astropy.units.Quantity.to_value
+    equivalencies: list
+        equivalencies for any units provided
+        (default {equivalencies})
+        used by `.to()` and `.to_value()`
+    decompose: bool or list, optional
+        unit decomposition
+        (default {decompose})
+
+        * bool: True, False for decomposing.
+        * list: bases for ``.decompose(bases=[])``
+
+            will first decompose, then apply `unit`, `to_value`, `equivalencies`
+
+        Decomposing then converting wastes time, since
+        ``.to(unit, equivalencies)`` internally does conversions.
+        The only use for combining decompose with other `unit_output`
+        parameters is with::
+
+            unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
+            since this will decompose to desired bases then return the value in those bases
+
+        .. note::
+
+            **experimental feature:**
+            for things which are not (astropy.unit.Unit, astropy.unit.core.IrreducibleUnit),
+            tries wrapping in ``Unit()``.
+            allows for conversions such as:
+
+            >>> x = 10 * u.km * u.s
+            >>> bases = [2 * u.km, u.s]
+            >>> x.decompose(bases=basesConversionFunction(bases))
+            5  (2 km s)
+
+    default_units: dict, optional
+        dictionary of default units
+        (default {default_units})
+
+        if x has no units, it is assumed to be in u.km
+
+    annot2dfu: bool, optional
+        whether to interpret function annotations as default units
+        (default {annot2dfu})
+        function annotations have lower precedence than *default_units*
+
+    Notes
+    -----
     **function must allow kwargs**
 
     Order of Precedence:
+
     - Function Arguments
     - Decorator Arguments
     - Function Annotation Arguments
 
-    Function Arguments
-    ------------------
-    See `decorator argument' section
+    arguments to the decorator take LOWER precedence
+    than arguments to the function itself.
+
+    See decorator argument section
     function arguments override decorator & function annotation arguments
 
-    *func_args: function arguments
+    func_args: function arguments
     unit
     to_value
     equivalencies
     decompose
     default_units
-    **func_kwargs: function key-word argument
+    func_kwargs: function key-word argument
 
-    Decorator Arguments
-    -------------------
-    arguments to the decorator take LOWER precedence
-    than arguments to the function itself.
-
-    func: function
-        the function to decorate
-        default: None
-    unit: astropy Unit / Quantity or str  (default None)
-        sets the unit for the function evaluation
-        default: {unit}
-        must be astropy-compatible unit specification
-        equivalent to func(*args, **kw).to(unit)
-        if None, skips unit conversion
-    to_value: bool
-        whether to return .to_value(unit)
-        default: {to_value}
-        see Astropy.units.Quantity.to_value
-    equivalencies: list
-        equivalencies for any units provided
-        default: {equivalencies}
-        used by .to() and .to_value()
-    decompose: bool, list
-        unit decomposition
-        default: {decompose}
-        if bool:
-            True, False for decomposing
-        if list:
-            bases for .decompose(bases=[])
-            will first decompose, then apply unit, to_value, equivalencies
-        Decomposing then converting wastes time, since .to(unit, equivalencies) internally does conversions
-        the only use for combining decompose with other unit_output params is with:
-            unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
-            since this will dcompose to desired bases then return the value in those bases
-        ** experimental feature
-            for things which are not (u.Unit, u.core.IrreducibleUnit), tries wrapping in Unit()
-            this allows things such as:
-                x = 10 * u.km * u.s
-                bases = [2 * u.km, u.s]
-                x.decompose(bases=basesConversionFunction(bases))
-                >> 5  2 km s
-            (this would normally return an error)
-    default_units: dict
-        dictionary of default units
-        default: {default_units}
-        ex: dict(x=u.km)
-            for func(x, y)
-            if x has no units, it is assumed to be in u.km
-    annot2dfu: bool (default False)
-        whether to interpret function annotations as default units
-        function annotations have lower precedence than *default_units*
-        default: {annot2dfu}
-
-
-    Decorator Key-Word Arguments
-    ----------------------------
-    Unit specifications can be provided as keyword arguments
-    to the decorator, or by using function annotation syntax.
-    Arguments to the decorator take precedence
-    over any function annotations present.
-    **note**
-    decorator key-word arguments are NEVER interpreted as *default_units*
-
-    ex:
-        @quantity_io(x=u.m, y=u.s)
-        def func(x, y):
-            ...
-
-    Function Annotation Arguments
-    -----------------------------
-    Unit specifications can be provided as keyword arguments
-    to the decorator, or by using function annotation syntax.
-    Arguments to the function and decorator take precedence
-    over any function annotations present.
-
-    ex:
-        def func(x: u.m, y: u.s) -> u.m / u.s:
-            ...
-
-    if annot2dfu is True (default False)
-        function annotations are interpreted as default units
-        function annotations have lower precedence than *default_units*
-
-
-    Examples
-    --------
-    This is a simple example
-    @quantity_io()
-    def func(x: 'km', **kw) -> 2 * u.m:
-        return x
-
-    passing the wrong/no units doesn't work
-    >   func(2000 * u.s)
-    >       >> UnitConversionError
-    >   func(2000)
-    >       >> AttributeError
-    the distance is internally converted
-    >   func(2000 * u.m)
-    >       >> 1000.0 2 m
-    function annotation is superceded by an argument
-    >   func(2000 * u.m, unit=2 * u.km)
-    >       >> 1.0 2 km
-    >   func(2000 * u.m, unit=2 * u.km, to_value=True)
-    >       >> 1.0
-
-
-    # More Complex Example
-    this function only accepts
-        x arguments of type 'length'
-        t arguments of type 'time'
-    annotations are assumed to be also be default_units
-    @quantity_io(x='length', annot2dfu=True,
-                 default_units=dict(t=u.s))
-    def func(x: 'km', t, **kw) -> 2 * u.m / u.s:
-        return x * t
-
-    arguments have implicit units
-    >   func(2, 2)
-    >       >> 500.0 2 m / s
-    decorator & annotation supersceded by an argument
-    >   func(2, 2 * u.ms, unit=2 * u.km / s)
-    >       >> 500.0 2 km / s
-
-    print(func(2, 2))
-    print(func(2, 2, unit=2 * u.km / u.s))
-
-    """
-
-    @classmethod
-    def as_decorator(cls, func=None, unit=None, to_value=False,
-                     equivalencies=[], decompose=False,
-                     default_units={}, annot2dfu=False,
-                     **decorator_kwargs):
-        r"""
-        A decorator for validating the units of arguments to functions.
-
-        **function must allow kwargs**
-
-        Order of Precedence:
-        - Function Arguments
-        - Decorator Arguments
-        - Function Annotation Arguments
-
-        Function Arguments
-        ------------------
-        See `decorator argument' section
-        function arguments override decorator & function annotation arguments
-
-        *func_args: function arguments
-        unit
-        to_value
-        equivalencies
-        decompose
-        default_units
-        _skip_decorator: skip decorator, do func(*func_args, **func_kwargs)
-        **func_kwargs: function key-word argument
-
-        Decorator Arguments
-        -------------------
-        arguments to the decorator take LOWER precedence
-        than arguments to the function itself.
-
-        func: function
-            the function to decorate
-        unit: astropy Unit / Quantity or str  (default None)
-            sets the unit for the function evaluation
-            must be astropy-compatible unit specification
-            equivalent to func(*args, **kw).to(unit)
-            if None, skips unit conversion
-        to_value: bool  (default False)
-            whether to return .to_value(unit)
-            see Astropy.units.Quantity.to_value
-        equivalencies: list  (default [])
-            equivalencies for any units provided
-            used by .to() and .to_value()
-        decompose: bool, list  (default [])
-            if bool:
-                True, False for decomposing
-            if list:
-                bases for .decompose(bases=[])
-                will first decompose, then apply unit, to_value, equivalencies
-            Decomposing then converting wastes time, since .to(unit, equivalencies) internally does conversions
-            the only use for combining decompose with other unit_output params is with:
-                unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
-                since this will dcompose to desired bases then return the value in those bases
-            ** experimental feature
-                for things which are not (u.Unit, u.core.IrreducibleUnit), tries wrapping in Unit()
-                this allows things such as:
-                    x = 10 * u.km * u.s
-                    bases = [2 * u.km, u.s]
-                    x.decompose(bases=basesConversionFunction(bases))
-                    >> 5  2 km s
-                (this would normally return an error)
-        default_units: dict  (default {})
-            dictionary of default units
-            ex: {x: u.km}
-                for func(x, y)
-                if x has no units, it is assumed to be in u.km
-        annot2dfu: bool (default False)
-            whether to interpret function annotations as default units
-            function annotations have lower precedence than {default_units}
-
-
-        Decorator Key-Word Arguments
-        ----------------------------
+    Decorator Key-Word Arguments:
         Unit specifications can be provided as keyword arguments
         to the decorator, or by using function annotation syntax.
         Arguments to the decorator take precedence
         over any function annotations present.
         **note**
-        decorator key-word arguments are NEVER interpreted as {default_units}
+        decorator key-word arguments are NEVER interpreted as `default_units`
 
-        ex:
-            @quantity_io(x=u.m, y=u.s)
-            def func(x, y):
-                ...
+        >>> @quantity_io(x=u.m, y=u.s)
+        ... def func(x, y):
+        ...     pass
 
-        Function Annotation Arguments
-        -----------------------------
+    Function Annotation Arguments:
+
         Unit specifications can be provided as keyword arguments
         to the decorator, or by using function annotation syntax.
         Arguments to the function and decorator take precedence
         over any function annotations present.
 
-        ex:
-            def func(x: u.m, y: u.s) -> u.m / u.s:
-                ...
+        >>> def func(x: u.m, y: u.s) -> u.m / u.s:
+        ...     pass
 
         if annot2dfu is True (default False)
-            function annotations are interpreted as default units
-            function annotations have lower precedence than {default_units}
+        function annotations are interpreted as default units
+        function annotations have lower precedence than *default_units*
 
+    """
 
-        Examples
-        --------
-        # Simple Example
-        @quantity_io()
-        def func(x: 'km', **kw) -> 2 * u.m:
-            return x
-
-        passing the wrong/no units doesn't work
-        >   func(2000 * u.s)
-        >       >> UnitConversionError
-        >   func(2000)
-        >       >> AttributeError
-        the distance is internally converted
-        >   func(2000 * u.m)
-        >       >> 1000.0 2 m
-        function annotation is superceded by an argument
-        >   func(2000 * u.m, unit=2 * u.km)
-        >       >> 1.0 2 km
-        >   func(2000 * u.m, unit=2 * u.km, to_value=True)
-        >       >> 1.0
-
-
-        # More Complex Example
-        this function only accepts
-            x arguments of type 'length'
-            t arguments of type 'time'
-        annotations are assumed to be also be default_units
-        @quantity_io(x='length', annot2dfu=True,
-                     default_units={'t': u.s})
-        def func(x: 'km', t, **kw) -> 2 * u.m / u.s:
-            return x * t
-
-        arguments have implicit units
-        >   func(2, 2)
-        >       >> 500.0 2 m / s
-        decorator & annotation supersceded by an argument
-        >   func(2, 2 * u.ms, unit=2 * u.km / s)
-        >       >> 500.0 2 km / s
-
-        print(func(2, 2))
-        print(func(2, 2, unit=2 * u.km / u.s))
-        """
+    @classmethod
+    @format_doc(None, doc=__doc__)
+    def as_decorator(cls, func=None, unit=None, to_value=False,
+                     equivalencies=[], decompose=False,
+                     default_units={}, annot2dfu=False,
+                     **decorator_kwargs):
+        """{doc}."""
         # making instance from base class
-        self = super(QuantityInputOutput, cls).__new__(cls)
+        self = super().__new__(cls)
 
         # modifying docstring
         _locals = locals()
@@ -436,8 +268,7 @@ class QuantityInputOutput(object):
         self.__init__(unit=unit, to_value=to_value,
                       equivalencies=equivalencies, decompose=decompose,
                       default_units=default_units, annot2dfu=annot2dfu,
-                      **decorator_kwargs
-                      )
+                      **decorator_kwargs)
 
         if func is not None:
             return self(func)
@@ -448,7 +279,7 @@ class QuantityInputOutput(object):
                  equivalencies=[], decompose=False,
                  default_units={}, annot2dfu=False,
                  **decorator_kwargs):
-
+        """Initialize decorator class."""
         super().__init__()
 
         self.unit = unit
@@ -462,7 +293,7 @@ class QuantityInputOutput(object):
         self.decorator_kwargs = decorator_kwargs
 
     def __call__(self, wrapped_function):
-
+        """Make decorator."""
         # Extract the function signature for the function we are wrapping.
         wrapped_signature = inspect.signature(wrapped_function)
 
@@ -611,50 +442,108 @@ class QuantityInputOutput(object):
 
 ###############################################################################
 
-_funcdec = r"""\n\n\tDecorator Docstring\n\t-------------------
-        A decorator for validating the units of arguments to functions.
-
-        **function must allow kwargs**
-
-        Decorator-Added Function Key-Word Arguments
-        -------------------------------------------
+_funcdec = """
+    Other Parameters
+    ----------------
+    unit : astropy Unit or Quantity or str
+        sets the unit for the function evaluation.
+        (default None)
+        must be astropy-compatible unit specification.
+        equivalent to ``func(*args, **kw).to(unit)``
+        if None, skips unit conversion.
         function arguments override decorator & function annotation arguments
+    to_value : bool
+        whether to return ``.to_value(unit)``
+        (default False)
+        see ``astropy.units.Quantity.to_value``
+        function arguments override decorator & function annotation arguments
+    equivalencies : list
+        equivalencies for any units provided
+        (default [])
+        used by ``.to()`` and ``.to_value()``
+        function arguments override decorator & function annotation arguments
+    decompose : bool or list
+        Decompose the unit into base units, can provide base as list.
+        (default [])
+        function arguments override decorator & function annotation arguments
+        if bool, then do/don't decompose
+        if list, bases for ``.decompose(bases=[])``
+        will first decompose, then apply unit, to_value, equivalencies
 
-        unit: astropy Unit / Quantity or str  (default None)
-            sets the unit for the function evaluation
-            must be astropy-compatible unit specification
-            equivalent to func(*args, **kw).to(unit)
-            if None, skips unit conversion
-        to_value: bool  (default False)
-            whether to return .to_value(unit)
-            see Astropy.units.Quantity.to_value
-        equivalencies: list  (default [])
-            equivalencies for any units provided
-            used by .to() and .to_value()
-        decompose: bool, list  (default [])
-            if bool:
-                True, False for decomposing
-            if list:
-                bases for .decompose(bases=[])
-                will first decompose, then apply unit, to_value, equivalencies
-            Decomposing then converting wastes time, since .to(unit, equivalencies) internally does conversions
-            the only use for combining decompose with other unit_output params is with:
-                unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
-                since this will dcompose to desired bases then return the value in those bases
-            ** experimental feature
-                for things which are not (u.Unit, u.core.IrreducibleUnit), tries wrapping in Unit()
-                this allows things such as:
-                    x = 10 * u.km * u.s
-                    bases = [2 * u.km, u.s]
-                    x.decompose(bases=basesConversionFunction(bases))
-                    >> 5  2 km s
-                (this would normally return an error)
-        default_units: dict  (default {})
-            dictionary of default units
-            ex: {x: u.km}
-                for func(x, y)
-                if x has no units, it is assumed to be in u.km
+        Decomposing then converting wastes time, since `.to(unit, equivalencies)`
+        internally does conversions. The only use for combining decompose with
+        other params is with::
+
+            unit=None, to_value=True, equivalencies=[], decompose=[bases]
+
+        since this will decompose to desired bases then return the value in those bases.
+
+        .. note::
+            for things which are not (u.Unit, u.core.IrreducibleUnit), tries wrapping in Unit()
+            this allows things such as::
+
+                >>> x = 10 * u.km * u.s
+                >>> bases = [2 * u.km, u.s]
+                >>> x.decompose(bases=basesConversionFunction(bases))
+                5  (2 km s)
+
+            (this would normally return an error)
+
+    default_units: dict
+        dictionary of default units
+        (default {})
+
+        >>> dfu = {x: u.km}
+        >>> x = 10
+        >>> y = 20*u.km
+        >>> def add(x, y): return x + y
+        >>> add(x, y)
+        20 u.km
 """
+
+
+#  TODO incorporate into docstring
+# Examples
+# --------
+# This is a simple example
+# >>> @QuantityInputOutput.as_decorator()
+# ... def func(x: 'km', **kw) -> 2 * u.m:
+# ...     return x
+
+# # passing the wrong/no units doesn't work
+# >>> func(2000 * u.s)
+# >       >> UnitConversionError
+# >   func(2000)
+# >       >> AttributeError
+# the distance is internally converted
+# >   func(2000 * u.m)
+# >       >> 1000.0 2 m
+# function annotation is superceded by an argument
+# >   func(2000 * u.m, unit=2 * u.km)
+# >       >> 1.0 2 km
+# >   func(2000 * u.m, unit=2 * u.km, to_value=True)
+# >       >> 1.0
+
+
+# # More Complex Example
+# this function only accepts
+#     x arguments of type 'length'
+#     t arguments of type 'time'
+# annotations are assumed to be also be default_units
+# @quantity_io(x='length', annot2dfu=True,
+#              default_units=dict(t=u.s))
+# def func(x: 'km', t, **kw) -> 2 * u.m / u.s:
+#     return x * t
+
+# arguments have implicit units
+# >   func(2, 2)
+# >       >> 500.0 2 m / s
+# decorator & annotation supersceded by an argument
+# >   func(2, 2 * u.ms, unit=2 * u.km / s)
+# >       >> 500.0 2 km / s
+
+# print(func(2, 2))
+# print(func(2, 2, unit=2 * u.km / u.s))
 
 
 ###############################################################################

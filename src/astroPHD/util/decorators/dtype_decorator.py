@@ -7,16 +7,15 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
+# Docstring and Metadata
 """decorators
 
-TODO for dtypeDecorator
------------------------
+TODO
+----
 support argument 'all' in [(index, dtype),] as the IndexError
 supoort single argumens so that (index, dtype) works w/out [(), ]
 full support of numpy.dtype
-add in_dtype and out_dtype kwargs to wrapped functions which override
-    defaults
+add in_dtype and out_dtype kwargs to wrapped functions which override defaults
 """
 
 __all__ = [
@@ -41,7 +40,7 @@ import types
 
 try:
     from astropy.utils.decorators import wraps
-except ImportError as e:
+except ImportError:
     print("could not import wraps from astropy. using functools' instead")
     from functools import wraps
 
@@ -66,23 +65,9 @@ class dtypeDecorator():
     if inargs is forgotten and func is not a function, then func is
     assumed to be inargs.
 
-    Examples
-    --------
-    intDecorator = dtypeDecoratorMaker(int)
-    @intDecorator(inargs=[(0, int), (1, float)], outargs=[(2, int),])
-    def func(x, y, z):
-        print(x, y, z)
-        return x, y, z
-    # /def
-
-    x, y, z = func(1.1, 2.2, 3.3)
-    >>> 1, 2.2, 3.3  # x -> int, y, z remain float within the function
-    print(z, y, z)  # z->int before returned
-    >>> 1, 2.2, 3
     """
 
     def __new__(cls, func=None, in_dtype=None, out_dtype=None):
-        """"""
         self = super().__new__(cls)  # making instance of self
 
         # correcting if forgot to specify in_dtype= and did not provide a function
@@ -176,17 +161,15 @@ def dtypeDecoratorMaker(dtype):
 
     Examples
     --------
-    intDecorator = dtypeDecoratorMaker(int)
-    @intDecorator(inargs=[0, 1], outargs=[2,])
-    def func(x, y, z):
-        print(x, y, z)
-        return x, y, z
-    # /def
-
-    x, y, z = func(1.1, 2.2, 3.3)
-    >>> 1, 2, 3.3  # x,y -> int, z remains float within the function
-    print(z, y, z)  # z->int before returned
-    >>> 1, 2, 3
+    >>> intDecorator = dtypeDecoratorMaker(int)
+    >>> @intDecorator(inargs=[(0, int), (1, float)], outargs=[(2, int),])
+    ... def func(x, y, z):
+    ...     print(x, y, z)
+    ...     return x, y, z
+    >>> x, y, z = func(1.1, 2.2, 3.3)
+    1, 2.2, 3.3  # x -> int, y, z remain float within the function
+    >>> print(z, y, z)  # z->int before returned
+    1, 2.2, 3
     """
 
     class dtypeDecorator():

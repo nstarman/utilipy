@@ -27,6 +27,7 @@ class InheritDocstrings(type):
     methods are normally resolved in Python.  If this results in
     selecting the wrong docstring, the docstring will need to be
     explicitly included on the method.
+
     For example::
         >>> from astropy.utils.misc import InheritDocstrings
         >>> class A(metaclass=InheritDocstrings):

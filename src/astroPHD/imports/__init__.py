@@ -1,17 +1,15 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : initialization file
-# AUTHOR  : 
-# PROJECT :
+# TITLE   : imports
+# AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""initialization file for __________
-"""
+# Docstring and Metadata
+"""Initialization file for imports."""
 
 __author__ = ""
 # __copyright__ = "Copyright 2018, "
@@ -23,13 +21,13 @@ __author__ = ""
 # __status__ = "Production"
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# GENERAL
 
 
-## Project-Specific
+# PROJECT-SPECIFIC
 
 
 ##############################################################################
-### END
+# END

@@ -1,93 +1,65 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#############################################################################
-r"""
-
-    Mega-Cam gen1 bands from PanSTARRS 1 bands
-
-#############################################################################
-
-Copyright (c) 2018 - Nathaniel Starkman
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-  Redistributions of source code must retain the above copyright notice,
-     this list of conditions and the following disclaimer.
-  Redistributions in binary form must reproduce the above copyright notice,
-     this list of conditions and the following disclaimer in the
-     documentation and/or other materials provided with the distribution.
-  The name of the author may not be used to endorse or promote products
-     derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
-AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
-WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-
-#############################################################################
-Planned Features
-"""
-
-#############################################################################
-# Imports
-
-import warnings
-
-# 3rd Party Imports
-from astropy.table import Table, QTable
-from .. import units
-
-#############################################################################
-# Info
+# Docstring and Metadata
+"""Mega-Cam gen1 bands from PanSTARRS 1 bands."""
 
 __author__ = "Nathaniel Starkman"
-__copyright__ = "Copyright 2018, "
 __credits__ = [
     "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
 ]
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Nathaniel Starkman"
-__email__ = "n.starkman@mail.utoronto.ca"
-__status__ = "Production"
+
+__all__ = [
+    'G', 'R', 'I', 'Z',
+    'GmR', 'GmI', 'GmZ', 'RmI', 'RmZ', 'ImZ'
+]
 
 #############################################################################
-# Code
+# IMPORTS
 
+# GENERAL
+import warnings
+from astropy.table import Table, QTable
+
+# PROJECT-SPECIFIC
+from .. import units
+
+
+#############################################################################
+# CODE
+#############################################################################
 
 @units.quantity_io()
-def G(cfht, **kw) -> units.mag:
-    """Pan-STARRS g band from CFHT G_MP9401 and R_MP9601
-    gPS - gCFHT = 0.004(gCFHT - rCFHT)
-    limited to -1.5 mag < gmi < 2.5 mag
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
+def G(cfht: Table, **kw) -> units.mag:
+    r"""Pan-STARRS g band from CFHT G_MP9401 and R_MP9601.
 
-    Arguments
+    Parameters
     ----------
     cfht: Astropy Table
         need: g
         either: r, g-r col
-
-    KeyWord Arguments
-    -----------------
     g: str  (default 'g')
         G_MP9401 column name
     r: str  (default 'r')
         R_MP9601 column name
     gmr: str  (default 'g-r')
         G_MP9401-R_MP9601 column name
+
+    Returns
+    -------
+    g_ps : Quantity array_like
+        Pan-STARRS1 g-band
+
+    Notes
+    -----
+    .. math::
+
+        g_{PS} = g_{CFHT} = 0.004 * (g_{CFHT} - r_{CFHT})
+
+    limited to :math:`-1.5 \rm{mag} < g-i < 2.5 \rm{mag}`
+
+    filter transformations from
+    `MegaCam to Pan-STARRS <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
     """
     g, r = kw.get('g', 'g'), kw.get('r', 'r')
     gmr = kw.get('gmr', 'g-r')
@@ -110,27 +82,36 @@ def G(cfht, **kw) -> units.mag:
 
 
 @units.quantity_io()
-def R(cfht, **kw) -> units.mag:
-    """Pan-STARRS g band from CFHT R_MP9601 and I_MP9701
-    rPS - rCFHT = -.001 + 0.023(rCFHT-iCFHT)
-    limited to -.9 mag < gmi < 3 mag
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
+def R(cfht: Table, **kw) -> units.mag:
+    r"""Pan-STARRS g band from CFHT R_MP9601 and I_MP9701.
 
-    Arguments
+    Parameters
     ----------
     cfht: Astropy Table
         need: r col
         either: i, r-i col
-
-    KeyWord Arguments
-    -----------------
     r: str  (default 'r')
         R_MP9601 column name
     i: str  (default 'i')
         I_MP9701 column name
     rmi: str  (default 'r-i')
         G_MP9401-I_MP9701 column name
+
+    Returns
+    -------
+    r_ps : Quantity array_like
+
+    Notes
+    -----
+    .. math::
+
+        r_{PS} = r_{CFHT} -.001 + 0.023*(r_{CFHT}-i_{CFHT})
+
+    limited to :math:`-.9 \rm{mag} < (g-i)_{CFHT} < 3 \rm{mag}`
+
+    filter transformations from
+    `MegaCam to Pan-STARRS <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
     """
     r, i = kw.get('r', 'r'), kw.get('i', 'i')
     rmi = kw.get('rmi', 'r-i')
@@ -153,27 +134,37 @@ def R(cfht, **kw) -> units.mag:
 
 
 @units.quantity_io()
-def I(cfht, **kw) -> units.mag:
-    """Pan-STARRS i band from CFHT R_MP9601 and I_MP9701
-    iPS - iCFHT = -.007 + 0.078(rCFHT-iCFHT)
-    limited to .1 mag < gmi < 3 mag
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
+def I(cfht: Table, **kw) -> units.mag:
+    r"""Pan-STARRS i band from CFHT R_MP9601 and I_MP9701.
 
-    Arguments
+    Parameters
     ----------
     cfht: Astropy Table
         need: i col
         either: r, r-i col
-
-    KeyWord Arguments
-    -----------------
     r: str  (default 'r')
         R_MP9601 column name
     i: str  (default 'i')
         I_MP9701 column name
     rmi: str  (default 'r-i')
         G_MP9401-I_MP9701 column name
+
+    Returns
+    -------
+    i_ps : Quantity array_like
+
+    Notes
+    -----
+    .. math::
+
+        i_{PS} = i_{CFHT} -.007 + 0.078 * (r_{CFHT}-i_{CFHT})
+
+    limited to :math:`.1 \rm{mag} < (g-i)_{CFHT} < 3 \rm{mag}`
+
+    filter transformations from
+    `MegaCam to Pan-STARRS
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
     """
     r, i = kw.get('r', 'r'), kw.get('i', 'i')
     rmi = kw.get('rmi', 'r-i')
@@ -196,27 +187,37 @@ def I(cfht, **kw) -> units.mag:
 
 
 @units.quantity_io()
-def Z(cfht, **kw) -> units.mag:
-    """Pan-STARRS g band from CFHT I_MP9701, Z_MP9801
-    zPS - zCFHT = 0.078(iCFHT-zCFHT) + 0.029(iCFHT-zCFHT)^2
-    limited to -.1 mag < gmi
-    filter transformations from
-    http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html
+def Z(cfht: Table, **kw) -> units.mag:
+    r"""Pan-STARRS g band from CFHT I_MP9701, Z_MP9801.
 
-    Arguments
+    Parameters
     ----------
     cfht: Astropy Table
         need: i, z cols
         either: i-z col
-
-    KeyWord Arguments
-    -----------------
     i: str  (default 'i')
         I_MP9701 column name
     z: str  (default 'z')
         Z_MP9801 column name
     imz: str  (default 'i-z')
         I_MP9701-Z_MP9801 column name
+
+    Returns
+    -------
+    z_ps : Quantity array_like
+
+    Notes
+    -----
+    .. math::
+
+        z_{PS} - z_{CFHT} = 0.078(i_{CFHT}-z_{CFHT}) + 0.029(i_{CFHT}-z_{CFHT})^2
+
+    limited to :math:`-.1 \rm{mag} < (g-i)_{CFHT}`
+
+    filter transformations from
+    `MegaCam to Pan-STARRS
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
     """
     i, z = kw.get('i', 'i'), kw.get('z', 'z')
     imz = kw.get('imz', 'i-z')
@@ -239,35 +240,140 @@ def Z(cfht, **kw) -> units.mag:
     return z_ps
 
 
+#############################################################################
+# Colors
+
 @units.quantity_io()
-def GmR(cfht, **kw) -> units.mag:
+def GmR(cfht: Table, **kw) -> units.mag:
+    """G-R CFHT.
+
+    Parameters
+    ----------
+    cfht: astropy Table
+
+    Returns
+    -------
+    G-R : Quantity array_like
+
+    Notes
+    -----
+    filter transformations from
+    `MegaCam to Pan-STARRS
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
+    """
     return G(cfht, **kw) - R(cfht, **kw)
 
 
 @units.quantity_io()
-def GmI(cfht, **kw) -> units.mag:
+def GmI(cfht: Table, **kw) -> units.mag:
+    """G-R CFHT.
+
+    Parameters
+    ----------
+    cfht: astropy Table
+
+    Returns
+    -------
+    G-I : Quantity array_like
+
+    Notes
+    -----
+    filter transformations from
+    `MegaCam to Pan-STARRS
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
+    """
     return G(cfht, **kw) - I(cfht, **kw)
 
 
 @units.quantity_io()
-def GmZ(cfht, **kw) -> units.mag:
+def GmZ(cfht: Table, **kw) -> units.mag:
+    """G-R CFHT.
+
+    Parameters
+    ----------
+    cfht: astropy Table
+
+    Returns
+    -------
+    G-I : Quantity array_like
+
+    Notes
+    -----
+    filter transformations from
+    `MegaCam to Pan-STARRS
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
+    """
     return G(cfht, **kw) - Z(cfht, **kw)
 
 
 @units.quantity_io()
-def RmI(cfht, **kw) -> units.mag:
+def RmI(cfht: Table, **kw) -> units.mag:
+    """G-R CFHT.
+
+    Parameters
+    ----------
+    cfht: astropy Table
+
+    Returns
+    -------
+    G-I : Quantity array_like
+
+    Notes
+    -----
+    filter transformations from
+    `MegaCam to Pan-STARRS
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
+    """
     return R(cfht, **kw) - I(cfht, **kw)
 
 
 @units.quantity_io()
-def RmZ(cfht, **kw) -> units.mag:
+def RmZ(cfht: Table, **kw) -> units.mag:
+    """G-R CFHT.
+
+    Parameters
+    ----------
+    cfht: astropy Table
+
+    Returns
+    -------
+    G-I : Quantity array_like
+
+    Notes
+    -----
+    filter transformations from
+    `MegaCam to Pan-STARRS
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
+    """
     return R(cfht, **kw) - Z(cfht, **kw)
 
 
 @units.quantity_io()
-def ImZ(cfht, **kw) -> units.mag:
+def ImZ(cfht: Table, **kw) -> units.mag:
+    """G-R CFHT.
+
+    Parameters
+    ----------
+    cfht: astropy Table
+
+    Returns
+    -------
+    G-I : Quantity array_like
+
+    Notes
+    -----
+    filter transformations from
+    `MegaCam to Pan-STARRS
+    <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
+
+    """
     return I(cfht, **kw) - Z(cfht, **kw)
 
 
 ###########################################################################
-# CLEANUP
+# END

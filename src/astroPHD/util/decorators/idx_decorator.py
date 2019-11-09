@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -7,43 +6,42 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""**DOCSTRING**
-"""
+# Docstring and Metadata
+"""index decorator."""
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# GENERAL
 import numpy as np
 from functools import wraps
 
-## Project-Specific
-
 
 ##############################################################################
-### CODE
+# CODE
 
 class idxDecorator():
-    """decorator to control whether to return bool array or indices
+    """Decorator to control whether to return bool array or indices.
+
     for functions which return bool arrays
     adds *as_ind* as a kwarg to decorated function
 
     Parameters
     ----------
-    func : function or None, optional  (defualt None)
+    func : function or None, optional
+        (defualt None)
         the decorated function
         optional so idxDecorator can act as a decorator factory (see example)
-    as_ind : bool, optional  (default False)
+    as_ind : bool, optional
+        (default False)
         whether to return bool array or the indices (where(bool array == True))
         sets the default behavior for the wrapped fnction *func*
 
 
-    Parameters Added to Function
-    ----------------------------
-    as_ind : bool  (default False)
-        if true: return np.where(bool array == True)
+    Notes
+    -----
+    Add `as_ind` to the function signature and docstring.
 
     Returns
     -------
@@ -60,7 +58,7 @@ class idxDecorator():
 
     >>> @idxDecorator
     >>> def func1(x):
-            return x < 1
+    ...     return x < 1
 
     >>> func1(x)  # calling normally
     [True, False]
@@ -71,7 +69,7 @@ class idxDecorator():
 
     >>> @idxDecorator(as_ind=True)
     >>> def func2(x):
-            return x < 1
+    ...     return x < 1
 
     >>> func2(x)  # calling normally
     array([0])
@@ -98,48 +96,56 @@ class idxDecorator():
         array([0])
     >>> newfunc(x)
         array([True, False])
+
     """
 
     def __new__(cls, func=None, as_ind=False):
-        """make new instance of idxDecorator
+        """Make new instance of idxDecorator.
+
         if no function, return decorator generator
         else return decorated function
 
         does not pass to __init__ after
+
         """
         # making instance of self
         self = super().__new__(cls)
 
-        # adding as_ind parameter default
-        self.as_ind = as_ind
-
         # if no function, return decorator generator
         # else return decorated function
-        if func is None:       # decorator generator
-            return self
-        else:                  # decorated function
+        if func is not None:       # decorator generator
+            self.__init__(as_ind=as_ind)
             return self(func)
+        # else
+        return self
         # /def
 
+    def __init__(self, func=None, as_ind=False):
+        """Initialize decorator class."""
+        # adding as_ind parameter default
+        self.as_ind = as_ind
+    # /return
+
     def __call__(self, wrapped_func):
+        """Decorator."""
         # function wrapper
 
         @wraps(wrapped_func)
         def wrapper(*args, as_ind=self.as_ind, **kwargs):
 
-            return_ = np.asarray(wrapped_func(*args, **kwargs))
+            return_ = wrapped_func(*args, **kwargs)
 
             if as_ind:  # return indices
-                return np.where(return_ == True)
-            else:       # return bool array
-                return return_
+                return np.where(np.asarray(return_) == True)
+            # else
+            return return_
         # /def
 
-        wrapper.__doc__ = wrapped_func.__doc__
+        # wrapper.__doc__ = wrapped_func.__doc__
         # TODO modify wrapped func documentation to include as_ind
         return wrapper
     # /def
 # /class
 
 ##############################################################################
-### END
+# END

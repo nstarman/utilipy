@@ -11,17 +11,20 @@
 # Docstring and Metadata
 r"""Base set of imports for matplotlib.
 
-Returns
--------
-Matplotlib:
-    pyplot->plt
-    matplotlib->mpl, .colors, .cm
-astroPHD:
-    ipython.plot.configure_matplotlib
+Routine Listings
+----------------
+Matplotlib: imports
+
+    - pyplot->plt
+    - matplotlib->mpl, .colors, .cm
+
+astroPHD: imports
+
+    - ipython.plot.configure_matplotlib
 
 References
 ----------
-Matplotlib reference is [1]_
+Matplotlib reference [1]_.
 
 .. [1] John D. Hunter. Matplotlib: A 2D Graphics Environment, Computing in
     Science & Engineering, 9, 90-95 (2007), DOI:10.1109/MCSE.2007.55
@@ -57,13 +60,32 @@ from mpl_toolkits.mplot3d import Axes3D  # 3D plotting
 # +--------------------------------------------------------------------------+
 # IPython Magic
 
-from astroPHD.ipython.plot import configure_matplotlib
+try:
+
+    _HAS_IPYTHON = False
+
+    get_ipython()
+
+    if get_ipython() is None:  # double checking
+        raise NameError
+
+except NameError:
+
+    pass
+
+else:
+
+    _HAS_IPYTHON = True
+
+    from astroPHD.ipython.plot import configure_matplotlib
 
 
 ##############################################################################
 # Running Imported Functions
 
-configure_matplotlib(backend='inline', figure_format='retina')
+if _HAS_IPYTHON:
+
+    configure_matplotlib(backend='inline', figure_format='retina')
 
 
 ##############################################################################

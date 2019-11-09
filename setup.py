@@ -23,31 +23,40 @@ from pkg_resources import get_distribution, DistributionNotFound
 
 
 #############################################################################
-# Code
+# FUNCTIONS
 
 def read(*names, **kwargs):
+    """read."""
     with io.open(
         os.path.join(os.path.dirname(__file__), *names),
         encoding=kwargs.get("encoding", "utf8")
     ) as fp:
         return fp.read()
+# /def
 
 
 def get_dist(pkgname):
+    """Get distribution."""
     try:
         return get_distribution(pkgname)
     except DistributionNotFound:
         return None
+# /def
 
 
 def find_version(*file_paths):
+    """Find version."""
     version_file = read(*file_paths)
     version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
                               version_file, re.M)
     if version_match:
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
+# /def
 
+
+#############################################################################
+# RUNNING
 
 readme = open('README.md').read()
 

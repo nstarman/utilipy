@@ -16,20 +16,20 @@ Notes
 -----
 calls `quantity_support`
 
-Returns
--------
-astropy
-astropy:
-    units->u,
-    coordinates->coords, SkyCoord,
-    table.Table, QTable
-    visualization.quantity_support, astropy_mpl_style
+Routine Listings
+----------------
+Astropy: imports
+
+    - units->u,
+    - coordinates->coords, SkyCoord,
+    - table.Table, QTable
+    - visualization.quantity_support, astropy_mpl_style
 
 References
 ----------
-Astropy citation: [1]_
+References [#]_.
 
-.. [1] Astropy Collaboration et al., 2018, AJ, 156, 123
+.. [#] Astropy Collaboration et al., 2018, AJ, 156, 123.
 
 """
 

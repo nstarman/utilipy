@@ -36,8 +36,10 @@ from ... import units as u
 def angular_distance(lon1: u.deg, lat1: u.deg, lon2: u.deg, lat2: u.deg):
     r"""Angular distance on-sky.
 
-    for longitude (ra) \alpha and latitude (dec) \delta
+    for longitude, \alpha, and latitude, \delta,
+
     .. math::
+
         \cos{\theta} = \left[\sin(\delta_1)\sin(\delta_2) +
                              \cos(\delta_1)\cos(\delta_2)\cos(\alpha_1-\alpha_2)
                        \right]
@@ -63,10 +65,10 @@ def angular_distance(lon1: u.deg, lat1: u.deg, lon2: u.deg, lat2: u.deg):
         the angular distance on-sky
         same shape as largest of lon1, lat1, lon2, lat2
 
-    Info
-    ----
+    Notes
+    -----
     for reference:
-        ICRS: lon=ra, lat=dec
+    * ICRS: lon=ra, lat=dec
 
     """
     latcomp = np.sin(lat1) * np.sin(lat2)  # latitude component
@@ -137,33 +139,39 @@ def absolute_to_apparent_magnitude(M: u.mag, d_L: u.pc, **kw) -> u.mag:
 @u.quantity_io(d='length', A=u.mag,
                annot2dfu=True, default_units={'A': u.mag})
 def distanceModulus_magnitude(d: u.pc, A=0 * u.mag, obs=True, **kw) -> u.mag:
-    r"""Distance Modulus
-    equation:  DM = 5 log10(d / 10) + A
+    r"""Distance Modulus distance to magnitude.
 
-    mtrue - M = 5 log10(d / 10)
-    if there is line-of-sight extinction
-    mobs = mtrue + A
-    | mobs - M = 5 log10(d / 10) + A
-    | true - M = 5 log10(d / 10) - A
+    .. math::
 
-    Arguments
-    ---------
+        DM = 5 log10(d / 10) + A
+
+    Parameters
+    ----------
     d: scalar, array, Quantity
         distance
         no units => parsecs
-    A: scalar, array, Quantity (in mag)
+    A: array_like
+        (default :math:`0 \rm{mag}`)
         extinction in magnitudes
-    obs: bool (default True)
-        whether to return (mobs - M) or (mtrue - M)
-        defualt: (mobs - M)
-        **don't change unless specifically required
+    obs: bool
+        (default True goes to :math:`mobs - M`)
+        whether to return (:math:`mobs - M`) or (:math:`mtrue - M`)
+        .. note:: don't change unless specifically required
 
     Returns
     -------
     DM: scalar, array
         default units: u.mag
-    """
 
+    Notes
+    -----
+    :math:`mtrue - M = 5 log10(d / 10)`
+    if there is line-of-sight extinction
+    :math:`mobs = mtrue + A`
+    :math:`mobs - M = 5 log10(d / 10) + A`
+    :math:`true - M = 5 log10(d / 10) - A`
+
+    """
     if not obs:
         A *= -1
 
@@ -175,11 +183,14 @@ def distanceModulus_magnitude(d: u.pc, A=0 * u.mag, obs=True, **kw) -> u.mag:
 
 @u.quantity_io(DM=u.mag, annot2dfu=True)
 def distanceModulus_distance(DM: u.mag, **kw) -> u.pc:
-    r"""Distance Modulus
-    equation:  DM = 5 log10(d / 10) -> d = 10^{\frac{DM}{5}+1}
+    r"""Distance Modulus.
 
-    Arguments
-    ---------
+    .. math::
+
+        DM = 5 log10(d / 10) -> d = 10^{\frac{DM}{5}+1}
+
+    Parameters
+    ----------
     DM: scalar, array
         in magnitudes
         if Quantity, pass as distance.to_value('mag')
@@ -189,8 +200,8 @@ def distanceModulus_distance(DM: u.mag, **kw) -> u.pc:
     distance: scalar, array
         in parsecs
         no units attached
-    """
 
+    """
     return np.power(10., np.divide(DM, 5. * u.mag) + 1) * u.pc
 # /def
 
@@ -201,32 +212,38 @@ def distanceModulus_distance(DM: u.mag, **kw) -> u.pc:
 @u.quantity_io(arg=('length', u.mag), A=u.mag,
                annot2dfu=True, default_units={'A': u.mag})
 def distanceModulus(arg, A=0 * u.mag, obs=True, **kw):
-    r"""Distance Modulus
-    equation:  DM = 5 log10(d / 10) + A
+    r"""Distance Modulus.
 
-    mtrue - M = 5 log10(d / 10)
-    if there is line-of-sight extinction
-    mobs = mtrue + A
-    | mobs - M = 5 log10(d / 10) + A
-    | true - M = 5 log10(d / 10) - A
+    .. math::
 
-    Arguments
-    ---------
-    d: scalar, array, Quantity
-        no units => parsecs
-    A: scalar, array, Quantity (in mag)
+        DM = 5 log10(d / 10) + A
+
+    Parameters
+    ----------
+    d: array_like, optional
+        no units to parsecs
+    A: Quantity array_like, optional
         extinction in magnitudes
-    obs: bool (default True)
-        whether to return (mobs - M) or (mtrue - M)
-        defualt: (mobs - M)
-        **don't change unless specifically required
+        (default :math:`0 \rm{mag}`)
+    obs: bool
+        (default True goes to :math:`mobs - M`)
+        whether to return (:math:`mobs - M`) or (:math:`mtrue - M`)
+        .. note:: don't change unless specifically required
 
     Returns
     -------
-    DM: scalar, array
-        default units: u.mag
-    """
+    DM: Quantity array_like
+        default u.mag
 
+    Notes
+    -----
+    :math:`mtrue - M = 5 log10(d / 10)`
+    if there is line-of-sight extinction
+    :math:`mobs = mtrue + A`
+    :math:`mobs - M = 5 log10(d / 10) + A`
+    :math:`true - M = 5 log10(d / 10) - A`
+
+    """
     if u.get_physical_type(arg) == 'length':
         if not obs:
             A *= -1
