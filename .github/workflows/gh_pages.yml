@@ -9,9 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
+    - name: gh-pages
       run: |
         #!/bin/bash
         # http://redsymbol.net/articles/unofficial-bash-strict-mode/
@@ -32,7 +30,7 @@ jobs:
         ls
 
         # build html docs from sphinx files
-        # make html
+        make clean
 
         # # create or use orphaned gh-pages branch
         # branch_name=gh-pages
