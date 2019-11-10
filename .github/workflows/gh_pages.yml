@@ -25,6 +25,8 @@ jobs:
         # git checkout -- .
         # git fetch --all
 
+        pip install sphinx
+
         ls 
         cd docs
         ls
