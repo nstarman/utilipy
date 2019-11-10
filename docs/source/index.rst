@@ -16,7 +16,7 @@ Welcome to astroPHD's documentation!
    :maxdepth: 2
    :glob:
 
-   README
+   README.md
 
 ..   :caption: Contents:
 

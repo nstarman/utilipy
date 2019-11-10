@@ -5,6 +5,9 @@ Welcome to 	`astroPHD`, a collection of useful python codes.
 [![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
 [![Build Status](https://travis-ci.org/nstarman/astroPHD.svg?branch=master)](https://travis-ci.org/nstarman/astroPHD)
 [![Documentation Status](https://readthedocs.org/projects/astrophd/badge/?version=latest)](https://astrophd.readthedocs.io/en/latest/?badge=latest)
+<!-- .. image:: https://readthedocs.org/projects/astrophd/badge/?version=latest
+:target: https://astrophd.readthedocs.io/en/latest/?badge=latest
+:alt: Documentation Status -->
 
 ## Attribution
 
@@ -125,7 +128,7 @@ This module deals with auto-reloading packages / modules / functions in IPython.
                             False])  # scipy will not, even though set_autoreload=2
           ```
 
-<a id="imports-1"></a>
+<a id="imports"></a>
 ### imports
 > `from  astroPHD.ipython import imports`
 
@@ -174,24 +177,24 @@ Templates are useful. Here are some.
 
 <a id="about-text"></a>
 ## About Text
-. [About.txt](templates/ABOUT/ABOUT.txt) : an about text in basic `.txt` format
-. [About.md](templates/ABOUT/ABOUT.md) : an about text in Markdown
+. [About.txt](../../templates/ABOUT/ABOUT.txt) : an about text in basic `.txt` format
+. [About.md](../../templates/ABOUT/ABOUT.md) : an about text in Markdown
 
 <a id="python"></a>
 ## Python
 
-. [\_\_init\_\_](templates/python/__init__.py "initialization file")
-. [python.py](templates/python/python.py "standard python file")
-. [notebook.ipynb](templates/python/notebook.ipynb "standard Jupter Notebook")
+. [\_\_init\_\_](../../templates/python/__init__.py "initialization file")
+. [python.py](../../templates/python/python.py "standard python file")
+. [notebook.ipynb](../../templates/python/notebook.ipynb "standard Jupter Notebook")
 
 <a id="latex"></a>
 ## Latex
 
-. [tex file](templates/latex/main.tex)
-. [bibtex file](templates/latex/main.bib)
+. [tex file](../../templates/latex/main.tex)
+. [bibtex file](../../templates/latex/main.bib)
 
 **Stylesheets:**
-. [main stylesheet](templates/latex/util/main.cls)
-. [astronomy stylesheet](templates/latex/util/astronomy.cls)
-. [maths stylesheet](templates/latex/util/maths.cls)
-. [base stylesheet](templates/latex/util/base.cls)
+. [main stylesheet](../../templates/latex/util/main.cls)
+. [astronomy stylesheet](../../templates/latex/util/astronomy.cls)
+. [maths stylesheet](../../templates/latex/util/maths.cls)
+. [base stylesheet](../../templates/latex/util/base.cls)
