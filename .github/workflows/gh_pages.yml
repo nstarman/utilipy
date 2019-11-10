@@ -20,15 +20,17 @@ jobs:
 
         buildDirectory=build
 
-        # get a clean master branch assuming
-        git checkout master
-        git pull origin master
-        git clean -df
-        git checkout -- .
-        git fetch --all
+        # # get a clean master branch assuming
+        # git checkout nstarman-gh-pages
+        # git pull origin nstarman-gh-pages
+        # git clean -df
+        # git checkout -- .
+        # git fetch --all
+
+        cd docs
 
         # build html docs from sphinx files
-        sphinx-build -b html . "$buildDirectory"
+        make html
 
         # create or use orphaned gh-pages branch
         branch_name=gh-pages
@@ -46,7 +48,7 @@ jobs:
         if [ -d "$buildDirectory" ]
         then
           ls | grep -v _build | xargs rm -r
-          mv _build/* . && rm -rf _build
+          mv build/* . && rm -rf build
           git add .
           git commit -m "new pages version $(date)"
           git push origin gh-pages
