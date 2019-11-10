@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -9,7 +8,7 @@
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""initialization file for IPython envionments.
+"""Functions for interacting with the IPython environment.
 
 Methods
 -------
@@ -32,21 +31,30 @@ printing:
 
 Returns
 -------
-IPython
-    get_ipython
-    core.interactiveshell.InteractiveShell
-        .debugger.set_trace
-    display.display, Latex, Markdown, HTML
-astroPHD
-    ipython.autoreload.set_autoreload, aimport
-           .imports.run_imports, import_from_file
-           .notebook.add_raw_code_toggle
-           .plot.configure_matplotlib
-           .printing.printmd, printMD, printltx, printLaTeX
-    util.logging.LogPrint, LogFile
+IPython: modules and functions
 
-Info
-----
+    - get_ipython
+    - core.interactiveshell
+
+        - InteractiveShell
+        - .debugger.set_trace
+
+    - display.display, Latex, Markdown, HTML
+
+astroPHD: modules and functions
+
+    - ipython
+
+        - autoreload.set_autoreload, aimport
+        - .imports.run_imports, import_from_file
+        - .notebook.add_raw_code_toggle
+        - .plot.configure_matplotlib
+        - .printing.printmd, printMD, printltx, printLaTeX
+
+    - util.logging.LogPrint, LogFile
+
+Notes
+-----
 will set the display setting to all output lines
 and set the matplotlib backend to inline with retina resolution
 `InteractiveShell.ast_node_interactivity = "all"`
@@ -59,9 +67,13 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # PARAMETERS
 
-from ..util.decorators.docstring import set_docstring
+# from ..util.decorators.docstring import set_docstring
+from astroPHD.util.config import __config__
+from astroPHD.util.decorators.docstring import (
+    _set_docstring_import_file_helper
+)
 
-_IN_IPYTHON = False
+_HAS_IPYTHON = False
 
 ##############################################################################
 # IMPORTS
@@ -69,15 +81,18 @@ _IN_IPYTHON = False
 # General
 try:
 
-    import IPython
+    get_ipython()
 
-except ImportError:
+    if get_ipython() is None:  # double checking
+        raise NameError
+
+except NameError:
 
     pass
 
 else:
 
-    _IN_IPYTHON = True
+    _HAS_IPYTHON = True
 
     from IPython import get_ipython
     from IPython.core.interactiveshell import InteractiveShell
@@ -104,26 +119,19 @@ else:
 ##############################################################################
 # SETUP
 
-if _IN_IPYTHON:
+if _HAS_IPYTHON:
 
     # Running Imported Functions
     InteractiveShell.ast_node_interactivity = "all"
 
-    try:
-        get_ipython()
-    except NameError:
-        import warnings
-        warnings.warn('cannot call get_ipython!'
-                      'this module is pretty much useless :(')
-    else:
-        if get_ipython() is not None:
-            configure_matplotlib(backend='inline', figure_format='retina')
+    configure_matplotlib(backend='inline', figure_format='retina')
 
 
 ##############################################################################
 # INFORMATION
 
-@set_docstring(docstring=__doc__)
+# @set_docstring(docstring=__doc__)
+@_set_docstring_import_file_helper(None, __doc__)  # doc from __doc__
 def help():
     """Help for ipython module."""
     print(__doc__)
