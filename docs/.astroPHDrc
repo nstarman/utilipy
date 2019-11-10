@@ -1,0 +1,7 @@
+[verbosity]
+verbose-imports = False
+warnings = True
+
+[plot]
+seaborn-defaults = False
+
