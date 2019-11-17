@@ -24,8 +24,8 @@ Some functions modified from https://docs.python.org/3/library/functools.html
 
 TODO
 ----
-improve makeFunction call signature
-test makeFunction-made function speeds
+improve `makeFunction` call signature
+test `makeFunction`-made function speeds
 
 """
 
@@ -39,12 +39,8 @@ __author__ = "Nathaniel Starkman"
 from functools import *
 
 # Project-Specific
-from .metaclasses import InheritDocstrings
-from .inspect import (Signature,
-                      get_annotations_from_signature,
-                      get_defaults_from_signature,
-                      get_kwdefaults_from_signature,
-                      get_kwonlydefaults_from_signature)
+from .inspect import Signature as _Signature, cleandoc as _cleandoc
+from .inspect._signature import _VAR_POSITIONAL, _KEYWORD_ONLY, _VAR_KEYWORD
 
 
 ################################################################################
@@ -59,16 +55,19 @@ def makeFunction(code, globals_, name=None, signature=None, docstring=None,
 
     Parameters
     ----------
-    code:
-    globals_:
-    name:
-    signature:
-    docstring:
-    closure:
+    code : code
+        the .__code__ method of a function
+    globals_ :
+    name : str
+    signature : Signature
+        inspect.Signature converted to astroPHD.Signature
+    docstring : str
+    closure :
 
     Returns
     -------
-    function:
+    function: types.FunctionType
+        the created function
 
     TODO
     ----
@@ -76,21 +75,23 @@ def makeFunction(code, globals_, name=None, signature=None, docstring=None,
     __qualname__
 
     """
-    if not isinstance(signature, Signature):  # not my custom signature
-        signature = Signature(parameters=signature.parameters,
-                              return_annotation=signature.return_annotation,
-                              # docstring=docstring  # not yet implemented
-                              )
+    if not isinstance(signature, _Signature):  # not my custom signature
+        signature = _Signature(parameters=signature.parameters,
+                               return_annotation=signature.return_annotation,
+                               # docstring=docstring  # not yet implemented
+                               )
     else:
         pass  # docstring considerations not yet implemented
 
+    # make function
     function = types.FunctionType(code, globals_, name=name,
                                   argdefs=signature.defaults,
                                   closure=closure)
 
-    function.__kwdefaults__ = signature.kwdefaults
-    function.__annotations__ = signature.annotations  # includes return_annote
-    function.__signature__ = signature.signature  # classical signature
+    # assign properties not (properly) handled by FunctionType
+    function.__kwdefaults__ = signature.__kwdefaults__
+    function.__annotations__ = signature.__annotations__  # includes return_annote
+    function.__signature__ = signature.__signature__  # classical signature
     function.__doc__ = docstring
 
     return function
@@ -100,7 +101,7 @@ def makeFunction(code, globals_, name=None, signature=None, docstring=None,
 # -----------------------------------------------------------------------------
 
 def copy_function(func):
-    """Copy a function."""
+    """Copy an existing function."""
     function = makeFunction(func.__code__, func.__globals__,
                             name=func.__name__,
                             signature=inspect.signature(func),
@@ -118,16 +119,18 @@ def copy_function(func):
 # update_wrapper() and wraps() decorator
 ################################################################################
 
-WRAPPER_ASSIGNMENTS = ('__module__', '__name__', '__qualname__')
-SIGNATURE_ASSIGNMENTS = ('defaults', 'kwdefaults', 'annotations')
+WRAPPER_ASSIGNMENTS = ('__module__', '__name__', '__qualname__',
+                       '__doc__', '__annotations__')
+SIGNATURE_ASSIGNMENTS = ('__kwdefaults__', '__annotations__')
 WRAPPER_UPDATES = ('__dict__',)
 
 
 def update_wrapper(wrapper, wrapped,
-                   signature: (Signature, None)=None,
-                   docstring: (str, None)=None,
+                   signature: (_Signature, None, bool)=True,
+                   docstring: (str, None, bool)=None,
                    assigned=WRAPPER_ASSIGNMENTS,
-                   updated=WRAPPER_UPDATES):
+                   updated=WRAPPER_UPDATES,
+                   _docstring_formatter=None):
     """Update a wrapper function to look like the wrapped function.
 
     Parameters
@@ -138,11 +141,16 @@ def update_wrapper(wrapper, wrapped,
     wrapped
        the original function
 
-    signature : Signature or None
-      signature to impose on `wrapper`. None defaults to `wrapped`'s signature.
+    signature : Signature or None or bool
+        signature to impose on `wrapper`.
+        None and False default to `wrapped`'s signature.
+        True merges `wrapper` and `wrapped` kwdefaults & annotations
 
-    docstring : str or None
-      docstring to impose on `wrapper`. None defaults to `wrapped`'s docstring.
+    docstring : str or None or bool
+        docstring to impose on `wrapper`.
+        False defaults to `wrapped` docstring.
+        None defaults to `wrapped` docstring and appends `wrapper` docstring
+        True (not yet implemented) parses the docstring (using the docstring configurator in .astroPHDrc) and merges the sections
 
     assigned : tuple
        tuple naming the attributes assigned directly
@@ -154,30 +162,53 @@ def update_wrapper(wrapper, wrapped,
        are updated with the corresponding attribute from the wrapped
        function (defaults to ``functools.WRAPPER_UPDATES``)
 
+    _docstring_formatter : dict
+        dictionary to format wrapper docstring
+
     Returns
     -------
     wrapper : FunctionType
         `wrapper` function updated by the `wrapped` function's attributes and
         also the provided `signature` and `docstring`.
 
+    Raises
+    ------
+    ValueError
+        if docstring is True
+
     """
-    if signature is None:  # get function signature if None
-        signature = Signature.from_callable(wrapped)
+    # ---------------------------------------
+    # preamble
+
+    if signature is True:
+        _update_sig = True
+        signature = _Signature.from_callable(wrapped)
+    elif signature in (None, False):
+        pass
     else:  # convert to my signature object
-        if not isinstance(signature, Signature):  # not my custom signature
-            signature = Signature(parameters=signature.parameters,
-                                  return_annotation=signature.return_annotation,
-                                  # docstring=docstring  # not yet implemented
-                                  )
-        else:
+        _update_sig = False
+        if not (type(signature) == _Signature):  # not my custom signature
+            signature = _Signature(parameters=signature.parameters,
+                                   return_annotation=signature.return_annotation,
+                                   # docstring=docstring  # not yet implemented
+                                   )
+        elif isinstance(signature, _Signature):  #  checking a signature object
             pass  # docstring considerations not yet implemented
+        else:
+            raise ValueError('signature must be a Signature object')
 
-    # build parameters
-    # defaults = get_defaults_from_signature(signature)
-    # kwdefaults = get_kwdefaults_from_signature(signature)
-    # annotations = get_annotations_from_signature(signature)
+    wrapper_sig = _Signature.from_callable(wrapper)
 
-    # same as functools.update_wrapper (sans __doc__)
+    wrapper_doc = (wrapper.__doc__ or '')
+    wrapper_doc = '\n'.join(wrapper_doc.split('\n')[1:])  # drop title
+    if _docstring_formatter is not None:
+        wrapper_doc = wrapper_doc.format(**_docstring_formatter)
+
+
+    # ---------------------------------------
+    # update wrapper
+
+    # same as functools.update_wrapper
     for attr in assigned:
         try:
             value = getattr(wrapped, attr)
@@ -185,19 +216,65 @@ def update_wrapper(wrapper, wrapped,
             pass
         else:
             setattr(wrapper, attr, value)
-    for attr in updated:
+    for attr in updated:  # update whole dictionary
         getattr(wrapper, attr).update(getattr(wrapped, attr, {}))
 
-    # set from signature and doc
-    for attr in SIGNATURE_ASSIGNMENTS:
-        try:
-            value = getattr(wrapped, attr)
-        except AttributeError:
-            pass
-        else:
-            setattr(wrapper, f'__{attr}__', value)
-    wrapper.__signature__ = signature.signature
-    wrapper.__doc__ = wrapped.__doc__ if docstring is None else docstring
+    # ---------------------------------------
+
+    # deal with signature
+    if signature in (None, False):
+        pass
+
+    elif _update_sig:  # merge wrapped and wrapper signature
+
+        # go through parameters in wrapper_sig, merging into signature
+        for param in wrapper_sig.parameters.values():
+            # skip _VAR_POSITIONAL and _VAR_KEYWORD
+            if param.kind in (_VAR_POSITIONAL, _VAR_KEYWORD):
+                pass
+            # already exists -> replace
+            elif param.name in signature.parameters:
+                # ensure kind matching
+                if param.kind != signature.parameters[param.name].kind:
+                    raise TypeError(f'{param.name} must match kind in function signature')
+                # can only merge key-word only
+                if param.kind == _KEYWORD_ONLY:
+                    signature.replace_parameter(
+                        param.name,
+                        name=None, kind=None,  # inherit b/c matching
+                        default=param.default, annotation=param.annotation)
+            # add to signature
+            else:
+                # can only merge key-word only
+                if param.kind == _KEYWORD_ONLY:
+                    signature = signature.insert_parameter(
+                        signature.index_end_keyword_only, param)
+
+        for attr in SIGNATURE_ASSIGNMENTS:
+            value = getattr(signature, attr)
+            setattr(wrapper, attr, value)
+
+        wrapper.__signature__ = signature.signature
+
+    else:  # a signature object
+        for attr in SIGNATURE_ASSIGNMENTS:
+            value = getattr(signature, attr)
+            setattr(wrapper, attr, value)
+
+        wrapper.__signature__ = signature.signature
+
+    # ---------------------------------------
+    # docstring
+
+    if docstring is False:  # just inherit
+        wrapper.__doc__ = wrapped.__doc__
+    elif docstring is None:  # append wrapper docstring
+        wrapper_doc = '\n' + _cleandoc(wrapper_doc)
+        wrapper.__doc__ = (wrapped.__doc__ or '') + wrapper_doc
+    elif docstring is True:  # smart merge docstrings
+        raise ValueError('NOT YET IMPLEMENTED')
+    else:  # assign docstring
+        wrapper.__doc__ = docstring
 
     # Issue #17482: set __wrapped__ last so we don't inadvertently copy it
     # from the wrapped function when updating __dict__
@@ -210,10 +287,11 @@ def update_wrapper(wrapper, wrapped,
 # -----------------------------------------------------------------------------
 
 def wraps(wrapped,
-          signature: (Signature, None)=None,
-          docstring: (str, None)=None,
+          signature: (_Signature, None, bool)=True,
+          docstring: (str, None, bool)=None,
           assigned=WRAPPER_ASSIGNMENTS,
-          updated=WRAPPER_UPDATES):
+          updated=WRAPPER_UPDATES,
+          _docstring_formatter=None):
     """Decorator factory to apply ``update_wrapper()`` to a wrapper function.
 
     Returns a decorator that invokes ``update_wrapper()`` with the decorated
@@ -225,7 +303,8 @@ def wraps(wrapped,
     """
     return partial(update_wrapper, wrapped=wrapped,
                    signature=signature, docstring=docstring,
-                   assigned=assigned, updated=updated)
+                   assigned=assigned, updated=updated,
+                   _docstring_formatter=_docstring_formatter)
 
 
 ##############################################################################
