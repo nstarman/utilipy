@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -9,25 +8,24 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""initialization file for fitting
-"""
+# Docstring and Metadata
+"""initialization file for fitting module."""
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
-try:
-    import lmfit
-except ImportError:
-    print('cannot import lmfit')
+# General
+# try:
+#     import lmfit
+# except ImportError:
+#     print('cannot import lmfit')
 
-## Project-Specific
+# Project-Specific
 from .lmfit_decorator import scipy_residual_to_lmfit
 
 
 ##############################################################################
-### END
+# END

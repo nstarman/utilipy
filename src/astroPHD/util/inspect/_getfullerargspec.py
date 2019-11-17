@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -9,23 +8,29 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""**DOCSTRING**
+# Docstring and Metadata
+"""Get Full(er) Argspec
+
+Routine Listings
+----------------
+FullerArgSpec
+getfullerargspec
+
 """
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# General
 from inspect import getfullargspec
 from collections import namedtuple
 
 
 ##############################################################################
-### Types
+# Types
 
 FullerArgSpec = namedtuple(
     "FullerArgSpec",
@@ -44,7 +49,7 @@ FullerArgSpec = namedtuple(
 
 
 ##############################################################################
-### Functions
+# Functions
 
 def getfullerargspec(func):
     """Separated version of FullerArgSpec.
@@ -62,11 +67,11 @@ def getfullerargspec(func):
     FullerArgSpec : namedtuple
         args             : the mandatory arguments
         defargs          : arguments with defaults
-        defaults         : dictionary of defaults to defargs
-        varargs          : variable arguments (*args)
+        defaults         : dictionary of defaults to `defargs`
+        varargs          : variable arguments (args)
         kwonlyargs       : key-word only arguments
-        kwonlydefaults   : key-word only argmunent defaults
-        varkw            : variable key-word arguments (**kwargs)
+        kwonlydefaults   : key-word only argument defaults
+        varkw            : variable key-word arguments (kwargs)
         annotations      : function annotations
         docstring        : function docstring
 
@@ -100,4 +105,4 @@ def getfullerargspec(func):
 
 
 ##############################################################################
-### END
+# END

@@ -49,7 +49,8 @@ class InheritDocstrings(type):
         def is_public_member(key):
             return (
                 (key.startswith('__') and key.endswith('__') and
-                 len(key) > 4) or not key.startswith('_'))
+                 len(key) > 4) or not key.startswith('_')
+            )
         # /def
 
         for key, val in dct.items():
