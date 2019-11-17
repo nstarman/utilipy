@@ -63,7 +63,7 @@ def _set_docstring_import_file_helper(name: str, module_doc: str):
     doc = module_doc[ind:end_ind]  # get section (+ next header)
     doc = doc.split('\n')[:-2]  # strip next header
     # doc[0] = '    ' + doc[0]  # indent 1st line
-    doc = '\n    '.join(doc)  # rejoin with indent
+    doc = '\n'.join(doc)  # rejoin with indent
 
     def decorator(func):
         @functools.wraps(func)
@@ -82,7 +82,7 @@ def _import_file_docstring_helper(docstring):
     doc = docstring.split('\n')  # split on lines
     doc = '\n'.join(doc[1:])  # join all after 1st line
     doc = inspect.cleandoc(doc)  # clean up
-    print(doc)
+    return doc
 # /def
 
 

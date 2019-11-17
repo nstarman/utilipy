@@ -25,12 +25,12 @@ from astropy.units.decorators import _validate_arg_value, _get_allowed_units
 from astropy.units.core import add_enabled_equivalencies
 # from astropy.units.physical import _unit_physical_mapping
 
-from astropy.utils.decorators import wraps
+from functools import wraps
 from astropy.utils.misc import isiterable
 
 # PROJECT-SPECIFIC
 from .util import unit_output
-from ..util.decorators.docstring import format_doc
+from ..decorators.docstring import format_doc
 
 ###############################################################################
 # PARAMETERS

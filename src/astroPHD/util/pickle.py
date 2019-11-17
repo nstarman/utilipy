@@ -25,8 +25,8 @@ import pickle
 import tempfile
 
 # PROJECT-SPECIFIC
+from ..decorators.docstring import format_doc
 from . import LogPrint
-from .decorators.docstring import format_doc
 
 #############################################################################
 # PARAMETERS

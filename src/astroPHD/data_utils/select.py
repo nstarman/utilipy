@@ -35,7 +35,7 @@ more tests for ND arrays as inputs
 import numpy as np
 
 # Project-Specific
-from ..util.decorators import idxDecorator, ndarrayDecorator
+from ..decorators import idxDecorator, ndarrayDecorator
 
 
 #############################################################################

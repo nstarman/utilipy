@@ -67,9 +67,9 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # PARAMETERS
 
-# from ..util.decorators.docstring import set_docstring
+# from ..decorators.docstring import set_docstring
 from astroPHD.util.config import __config__
-from astroPHD.util.decorators.docstring import (
+from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper
 )
 

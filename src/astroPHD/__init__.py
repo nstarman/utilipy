@@ -6,20 +6,33 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
+# Docstring and Metadata
 """Main initialization file."""
 
-##############################################################################
-### IMPORTS
+__author__ = "Nathaniel Starkman"
+__copyright__ = "Copyright 2019, "
+__credits__ = [""]
+__license__ = "GPL3"
+__version__ = "0.0.1"
+__maintainer__ = "Nathaniel Starkman"
+__email__ = "n.starkman@mail.utoronto.ca"
+__status__ = "Production"
 
-## Project-Specific
+##############################################################################
+# IMPORTS
+
+# Project-Specific
 # import top level packages
 from . import (
+    astronomy,
     data_utils,
+    decorators,
+    fitting,
     imports,
     ipython,
     math,
     plot,
+    units,
     util
 )
 
@@ -32,17 +45,14 @@ from .util import config
 
 
 #############################################################################
-### Info
+# HELP FUNCTION
 
-__author__ = "Nathaniel Starkman, Shabaan Mohamed"
-__copyright__ = "Copyright 2019, "
-__credits__ = [""]
-__license__ = "GPL3"
-__version__ = "0.0.0"
-__maintainer__ = "Nathaniel Starkman"
-__email__ = "n.starkman@mail.utoronto.ca"
-__status__ = "Production"
+def help():
 
+    print('This function is a work in progress')
+
+    print(''.join(['-'] * 79))
+    ipython.help()
 
 #############################################################################
-### END
+# END
