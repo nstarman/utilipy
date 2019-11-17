@@ -79,6 +79,8 @@ html_static_path = ['_static']
 
 napoleon_numpy_docstring = True
 
+numpydoc_use_plots = True  # Whether to produce plot:: directives for Examples sections that contain import matplotlib or from matplotlib import.
+numpydoc_xref_param_type = True  # Whether to create cross-references for the parameter types in the Parameters, Other Parameters, Returns and Yields sections of the docstring. False by default.
 
 # SPHINX_APIDOC_OPTIONS = ['members', 'undoc-members']
 
