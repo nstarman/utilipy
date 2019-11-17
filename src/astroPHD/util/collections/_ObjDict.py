@@ -22,7 +22,7 @@ from collections import OrderedDict
 
 # Project-Specific
 from ..pickle import dump as _dump, load as _load
-from ..decorators.docstring import replace_docstring
+from ...decorators.docstring import replace_docstring
 
 
 ##############################################################################
