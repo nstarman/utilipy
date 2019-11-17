@@ -58,7 +58,7 @@ __author__ = "Nathaniel Starkman"
 # HELPER FUNCTIONS
 
 from astroPHD.util.config import __config__
-from astroPHD.util.decorators.docstring import (
+from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper,
     _import_file_docstring_helper
 )
@@ -85,7 +85,8 @@ if __name__ == '__main__':
 @_set_docstring_import_file_helper('amuse', __doc__)  # doc from __doc__
 def amuse_imports_help():
     """Help for amuse base imports."""
-    _import_file_docstring_helper(amuse_imports_help.__doc__)  # formatting
+    doc = _import_file_docstring_helper(amuse_imports_help.__doc__)
+    print(doc)
 # /def
 
 

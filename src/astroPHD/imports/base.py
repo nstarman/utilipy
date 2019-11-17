@@ -76,7 +76,7 @@ __author__ = "Nathaniel Starkman"
 # PARAMETERS
 
 from astroPHD.util.config import __config__
-from astroPHD.util.decorators.docstring import (
+from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper,
     _import_file_docstring_helper
 )
@@ -159,7 +159,8 @@ if _HAS_IPYTHON:
 @_set_docstring_import_file_helper('base', __doc__)  # doc from __doc__
 def base_imports_help():
     """Help for Matplotlib base imports."""
-    _import_file_docstring_helper(base_imports_help.__doc__)  # formatting
+    doc = _import_file_docstring_helper(base_imports_help.__doc__)
+    print(doc)
 # /def
 
 

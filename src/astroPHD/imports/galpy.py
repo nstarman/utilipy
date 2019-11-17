@@ -35,7 +35,7 @@ __author__ = "Nathaniel Starkman"
 # HELPER FUNCTIONS
 
 from astroPHD.util.config import __config__
-from astroPHD.util.decorators.docstring import (
+from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper,
     _import_file_docstring_helper
 )
@@ -67,7 +67,8 @@ if __name__ == '__main__':  # protect if galpy not installed
 @_set_docstring_import_file_helper('galpy', __doc__)  # doc from __doc__
 def galpy_imports_help():
     """Help for galpy base imports."""
-    _import_file_docstring_helper(galpy_imports_help.__doc__)  # formatting
+    doc = _import_file_docstring_helper(galpy_imports_help.__doc__)
+    print(doc)
 # /def
 
 

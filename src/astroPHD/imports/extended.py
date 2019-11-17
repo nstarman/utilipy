@@ -61,7 +61,7 @@ __author__ = "Nathaniel Starkman"
 # HELPER FUNCTIONS
 
 from astroPHD.util.config import __config__
-from astroPHD.util.decorators.docstring import (
+from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper,
     _import_file_docstring_helper
 )
@@ -84,7 +84,8 @@ from scipy.stats import binned_statistic as binned_stats
 @_set_docstring_import_file_helper('extend', __doc__)  # doc from __doc__
 def extend_imports_help():
     """Help for extended base imports."""
-    _import_file_docstring_helper(extend_imports_help.__doc__)  # formatting
+    doc = _import_file_docstring_helper(extend_imports_help.__doc__)
+    print(doc)
 # /def
 
 
