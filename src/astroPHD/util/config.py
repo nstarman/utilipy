@@ -11,8 +11,21 @@
 # Docstring and Metadata
 """Configuration settings for astroPHD.
 
-Code modified From [galpy](https://galpy.readthedocs.io/en/v1.5.0/)
+References
+----------
+Code modified from galpy ([#]_).
+
+.. [#] galpy: A Python Library for Galactic Dynamics, Jo Bovy (2015),
+    Astrophys. J. Supp., 216, 29 (arXiv/1412.3451).
+
 """
+
+__author__ = 'Nathaniel Starkman'
+__credit__ = 'Jo Bovy'
+
+
+##############################################################################
+# IMPORTS
 
 import os
 from os import path
@@ -22,73 +35,124 @@ except:  # pragma: no cover
     from six.moves import configparser
 
 ##############################################################################
+# DEFAULT CONFIGURATION
 
 # The default configuration
-default_configuration = {'verbosity': {'verbose-imports': 'True',
-                                       'warnings': 'True'},
-                         'plot': {'seaborn-defaults': 'False', }
-                         }
+_DEFAULT_CONFIG = {
+    'verbosity': {'verbose-imports': 'True',
+                  'warnings': 'True'},
+    'plot': {'seaborn-defaults': 'False', }
+}
 
-default_filename = os.path.join(os.path.expanduser('~'), '.astroPHDrc')
+_DEFAULT_FILE = os.path.join(os.path.expanduser('~'), '.astroPHDrc')
 
 
 ##############################################################################
 
-def check_config(configuration):
-    """Check that the configuration is a valid astroPHD configuration."""
-    for sec_key in default_configuration.keys():
+def check_config(configuration: configparser.ConfigParser) -> bool:
+    """Check that the configuration is a valid astroPHD configuration.
+
+    Parameters
+    ----------
+    configuration: configparser.ConfigParser
+        the configuration file
+
+    Returns
+    -------
+    bool
+        whether the configuration is a valid astroPHD configuration.
+
+    """
+    for sec_key in _DEFAULT_CONFIG.keys():  # iter through expected keys
+        # check if section exists
         if not configuration.has_section(sec_key):
             return False
-        for key in default_configuration[sec_key]:
+        # check if options within section exist
+        for key in _DEFAULT_CONFIG[sec_key]:
             if not configuration.has_option(sec_key, key):
                 return False
+
     return True
 # /def
 
 
-def write_config(filename, configuration=None):
-    """Write configuration."""
+def write_config(filename: str, configuration=None) -> None:
+    """Write configuration.
+
+    Parameters
+    ----------
+    filename: str
+    configuration: None or configparser.ConfigParser
+        configuration to draw from
+        defaults to `_DEFAULT_CONFIG` if not in `configuration`
+
+    """
     # Writes default if configuration is None
     writeconfig = configparser.ConfigParser()
+
     # Write different sections
-    for sec_key in default_configuration.keys():
+    for sec_key in _DEFAULT_CONFIG.keys():
         writeconfig.add_section(sec_key)
-        for key in default_configuration[sec_key]:
+        for key in _DEFAULT_CONFIG[sec_key]:
             if configuration is None \
                     or not configuration.has_section(sec_key) \
                     or not configuration.has_option(sec_key, key):
                 writeconfig.set(sec_key, key,
-                                default_configuration[sec_key][key])
+                                _DEFAULT_CONFIG[sec_key][key])
             else:
                 writeconfig.set(sec_key, key, configuration.get(sec_key, key))
+
     with open(filename, 'w') as configfile:
         writeconfig.write(configfile)
+
     return None
 # /def
 
 
 ##############################################################################
-
-# Read the configuration file
-__config__ = configparser.ConfigParser()
-cfilename = __config__.read('.astroPHDrc')
-if not cfilename:
-    cfilename = __config__.read(default_filename)
-    if not cfilename:
-        write_config(default_filename)
-        __config__.read(default_filename)
-if not check_config(__config__):
-    write_config(cfilename[-1], __config__)
-    __config__.read(cfilename[-1])
-
-
-##############################################################################
 # Set configuration variables on the fly
 
-def set_import_verbosity(key: (bool, {'True', 'False'})):
+def get_import_verbosity():
+    """Get whether the full import information is printed or not."""
+    return __config__.getboolean('verbosity', 'verbose-imports')
+# /def
+
+
+def set_import_verbosity(verbosity: (bool, {'True', 'False'})):
     """Set whether the full import information is printed or not."""
-    assert str(key) in ('True', 'False')
-    __config__.set('verbosity', 'verbose-imports', str(key))
+    assert str(verbosity) in ('True', 'False')
+    __config__.set('verbosity', 'verbose-imports', str(verbosity))
+# /def
+
+
+class use_import_verbosity:
+    """Docstring for use_import_verbosity."""
+
+    def __init__(self, verbosity: bool):
+        """__init__."""
+        self.original_verbosity = get_import_verbosity()
+        self.verbosity = verbosity
+    # /def
+
+    def __enter__(self):
+        """Enter with statement, using specified import verbosity."""
+        if self.verbosity is not None:
+            set_import_verbosity(self.verbosity)
+        return self
+    # /def
+
+    def __exit__(self, type, value, traceback):
+        """Exit  with statement, restoring original import verbosity."""
+        # Exception handling here
+        set_import_verbosity(self.original_verbosity)
+    # /def
+
+
+# ----------------------------------------------------------------------------
+
+def get_warnings_verbosity():
+    """Get warnings verbosity."""
+    __config__.get('verbosity', 'warnings')
 # /def
 
 
@@ -97,3 +161,49 @@ def set_warnings_verbosity(key: (bool, str)):
     assert str(key) in ('True', 'False')
     __config__.set('verbosity', 'warnings', str(key))
 # /def
+
+
+class use_warnings_verbosity:
+    """Docstring for use_warnings_verbosity."""
+
+    def __init__(self, verbosity: bool):
+        """__init__."""
+        self.original_verbosity = get_import_verbosity()
+        self.verbosity = verbosity
+    # /def
+
+    def __enter__(self):
+        """Enter with statement, using specified import verbosity."""
+        if self.verbosity is not None:
+            set_warnings_verbosity(self.verbosity)
+        return self
+    # /def
+
+    def __exit__(self, type, value, traceback):
+        """Exit  with statement, restoring original import verbosity."""
+        # Exception handling here
+        set_warnings_verbosity(self.original_verbosity)
+    # /def
+
+
+##############################################################################
+# RUNNING
+
+
+# Read the configuration file
+__config__ = configparser.ConfigParser()
+cfilename = __config__.read('.astroPHDrc')
+
+if not cfilename:
+    cfilename = __config__.read(_DEFAULT_FILE)
+    if not cfilename:
+        write_config(_DEFAULT_FILE)
+        __config__.read(_DEFAULT_FILE)
+
+if not check_config(__config__):
+    write_config(cfilename[-1], __config__)
+    __config__.read(cfilename[-1])
+
+
+##############################################################################
+# END
