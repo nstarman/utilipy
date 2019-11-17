@@ -33,7 +33,7 @@ from IPython.display import Latex, Markdown
 ##############################################################################
 
 def printmd(s, color=None, size=None, bold=False, italic=False,
-            fontweight=None, fontstyle=None):
+            fontweight=None, fontstyle=None, highlight=None):
     """Print in Markdown.
 
     uses <span>
@@ -82,6 +82,9 @@ def printmd(s, color=None, size=None, bold=False, italic=False,
         styleattrs.append(f'font-style:{fontstyle}')
     elif italic:
         styleattrs.append('font-style:italic')
+
+    elif highlight is not None:
+        styleattrs.append('background-color:{highlight}')
 
     # TODO: add more options
 
