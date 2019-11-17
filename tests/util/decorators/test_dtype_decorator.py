@@ -21,7 +21,7 @@ __author__ = "Nathaniel Starkman"
 import numpy as np
 
 ## Project-Specific
-from astroPHD.util.decorators.dtype_decorator import (
+from astroPHD.decorators.dtype_decorator import (
     dtypeDecorator,
     dtypeDecoratorMaker,
     # standard types

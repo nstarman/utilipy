@@ -21,7 +21,7 @@ __author__ = "Nathaniel Starkman"
 import numpy as np
 
 ## Project-Specific
-from astroPHD.util.decorators.idx_decorator import idxDecorator
+from astroPHD.decorators.idx_decorator import idxDecorator
 
 
 ##############################################################################

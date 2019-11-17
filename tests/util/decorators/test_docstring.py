@@ -18,10 +18,10 @@ __author__ = "Nathaniel Starkman"
 ### IMPORTS
 
 ## General
-import numpy as np
+# import numpy as np
 
 ## Project-Specific
-from astroPHD.util.decorators.docstring import (replace_docstring)
+from astroPHD.decorators.docstring import (replace_docstring)
 
 
 ##############################################################################
