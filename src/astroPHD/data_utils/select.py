@@ -108,6 +108,7 @@ def inRange(*args, rng=Ellipsis, lbi=True, ubi=False):
     args : list
         list of values along each dimension
         must be the same length
+        can be same-shaped ND arrays, each treated as a series of rows.
     rng : list
         (default Ellipsis)
         the domain for each argument in `args`::
@@ -116,6 +117,8 @@ def inRange(*args, rng=Ellipsis, lbi=True, ubi=False):
             rng =   [1st [lower, upper],
                      2nd [lower, upper],
                      ...]
+
+        if each 'xn' is multidimensional
     lbi : bool
         (default True)
         Lower Bound Inclusive, whether to be inclusive on the lower bound
@@ -186,7 +189,7 @@ def inRange(*args, rng=Ellipsis, lbi=True, ubi=False):
 # -----------------------------------------------------------------------------
 
 @idxDecorator()
-def outRange(*args, rng=None, lbi=False, ubi=True):
+def outRange(*args, rng=None, lbi=True, ubi=False):
     """Multidimensional box exclusion.
 
     equivelent to ~inRange
@@ -243,8 +246,10 @@ def ioRange(incl=None, excl=None, rng=None):
     ----------
     incl : array_like
         args into `inRange`
+        must be a tuple if many args, not a tuple else
     excl : array_like
         args into `outRange`
+        must be a tuple if many args, not a tuple else
     rng : array_like
         concatenated list of (in)outRange rng
         must be in orgder of [inRange rng, outRange rng]
@@ -265,15 +270,35 @@ def ioRange(incl=None, excl=None, rng=None):
         raise ValueError('incl and excl are None')
     # Only inclusion passed
     elif excl is None:
-        out = inRange(*incl, rng=rng)
+        if isinstance(incl, tuple):
+            out = inRange(*incl, rng=rng)
+        else:
+            out = inRange(incl, rng=rng)
     # Only exclusion passed
     elif incl is None:
-        out = outRange(*excl, rng=rng)
+        if isinstance(excl, tuple):
+            out = outRange(*excl, rng=rng)
+        else:
+            out = outRange(excl, rng=rng)
     # Both inclustion and exclusion
     else:
-        inclrng = rng[:len(incl)] if rng is not None else None
-        exclrng = rng[len(incl):] if rng is not None else None
-        out = inRange(*incl, rng=inclrng) & outRange(*excl, rng=exclrng)
+        if isinstance(incl, tuple):
+            inclrng = rng[:len(incl)] if rng is not None else None
+            out = inRange(*incl, rng=inclrng)
+        else:
+            inclrng = rng[:np.shape(incl)[0] - 1] if rng is not None else None
+            if len(inclrng) == 1:
+                inclrng = inclrng[0]
+            out = inRange(incl, rng=inclrng)
+
+        if isinstance(excl, tuple):
+            exclrng = rng[len(excl):] if rng is not None else None
+            out &= outRange(*excl, rng=exclrng)
+        else:
+            exclrng = rng[np.shape(excl)[0] - 1:] if rng is not None else None
+            if len(exclrng) == 1:
+                exclrng = exclrng[0]
+            out &= outRange(excl, rng=exclrng)
 
     return out
 # /def
