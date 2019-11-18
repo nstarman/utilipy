@@ -29,6 +29,7 @@ else:
 def test_import_amuse():
     """Test _inRange."""
     if _do_amuse_import:
+
         from astroPHD.imports import amuse as imports
 
         imports.amuse

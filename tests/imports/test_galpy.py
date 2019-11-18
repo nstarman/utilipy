@@ -28,13 +28,15 @@ else:
 
 def test_import_galpy():
     """Test galpy imports when not in IPython environment"""
-    from astroPHD.imports import galpy as imports
+    if _do_galpy_import:
 
-    imports.galpy
-    imports.potential
-    imports.MWPotential2014
-    imports.Orbit
-    imports.bovy_conversion, imports.bovy_coords
+        from astroPHD.imports import galpy as imports
+
+        imports.galpy
+        imports.potential
+        imports.MWPotential2014
+        imports.Orbit
+        imports.bovy_conversion, imports.bovy_coords
 
     return
 # /def
