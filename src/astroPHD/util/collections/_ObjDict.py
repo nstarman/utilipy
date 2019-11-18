@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -8,9 +7,8 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""initialization file for util
-"""
+# Docstring and Metadata
+"""initialization file for util."""
 
 __author__ = "Nathaniel Starkman"
 

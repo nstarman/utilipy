@@ -45,7 +45,16 @@ from astroPHD.decorators.docstring import (
 ##############################################################################
 # IMPORTS
 
-if __name__ == '__main__':  # protect if galpy not installed
+try:
+
+    import galpy
+
+except ImportError:
+
+    import warnings
+    warnings.warn('Cannot import galpy')
+
+else:
 
     import galpy
 

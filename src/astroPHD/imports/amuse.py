@@ -68,7 +68,16 @@ from astroPHD.decorators.docstring import (
 ##############################################################################
 # IMPORTS
 
-if __name__ == '__main__':
+try:
+
+    import amuse
+
+except ImportError:
+
+    import warnings
+    warnings.warn('Cannot import amuse')
+
+else:
 
     import amuse
 
