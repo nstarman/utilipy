@@ -1,6 +1,7 @@
 # AstroPHD
 
-Welcome to 	`astroPHD`, a collection of useful python codes.
+Welcome to 	`astroPHD`, a collection of useful python codes. This is a centralized repository for much of the non project-specific code I have written or come across. There are modules for making advanced decorators, interfacing with IPython environments, miscellaneous astronomical functions, data utilities, making fitting libraries inter-operable, improving astropy units and quantity-enabled functions, and much more. Check out the documentation here, on [readthedocs](https://readthedocs.org/projects/astrophd/badge/?version=latest), and at the [wiki](https://github.com/nstarman/astroPHD/wiki) for more detail.
+
 
 [![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
 [![Build Status](https://travis-ci.org/nstarman/astroPHD.svg?branch=master)](https://travis-ci.org/nstarman/astroPHD)
@@ -10,22 +11,32 @@ Welcome to 	`astroPHD`, a collection of useful python codes.
 
 Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://www.astro.utoronto.ca/~starkman/) -- [github](https://github.com/nstarman)
 
-[![DOI](https://zenodo.org/badge/192425953.svg)](https://zenodo.org/badge/latestdoi/192425953)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3545178.svg)](https://doi.org/10.5281/zenodo.3545178)
+
+If you find this code useful in your research, please let me know. If you significantly use astroPHD in a publication, please acknowledge **10.5281/zenodo.3545178**. Please also send me a reference to the paper.
+
 
 
 ##  Table of Contents
-<!-- MarkdownTOC levels="1,2" autolink="true" -->
+<!-- MarkdownTOC levels="1,2,3" autolink="true" style="unordered" -->
 
-- [Modules](#modules)
+- [Module Highlights](#module-highlights)
     - [astronomy](#astronomy)
     - [data_utils](#data_utils)
+    - [decorators](#decorators)
     - [fitting](#fitting)
     - [imports](#imports)
     - [ipython](#ipython)
+        - [autoreload](#autoreload)
+        - [imports](#imports-1)
+        - [notebook](#notebook)
+        - [plot](#plot)
+        - [printing](#printing)
     - [math](#math)
-    - [plot](#plot)
+    - [plot](#plot-1)
     - [units](#units)
     - [util](#util)
+        - [config file](#config-file)
 - [Templates](#templates)
     - [About Text](#about-text)
     - [Python](#python)
@@ -39,8 +50,9 @@ Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://ww
 - - -
 <br><br>
 
-<a id="modules"></a>
-# Modules
+<a id="module-highlights"></a>
+# Module Highlights
+Most of the modules have too much to reasonably document here. These are some of the most useful highlights. Detailed descriptions of everything in `astroPHD` and more can be found at [readthedocs](https://readthedocs.org/projects/astrophd/badge/?version=latest) and at the [wiki](https://github.com/nstarman/astroPHD/wiki).
 
 <a id="astronomy"></a>
 ## astronomy
@@ -52,6 +64,10 @@ Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://ww
 > Import using `from  astroPHD import data_utils`
 
 
+<a id="decorators"></a>
+## decorators
+> Import using `from  astroPHD import decorators`
+
 <a id="fitting"></a>
 ## fitting
 > Import using `from  astroPHD import fitting`
@@ -59,7 +75,11 @@ Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://ww
 
 <a id="imports"></a>
 ## imports
-> Import using `from  astroPHD import imports`
+Most of my notebooks or scripts have at leas 30 lines dedicated to just importing the various modules and functions that will be used later. It's cumbersome, a pain to copy between scripts, and means that the code doesn't start until halfway down the screen. This module provides a variety of files that can be `*`-imported to provide all the basic imports so that you can just get started coding.
+
+The provided quick imports are `base`, `extended`, `astropy`, `matplotlib`, `galpy` and `amuse`.
+
+The files will print an import summary. To prevent this summary, set  `verbose-imports=False` in the `.astroPHCrc` config file in your home or local directory. For details on this config file, see [config file](#config-file). Each of the imports also provides a helper function that will print out  the import summary (for instance [base_imports_help](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.base.base_imports_help)).
 
 
 <a id="ipython"></a>
@@ -91,7 +111,7 @@ This module contains codes for interacting with ipython environments, like Jupyt
 
 
 <a id="autoreload"></a>
-### autoreload,
+### autoreload
 > `from  astroPHD.ipython import autoreload`
 
 This module deals with auto-reloading packages / modules / functions in IPython. With IPython auto-reload, specified (or all) packages will be auto-reloaded to check for code changes. While this slows down code execution, it is enormously useful for real-time code development and testing.
@@ -147,7 +167,7 @@ This module deals with auto-reloading packages / modules / functions in IPython.
 > Import using `from  astroPHD import math`
 
 
-<a id="plot"></a>
+<a id="plot-1"></a>
 ## plot
 > Import using `from  astroPHD import plot`
 
@@ -160,6 +180,9 @@ This module deals with auto-reloading packages / modules / functions in IPython.
 <a id="util"></a>
 ## util
 > Import using `from  astroPHD import util`
+
+<a id="config-file"></a>
+### config file
 
 
 <br><br>

@@ -16,7 +16,8 @@ Routine Listings
 Matplotlib: imports
 
     - pyplot->plt
-    - matplotlib->mpl, .colors, .cm
+    - matplotlib->mpl, .cm, .colors
+    - mpl_toolkits.mplot3d.Axes3D
 
 astroPHD: imports
 

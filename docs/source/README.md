@@ -1,35 +1,47 @@
 # AstroPHD
 
-Welcome to 	`astroPHD`, a collection of useful python codes.
+Welcome to  `astroPHD`, a collection of useful python codes. This is a centralized repository for much of the non project-specific code I have written or come across. There are modules for making advanced decorators, interfacing with IPython environments, miscellaneous astronomical functions, data utilities, making fitting libraries inter-operable, improving astropy units and quantity-enabled functions, and much more. Check out the documentation here, on [readthedocs](https://readthedocs.org/projects/astrophd/badge/?version=latest), and at the [wiki](https://github.com/nstarman/astroPHD/wiki) for more detail.
+
 
 [![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
 [![Build Status](https://travis-ci.org/nstarman/astroPHD.svg?branch=master)](https://travis-ci.org/nstarman/astroPHD)
 [![Documentation Status](https://readthedocs.org/projects/astrophd/badge/?version=latest)](https://astrophd.readthedocs.io/en/latest/?badge=latest)
-<!-- .. image:: https://readthedocs.org/projects/astrophd/badge/?version=latest
-:target: https://astrophd.readthedocs.io/en/latest/?badge=latest
-:alt: Documentation Status -->
 
 ## Attribution
 
 Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://www.astro.utoronto.ca/~starkman/) -- [github](https://github.com/nstarman)
 
-[![DOI](https://zenodo.org/badge/192425953.svg)](https://zenodo.org/badge/latestdoi/192425953)
-[![Build Status](https://travis-ci.org/nstarman/astroPHD.svg?branch=master)](https://travis-ci.org/nstarman/astroPHD)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3545178.svg)](https://doi.org/10.5281/zenodo.3545178)
+
+If you find this code useful in your research, please let me know. If you significantly use astroPHD in a publication, please acknowledge **10.5281/zenodo.3545178**. Please also send me a reference to the paper.
+
 
 
 ##  Table of Contents
-<!-- MarkdownTOC levels="1,2" autolink="true" -->
+<!-- MarkdownTOC levels="1,2,3" autolink="true" style="unordered" -->
 
-- [Modules](#modules)
+- [Module Highlights](#module-highlights)
     - [astronomy](#astronomy)
     - [data_utils](#data_utils)
+    - [decorators](#decorators)
     - [fitting](#fitting)
     - [imports](#imports)
+        - [base](#base)
+        - [extended](#extended)
+        - [matplotlib](#matplotlib)
+        - [astropy](#astropy)
+        - [extras](#extras)
     - [ipython](#ipython)
+        - [autoreload](#autoreload)
+        - [imports](#imports-1)
+        - [notebook](#notebook)
+        - [plot](#plot)
+        - [printing](#printing)
     - [math](#math)
-    - [plot](#plot)
+    - [plot](#plot-1)
     - [units](#units)
     - [util](#util)
+        - [config file](#config-file)
 - [Templates](#templates)
     - [About Text](#about-text)
     - [Python](#python)
@@ -43,8 +55,9 @@ Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://ww
 - - -
 <br><br>
 
-<a id="modules"></a>
-# Modules
+<a id="module-highlights"></a>
+# Module Highlights
+Most of the modules have too much to reasonably document here. These are some of the most useful highlights. Detailed descriptions of everything in `astroPHD` and more can be found at [readthedocs](https://readthedocs.org/projects/astrophd/badge/?version=latest) and at the [wiki](https://github.com/nstarman/astroPHD/wiki).
 
 <a id="astronomy"></a>
 ## astronomy
@@ -56,6 +69,10 @@ Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://ww
 > Import using `from  astroPHD import data_utils`
 
 
+<a id="decorators"></a>
+## decorators
+> Import using `from  astroPHD import decorators`
+
 <a id="fitting"></a>
 ## fitting
 > Import using `from  astroPHD import fitting`
@@ -63,8 +80,121 @@ Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://ww
 
 <a id="imports"></a>
 ## imports
-> Import using `from  astroPHD import imports`
+Most of my notebooks or scripts have at leas 30 lines dedicated to just importing the various modules and functions that will be used later. It's cumbersome, a pain to copy between scripts, and means that the code doesn't start until halfway down the screen. This module provides a variety of files that can be `*`-imported to provide all the basic imports so that you can just get started coding.
 
+The files will print an import summary. To prevent this summary, set  `verbose-imports=False` in the `.astroPHCrc` config file in your home or local directory. For details on this config file, see [config file](#config-file).
+
+<a id="base"></a>
+### base
+> Import using `from  astroPHD.imports.base import *`
+
+Imports
+```
+Base:
+
+    - os, sys, time, pdb, warnings,
+    - numpy -> np, scipy,
+    - tqdm -> TQDM, .tqdm, .tqdm_notebook ->. tqdmn
+
+IPython: (if in an IPython environment)
+
+    - display, Latex, Markdown, set_trace,
+    - printmd, printMD, printltx, printLaTeX,
+    - set_autoreload, aimport,
+    - run_imports, import_from_file,
+    - add_raw_code_toggle
+
+astroPHD: imports
+
+    - LogFile
+    - ObjDict
+```
+
+Also provides **[base_imports_help](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.base.base_imports_help)** function.
+
+<a id="extended"></a>
+### extended
+> Import using `from  astroPHD.imports.extended import *`
+
+Imports
+```
+Numpy: imports
+
+    - linalg.norm
+
+Scipy: imports
+
+    - stats.binned_statistic->binned_stats
+```
+
+Also provides **[extend_imports_help](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.extended.extend_imports_help)** function.
+
+<a id="matplotlib"></a>
+### matplotlib
+> Import using `from  astroPHD.imports.matplotlib import *`
+
+Imports
+```
+Matplotlib: imports
+
+    - pyplot->plt
+    - matplotlib->mpl, .cm, .colors
+    - mpl_toolkits.mplot3d.Axes3D
+
+astroPHD: imports
+
+    - ipython.plot.configure_matplotlib
+```
+
+Also provides **[matplotlib_imports_help](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.matplotlib.matplotlib_imports_help)** function.
+
+<a id="astropy"></a>
+### astropy
+> Import using `from  astroPHD.imports.astropy import *`
+
+Imports
+```
+ Astropy: imports
+
+    - units->u,
+    - coordinates->coords, SkyCoord,
+    - table.Table, QTable
+    - visualization.quantity_support, astropy_mpl_style
+```
+
+Also provides **[astropy_imports_help](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.astropy.astropy_imports_help)** function.
+
+<a id="extras"></a>
+### extras
+
+#### galpy
+> Import using `from  astroPHD.imports.galpy import *`
+
+Imports
+```
+Galpy : imports
+
+    - potential, .MWPotential2014
+    - galpy.orbit.Orbit
+    - galpy.util: bovy_conversion, bovy_coords
+```
+
+Also provides **[galpy_imports_help](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.galpy.galpy_imports_help)** function.
+
+#### AMUSE
+> Import using `from  astroPHD.imports.amuse import *`
+
+Imports
+```
+Amuse: imports
+
+    - amuse
+    - amuse.lab
+    - amuse.units.units, constants
+    - amuse.couple.bridge
+```
+
+Also provides **[amuse_imports_help](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.amuse.amuse_imports_help)** function.
 
 <a id="ipython"></a>
 ## ipython
@@ -95,7 +225,7 @@ This module contains codes for interacting with ipython environments, like Jupyt
 
 
 <a id="autoreload"></a>
-### autoreload,
+### autoreload
 > `from  astroPHD.ipython import autoreload`
 
 This module deals with auto-reloading packages / modules / functions in IPython. With IPython auto-reload, specified (or all) packages will be auto-reloaded to check for code changes. While this slows down code execution, it is enormously useful for real-time code development and testing.
@@ -128,7 +258,7 @@ This module deals with auto-reloading packages / modules / functions in IPython.
                             False])  # scipy will not, even though set_autoreload=2
           ```
 
-<a id="imports"></a>
+<a id="imports-1"></a>
 ### imports
 > `from  astroPHD.ipython import imports`
 
@@ -151,7 +281,7 @@ This module deals with auto-reloading packages / modules / functions in IPython.
 > Import using `from  astroPHD import math`
 
 
-<a id="plot"></a>
+<a id="plot-1"></a>
 ## plot
 > Import using `from  astroPHD import plot`
 
@@ -165,6 +295,9 @@ This module deals with auto-reloading packages / modules / functions in IPython.
 ## util
 > Import using `from  astroPHD import util`
 
+<a id="config-file"></a>
+### config file
+
 
 <br><br>
 - - -
@@ -177,24 +310,24 @@ Templates are useful. Here are some.
 
 <a id="about-text"></a>
 ## About Text
-. [About.txt](../../templates/ABOUT/ABOUT.txt) : an about text in basic `.txt` format
-. [About.md](../../templates/ABOUT/ABOUT.md) : an about text in Markdown
+. [About.txt](templates/ABOUT/ABOUT.txt) : an about text in basic `.txt` format
+. [About.md](templates/ABOUT/ABOUT.md) : an about text in Markdown
 
 <a id="python"></a>
 ## Python
 
-. [\_\_init\_\_](../../templates/python/__init__.py "initialization file")
-. [python.py](../../templates/python/python.py "standard python file")
-. [notebook.ipynb](../../templates/python/notebook.ipynb "standard Jupter Notebook")
+. [\_\_init\_\_](templates/python/__init__.py "initialization file")
+. [python.py](templates/python/python.py "standard python file")
+. [notebook.ipynb](templates/python/notebook.ipynb "standard Jupter Notebook")
 
 <a id="latex"></a>
 ## Latex
 
-. [tex file](../../templates/latex/main.tex)
-. [bibtex file](../../templates/latex/main.bib)
+. [tex file](templates/latex/main.tex)
+. [bibtex file](templates/latex/main.bib)
 
 **Stylesheets:**
-. [main stylesheet](../../templates/latex/util/main.cls)
-. [astronomy stylesheet](../../templates/latex/util/astronomy.cls)
-. [maths stylesheet](../../templates/latex/util/maths.cls)
-. [base stylesheet](../../templates/latex/util/base.cls)
+. [main stylesheet](templates/latex/util/main.cls)
+. [astronomy stylesheet](templates/latex/util/astronomy.cls)
+. [maths stylesheet](templates/latex/util/maths.cls)
+. [base stylesheet](templates/latex/util/base.cls)
