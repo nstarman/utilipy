@@ -197,13 +197,14 @@ def update_wrapper(wrapper, wrapped,
         else:
             raise ValueError('signature must be a Signature object')
 
+    # need to get wrapper properties now
     wrapper_sig = _Signature.from_callable(wrapper)
 
     wrapper_doc = (wrapper.__doc__ or '')
     wrapper_doc = '\n'.join(wrapper_doc.split('\n')[1:])  # drop title
-    if _docstring_formatter is not None:
-        wrapper_doc = wrapper_doc.format(**_docstring_formatter)
 
+    if _docstring_formatter is None:
+        _docstring_formatter = {}
 
     # ---------------------------------------
     # update wrapper
@@ -243,12 +244,20 @@ def update_wrapper(wrapper, wrapped,
                         param.name,
                         name=None, kind=None,  # inherit b/c matching
                         default=param.default, annotation=param.annotation)
+
+                    # track for docstring
+                    _docstring_formatter[param.name] = param.default
+
             # add to signature
             else:
                 # can only merge key-word only
                 if param.kind == _KEYWORD_ONLY:
                     signature = signature.insert_parameter(
                         signature.index_end_keyword_only, param)
+
+                    # track for docstring
+                    _docstring_formatter[param.name] = param.default
+        # /for
 
         for attr in SIGNATURE_ASSIGNMENTS:
             value = getattr(signature, attr)
@@ -261,10 +270,19 @@ def update_wrapper(wrapper, wrapped,
             value = getattr(signature, attr)
             setattr(wrapper, attr, value)
 
+        # for docstring
+        for param in wrapper_sig.parameters.values():
+            # can only merge key-word only
+            if param.kind == _KEYWORD_ONLY:
+                _docstring_formatter[param.name] = param.default
+
         wrapper.__signature__ = signature.signature
 
     # ---------------------------------------
     # docstring
+
+    if _docstring_formatter:  # (not empty dict)
+        wrapper_doc = wrapper_doc.format(**_docstring_formatter)
 
     if docstring is False:  # just inherit
         wrapper.__doc__ = wrapped.__doc__
