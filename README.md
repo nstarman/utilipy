@@ -86,7 +86,7 @@ The files will print an import summary. To prevent this summary, set  `verbose-i
 ## ipython
 > `from  astroPHD import ipython`
 
-This module contains codes for interacting with ipython environments, like Jupyter Notebooks/Lab.
+This module contains codes for interacting with IPython environments, like Jupyter Notebooks/Lab.
 
 `ipython` does a few things on import:
 
@@ -116,33 +116,12 @@ This module contains codes for interacting with ipython environments, like Jupyt
 
 This module deals with auto-reloading packages / modules / functions in IPython. With IPython auto-reload, specified (or all) packages will be auto-reloaded to check for code changes. While this slows down code execution, it is enormously useful for real-time code development and testing.
 
-- `.set_autoreload`: set the auto-reload state for packages
-    > signature :: reload_type: int
+The functions are:
 
-    reload_type: IPython reload state
+-  `.set_autoreload` to set the auto-reload state for packages
 
-    + 0: nothing auto-reloads
-    + 1: things imported with `.aimport` will auto-reload
-    + 2: all imports will auto-reload
+- `.aimport`: import with or without auto-reload
 
-- `.aimport`: import with auto-reload
-    > signature :: \*modules: \*str, autoreload: (bool, list, tuple)= True
-    
-    + \*modules: string(s) for the module to import  
-        ```python
-        'matplotlib.pyplot'
-        ```
-        
-        cannot (yet) do 'from matplotlib import pyplot'
-
-    + autoreload: whether to override autoreload global state for this import.
-      Can be a single boolean for all '\*modules', or a list of booleans for each 'module'.
-          ```python
-          set_autoreload(2)  # everything autoreloads
-          aimport('matplotlib.pyplot', 'scipy.special',
-                 autoreload=[True,  # matplotlib will autroreload
-                            False])  # scipy will not, even though set_autoreload=2
-          ```
 
 <a id="imports-1"></a>
 ### imports
