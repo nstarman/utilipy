@@ -24,10 +24,6 @@ starkplot
 # CUSTOM
 
 # PROJECT-SPECIFIC
-# import community codes
-from . import (
-    starkplot
-)
 
 
 ##############################################################################
