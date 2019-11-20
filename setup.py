@@ -1,9 +1,6 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#############################################################################
-"""
-    astroPHD setup.py
+"""astroPHD setup.py.
 
 #############################################################################
 
@@ -13,7 +10,7 @@ referenced from https://github.com/pytorch/vision/blob/master/setup.py
 """
 
 #############################################################################
-# Imports
+# IMPORTS
 
 import os
 import io
@@ -58,7 +55,7 @@ def find_version(*file_paths):
 #############################################################################
 # RUNNING
 
-readme = open('README.md').read()
+README = open('README.md').read()
 
 VERSION = find_version(os.path.join('src/astroPHD/', '__init__.py'))
 
@@ -80,8 +77,8 @@ setup(
     author='Nathaniel Starkman',
     author_email='n.starkman@mail.utoronto.ca',
     url='https://github.com/nstarman/astroPHD.git',
-    description='assorted functions and packages',
-    long_description=readme,
+    description='Useful python and astrophysics-concomitant tools',
+    long_description=README,
     license='New BSD',
 
     # Package info
@@ -95,3 +92,6 @@ setup(
         "lmfit": ['lmfit']
     },
 )
+
+#############################################################################
+# END

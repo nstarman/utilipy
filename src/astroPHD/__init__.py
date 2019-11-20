@@ -25,6 +25,7 @@ __status__ = "Production"
 # import top level packages
 from . import (
     astronomy,
+    community,
     data_utils,
     decorators,
     fitting,

@@ -2,26 +2,19 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   :
-# AUTHOR  :
-# PROJECT :
+# TITLE   : Community Codes
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-"""initialization file for __________.
+"""Community Codes.
 
-description
+Routine Listings
+----------------
+starkplot
+    wrapper for matplotlib
 
 """
-
-__author__ = ""
-# __copyright__ = "Copyright 2018, "
-# __credits__ = [""]
-# __license__ = "MIT"
-# __version__ = "0.0.0"
-# __maintainer__ = ""
-# __email__ = ""
-# __status__ = "Production"
 
 ##############################################################################
 # IMPORTS
@@ -31,6 +24,10 @@ __author__ = ""
 # CUSTOM
 
 # PROJECT-SPECIFIC
+# import community codes
+from . import (
+    starkplot
+)
 
 
 ##############################################################################
