@@ -1,61 +1,27 @@
-# AstroPHD
+# Welcome
 
 Welcome to  `astroPHD`, a collection of useful python codes. This is a centralized repository for much of the non project-specific code I have written or come across. There are modules for making advanced decorators, interfacing with IPython environments, miscellaneous astronomical functions, data utilities, making fitting libraries inter-operable, improving astropy units and quantity-enabled functions, and much more. Check out the documentation here, on [readthedocs](https://readthedocs.org/projects/astrophd/badge/?version=latest), and at the [wiki](https://github.com/nstarman/astroPHD/wiki) for more detail.
 
 
-[![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
-[![Build Status](https://travis-ci.org/nstarman/astroPHD.svg?branch=master)](https://travis-ci.org/nstarman/astroPHD)
-[![Documentation Status](https://readthedocs.org/projects/astrophd/badge/?version=latest)](https://astrophd.readthedocs.io/en/latest/?badge=latest)
+[![](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
+[![](https://travis-ci.org/nstarman/astroPHD.svg?branch=master)](https://travis-ci.org/nstarman/astroPHD)
+[![](https://readthedocs.org/projects/astrophd/badge/?version=latest)](https://astrophd.readthedocs.io/en/latest/?badge=latest)
 
 ## Attribution
 
 Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://www.astro.utoronto.ca/~starkman/) -- [github](https://github.com/nstarman)
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3545178.svg)](https://doi.org/10.5281/zenodo.3545178)
+[![](https://zenodo.org/badge/DOI/10.5281/zenodo.3545178.svg)](https://doi.org/10.5281/zenodo.3545178)
 
 If you find this code useful in your research, please let me know. If you significantly use astroPHD in a publication, please acknowledge **10.5281/zenodo.3545178**. Please also send me a reference to the paper.
 
 
-
-##  Table of Contents
-<!-- MarkdownTOC levels="1,2,3" autolink="true" style="unordered" -->
-
-- [Module Highlights](#module-highlights)
-    - [astronomy](#astronomy)
-    - [data_utils](#data_utils)
-    - [decorators](#decorators)
-    - [fitting](#fitting)
-    - [imports](#imports)
-        - [base](#base)
-        - [extended](#extended)
-        - [matplotlib](#matplotlib)
-        - [astropy](#astropy)
-        - [extras](#extras)
-    - [ipython](#ipython)
-        - [autoreload](#autoreload)
-        - [imports](#imports-1)
-        - [notebook](#notebook)
-        - [plot](#plot)
-        - [printing](#printing)
-    - [math](#math)
-    - [plot](#plot-1)
-    - [units](#units)
-    - [util](#util)
-        - [config file](#config-file)
-- [Templates](#templates)
-    - [About Text](#about-text)
-    - [Python](#python)
-    - [Latex](#latex)
-
-<!-- /MarkdownTOC -->
-
-
 <br><br>
 - - -
 - - -
 <br><br>
 
-<a id="module-highlights"></a>
+<a id="Module-Highlights"></a>
 # Module Highlights
 Most of the modules have too much to reasonably document here. These are some of the most useful highlights. Detailed descriptions of everything in `astroPHD` and more can be found at [readthedocs](https://readthedocs.org/projects/astrophd/badge/?version=latest) and at the [wiki](https://github.com/nstarman/astroPHD/wiki).
 
@@ -269,7 +235,7 @@ This module deals with auto-reloading packages / modules / functions in IPython.
                             False])  # scipy will not, even though set_autoreload=2
           ```
 
-<a id="imports-1"></a>
+<a id="imports"></a>
 ### imports
 > `from  astroPHD.ipython import imports`
 
@@ -293,7 +259,7 @@ This module deals with auto-reloading packages / modules / functions in IPython.
 
 <br><br><br>
 
-<a id="plot-1"></a>
+<a id="plot"></a>
 ## plot
 > Import using `from  astroPHD import plot`
 
@@ -320,23 +286,23 @@ This module deals with auto-reloading packages / modules / functions in IPython.
 
 <br><br>
 
-<a id="templates"></a>
+<a id="Templates"></a>
 # Templates
 Templates are useful. Here are some.
 
-<a id="about-text"></a>
+<a id="About-Text"></a>
 ## About Text
 . [About.txt](templates/ABOUT/ABOUT.txt) : an about text in basic `.txt` format
 . [About.md](templates/ABOUT/ABOUT.md) : an about text in Markdown
 
-<a id="python"></a>
+<a id="Python"></a>
 ## Python
 
 . [\_\_init\_\_](templates/python/__init__.py "initialization file")
 . [python.py](templates/python/python.py "standard python file")
 . [notebook.ipynb](templates/python/notebook.ipynb "standard Jupter Notebook")
 
-<a id="latex"></a>
+<a id="Latex"></a>
 ## Latex
 
 . [tex file](templates/latex/main.tex)
