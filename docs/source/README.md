@@ -64,25 +64,32 @@ Most of the modules have too much to reasonably document here. These are some of
 > Import using `from  astroPHD import astronomy`
 
 
+<br><br><br>
+
 <a id="data_utils"></a>
 ## data_utils
 > Import using `from  astroPHD import data_utils`
 
+<br><br><br>
 
 <a id="decorators"></a>
 ## decorators
 > Import using `from  astroPHD import decorators`
 
+<br><br><br>
+
 <a id="fitting"></a>
 ## fitting
 > Import using `from  astroPHD import fitting`
 
+<br><br><br>
 
 <a id="imports"></a>
 ## imports
 Most of my notebooks or scripts have at leas 30 lines dedicated to just importing the various modules and functions that will be used later. It's cumbersome, a pain to copy between scripts, and means that the code doesn't start until halfway down the screen. This module provides a variety of files that can be `*`-imported to provide all the basic imports so that you can just get started coding.
 
 The files will print an import summary. To prevent this summary, set  `verbose-imports=False` in the `.astroPHCrc` config file in your home or local directory. For details on this config file, see [config file](#config-file).
+
 
 <a id="base"></a>
 ### base
@@ -167,7 +174,8 @@ Also provides **[astropy_imports_help](https://astrophd.readthedocs.io/en/latest
 <a id="extras"></a>
 ### extras
 
-#### galpy
+
+#### galpy:
 > Import using `from  astroPHD.imports.galpy import *`
 
 Imports
@@ -181,7 +189,8 @@ Galpy : imports
 
 Also provides **[galpy_imports_help](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.galpy.galpy_imports_help)** function.
 
-#### AMUSE
+<br>
+#### AMUSE:
 > Import using `from  astroPHD.imports.amuse import *`
 
 Imports
@@ -196,11 +205,13 @@ Amuse: imports
 
 Also provides **[amuse_imports_help](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.amuse.amuse_imports_help)** function.
 
+<br><br><br>
+
 <a id="ipython"></a>
 ## ipython
 > `from  astroPHD import ipython`
 
-This module contains codes for interacting with ipython environments, like Jupyter Notebooks/Lab.
+This module contains codes for interacting with IPython environments, like Jupyter Notebooks/Lab.
 
 `ipython` does a few things on import:
 
@@ -274,22 +285,25 @@ This module deals with auto-reloading packages / modules / functions in IPython.
 ### printing
 
 
-<a id="math"></a>
+<br><br><br>
 
 <a id="math"></a>
 ## math
 > Import using `from  astroPHD import math`
 
+<br><br><br>
 
 <a id="plot-1"></a>
 ## plot
 > Import using `from  astroPHD import plot`
 
+<br><br><br>
 
 <a id="units"></a>
 ## units
 > Import using `from  astroPHD import units`
 
+<br><br><br>
 
 <a id="util"></a>
 ## util
@@ -300,8 +314,10 @@ This module deals with auto-reloading packages / modules / functions in IPython.
 
 
 <br><br>
+
 - - -
 - - -
+
 <br><br>
 
 <a id="templates"></a>

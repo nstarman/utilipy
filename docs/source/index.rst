@@ -18,6 +18,8 @@ Welcome to astroPHD's documentation!
 
    README.md
 
+   modules
+
 ..   :caption: Contents:
 
 

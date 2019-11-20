@@ -1,0 +1,3 @@
+[submodule "src/astroPHD/community/starkplot"]
+	path = src/astroPHD/community/starkplot
+	url = https://nstarman@github.com/nstarman/starkplot

@@ -65,7 +65,9 @@ source_suffix = {
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['Thumbs.db', '.DS_Store']
+exclude_patterns = ['Thumbs.db', '.DS_Store',
+                    # comunity codes
+                    '../../src/src/astroPHD/community/starkplot']
 
 
 # -- Options for HTML output -------------------------------------------------
