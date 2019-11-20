@@ -2,6 +2,6 @@
 	path = src/astroPHD/community/starkplot
 	url = https://nstarman@github.com/nstarman/starkplot
 	fetchrecursesubmodules = true
-[submodule "src/astroPHD/community/module_autoinstaller"]
-	path = src/astroPHD/community/module_autoinstaller
+[submodule "packages/module_autoinstaller"]
+	path = packages/module_autoinstaller
 	url = https://nstarman@github.com/nstarman/python_module_autoinstaller.git
