@@ -37,7 +37,7 @@ _LOGFILE = LogPrint(header=False)
 #############################################################################
 # CODE
 
-@format_doc(None, odoc='\n\t'.join(pickle.dump.__doc__.split('\n')))  # TODO use an indent function
+@format_doc(None, odoc='\n\t'.join(pickle.dump.__doc__.split('\n')))
 def dump(obj, fname, protocol=None, *, fopt='b', fix_imports=True,
          logger=_LOGFILE, verbose=None):
     """Wrap pickle.dump.
@@ -63,6 +63,9 @@ def dump(obj, fname, protocol=None, *, fopt='b', fix_imports=True,
 # /def
 
 
+save = dump
+
+
 # --------------------------------------------------------------------------
 
 @format_doc(None, odoc='\n\t'.join(pickle.load.__doc__.split('\n')))
@@ -75,7 +78,7 @@ def load(fname, *, fopt='b', fix_imports=True, encoding='ASCII',
     this file is auto opened and closed
 
     pickle.load docstring:
-    
+
     ::
 
         {odoc}
@@ -92,10 +95,6 @@ def load(fname, *, fopt='b', fix_imports=True, encoding='ASCII',
                           encoding=encoding, errors=errors)
     return res
 # /def
-
-
-save = load
-
 
 # --------------------------------------------------------------------------
 
