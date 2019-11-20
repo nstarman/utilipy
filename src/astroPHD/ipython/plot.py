@@ -1,42 +1,46 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   :
+# TITLE   : ipython.plot
 # AUTHOR  : Nathaniel Starkman
-# PROJECT :
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""**DOCSTRING**
+# Docstring and Metadata
+"""Plotting in an IPython environment.
 
-TODO
+Routine Listings
+----------------
+configure_matplotlib
+    configure matplotlib Jupyter magic setting.
+
 """
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# GENERAL
 from IPython import get_ipython
 import warnings
 
-## Project-Specific
+# PROJECT-SPECIFIC
 
 
 ##############################################################################
-### CODE
+# CODE
 
 def configure_matplotlib(backend: str='inline', figure_format: str='retina'):
-    """Configure matplotlib jupyter magic.
+    """Configure Matplotlib Jupyter magic setting.
 
     Parameters
     ----------
-    backend : str, optional  (defualt 'inline')
+    backend : str, optional
+        (defualt 'inline')
         set the matplotlib backend
 
     """
@@ -63,4 +67,4 @@ def configure_matplotlib(backend: str='inline', figure_format: str='retina'):
 # /def
 
 ##############################################################################
-### END
+# END

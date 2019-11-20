@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -9,11 +8,14 @@
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-r"""functions for enhanced printing in an IPython environment
+"""functions for enhanced printing in an IPython environment.
 
-Functions:
-- printmd / printMD / printHTML
-- printltx / printLaTeX
+Routine Listings
+----------------
+printmd, printMD
+    Print in Markdown.
+printltx / printLaTeX
+    Print in LaTeX.
 
 """
 
@@ -25,7 +27,7 @@ __author__ = "Nathaniel Starkman"
 
 # General
 from IPython.display import display  # display is a better print
-from IPython.display import Latex, Markdown
+from IPython.display import Latex, Markdown, HTML
 
 
 ##############################################################################

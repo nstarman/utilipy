@@ -1,16 +1,21 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : notebook
+# TITLE   : ipython.notebook
 # AUTHOR  : Nathaniel Starkman
 # PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""functions for jupyter notebook / lab / hub
+"""functions for Jupyter notebook / lab / hub.
+
+Routine Listings
+----------------
+add_raw_code_toggle
+    Add a toggle to show/hide code cells when Notebook is exported to HTML
+
 """
 
 __author__ = "Nathaniel Starkman"
@@ -20,18 +25,22 @@ __credits__ = ["Jo Bovy"]
 ##############################################################################
 # IMPORTS
 
-# General
+# GENERAL
 from IPython.display import HTML
 
-# Project-Specific
+# PROJECT-SPECIFIC
 
 
 ##############################################################################
 # CODE
 
-def add_raw_code_toggle():  # TODO test works as a function
-    """Add a toggle for code.
+def add_raw_code_toggle():
+    """Add a toggle for code cells when Notebook is exported to HTML.
 
+    HTML & Javascript button, placed directly below function execution cell.
+
+    References
+    ----------
     code from Jo Bovy
 
     """

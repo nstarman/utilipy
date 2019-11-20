@@ -1,11 +1,38 @@
 # -*- coding: utf-8 -*-
 
-"""IPython Imports."""
+"""IPython Imports.
+
+Routine Listings
+----------------
+run_imports
+    Import file, custom or provided, using ipython magic
+import_from_file
+    Run import(s) from a file(s)
+aimport
+    from `.autoreload` module
+set_autoreload
+    from `.autoreload` module
+
+import_base
+    ipython magic run `astroPHD/imports/base.py`
+import_extended
+    ipython magic run `astroPHD/imports/extended.py`
+import_astropy
+    ipython magic run `astroPHD/imports/astropy.py`
+import_matplotlib
+    ipython magic run `astroPHD/imports/matplotlib.py`
+import_galpy
+    ipython magic run `astroPHD/imports/galpy.py`
+import_amuse
+    ipython magic run `astroPHD/imports/amuse.py`
+
+"""
 
 __author__ = "Nathaniel Starkman"
 
 __all__ = [
     'import_from_file', 'run_imports',
+    'aimport', 'set_autoreload',
     # specific importers
     'import_base', 'import_extended',
     'import_astropy', 'import_matplotlib',  # 'import_plotly',
@@ -17,10 +44,10 @@ __all__ = [
 
 # General
 import ast
-import functools
 from IPython import get_ipython
 
 # Project-Specific
+from ..util import functools
 from ..util.config import use_import_verbosity
 from ..util.logging import LogFile
 from ..util.paths import (
@@ -98,7 +125,7 @@ def run_imports(*files, is_relative: bool=True,
                 verbose_imports: (bool, None)=None,
                 # logging
                 logger=_LOGFILE, verbose=0, logger_kw={}) -> None:
-    """Run .imports file using ipython magic.
+    """Import file using ipython magic.
 
     if `astropy` & `matplotlib`, sets matplotlib style to astropy_mpl_style
 
@@ -108,7 +135,7 @@ def run_imports(*files, is_relative: bool=True,
         strings for files to import
         need to include file suffix
     base: bool
-        import_base -> `astroPHD/ipython/imports/base.py`
+        import_base -> `astroPHD/imports/base.py`
     astropy: bool
         import_astropy -> `astroPHD/imports/astropy.py`
     matplotlib: bool
@@ -128,7 +155,22 @@ def run_imports(*files, is_relative: bool=True,
     relative: bool or list of bools
         whether the `files` paths are relative or absolute
     verbose_imports: bool or None
-        Verbose_imports or not, use default if None.
+        Verbose_imports or not, use ``.astroPHDrc`` default if None.
+
+    Examples
+    --------
+    >>> run_imports(base=True, astropy=True)
+    imports from `astroPHD/imports/base.py` and `astroPHD/imports/astropy.py`,
+    printing an import summary
+
+    >>> run_imports(base=True, verbose_imports=False)
+    imports from `astroPHD/imports/base.py`, without an import summary
+
+
+    >>> import astroPHD
+    >>> astroPHD.config.set_import_verbosity(False)
+    >>> astroPHD.ipython.run_imports(base=True, verbose_imports=None)
+    imports from `astroPHD/imports/base.py` with default import-verbosity state
 
     """
     # ---------------------------------------------
@@ -227,11 +269,10 @@ def _set_docstring_import_x(module: str):
 
     # modify function with a basic decorator
     def decorator(func):
-        @functools.wraps(func)
+        @functools.wraps(func, docstring=func.__doc__ + '\n\n' + doc)
         def wrapper(*args, **kwargs):
             return func(*args, **kwargs)
         # /def
-        wrapper.__doc__ = func.__doc__ + '\n\n' + doc
         return wrapper
     # /def
     return decorator
