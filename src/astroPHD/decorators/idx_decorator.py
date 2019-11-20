@@ -15,42 +15,41 @@
 
 # GENERAL
 import numpy as np
-from functools import wraps
+# from functools import wraps
+
+# PROJECT-SPECIFIC
+from ..util import functools
 
 
 ##############################################################################
 # CODE
 
-class idxDecorator():
-    """Decorator to control whether to return bool array or indices.
+def idxDecorator(function=None, *, as_ind=False):
+    """Control whether to return boolean array or indices.
 
     for functions which return bool arrays
     adds *as_ind* as a kwarg to decorated function
 
     Parameters
     ----------
-    func : function or None, optional
-        (defualt None)
-        the decorated function
-        optional so idxDecorator can act as a decorator factory (see example)
+    function : types.FunctionType or None, optional
+        (default None)
+        the function to be decoratored
+        if None, then returns decorator to apply.
     as_ind : bool, optional
         (default False)
         whether to return bool array or the indices (where(bool array == True))
         sets the default behavior for the wrapped fnction *func*
 
+    Returns
+    -------
+    wrapper : types.FunctionType
+        wrapper for function
+        includes the original function in a method `.__wrapped__`
 
     Notes
     -----
     Add `as_ind` to the function signature and docstring.
-
-    Returns
-    -------
-    if func is None:
-        self : instance of idxDecorator
-            a decorator than can be applied to functions
-    else:
-        self(func) : function
-            the decorated function
 
     Examples
     --------
@@ -98,54 +97,31 @@ class idxDecorator():
         array([True, False])
 
     """
+    if function is None:  # allowing for optional arguments
+        return functools.partial(idxDecorator, as_ind=as_ind)
 
-    def __new__(cls, func=None, as_ind=False):
-        """Make new instance of idxDecorator.
+    @functools.wraps(function)
+    def wrapper(*args, as_ind=as_ind, **kwargs):
+        """Docstring for wrapper.
 
-        if no function, return decorator generator
-        else return decorated function
-
-        does not pass to __init__ after
+        Other Parameters
+        ----------------
+        as_ind: bool
+            (default {as_ind})
+            whether to return a boolean array, or array of indices.
 
         """
-        # making instance of self
-        self = super().__new__(cls)
+        return_ = function(*args, **kwargs)
 
-        # if no function, return decorator generator
-        # else return decorated function
-        if func is not None:       # decorator generator
-            self.__init__(as_ind=as_ind)
-            return self(func)
-        # else
-        return self
-        # /def
-
-    def __init__(self, func=None, as_ind=False):
-        """Initialize decorator class."""
-        # adding as_ind parameter default
-        self.as_ind = as_ind
-    # /return
-
-    def __call__(self, wrapped_func):
-        """Decorator."""
-        # function wrapper
-
-        @wraps(wrapped_func)
-        def wrapper(*args, as_ind=self.as_ind, **kwargs):
-
-            return_ = wrapped_func(*args, **kwargs)
-
-            if as_ind:  # return indices
-                return np.where(np.asarray(return_) == True)
-            # else
+        if as_ind:  # return indices
+            return np.where(np.asarray(return_) == True)
+        else:
             return return_
-        # /def
-
-        # wrapper.__doc__ = wrapped_func.__doc__
-        # TODO modify wrapped func documentation to include as_ind
-        return wrapper
     # /def
-# /class
+
+    return wrapper
+# /def
+
 
 ##############################################################################
 # END
