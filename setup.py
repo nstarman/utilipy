@@ -61,8 +61,11 @@ VERSION = find_version(os.path.join('src/astroPHD/', '__init__.py'))
 
 requirements = [
     'numpy>=1.7',
+    'scipy',
+    'matplotlib',
+    'astropy',
     'wrapt',
-    'astropy'
+    'tqdm',  # or extras?
 ]
 
 classifiers = [
@@ -71,7 +74,6 @@ classifiers = [
 ]
 
 setup(
-    # Metadata
     name='astroPHD',
     version=VERSION,
     author='Nathaniel Starkman',
@@ -89,8 +91,8 @@ setup(
     zip_safe=True,
     install_requires=requirements,
     extras_require={
-        "scipy": ["scipy"],
-        "lmfit": ['lmfit']
+        "fitting": ['scipy', 'lmfit'],
+        "amuse": ['amuse-framework', 'amuse-bhtree', 'amuse-seba']
     },
 )
 
