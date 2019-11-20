@@ -79,6 +79,7 @@ setup(
     url='https://github.com/nstarman/astroPHD.git',
     description='Useful python and astrophysics-concomitant tools',
     long_description=README,
+    long_description_content_type="text/markdown",
     license='New BSD',
 
     # Package info
