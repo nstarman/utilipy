@@ -27,7 +27,7 @@ __all__ = [
 from astropy.table import Table, QTable
 
 # PROJECT-SPECIFIC
-from .. import units
+from ..units import quantity_io, mag as MAG
 from . import PS1_from_MegaCamGen1
 from . import MegaCamGen1_from_PS1
 
@@ -36,8 +36,8 @@ from . import MegaCamGen1_from_PS1
 # CODE
 #############################################################################
 
-@units.quantity_io()
-def iCFHT(cfht: Table, ps: Table, **kw) -> units.mag:
+@quantity_io()
+def iCFHT(cfht: Table, ps: Table, **kw) -> MAG:
     """Mega-Cam gen1 i-band from CFHT R_MP9601 and I_MP9701.
 
     Parameters
@@ -71,13 +71,13 @@ def iCFHT(cfht: Table, ps: Table, **kw) -> units.mag:
     r = kw.get('r', 'r')
     i = kw.get('i', 'i')
 
-    i_cfht = (ps[i] + .007 * units.mag - .078 * cfht[r]) / (1 - .078)
+    i_cfht = (ps[i] + .007 * MAG - .078 * cfht[r]) / (1 - .078)
     return i_cfht
 # /def
 
 
-@units.quantity_io()
-def rPS(cfht: Table, ps: Table, **kw) -> units.mag:
+@quantity_io()
+def rPS(cfht: Table, ps: Table, **kw) -> MAG:
     """Pan-STARRS r band from CFHT r and Panstarrs i
 
     rPS - rCFHT = -.001 + 0.023(rCFHT-iCFHT)
@@ -108,13 +108,13 @@ def rPS(cfht: Table, ps: Table, **kw) -> units.mag:
     r = kw.get('r', 'r')
     i_cfht = iCFHT(cfht, ps, **kw)
 
-    r_ps = cfht[r] - 0.001 * units.mag + 0.023 * (cfht[r] - i_cfht)
+    r_ps = cfht[r] - 0.001 * MAG + 0.023 * (cfht[r] - i_cfht)
     return r_ps
 # /def
 
 
-@units.quantity_io()
-def CFHTtoPanstarrs_gmr(cfht: Table, ps: Table, **kw) -> units.mag:
+@quantity_io()
+def CFHTtoPanstarrs_gmr(cfht: Table, ps: Table, **kw) -> MAG:
     """Pan-STARRS g-r color from CFHT g and Panstarrs r.
 
     Parameters
@@ -149,8 +149,8 @@ def CFHTtoPanstarrs_gmr(cfht: Table, ps: Table, **kw) -> units.mag:
 # /def
 
 
-# @units.quantity_io()
-# def PSfromCFHTg2gmrSpl(spline, ps, **kw) -> units.mag:
+# @quantity_io()
+# def PSfromCFHTg2gmrSpl(spline, ps, **kw) -> MAG:
 #     """
 #     g_ps -> g_cfht -> g-r_cfht (via spline), r_cfht -> g-r_ps
 #     calculates g_cfht from PanSTARRS
@@ -183,7 +183,7 @@ def CFHTtoPanstarrs_gmr(cfht: Table, ps: Table, **kw) -> units.mag:
 #     g_cfht = MegaCamGen1_from_PS1.G_MP9401(ps, **kw)
 
 #     # r in CFHT
-#     gmr_cfht = spline(g_cfht) * units.mag  # g-r from the spline
+#     gmr_cfht = spline(g_cfht) * MAG  # g-r from the spline
 #     r_cfht = g_cfht - gmr_cfht  # r = g - (g-r)
 
 #     # cfht table for CFHTtoPanstarrs_gmr

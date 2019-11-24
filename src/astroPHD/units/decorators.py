@@ -3,7 +3,8 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : unit decorators
-# PROJECT :
+# AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
@@ -13,24 +14,28 @@
 __author__ = "Nathaniel Starkman"
 __credit__ = "astropy"
 
+__all__ = [
+    'unit_output_decorator',
+    'QuantityInputOutput', 'quantity_io'
+]
+
 ##############################################################################
 # IMPORTS
 
 # GENERAL
+from typing import Any, Union, Sequence, Callable
 import inspect
 # from warnings import warn
 
 from astropy.units import dimensionless_unscaled
 from astropy.units.decorators import _validate_arg_value, _get_allowed_units
-from astropy.units.core import add_enabled_equivalencies
-# from astropy.units.physical import _unit_physical_mapping
-
-from functools import wraps
+from astropy.units.core import Unit, add_enabled_equivalencies
 from astropy.utils.misc import isiterable
 
 # PROJECT-SPECIFIC
 from .util import unit_output
 from ..decorators.docstring import format_doc
+from ..util.functools import wraps
 
 ###############################################################################
 # PARAMETERS
@@ -42,8 +47,9 @@ _aioattrs = ('unit', 'to_value', 'equivalencies', 'decompose',
 ###############################################################################
 # CODE
 
-def _simple_unit_decorator(unit=None, to_value=False,
-                           equivalencies=[], decompose=False):
+def unit_output_decorator(unit: Unit=None, to_value: bool=False,
+                          equivalencies: Sequence=[],
+                          decompose: Union[bool, Sequence]=False):
     r"""Decorate functions for unit output.
 
     Any wrapped function accepts the additional key-word arguments:
@@ -115,18 +121,20 @@ def _simple_unit_decorator(unit=None, to_value=False,
     ...                        decompose)
 
     """
-    def wrapper(func):
+    def wrapper(func: Callable):
         @wraps(func)
-        def wrapped(*args,
-                    unit=unit, to_value=to_value,
-                    equivalencies=equivalencies, decompose=decompose,
-                    **kw):
+        def wrapped(*args: Any,
+                    unit: Unit=unit, to_value: bool=to_value,
+                    equivalencies: Sequence=equivalencies,
+                    decompose: Union[bool, Sequence]=decompose,
+                    **kw: Any):
 
             # evaluated function
             res = func(*args, **kw)
 
             return unit_output(res, unit=unit, to_value=to_value,
-                               equivalencies=equivalencies, decompose=decompose)
+                               equivalencies=equivalencies,
+                               decompose=decompose)
 
         return wrapped
     return wrapper
@@ -251,10 +259,11 @@ class QuantityInputOutput(object):
 
     @classmethod
     @format_doc(None, doc=__doc__)
-    def as_decorator(cls, func=None, unit=None, to_value=False,
-                     equivalencies=[], decompose=False,
-                     default_units={}, annot2dfu=False,
-                     **decorator_kwargs):
+    def as_decorator(cls, func: Callable=None, unit: Unit=None,
+                     to_value: bool=False, equivalencies: Sequence=[],
+                     decompose: Union[bool, Sequence]=False,
+                     default_units: dict={}, annot2dfu: bool=False,
+                     **decorator_kwargs: Any):
         """{doc}."""
         # making instance from base class
         self = super().__new__(cls)
@@ -272,13 +281,14 @@ class QuantityInputOutput(object):
 
         if func is not None:
             return self(func)
-        else:
-            return self
+        return self
+    # /def
 
-    def __init__(self, func=None, unit=None, to_value=False,
-                 equivalencies=[], decompose=False,
-                 default_units={}, annot2dfu=False,
-                 **decorator_kwargs):
+    def __init__(self, func: Callable=None, unit: Unit=None,
+                 to_value: bool=False, equivalencies: Sequence=[],
+                 decompose: Union[bool, Sequence]=False,
+                 default_units: dict={}, annot2dfu: bool=False,
+                 **decorator_kwargs: Any):
         """Initialize decorator class."""
         super().__init__()
 
@@ -291,35 +301,37 @@ class QuantityInputOutput(object):
         self.annot2dfu = annot2dfu
 
         self.decorator_kwargs = decorator_kwargs
+    # /def
 
-    def __call__(self, wrapped_function):
+    def __call__(self, wrapped_function: Callable):
         """Make decorator."""
         # Extract the function signature for the function we are wrapping.
         wrapped_signature = inspect.signature(wrapped_function)
 
         @wraps(wrapped_function)
-        def wrapped(*func_args,
-                    unit=self.unit, to_value=self.to_value,
-                    equivalencies=self.equivalencies, decompose=self.decompose,
-                    default_units=self.default_units,
-                    _skip_decorator=False,
-                    **func_kwargs):
+        def wrapped(*func_args: Any,
+                    unit: Unit=self.unit, to_value: bool=self.to_value,
+                    equivalencies: Sequence=self.equivalencies,
+                    decompose: Union[bool, Sequence]=self.decompose,
+                    default_units: dict=self.default_units,
+                    _skip_decorator: bool=False,
+                    **func_kwargs: Any):
 
             # skip the decorator
             if _skip_decorator:
                 return wrapped_function(*func_args, **func_kwargs)
 
             # make func_args editable
-            func_args = list(func_args)
+            _func_args: list = list(func_args)
 
             # Bind the arguments to our new function to the signature of the original.
-            bound_args = wrapped_signature.bind(*func_args, **func_kwargs)
+            bound_args = wrapped_signature.bind(*_func_args, **func_kwargs)
 
             # Iterate through the parameters of the original signature
             for i, param in enumerate(wrapped_signature.parameters.values()):
                 # We do not support variable arguments (*args, **kwargs)
-                if param.kind in (inspect.Parameter.VAR_KEYWORD,
-                                  inspect.Parameter.VAR_POSITIONAL):
+                if param.kind in {inspect.Parameter.VAR_KEYWORD,
+                                  inspect.Parameter.VAR_POSITIONAL}:
                     continue
 
                 # Catch the (never triggered) case where bind relied on a default value.
@@ -365,9 +377,9 @@ class QuantityInputOutput(object):
                     raise ValueError('target must be one Unit, not list')
 
                 if (not hasattr(arg, 'unit')) & (adjargbydfunit is True):
-                    if i < len(func_args):
+                    if i < len(_func_args):
                         # print(i, len(bound_args.args))
-                        func_args[i] *= dfunit
+                        _func_args[i] *= dfunit
                     else:
                         func_kwargs[param.name] *= dfunit
                     arg *= dfunit
@@ -419,11 +431,11 @@ class QuantityInputOutput(object):
 
             # # evaluated wrapped_function
             with add_enabled_equivalencies(equivalencies):
-                return_ = wrapped_function(*func_args, **func_kwargs)
+                return_ = wrapped_function(*_func_args, **func_kwargs)
                 # if func_kwargs:
-                #     return_ = wrapped_function(*func_args, **func_kwargs)
+                #     return_ = wrapped_function(*_func_args, **func_kwargs)
                 # else:
-                #     return_ = wrapped_function(*func_args)
+                #     return_ = wrapped_function(*_func_args)
 
             if wrapped_signature.return_annotation not in (inspect.Signature.empty, None) and unit is None:
                 unit = wrapped_signature.return_annotation
@@ -431,6 +443,7 @@ class QuantityInputOutput(object):
             return unit_output(return_, unit=unit, to_value=to_value,
                                equivalencies=equivalencies,
                                decompose=decompose)
+        # /def
 
         # TODO dedent
         wrapped.__doc__ = (wrapped.__doc__ or '') + _funcdec
@@ -502,53 +515,8 @@ _funcdec = """
 """
 
 
-#  TODO incorporate into docstring
-# Examples
-# --------
-# This is a simple example
-# >>> @QuantityInputOutput.as_decorator()
-# ... def func(x: 'km', **kw) -> 2 * u.m:
-# ...     return x
-
-# # passing the wrong/no units doesn't work
-# >>> func(2000 * u.s)
-# >       >> UnitConversionError
-# >   func(2000)
-# >       >> AttributeError
-# the distance is internally converted
-# >   func(2000 * u.m)
-# >       >> 1000.0 2 m
-# function annotation is superceded by an argument
-# >   func(2000 * u.m, unit=2 * u.km)
-# >       >> 1.0 2 km
-# >   func(2000 * u.m, unit=2 * u.km, to_value=True)
-# >       >> 1.0
-
-
-# # More Complex Example
-# this function only accepts
-#     x arguments of type 'length'
-#     t arguments of type 'time'
-# annotations are assumed to be also be default_units
-# @quantity_io(x='length', annot2dfu=True,
-#              default_units=dict(t=u.s))
-# def func(x: 'km', t, **kw) -> 2 * u.m / u.s:
-#     return x * t
-
-# arguments have implicit units
-# >   func(2, 2)
-# >       >> 500.0 2 m / s
-# decorator & annotation supersceded by an argument
-# >   func(2, 2 * u.ms, unit=2 * u.km / s)
-# >       >> 500.0 2 km / s
-
-# print(func(2, 2))
-# print(func(2, 2, unit=2 * u.km / u.s))
-
-
 ###############################################################################
 
-# unit_decorator = UnitDecorator.as_decorator
 quantity_io = QuantityInputOutput.as_decorator
 
 

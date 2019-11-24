@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -8,25 +7,22 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""initialization file for logging
-"""
+# Docstring and Metadata
+"""initialization file for logging."""
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# GENERAL
 import logging
 
-## Custom
-
-## Project-Specific
+# PROJECT-SPECIFIC
 from ._LogPrint import LogPrint
 from ._LogFile import LogFile
 
 
 ##############################################################################
-### END
+# END

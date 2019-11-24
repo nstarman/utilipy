@@ -22,9 +22,8 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # GENERAL
+from typing import Any
 import warnings
-
-# CUSTOM
 
 # PROJECT-SPECIFIC
 from .config import __config__
@@ -33,7 +32,7 @@ from .config import __config__
 ##############################################################################
 # PARAMETERS
 
-_SHOW_WARNINGS = __config__.getboolean('verbosity', 'warnings')
+_SHOW_WARNINGS: bool = __config__.getboolean('verbosity', 'warnings')
 
 ###############################################################################
 # CODE
@@ -41,6 +40,8 @@ _SHOW_WARNINGS = __config__.getboolean('verbosity', 'warnings')
 
 
 class astroPHDWarning(Warning):
+    """astroPHDWarning."""
+
     pass
 # /class
 
@@ -48,14 +49,16 @@ class astroPHDWarning(Warning):
 # ----------------------------------------------------------------------------
 
 class astroPHDWarningVerbose(Warning):
+    """astroPHDWarningVerbose."""
+
     pass
 # /class
 
 
 # ----------------------------------------------------------------------------
 
-def _warning(message, category=astroPHDWarning, filename='',
-             lineno=-1, file=None, line=None):
+def _warning(message: Any, category: type=astroPHDWarning, filename: str='',
+             lineno: int=-1, file: None=None, line: None=None):
     if issubclass(category, astroPHDWarning):
         if not issubclass(category, astroPHDWarningVerbose) or _SHOW_WARNINGS:
             print("astroPHDWarning: " + str(message))

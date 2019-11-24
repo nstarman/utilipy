@@ -9,7 +9,6 @@ __author__ = "Nathaniel Starkman"
 
 # GENERAL
 
-
 # PROJECT-SPECIFIC
 from ..community import starkplot
 from ..community.starkplot import mpl_decorator

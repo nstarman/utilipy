@@ -17,11 +17,12 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# General
+# GENERAL
+from typing import Any, Union, Callable, Optional
 import inspect
 import functools
 
-# Project-Specific
+# PROJECT-SPECIFIC
 from .decoratorbaseclass import DecoratorBaseClass
 
 
@@ -42,7 +43,8 @@ from .decoratorbaseclass import DecoratorBaseClass
 # # /def
 
 
-def _set_docstring_import_file_helper(name: str, module_doc: str):
+def _set_docstring_import_file_helper(name: Optional[str], module_doc: str
+                                      ) -> Callable:
     """Set docstring from module Returns section.
 
     takes a helper function for a module and adds the content of the modules'
@@ -57,15 +59,14 @@ def _set_docstring_import_file_helper(name: str, module_doc: str):
 
     """
     look_for = 'Routine Listings'
-    ind = module_doc.find(look_for) + 2 * len(look_for) + 2  # skip 'Routine Listings' & line
+    ind = module_doc.find(look_for) + 2 * len(look_for) + \
+        2  # skip 'Routine Listings' & line
     end_ind = ind + module_doc[ind:].find('---')  # finding next section
 
     doc = module_doc[ind:end_ind]  # get section (+ next header)
-    doc = doc.split('\n')[:-2]  # strip next header
-    # doc[0] = '    ' + doc[0]  # indent 1st line
-    doc = '\n'.join(doc)  # rejoin with indent
+    doc = '\n'.join(doc.split('\n')[:-2])  # strip next header
 
-    def decorator(func):
+    def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             return func(*args, **kwargs)
@@ -77,7 +78,7 @@ def _set_docstring_import_file_helper(name: str, module_doc: str):
 # /def
 
 
-def _import_file_docstring_helper(docstring):
+def _import_file_docstring_helper(docstring: str) -> str:
     """Help from import file helper function."""
     doc = docstring.split('\n')  # split on lines
     doc = '\n'.join(doc[1:])  # join all after 1st line
@@ -91,16 +92,15 @@ def _import_file_docstring_helper(docstring):
 class replace_docstring(DecoratorBaseClass):
     """Replace a function docstrin."""
 
-    def _doc_func(self, docstring):
+    def _doc_func(self, docstring: str):
         return self.docstring
 
-    def __call__(self, wrapped_function):
+    def __call__(self, wrapped_function: Callable) -> Callable:
         """Construct a function wrapper."""
         @functools.wraps(wrapped_function)
-        def wrapper(*func_args, **func_kwargs):
+        def wrapper(*func_args: Any, **func_kwargs: Any) -> Any:
             return wrapped_function(*func_args, **func_kwargs)
         # /def
-
         return super().__call__(wrapper)
     # /def
 
@@ -111,7 +111,8 @@ set_docstring = replace_docstring
 ##############################################################################
 # Format Doc
 
-def format_doc(docstring, *args, **kwargs):
+def format_doc(docstring: Optional[str], *args: Any,
+               **kwargs: Any) -> Callable:
     """Astropy's Format Docstring Function.
 
     .. _link: https://docs.astropy.org/en/stable/api/astropy.utils.decorators.format_doc.html
@@ -309,7 +310,7 @@ def format_doc(docstring, *args, **kwargs):
     on an object to first parse the new docstring and then to parse the
     original docstring or the ``args`` and ``kwargs``.
     """
-    def set_docstring(obj):
+    def set_docstring(obj: Callable) -> Callable:
         if docstring is None:
             # None means: use the objects __doc__
             doc = obj.__doc__
@@ -333,7 +334,9 @@ def format_doc(docstring, *args, **kwargs):
         kwargs['__doc__'] = obj.__doc__ or ''
         obj.__doc__ = doc.format(*args, **kwargs)
         return obj
+    # /def
     return set_docstring
+# /def
 
 
 ##############################################################################

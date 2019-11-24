@@ -8,14 +8,19 @@
 # PROJECT : astronat
 #
 # ----------------------------------------------------------------------------
-### Docstring and Metadata
-r"""
+# Docstring and Metadata
+"""Fast astronomy functions.
+
+TODO
+----
+Implement in C
+
 """
 
 __author__ = "Nathaniel Starkman"
 
 #############################################################################
-### Imports
+# Imports
 
 from .functions import (
     # magnitudes
@@ -30,16 +35,4 @@ from .functions import (
 )
 
 #############################################################################
-# Info
-
-__author__ = "Nathaniel Starkman"
-__copyright__ = "Copyright 2018, "
-__credits__ = [""]
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Nathaniel Starkman"
-__email__ = "n.starkman@mail.utoronto.ca"
-__status__ = "Production"
-
-#############################################################################
-# Code
+# END

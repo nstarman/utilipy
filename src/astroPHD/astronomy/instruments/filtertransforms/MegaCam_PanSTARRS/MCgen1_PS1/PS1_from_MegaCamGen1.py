@@ -21,15 +21,15 @@ import warnings
 from astropy.table import Table, QTable
 
 # PROJECT-SPECIFIC
-from .. import units
+from ..units import quantity_io, mag as MAG
 
 
 #############################################################################
 # CODE
 #############################################################################
 
-@units.quantity_io()
-def G(cfht: Table, **kw) -> units.mag:
+@quantity_io()
+def G(cfht: Table, **kw) -> MAG:
     r"""Pan-STARRS g band from CFHT G_MP9401 and R_MP9601.
 
     Parameters
@@ -69,11 +69,11 @@ def G(cfht: Table, **kw) -> units.mag:
     else:
         gmr = cfht[g] - cfht[r]
 
-    ind = (-1.5 * units.mag < gmr) & (gmr < 2.5 * units.mag)
+    ind = (-1.5 * MAG < gmr) & (gmr < 2.5 * MAG)
     if not all(ind):
         warnings.warn('PS1.G: not all -1.5 mag < (g-r)_ps < 2.5 mag')
 
-    c0 = 0. * units.mag
+    c0 = 0. * MAG
     c1 = .004
     g_cfht = cfht[g]
 
@@ -81,8 +81,8 @@ def G(cfht: Table, **kw) -> units.mag:
     return g_ps
 
 
-@units.quantity_io()
-def R(cfht: Table, **kw) -> units.mag:
+@quantity_io()
+def R(cfht: Table, **kw) -> MAG:
     r"""Pan-STARRS g band from CFHT R_MP9601 and I_MP9701.
 
     Parameters
@@ -121,11 +121,11 @@ def R(cfht: Table, **kw) -> units.mag:
     else:
         rmi = cfht[r] - cfht[i]
 
-    ind = (-.9 * units.mag < rmi) & (rmi < 3 * units.mag)
+    ind = (-.9 * MAG < rmi) & (rmi < 3 * MAG)
     if not all(ind):
         warnings.warn('PS1.R: not all -.9 mag < (g-i)_ps < 3 mag')
 
-    c0 = -.001 * units.mag
+    c0 = -.001 * MAG
     c1 = 0.023
     r_cfht = cfht[r]
 
@@ -133,8 +133,8 @@ def R(cfht: Table, **kw) -> units.mag:
     return r_ps
 
 
-@units.quantity_io()
-def I(cfht: Table, **kw) -> units.mag:
+@quantity_io()
+def I(cfht: Table, **kw) -> MAG:
     r"""Pan-STARRS i band from CFHT R_MP9601 and I_MP9701.
 
     Parameters
@@ -174,11 +174,11 @@ def I(cfht: Table, **kw) -> units.mag:
     else:
         rmi = cfht[r] - cfht[i]
 
-    ind = (.1 * units.mag < rmi) & (rmi < 3 * units.mag)
+    ind = (.1 * MAG < rmi) & (rmi < 3 * MAG)
     if not all(ind):
         warnings.warn('PS1.I not all .1 mag < (g-i)_ps < 3 mag')
 
-    c0 = -.007 * units.mag
+    c0 = -.007 * MAG
     c1 = .078
     i_cfht = cfht[i]
 
@@ -186,8 +186,8 @@ def I(cfht: Table, **kw) -> units.mag:
     return i_ps
 
 
-@units.quantity_io()
-def Z(cfht: Table, **kw) -> units.mag:
+@quantity_io()
+def Z(cfht: Table, **kw) -> MAG:
     r"""Pan-STARRS g band from CFHT I_MP9701, Z_MP9801.
 
     Parameters
@@ -227,13 +227,13 @@ def Z(cfht: Table, **kw) -> units.mag:
     else:
         imz = cfht[i] - cfht[z]
 
-    ind = (-.1 * units.mag < imz) & (imz < 2.5 * units.mag)
+    ind = (-.1 * MAG < imz) & (imz < 2.5 * MAG)
     if not all(ind):
         warnings.warn('PS1.Z not all -.1 mag < (g-i)_ps < 3 mag')
 
-    c0 = 0. * units.mag
+    c0 = 0. * MAG
     c1 = .078
-    c2 = .029 / units.mag
+    c2 = .029 / MAG
     z_cfht = cfht[z]
 
     z_ps = z_cfht + c0 + (c1 * imz) + (c2 * imz**2)
@@ -243,8 +243,8 @@ def Z(cfht: Table, **kw) -> units.mag:
 #############################################################################
 # Colors
 
-@units.quantity_io()
-def GmR(cfht: Table, **kw) -> units.mag:
+@quantity_io()
+def GmR(cfht: Table, **kw) -> MAG:
     """G-R CFHT.
 
     Parameters
@@ -265,8 +265,8 @@ def GmR(cfht: Table, **kw) -> units.mag:
     return G(cfht, **kw) - R(cfht, **kw)
 
 
-@units.quantity_io()
-def GmI(cfht: Table, **kw) -> units.mag:
+@quantity_io()
+def GmI(cfht: Table, **kw) -> MAG:
     """G-R CFHT.
 
     Parameters
@@ -287,8 +287,8 @@ def GmI(cfht: Table, **kw) -> units.mag:
     return G(cfht, **kw) - I(cfht, **kw)
 
 
-@units.quantity_io()
-def GmZ(cfht: Table, **kw) -> units.mag:
+@quantity_io()
+def GmZ(cfht: Table, **kw) -> MAG:
     """G-R CFHT.
 
     Parameters
@@ -309,8 +309,8 @@ def GmZ(cfht: Table, **kw) -> units.mag:
     return G(cfht, **kw) - Z(cfht, **kw)
 
 
-@units.quantity_io()
-def RmI(cfht: Table, **kw) -> units.mag:
+@quantity_io()
+def RmI(cfht: Table, **kw) -> MAG:
     """G-R CFHT.
 
     Parameters
@@ -331,8 +331,8 @@ def RmI(cfht: Table, **kw) -> units.mag:
     return R(cfht, **kw) - I(cfht, **kw)
 
 
-@units.quantity_io()
-def RmZ(cfht: Table, **kw) -> units.mag:
+@quantity_io()
+def RmZ(cfht: Table, **kw) -> MAG:
     """G-R CFHT.
 
     Parameters
@@ -353,8 +353,8 @@ def RmZ(cfht: Table, **kw) -> units.mag:
     return R(cfht, **kw) - Z(cfht, **kw)
 
 
-@units.quantity_io()
-def ImZ(cfht: Table, **kw) -> units.mag:
+@quantity_io()
+def ImZ(cfht: Table, **kw) -> MAG:
     """G-R CFHT.
 
     Parameters

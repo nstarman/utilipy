@@ -4,7 +4,8 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : unit decorators
-# PROJECT :
+# AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
@@ -17,12 +18,11 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# General
-# from warnings import warn
+# GENERAL
+from typing import Any, Union, Sequence
 
 # astropy
-from astropy.units import Unit
-from astropy.units.core import IrreducibleUnit
+from astropy.units.core import Unit, IrreducibleUnit
 
 from astropy.utils.decorators import wraps
 from astropy.utils.misc import isiterable
@@ -32,8 +32,9 @@ from astropy.utils.misc import isiterable
 # CODE
 ###############################################################################
 
-def unit_output(res, unit=None, to_value=False,
-                equivalencies=[], decompose=False):
+def unit_output(res: Any, unit: Unit=None, to_value: bool=False,
+                equivalencies: Sequence=[],
+                decompose: Union[bool, Sequence]=False) -> Any:
     """Control return of Quantities.
 
     Parameters

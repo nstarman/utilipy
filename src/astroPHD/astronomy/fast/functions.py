@@ -5,26 +5,27 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
+from typing import Union, Sequence
 import numpy as np
 
 
 ###############################################################################
 # Parameters
 
-_AU_to_pc = 0.000004848137
-_pc_to_AU = 1 / _AU_to_pc
+_AU_to_pc: float = 0.000004848137
+_pc_to_AU: float = 1. / _AU_to_pc
 
 
 ###############################################################################
 # Distance Conversion
 
-def AU_to_pc(AU):
+def AU_to_pc(AU: Union[np.array, float]) -> Union[np.array, float]:
     """Convert AU to pc."""
     return AU * _AU_to_pc
 # /def
 
 
-def pc_from_AU(AU):
+def pc_from_AU(AU: Union[np.array, float]) -> Union[np.array, float]:
     """Convert AU to pc."""
     return AU * _AU_to_pc
 # /def
@@ -32,12 +33,12 @@ def pc_from_AU(AU):
 # -------------------------------------------------------------------------
 
 
-def AU_from_pc(pc):
+def AU_from_pc(pc: Union[np.array, float]) -> Union[np.array, float]:
     """Convert pc to AU."""
     return pc * _pc_to_AU
 
 
-def pc_to_AU(pc):
+def pc_to_AU(pc: Union[np.array, float]) -> Union[np.array, float]:
     """Convert pc to AU."""
     return pc * _pc_to_AU
 
@@ -45,7 +46,7 @@ def pc_to_AU(pc):
 ###############################################################################
 # Distance Modulus
 
-def apparent_to_absolute_magnitude(m, d_L):
+def apparent_to_absolute_magnitude(m: Sequence, d_L: Sequence) -> Sequence:
     """Calculate the absolute magnitude.
 
     M = m - 5 log10(d) + 5
@@ -70,10 +71,10 @@ def apparent_to_absolute_magnitude(m, d_L):
 
 # -------------------------------------------------------------------------
 
-def absolute_to_apparent_magnitude(M, d_L):
+def absolute_to_apparent_magnitude(M: Sequence, d_L: Sequence) -> Sequence:
     """Calculate the apparent magnitude.
 
-    m = M + 5 log10(d) - 5
+        m = M + 5 log10(d) - 5
 
     Parameters
     ----------
@@ -95,14 +96,14 @@ def absolute_to_apparent_magnitude(M, d_L):
 
 # -------------------------------------------------------------------------
 
-def distanceModulus_magnitude(distance):
-    r"""Distance Modulus.
+def distanceModulus_magnitude(distance: Sequence) -> Sequence:
+    """Distance Modulus.
 
-    equation:  DM = 5 log10(d / 10)
+        DM = 5 log10(d / 10)
 
     Parameters
     ----------
-    distance: scalar, array
+    distance: array_like
         in parsecs
         if Quantity, pass as distance.to_value('pc')
 
@@ -119,15 +120,17 @@ def distanceModulus_magnitude(distance):
 
 # -------------------------------------------------------------------------
 
-def distanceModulus_distance(DM):
+def distanceModulus_distance(DM: Sequence) -> Sequence:
     r"""Distance Modulus.
 
-    equation:  DM = 5 log10(d / 10)
-    d = 10^{\frac{DM}{5}+1}
+    ..math:
+
+        DM = 5 log10(d / 10)
+        d = 10^{\frac{DM}{5}+1}
 
     Parameters
     ----------
-    DM: scalar, array
+    DM: array_like
         in magnitudes
         if Quantity, pass as distance.to_value('mag')
 
@@ -144,7 +147,7 @@ def distanceModulus_distance(DM):
 
 # -------------------------------------------------------------------------
 
-def distanceModulus(arg, d2dm=True):
+def distanceModulus(arg: Sequence, d2dm: bool=True) -> Sequence:
     r"""Distance Modulus.
 
     ..math::
@@ -156,7 +159,7 @@ def distanceModulus(arg, d2dm=True):
 
     Parameters
     ----------
-    arg: scalar, array
+    arg: array_like
         either distance (d) in pc (.value) or  DM in magnitudes (.value)
         determined by `d2dm`
     d2dm: bool
@@ -178,13 +181,13 @@ def distanceModulus(arg, d2dm=True):
 ###############################################################################
 # Parallax
 
-def parallax_angle(d):
+def parallax_angle(d: Sequence) -> Sequence:
     r"""Compute parallax angle.
 
     Parameters
     ----------
-    d: pc
-        distance
+    d: array_like
+        distance in pc
         1 AU = 0.000004848137 pc
 
     Returns
@@ -199,12 +202,13 @@ def parallax_angle(d):
 
 # -------------------------------------------------------------------------
 
-def parallax_distance(p):
+def parallax_distance(p: Sequence) -> Sequence:
     r"""Compute parallax distance.
 
     Parameters
     ----------
-    p: radian
+    p: array_like
+        radian
         parallax angle
 
     Returns
@@ -220,14 +224,14 @@ def parallax_distance(p):
 
 # -------------------------------------------------------------------------
 
-def parallax(arg, d2p=True):
+def parallax(arg: Sequence, d2p: bool=True) -> Sequence:
     r"""Parallax.
 
     Not as fast as calling parallax_angle(distance) directly
 
     Parameters
     ----------
-    arg: scalar, array
+    arg: array_like
         either distance (d) in pc (.value)
         or  parallax_angle (p) in radians (.value)
         determined by `d2p`
@@ -250,7 +254,7 @@ def parallax(arg, d2p=True):
 ###############################################################################
 # Angular Separation
 
-def max_angular_separation(doff, dto):
+def max_angular_separation(doff: Sequence, dto: Sequence) -> Sequence:
     """Maximum angular separation.
 
     doff: distance
@@ -260,7 +264,8 @@ def max_angular_separation(doff, dto):
 
     Returns
     -------
-    angle: rad
+    angle: float
+        in radians
         angular separation
 
     """

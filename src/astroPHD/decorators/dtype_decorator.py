@@ -32,21 +32,19 @@ __all__ = [
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# GENERAL
+from typing import Any, Union, Callable, Optional
 import numpy as np
 import types
 
-try:
-    from astropy.utils.decorators import wraps
-except ImportError:
-    print("could not import wraps from astropy. using functools' instead")
-    from functools import wraps
-
+# PROJECT-SPECIFIC
+from ..util import functools
 
 #############################################################################
 # MAKING DECORATORS
+
 
 class dtypeDecorator():
     """ensure arguments are type *dtype*
@@ -67,7 +65,9 @@ class dtypeDecorator():
 
     """
 
-    def __new__(cls, func=None, in_dtype=None, out_dtype=None):
+    def __new__(cls, func: Optional[Callable]=None,
+                in_dtype: Any=None, out_dtype: Any=None):
+        """__new__."""
         self = super().__new__(cls)  # making instance of self
 
         # correcting if forgot to specify in_dtype= and did not provide a function
@@ -83,11 +83,11 @@ class dtypeDecorator():
         if func is not None:
             self.__init__(in_dtype, out_dtype)
             return self(func)
-        else:
-            return self
+        # else:
+        return self
     # /def
 
-    def __init__(self, in_dtype=None, out_dtype=None):
+    def __init__(self, in_dtype: Any=None, out_dtype: Any=None) -> None:
         super().__init__()
 
         # in_dtype
@@ -101,18 +101,19 @@ class dtypeDecorator():
         return
     # /def
 
-    def __call__(self, wrapped_func):
+    def __call__(self, wrapped_func: Callable) -> Callable:
         # print(self._in_dtype)
 
-        @wraps(wrapped_func)
-        def wrapper(*args, **kw):
+        @functools.wraps(wrapped_func)
+        def wrapper(*args: Any, **kw: Any) -> Any:
             # making arguments self._dtype
             if self._in_dtype is None:  # no conversion needed
                 return_ = wrapped_func(*args, **kw)
             elif len(args) == 0:
                 return_ = wrapped_func(**kw)
             elif len(args) == 1:
-                if len(self._in_dtype) != 1 or self._in_dtype[0][0] != 0:  # TODO better
+                # TODO better
+                if len(self._in_dtype) != 1 or self._in_dtype[0][0] != 0:
                     raise IndexError('too many indices')
                 arg = self._in_dtype[0][1](args[0])
                 return_ = wrapped_func(arg, **kw)
@@ -129,23 +130,23 @@ class dtypeDecorator():
                 if not np.isscalar(return_):
                     return_ = list(return_)  # allowing modifications
                     for i, dtype in self._out_dtype:
-                        return_[i] = dtype(return_[i])  # converting to desired dtype
+                        # converting to desired dtype
+                        return_[i] = dtype(return_[i])
                 else:
                     if len(self._out_dtype) != 1:  # TODO do this check?
                         raise ValueError('out_dtype has too many indices')
                     return_ = self._out_dtype[0][1](return_)
 
             return return_
-            # /POST
-            # /def
+        # /def
         return wrapper
     # /def
 
 
 #############################################################################
-### SINGLE-DECORATOR FACTORY
+# SINGLE-DECORATOR FACTORY
 
-def dtypeDecoratorMaker(dtype):
+def dtypeDecoratorMaker(dtype: Any):
     """function to make a dtype decorator
 
     Parameters
@@ -212,11 +213,12 @@ def dtypeDecoratorMaker(dtype):
         >>> 1, 2, 3
         """
 
-        def __new__(cls, func=None, inargs=None, outargs=None):
-            """"""
+        def __new__(cls, func: Callable=None,
+                    inargs: Any=None, outargs: Any=None):
+            """__new__."""
             self = super().__new__(cls)  # making instance of self
 
-            # correcting if forgot to specify inargs= and did not provide a function
+            # correcting if forgot to specify inargs= and did not provide a func
             # in this case, *inargs* is stored in *func*
             # need to do func->None, inarags<-func, and outargs<-inargs
             if not isinstance(func, types.FunctionType):
@@ -233,7 +235,7 @@ def dtypeDecoratorMaker(dtype):
                 return self
         # /def
 
-        def __init__(self, inargs=None, outargs=None):
+        def __init__(self, inargs: Any=None, outargs: Any=None) -> None:
             super().__init__()
 
             # data type
@@ -254,11 +256,11 @@ def dtypeDecoratorMaker(dtype):
                 self._outargs = [self._outargs, ]
         # /def
 
-        def __call__(self, wrapped_func):
+        def __call__(self, wrapped_func: Callable) -> Callable:
             # print(self._inargs)
 
-            @wraps(wrapped_func)
-            def wrapper(*args, **kw):
+            @functools.wraps(wrapped_func)
+            def wrapper(*args: Any, **kw: Any) -> Any:
 
                 args = list(args)  # allowing modifications
 
@@ -270,10 +272,12 @@ def dtypeDecoratorMaker(dtype):
                     # converting inargs to list of indices
                     inargs = list(range(len(args)))[self._inargs]
                     for i in inargs:
-                        args[i] = self._dtype(args[i])  # converting to desired dtype
+                        # converting to desired dtype
+                        args[i] = self._dtype(args[i])
                 else:
                     for i in self._inargs:
-                        args[i] = self._dtype(args[i])  # converting to desired dtype
+                        # converting to desired dtype
+                        args[i] = self._dtype(args[i])
                 # /PRE
 
                 # CALLING
@@ -287,14 +291,16 @@ def dtypeDecoratorMaker(dtype):
                     try:  # need to figure out whether return_ is a scalar or a list
                         return_[0]
                     except IndexError:  # scalar output
-                        inds = np.arange(len(args), dtype=self._dtype)[self._outargs]
+                        inds = np.arange(len(args), dtype=self._dtype)[
+                            self._outargs]
                         if inds == 0:
                             return self._dtype(return_)
                         else:  # inds doesn't match return_
                             raise ValueError
                     else:
                         return_ = list(return_)
-                        inds = np.arange(len(args), dtype=self._dtype)[self._outargs]
+                        inds = np.arange(len(args), dtype=self._dtype)[
+                            self._outargs]
                         for i in inds:
                             return_[i] = self._dtype(return_[i])
 

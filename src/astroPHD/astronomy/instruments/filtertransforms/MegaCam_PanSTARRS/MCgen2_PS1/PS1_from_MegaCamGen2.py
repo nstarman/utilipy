@@ -12,7 +12,6 @@ __credits__ = [
 # Imports
 
 # GENERAL
-import warnings
 from astropy.table import Table, QTable
 
 # PROJECT-SPECIFIC

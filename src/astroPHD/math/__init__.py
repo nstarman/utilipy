@@ -8,17 +8,19 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""initialization file for math
-"""
+# Docstring and Metadata
+"""initialization file for math."""
 
 __author__ = "Nathaniel Starkman"
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## Project-Specific
+#  GENERAL
+from numpy import *
+
+# PROJECT-SPECIFIC
 from .math import quadrature, logsumexp
 
 ##############################################################################
-### DONE
+# DONE

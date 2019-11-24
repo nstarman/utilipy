@@ -9,52 +9,39 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""
-## General
-pathlib, .Path
-
-## Custom
-get_absolute_path
-"""
+# Docstring and Metadata
+"""Utils for paths."""
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
-import pathlib
+# GENERAL
+from typing import Union
 from pathlib import Path
 
-## Custom
-
-## Project-Specific
+# PROJECT-SPECIFIC
 
 
 ##############################################################################
-### PARAMETERS
+# PARAMETERS
 
 
 ##############################################################################
-### CODE
+# CODE
 
-def get_absolute_path(path:str) -> Path:
-    """
-    """
-
+def get_absolute_path(path: Union[str, Path]) -> Union[str, Path]:
+    """Get absolute path."""
     return Path(path).resolve()
 # /def
 
 
-def parent_file_directory(path:str) -> Path:
-    """
-    """
-
-    path = Path(path)
-    return path.parent
+def parent_file_directory(path: Union[str, Path]) -> Union[str, Path]:
+    """Parent file directory."""
+    return Path(path).parent
 # /def
 
 ##############################################################################
-### END
+# END

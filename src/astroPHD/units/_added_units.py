@@ -3,27 +3,32 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : units
+# AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""Added units to Astropy units.
-
-"""
+"""Added units to Astropy units."""
 
 __author__ = "Nathaniel Starkman"
 
-#############################################################################
-# Imports
+##############################################################################
+# IMPORTS
 
 import numpy as np
 from astropy.units.core import UnitBase, def_unit
 from astropy import units, constants
 from astropy.units.utils import generate_unit_summary as _gen_summary
 
+
+##############################################################################
+# PARAMETERS
+
 _ns = globals()
 
-##########################################################################
+
+##############################################################################
 # New Units
 
 def_unit(['m_s', 'mps'], represents=units.m / units.s,
@@ -257,11 +262,8 @@ def_unit(['pi'], represents=np.pi * units.rad,
          namespace=_ns)
 
 
-################################
-
-###########################################################################
+##############################################################################
 # CLEANUP
-
 
 del np
 del UnitBase
@@ -271,7 +273,7 @@ del constants
 # del Fraction
 
 
-###########################################################################
+##############################################################################
 # DOCSTRING
 
 # This generates a docstring for this module that describes all of the
@@ -280,5 +282,5 @@ if __doc__ is not None:
     __doc__ += _gen_summary(globals())
 
 
-###########################################################################
+##############################################################################
 # END

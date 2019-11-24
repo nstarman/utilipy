@@ -43,6 +43,7 @@ __all__ = [
 # IMPORTS
 
 # General
+from typing import Any, Union, Optional
 import ast
 from IPython import get_ipython
 
@@ -67,9 +68,10 @@ _LOGGER_KW = {'print': False}
 ##############################################################################
 # CODE
 
-def import_from_file(*files, is_relative: bool=True,
-                     verbose_imports: (bool, None)=None,
-                     logger=_LOGFILE, verbose=None, logger_kw=_LOGGER_KW
+def import_from_file(*files: str, is_relative: bool=True,
+                     verbose_imports: Optional[bool]=None,
+                     logger: LogFile=_LOGFILE, verbose=None,
+                     logger_kw: dict=_LOGGER_KW
                      ) -> None:
     """Run import(s) from a file(s).
 
@@ -99,7 +101,8 @@ def import_from_file(*files, is_relative: bool=True,
         for file, relative in zip(files, relatives):
             if relative:
                 file = _gap(file)
-            get_ipython().magic(f"run {file}")  # get_ipython inbuilt to jupyter
+            # get_ipython inbuilt to jupyter
+            get_ipython().magic(f"run {file}")
 
             # logging
             # implemented separately b/c files often have own print statements
@@ -111,7 +114,7 @@ def import_from_file(*files, is_relative: bool=True,
 
 # ----------------------------------------------------------------------------
 
-def run_imports(*files, is_relative: bool=True,
+def run_imports(*files: str, is_relative: bool=True,
                 # standard import files
                 base: bool=False, extended: bool=False,
                 # extra standard files
@@ -121,10 +124,11 @@ def run_imports(*files, is_relative: bool=True,
                 # additional, requires extra installs
                 galpy: bool=False, amuse: bool=False,
                 # autoreload
-                set_autoreload_to=None,
-                verbose_imports: (bool, None)=None,
+                set_autoreload_to: Optional[int]=None,
+                verbose_imports: Optional[bool]=None,
                 # logging
-                logger=_LOGFILE, verbose=0, logger_kw={}) -> None:
+                logger: LogFile=_LOGFILE, verbose=0, logger_kw: dict={}
+                ) -> None:
     """Import file using ipython magic.
 
     if `astropy` & `matplotlib`, sets matplotlib style to astropy_mpl_style
@@ -238,13 +242,13 @@ def run_imports(*files, is_relative: bool=True,
 # ----------------------------------------------------------------------------
 # UTILITIES TODO BETTER
 
-def _join_pfd(path):
+def _join_pfd(path: str) -> str:
     # TODO better way to get this file directory & join path file
     return _pfd(__file__).joinpath(path)
 # /def
 
 
-def _set_docstring_import_x(module: str):
+def _set_docstring_import_x(module: str) -> str:
     """Set docstring Returns section.
 
     takes a helper function for a module and adds the content of the modules'
@@ -284,8 +288,9 @@ def _set_docstring_import_x(module: str):
 # TODO make these with a function
 
 @_set_docstring_import_x(_join_pfd('../imports/base.py'))
-def import_base(verbose_imports: (bool, None)=None,
-                logger=_LOGFILE, verbose=None, logger_kw=_LOGGER_KW
+def import_base(verbose_imports: Optional[bool]=None,
+                logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
+                logger_kw: dict=_LOGGER_KW
                 ) -> None:
     """Import base packages."""
     import_from_file(_join_pfd('../imports/base.py'),
@@ -296,8 +301,9 @@ def import_base(verbose_imports: (bool, None)=None,
 
 
 @_set_docstring_import_x(_join_pfd('../imports/extended.py'))
-def import_extended(verbose_imports: (bool, None)=None,
-                    logger=_LOGFILE, verbose=None, logger_kw=_LOGGER_KW
+def import_extended(verbose_imports: Optional[bool]=None,
+                    logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
+                    logger_kw: dict=_LOGGER_KW
                     ) -> None:
     """Import extended packages."""
     import_from_file(_join_pfd('../imports/extended.py'),
@@ -308,8 +314,9 @@ def import_extended(verbose_imports: (bool, None)=None,
 
 
 @_set_docstring_import_x(_join_pfd('../imports/astropy.py'))
-def import_astropy(verbose_imports: (bool, None)=None,
-                   logger=_LOGFILE, verbose=None, logger_kw=_LOGGER_KW
+def import_astropy(verbose_imports: Optional[bool]=None,
+                   logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
+                   logger_kw: dict=_LOGGER_KW
                    ) -> None:
     """Import basic astropy packages."""
     import_from_file(_join_pfd('../imports/astropy.py'),
@@ -323,8 +330,9 @@ def import_astropy(verbose_imports: (bool, None)=None,
 # plotting
 
 @_set_docstring_import_x(_join_pfd('../imports/matplotlib.py'))
-def import_matplotlib(verbose_imports: (bool, None)=None,
-                      logger=_LOGFILE, verbose=None, logger_kw=_LOGGER_KW
+def import_matplotlib(verbose_imports: Optional[bool]=None,
+                      logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
+                      logger_kw: dict=_LOGGER_KW
                       ) -> None:
     """Import basic Matplotlib packages."""
     import_from_file(_join_pfd('../imports/matplotlib.py'),
@@ -335,7 +343,7 @@ def import_matplotlib(verbose_imports: (bool, None)=None,
 
 
 # @_set_docstring_import_x(_join_pfd('../imports/plotly.py'))
-# def import_plotly(logger=_LOGFILE, verbose=None, logger_kw=_LOGGER_KW
+# def import_plotly(logger:LogFile=_LOGFILE, verbose:Optional[int]=None, logger_kw: dict=_LOGGER_KW
 #                   ) -> None:
 #     """Import basic plotly packages."""
 #     import_from_file(_join_pfd('../imports/plotly.py'),
@@ -349,8 +357,9 @@ def import_matplotlib(verbose_imports: (bool, None)=None,
 # extras
 
 @_set_docstring_import_x(_join_pfd('../imports/galpy.py'))
-def import_galpy(verbose_imports: (bool, None)=None,
-                 logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+def import_galpy(verbose_imports: Optional[bool]=None,
+                 logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
+                 logger_kw: dict=_LOGGER_KW
                  ) -> None:
     """Import basic galpy packages."""
     import_from_file(_join_pfd('../imports/galpy.py'),
@@ -359,10 +368,10 @@ def import_galpy(verbose_imports: (bool, None)=None,
     return
 # /def
 
-
 @_set_docstring_import_x(_join_pfd('../imports/amuse.py'))
-def import_amuse(verbose_imports: (bool, None)=None,
-                 logger=_LOGFILE, verbose=None, logger_kw={'print': False}
+def import_amuse(verbose_imports: Optional[bool]=None,
+                 logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
+                 logger_kw: dict=_LOGGER_KW
                  ) -> None:
     """Import basic amuse packages."""
     import_from_file(_join_pfd('../imports/amuse.py'),

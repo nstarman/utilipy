@@ -73,7 +73,7 @@ from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper
 )
 
-_HAS_IPYTHON = False
+_HAS_IPYTHON: bool = False
 
 ##############################################################################
 # IMPORTS

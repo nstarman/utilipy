@@ -20,15 +20,15 @@ import warnings
 
 # PROJECT-SPECIFIC
 from astropy.table import Table, QTable
-from .. import units
+from ..units import quantity_io, mag as MAG
 
 
 #############################################################################
 # CODE
 #############################################################################
 
-@units.quantity_io()
-def U_MP9301(ps, **kw) -> units.mag:
+@quantity_io()
+def U_MP9301(ps, **kw) -> MAG:
     r"""Convert Pan-STARRS1 bands to CFHT U-MP9301 band.
 
     Parameters
@@ -72,14 +72,14 @@ def U_MP9301(ps, **kw) -> units.mag:
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (.3 * units.mag < gmi) & (gmi < 1.5 * units.mag)
+    ind = (.3 * MAG < gmi) & (gmi < 1.5 * MAG)
     if not all(ind):
         warnings.warn('MCg1.U: not all .3 mag < (g-i)_ps < 1.5 mag')
 
-    c0 = .523 * units.mag
+    c0 = .523 * MAG
     c1 = -.343
-    c2 = 2.44 / units.mag
-    c3 = -.998 / units.mag**2
+    c2 = 2.44 / MAG
+    c3 = -.998 / MAG**2
     g_ps = ps[g]
 
     u_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
@@ -88,8 +88,8 @@ def U_MP9301(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def G_MP9401(ps, **kw) -> units.mag:
+@quantity_io()
+def G_MP9401(ps, **kw) -> MAG:
     r"""Convert Pan-STARRS1 bands to CFHT G-MP9401 band.
 
     Parameters
@@ -133,14 +133,14 @@ def G_MP9401(ps, **kw) -> units.mag:
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * units.mag < gmi) & (gmi < 4 * units.mag)
+    ind = (-1. * MAG < gmi) & (gmi < 4 * MAG)
     if not all(ind):
         warnings.warn('MCg1.G: not all -1 mag < (g-i)_ps < 4 mag')
 
-    c0 = -.001 * units.mag
+    c0 = -.001 * MAG
     c1 = -.004
-    c2 = -.0056 / units.mag
-    c3 = .00292 / units.mag**2
+    c2 = -.0056 / MAG
+    c3 = .00292 / MAG**2
     g_ps = ps[g]
 
     g_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
@@ -148,8 +148,8 @@ def G_MP9401(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def R_MP9601(ps, **kw) -> units.mag:
+@quantity_io()
+def R_MP9601(ps, **kw) -> MAG:
     r"""Convert Pan-STARRS1 bands to CFHT R-MP9601 band.
 
     Parameters
@@ -197,14 +197,14 @@ def R_MP9601(ps, **kw) -> units.mag:
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * units.mag < gmi) & (gmi < 4 * units.mag)
+    ind = (-1. * MAG < gmi) & (gmi < 4 * MAG)
     if not all(ind):
         warnings.warn('MCg1.R: not all -1 mag < (g-i)_ps < 4 mag')
 
-    c0 = .002 * units.mag
+    c0 = .002 * MAG
     c1 = -.017
-    c2 = .00554 / units.mag
-    c3 = -.000692 / units.mag**2
+    c2 = .00554 / MAG
+    c3 = -.000692 / MAG**2
     r_ps = ps[r]
 
     r_cfht = r_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
@@ -212,8 +212,8 @@ def R_MP9601(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def I_MP9701(ps, **kw) -> units.mag:
+@quantity_io()
+def I_MP9701(ps, **kw) -> MAG:
     r"""Convert Pan-STARRS1 bands to CFHT I-MP9701 band.
 
     Parameters
@@ -257,14 +257,14 @@ def I_MP9701(ps, **kw) -> units.mag:
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * units.mag < gmi) & (gmi < 4 * units.mag)
+    ind = (-1. * MAG < gmi) & (gmi < 4 * MAG)
     if not all(ind):
         warnings.warn('MCg1.I: not all -1 mag < (g-i)_ps < 4 mag')
 
-    c0 = .001 * units.mag
+    c0 = .001 * MAG
     c1 = -.021
-    c2 = .00398 / units.mag
-    c3 = -.00369 / units.mag**2
+    c2 = .00398 / MAG
+    c3 = -.00369 / MAG**2
     i_ps = ps[i]
 
     i_cfht = i_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
@@ -272,8 +272,8 @@ def I_MP9701(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def Z_MP9801(ps, **kw) -> units.mag:
+@quantity_io()
+def Z_MP9801(ps, **kw) -> MAG:
     r"""Convert Pan-STARRS1 bands to CFHT Z-MP9801 band.
 
     Parameters
@@ -320,14 +320,14 @@ def Z_MP9801(ps, **kw) -> units.mag:
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * units.mag < gmi) & (gmi < 4 * units.mag)
+    ind = (-1. * MAG < gmi) & (gmi < 4 * MAG)
     if not all(ind):
         warnings.warn('MCg1.Z: not all -1 mag < (g-i)_ps < 4 mag')
 
-    c0 = -.009 * units.mag
+    c0 = -.009 * MAG
     c1 = -.029
-    c2 = .012 / units.mag
-    c3 = -.00367 / units.mag**2
+    c2 = .012 / MAG
+    c3 = -.00367 / MAG**2
     z_ps = ps[z]
 
     z_cfht = z_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
@@ -338,8 +338,8 @@ def Z_MP9801(ps, **kw) -> units.mag:
 #############################################################################
 # Colors
 
-@units.quantity_io()
-def UmG(ps, **kw) -> units.mag:
+@quantity_io()
+def UmG(ps, **kw) -> MAG:
     """U-G color.
 
     Parameters
@@ -359,8 +359,8 @@ def UmG(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def UmR(ps, **kw) -> units.mag:
+@quantity_io()
+def UmR(ps, **kw) -> MAG:
     """U-R color.
 
     Parameters
@@ -380,8 +380,8 @@ def UmR(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def UmI(ps, **kw) -> units.mag:
+@quantity_io()
+def UmI(ps, **kw) -> MAG:
     """U-I color.
 
     Parameters
@@ -401,8 +401,8 @@ def UmI(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def UmZ(ps, **kw) -> units.mag:
+@quantity_io()
+def UmZ(ps, **kw) -> MAG:
     """U-Z color.
 
     Parameters
@@ -422,8 +422,8 @@ def UmZ(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def GmR(ps, **kw) -> units.mag:
+@quantity_io()
+def GmR(ps, **kw) -> MAG:
     """G-R color.
 
     Parameters
@@ -443,8 +443,8 @@ def GmR(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def GmI(ps, **kw) -> units.mag:
+@quantity_io()
+def GmI(ps, **kw) -> MAG:
     """G-I color.
 
     Parameters
@@ -464,8 +464,8 @@ def GmI(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def GmZ(ps, **kw) -> units.mag:
+@quantity_io()
+def GmZ(ps, **kw) -> MAG:
     """G-Z color.
 
     Parameters
@@ -485,8 +485,8 @@ def GmZ(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def RmI(ps, **kw) -> units.mag:
+@quantity_io()
+def RmI(ps, **kw) -> MAG:
     """R-I color.
 
     Parameters
@@ -506,8 +506,8 @@ def RmI(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def RmZ(ps, **kw) -> units.mag:
+@quantity_io()
+def RmZ(ps, **kw) -> MAG:
     """R-Z color.
 
     Parameters
@@ -527,8 +527,8 @@ def RmZ(ps, **kw) -> units.mag:
 # /def
 
 
-@units.quantity_io()
-def ImZ(ps, **kw) -> units.mag:
+@quantity_io()
+def ImZ(ps, **kw) -> MAG:
     """I-Z color.
 
     Parameters

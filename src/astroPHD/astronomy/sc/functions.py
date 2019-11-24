@@ -8,10 +8,14 @@
 # PROJECT : astronat
 #
 # ----------------------------------------------------------------------------
-### Docstring and Metadata
-r"""astronomy functions
 
-TODO incorporate astropy cosmology
+# Docstring and Metadata
+"""Astronomy functions.
+
+TODO
+----
+incorporate astropy cosmology
+
 """
 
 __author__ = "Nathaniel Starkman"
@@ -21,20 +25,22 @@ __author__ = "Nathaniel Starkman"
 
 # General
 import numpy as np
-from functools import wraps
 
 # Custom Imports
-from ... import units as u
+from ...units import (
+    quantity_io, get_physical_type,
+    rad as RAD, deg as DEG, pc as PC, mag as MAG, AU, m as METER
+)
 
 
 ###############################################################################
 # Distance Modulus
 
-@u.quantity_io(m=u.mag)
-def apparent_to_absolute_magnitude(sc, m: u.mag, **kw) -> u.mag:
+@quantity_io(m=MAG)
+def apparent_to_absolute_magnitude(sc, m: MAG, **kw) -> MAG:
     """Calculate absolute magnitude.
 
-    .. math::  M = m - 5 log10(d) + 5
+        M = m - 5 log10(d) + 5
 
     Parameters
     ----------
@@ -55,11 +61,11 @@ def apparent_to_absolute_magnitude(sc, m: u.mag, **kw) -> u.mag:
 # /def
 
 
-@u.quantity_io(M=u.mag)
-def absolute_to_apparent_magnitude(sc, M: u.mag, **kw) -> u.mag:
+@quantity_io(M=MAG)
+def absolute_to_apparent_magnitude(sc, M: MAG, **kw) -> MAG:
     """Calculate apparent magnitude.
 
-    .. math:: m = M + 5 log10(d) - 5
+        m = M + 5 log10(d) - 5
 
     Parameters
     ----------
@@ -73,17 +79,18 @@ def absolute_to_apparent_magnitude(sc, M: u.mag, **kw) -> u.mag:
     -------
     m: ndarray
         apparent magnitudes
+
     """
     m = M + 5.0 * np.log10(sc.spherical.distance) - 5.0
     return m
 # /def
 
 
-@u.quantity_io()
-def distanceModulus_magnitude(sc, **kw) -> u.mag:
-    r"""distance modulus from distance in Skycoord.
-    
-    .. math::  DM = 5 log10(d / 10) + A
+@quantity_io()
+def distanceModulus_magnitude(sc, **kw) -> MAG:
+    """Distance modulus from distance in Skycoord.
+
+        DM = 5 log10(d / 10) + A
 
     the Skycoord already has the distance
     equivalent to `sc.spherical.distance.distmod`
@@ -96,18 +103,18 @@ def distanceModulus_magnitude(sc, **kw) -> u.mag:
     Returns
     -------
     DM: scalar, array
-        default units: u.mag
+        default units: MAG
 
     """
     return sc.spherical.distance.distmod
 # /def
 
 
-@u.quantity_io()
-def distanceModulus_distance(sc, **kw) -> u.pc:
-    r"""Distance from distance modulus in Skycoord.
-    
-    .. math::  DM = 5 log10(d / 10) + A
+@quantity_io()
+def distanceModulus_distance(sc, **kw) -> PC:
+    """Distance from distance modulus in Skycoord.
+
+        DM = 5 log10(d / 10) + A
 
     the Skycoord already has the distance,
     equivalent to `sc.spherical.distance`
@@ -120,17 +127,18 @@ def distanceModulus_distance(sc, **kw) -> u.pc:
     Returns
     -------
     DM: scalar, array
-        default units: u.mag
-    """
+        default units u.mag
 
+    """
     return sc.spherical.distance
 # /def
 
 
-@u.quantity_io()
+@quantity_io()
 def distanceModulus(sc, d2dm=True, **kw):
-    r"""Distance Modulus
-    equation:  DM = 5 log10(d / 10) + A
+    """Distance Modulus.
+
+        DM = 5 log10(d / 10) + A
 
     Arguments
     ---------
@@ -144,8 +152,10 @@ def distanceModulus(sc, d2dm=True, **kw):
     -------
     DM or distance: scalar, array
 
-    # TODO
-        A, obs
+    TODO
+    ----
+    A, obs
+
     """
     if d2dm:
         distanceModulus_magnitude(sc)
@@ -158,9 +168,9 @@ def distanceModulus(sc, d2dm=True, **kw):
 # Parallax
 
 
-@u.quantity_io()
-def parallax_angle(sc, **kw) -> u.deg:
-    r"""compute parallax angle from skycoord
+@quantity_io()
+def parallax_angle(sc, **kw) -> DEG:
+    """Compute parallax angle from skycoord.
 
     Arguments
     ---------
@@ -171,28 +181,29 @@ def parallax_angle(sc, **kw) -> u.deg:
     -------
     p: deg
         parallax angle
+
     """
-    return np.arctan(1 * u.AU / sc.spherical.distance)
+    return np.arctan(1 * AU / sc.spherical.distance)
 # /def
 
 
-@u.quantity_io()
-def parallax_distance(sc, **kw) -> u.pc:
-    r"""compute distance from parallax angle
+@quantity_io()
+def parallax_distance(sc, **kw) -> PC:
+    """Compute distance from parallax angle.
 
     Arguments
     ---------
     sc: SkyCoord
-        ** warning: check if skycoord frame centered on Earth
+        .. warning:: check if skycoord frame centered on Earth
 
     """
-    return np.arctan(1 * u.AU / sc.spherical.distance)
-    # return 1 * u.AU / np.tan(p)
+    return np.arctan(1 * AU / sc.spherical.distance)
+    # return 1 * AU / np.tan(p)
 # /def
 
 
 def parallax(sc, d2p=True, **kw):
-    r"""parallax
+    """Parallax.
 
     Arguments
     ---------
@@ -205,6 +216,7 @@ def parallax(sc, d2p=True, **kw):
     Returns
     -------
     parallax_angle or distance: scalar, array
+
     """
     if d2p:
         return parallax_angle(sc)
@@ -216,9 +228,10 @@ def parallax(sc, d2p=True, **kw):
 ###############################################################################
 # Angular Separation
 
-@u.quantity_io()
-def max_angular_separation(sc, doff: u.m, **kw):
-    """
+@quantity_io()
+def max_angular_separation(sc, doff: METER, **kw):
+    """Maximum angular separation.
+
     doff: distance
         distance offset from coordinate
     dto: distance
@@ -226,7 +239,9 @@ def max_angular_separation(sc, doff: u.m, **kw):
 
     the maximum angular separation comes from movint at right angle from current position
 
-    TODO support zero point
+    TODO
+    ----
+    support zero point
     """
 
     return np.fabs(np.arctan(np.divide(doff, sc.spherical.distance)))

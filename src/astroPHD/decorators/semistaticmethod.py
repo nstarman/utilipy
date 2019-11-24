@@ -18,6 +18,7 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # GENERAL
+from typing import Any, Union, Callable, Optional
 
 # PROJECT-SPECIFIC
 
@@ -64,18 +65,20 @@ class SemiStaticMethod(object):
 
     """
 
-    def __init__(self, func):
+    def __init__(self, func: Callable) ->  None:
         """Initialize with function."""
         self._func = func
 
-    def __get__(self, obj, klass=None):
+    def __get__(self, obj: Any, klass: Optional[object]=None) -> Callable:
         """Make a semi-static method."""
         if klass is None:
             klass = type(obj)
 
-        def newfunc(*args, **kwargs):
+        def newfunc(*args: Any, **kwargs: Any):
             return self._func(obj, *args, **kwargs)
+        # /def
         return newfunc
+    # /def
 
 ##############################################################################
 # END

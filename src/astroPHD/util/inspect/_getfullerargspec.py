@@ -25,14 +25,15 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # General
-from inspect import getfullargspec
+from typing import Callable
+from inspect import getfullargspec, FullArgSpec
 from collections import namedtuple
 
 
 ##############################################################################
 # Types
 
-FullerArgSpec = namedtuple(
+FullerArgSpec: namedtuple = namedtuple(
     "FullerArgSpec",
     [
         "args",
@@ -51,7 +52,7 @@ FullerArgSpec = namedtuple(
 ##############################################################################
 # Functions
 
-def getfullerargspec(func):
+def getfullerargspec(func: Callable) -> FullerArgSpec:
     """Separated version of FullerArgSpec.
 
     fullargspec with separation of mandatory and optional arguments
@@ -76,7 +77,7 @@ def getfullerargspec(func):
         docstring        : function docstring
 
     """
-    spec = getfullargspec(func)  # get argspec
+    spec: FullArgSpec = getfullargspec(func)  # get argspec
 
     if spec.defaults is not None:  # separate out argument types
 

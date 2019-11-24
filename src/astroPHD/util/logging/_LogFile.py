@@ -4,6 +4,8 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : LogFile
+# AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
@@ -17,18 +19,23 @@ __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
+# GENERAL
+from typing import Any, Union, Optional
+
+# PROJECT-SPECIFIC
 from ._LogPrint import LogPrint
 from ..metaclasses import InheritDocstrings
 
 
 ##############################################################################
-### LogFile
+# LogFile
 
 class LogFile(LogPrint, metaclass=InheritDocstrings):
-    """a basic logger which can both print and record to a file
-    ** this class uses `open', not a more extensive logger, like `logging'
+    """Class for basic logger that can both print and record to a file.
+
+    this class uses `open', not a more extensive logger, like `logging'
 
     The arguments filename - opener are all for `open`
     their descriptions are in
@@ -77,13 +84,17 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
     ._print_and_write: prints and writes
     """
 
-    def __new__(cls, filename=None, verbose=0, sec_div='-',
-                header=None, show_header=True,
+    def __new__(cls, filename: Optional[str]=None, verbose: int=0,
+                sec_div: str='-',
+                header: Union[str, None, bool]=None, show_header: bool=True,
                 # for open
-                mode='w', buffering=-1, encoding=None, errors=None,
-                newline=None, closefd=True, opener=None):
-        """New LogFile
-        If no filename, makes a LogPrint instead
+                mode: str='w', buffering: int=-1, encoding: None=None,
+                errors: None=None, newline: None=None, closefd: bool=True,
+                opener: None=None) -> None:
+        """LogFile.
+
+        if no filename, makes a LogPrint instead
+
         """
         if mode == '+':
             raise ValueError('+ not allowed')
@@ -91,20 +102,23 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         if filename is None:
             return LogPrint(verbose=verbose, sec_div=sec_div,
                             header=header, show_header=show_header)
-        else:
-            self = super().__new__(cls)
-            return self
+        # else:
+        self = super().__new__(cls)
+        return self
     # /def
 
-    def __init__(self, filename, verbose=0, sec_div='-',
-                 header=None, show_header=True,
+    def __init__(self, filename: Optional[str]=None, verbose: int=0,
+                 sec_div: str='-',
+                 header: Union[str, None, bool]=None, show_header: bool=True,
                  # for open
-                 mode='w', buffering=-1, encoding=None, errors=None,
-                 newline=None, closefd=True, opener=None):
-        """LogFile
-        set the filename and make the file
-        """
+                 mode: str='w', buffering: int=-1, encoding: None=None,
+                 errors: None=None, newline: None=None, closefd: bool=True,
+                 opener: None=None) -> None:
+        """LogFile.
 
+        set the filename and make the file
+
+        """
         # instantiate without writing
         # section divider and file header
         super().__init__(verbose=verbose, sec_div=sec_div, header=False)
@@ -137,22 +151,23 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         return
     # /def
 
-    def __getattr__(self, name):
-        """redirect non-defined attributes to self.file
-        """
+    def __getattr__(self, name: str) -> Any:
+        """Redirect non-defined attributes to self.file."""
         return getattr(self.file, name)
     # /def
 
     # ------------------------------------------------------------------------
 
     @classmethod
-    def open(cls, filename, verbose=0, sec_div='-',
-             header=None, show_header=True,
+    def open(cls, filename: str, verbose: int=0, sec_div: str='-',
+             header: Optional[str]=None, show_header: bool=True,
              # for open
-             mode='w', buffering=-1, encoding=None,
-             errors=None, newline=None, closefd=True, opener=None):
-        """a basic logger which can both print and record to a file
-        ** this class uses `open', not a more extensive logger, like `logging'
+             mode: str='w', buffering: int=-1, encoding: None=None,
+             errors: None=None, newline: None=None, closefd: bool=True,
+             opener: None=None) -> Any:
+        """Make basic logger that can both print and record to a file.
+
+        this class uses `open', not a more extensive logger, like `logging'
 
         The arguments filename - opener are all for `open`
         their descriptions are in
@@ -181,6 +196,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
             'b' binary mode
             't' text mode
             '+' open a disk file for updating (reading and writing)
+
         """
         return cls(filename, verbose=verbose, mode=mode, sec_div=sec_div,
                    header=header, show_header=show_header,
@@ -189,13 +205,15 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
     # /def
 
     @classmethod
-    def open_to_write(cls, filename, verbose=0, sec_div='-',
-                      header=None, show_header=True,
+    def open_to_write(cls, filename: str, verbose: int=0, sec_div: str='-',
+                      header: Optional[str]=None, show_header: bool=True,
                       # for open
-                      mode='w', buffering=-1, encoding=None, errors=None,
-                      newline=None, closefd=True, opener=None):
-        """a basic logger which can both print and record to a file
-        ** this class uses `open', not a more extensive logger, like `logging'
+                      mode: int='w', buffering: int=-1, encoding: None=None,
+                      errors: None=None, newline: None=None,
+                      closefd: bool=True, opener: None=None) -> Any:
+        """Make basic logger that can both print and record to a file.
+
+        this class uses `open', not a more extensive logger, like `logging'
 
         The arguments filename - opener are all for `open`
         their descriptions are in
@@ -224,6 +242,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
             'b' binary mode
             't' text mode
             '+' open a disk file for updating (reading and writing)
+
         """
         if mode == 'r':
             raise ValueError('mode must be set to write')
@@ -235,12 +254,14 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
     # /def
 
     @classmethod
-    def open_to_read(cls, filename,
+    def open_to_read(cls, filename: str,
                      # for open
-                     buffering=-1, encoding=None, errors=None,
-                     newline=None, closefd=True, opener=None):
-        """a basic logger which can both print and record to a file
-        ** this class uses `open', not a more extensive logger, like `logging'
+                     buffering: int=-1, encoding: None=None, errors: None=None,
+                     newline: None=None, closefd: bool=True, opener: None=None
+                     ) -> Any:
+        """Make basic logger that can both print and record to a file.
+
+        this class uses `open', not a more extensive logger, like `logging'
 
         The arguments filename - opener are all for `open`
         their descriptions are in
@@ -250,7 +271,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         ----------
         filename: str
             the file name / path at which to save this log
-        ...
+
         """
         return cls(filename, mode='r', buffering=buffering, encoding=encoding,
                    errors=errors, newline=newline, closefd=closefd,
@@ -259,13 +280,15 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
 
     # ------------------------------------------------------------------------
 
-    def _write(self, *string, start='', sep=' ', end='\n'):
-        r"""writer method
+    def _write(self, *string: str, start: str='', sep: str=' ', end: str='\n'
+               ) -> None:
+        r"""Write helper method.
+
         this is used by all write methods
         implemented so it can be overriden easily
-        **Note: end='' does nothing. Write automatically does '\n'
-        """
+        Note: end='' does nothing. Write automatically does '\n'
 
+        """
         if len(string) == 0:  # checking there is a string
             raise ValueError('needs a value')
 
@@ -279,11 +302,13 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
             for s in string[:-1]:  # all strings with sep
                 self.file.write(str(s) + sep)
             self.file.write(str(string[-1]) + end)  # last string
+        return
     # /def
 
-    def write(self, *text, start='', sep=' ', end='\n',
-              startsection=False, endsection=False, print=True):
-        """Write string to stream and print it to output.
+    def write(self, *text: str, start: str='', sep: str=' ', end: str='\n',
+              startsection: bool=False, endsection: bool=False,
+              print: bool=True) -> Any:
+        r"""Write string to stream and print it to output.
 
         Parameters
         ----------
@@ -298,26 +323,26 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         startsection: bool  (default False)
             whether to start a new section before writing
         endsection:  bool  (default False)
-        """
 
-        super().write(*text, start=start, sep=sep, end=end,
-                      startsection=startsection, endsection=endsection,
-                      print=print)
+        """
+        return super().write(*text, start=start, sep=sep, end=end,
+                             startsection=startsection, endsection=endsection,
+                             print=print)
     # /def
 
-    def record(self, *text, start='', end='\n',
-               startsection=False, endsection=False):
-        """same as write, but doesn't print as well as write to file
-        """
-        super().record(*text, start=start, end=end,
-                       startsection=startsection, endsection=endsection)
+    def record(self, *text: str, start: str='', end: str='\n',
+               startsection: bool=False, endsection: bool=False) -> Any:
+        """Write, but doesn't print as well as write to file."""
+        return super().record(*text, start=start, end=end,
+                              startsection=startsection, endsection=endsection)
     # /def
 
     # ------------------------------------------------------------------------
 
-    def verbort(self, *msgs, verbose=None, print=True, write=True,
-                start_at=1, **kw):
-        """a report function whose message is determined by the *verbose*
+    def report(self, *msgs: str, verbose: Optional[int]=None,
+               print: bool=True, write: bool=True,
+               start_at: int=1, **kw) -> Any:
+        """a report function whose message is determined by the `verbose`.
 
         Parameters
         ----------
@@ -334,47 +359,23 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         start_at : int
             what level of verbosity is the first *msg*
             ex: verbort('test', start_at=3) means 'test' is at verbose=3
-        **kw: kwargs for self.write or self.print
-        """
-        super().verbort(*msgs, verbose=verbose, print=print, write=write,
-                        start_at=start_at, **kw)
-    # /def
+        kw: kwargs for self.write or self.print
 
-    def report(self, *msgs, verbose=None, print=True, write=True,
-               start_at=1, **kw):
-        """a report function whose message is determined by the *verbose*
-
-        Parameters
-        ----------
-        *msgs : str(s)
-            the verbosity-ordered messages
-            blank messages can be <None>, not only ''
-        verbose : int, optional
-            which message to record
-            None (default) uses self.verbose (default = 0, unless specified)
-        print : bool
-            whether to print, or just record
-        write : bool
-            whether to write to logger file
-        start_at : int
-            what level of verbosity is the first *msg*
-            ex: verbort('test', start_at=3) means 'test' is at verbose=3
-        **kw: kwargs for self.write or self.print
         """
-        self.verbort(*msgs, verbose=verbose, print=print, write=write,
-                     start_at=start_at, **kw)
+        return super().report(*msgs, verbose=verbose, print=print, write=write,
+                              start_at=start_at, **kw)
     # /def
 
     # ------------------------------------------------------------------------
 
-    def close(self):
-        """close the file
-        """
+    def close(self) -> None:
+        """Close the file."""
         self.newsection(title='closing file', div='=')
         self.file.close()
+        return
     # /def
 
 # /class
 
 ##############################################################################
-### END
+# END

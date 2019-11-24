@@ -10,27 +10,33 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# General
+# GENERAL
+from typing import Any, Union, Callable, Optional
 
-# Project-Specific
+# PROJECT-SPECIFIC
 
 ##############################################################################
 # CODE
+
 
 class DecoratorBaseClass():
     """DecoratorBaseClass."""
 
     @staticmethod
-    def _doc_func(docstring):
+    def _doc_func(docstring: str) -> str:
         return docstring
 
-    def __new__(cls, func=None, **kwargs):
-        """
+    def __new__(cls, func: Optional[Callable]=None,
+                **kwargs: Any) -> object:
+        """__new__.
+
         this is a quick and dirty method for class-based decorator creation
         it is generically better to do this with a classmethod like
+
         @classmethod
         as_decorator(cls, func=None, ...):
             all the same code as here
+
         """
         # make instance
         self = super().__new__(cls)
@@ -47,10 +53,13 @@ class DecoratorBaseClass():
             return self
     # /def
 
-    def __init__(self, func=None, **kwargs):
-        """
+    def __init__(self, func: Optional[Callable]=None,
+                 **kwargs: Any) -> None:
+        """__init__.
+
         these are stored to be used inside of __call__
         they are not normally passed to the wrapped_function
+
         """
         super().__init__()
 
@@ -64,12 +73,12 @@ class DecoratorBaseClass():
         return
     # /def
 
-    def __post_init__(self):
-        """"""
+    def __post_init__(self) -> None:
+        """__post_init__."""
         pass
     # /def
 
-    def _edit_docstring(self, wrapper):
+    def _edit_docstring(self, wrapper: Callable) -> Callable:
         """Edit docstring."""
 
         # docstring
@@ -83,11 +92,10 @@ class DecoratorBaseClass():
         return wrapper
     # /def
 
-
-    def __call__(self, wrapper):
-        """"""
+    def __call__(self, wrapper: Callable) -> Callable:
+        """__call__."""
         return self._edit_docstring(wrapper)
-    # /def 
+    # /def
 
 # /class
 

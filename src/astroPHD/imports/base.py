@@ -113,7 +113,7 @@ from astroPHD.util.logging import LogFile  # LoggerFile  # custom logging
 
 try:
 
-    _HAS_IPYTHON = False
+    _HAS_IPYTHON: bool = False
 
     get_ipython()
 

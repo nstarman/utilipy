@@ -25,7 +25,8 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# General
+# GENERAL
+from typing import Any, Union, Optional
 from IPython.display import display  # display is a better print
 from IPython.display import Latex, Markdown, HTML
 
@@ -34,8 +35,13 @@ from IPython.display import Latex, Markdown, HTML
 # CODE
 ##############################################################################
 
-def printmd(s, color=None, size=None, bold=False, italic=False,
-            fontweight=None, fontstyle=None, highlight=None):
+
+def printmd(s: str, color: Optional[str]=None,
+            size: Optional[float]=None,
+            bold: bool=False, italic: bool=False,
+            fontweight: Optional[float]=None,
+            fontstyle: Optional[str]=None, highlight: Optional[str]=None
+            ) -> None:
     """Print in Markdown.
 
     uses <span>
@@ -44,26 +50,32 @@ def printmd(s, color=None, size=None, bold=False, italic=False,
     ----------
     s : str
         the string to print
-    color :  str, optional  (default None)
+    color :  str or None, optional  (default None)
         sets the 'style:color'
         for color names see https://www.w3schools.com/tags/ref_colornames.asp
         or can supply hex value
     size : int, optional  (default None)
         sets the 'style:font-size' in px
-    bold : bool, optional  (default False)
+    bold : bool, optional
+        (default False)
         shortcut to fontweight='bold'
         *fontweight* takes precedence
-    italic : bool, optional  (default False)
+    italic : bool, optional
+        (default False)
         shortcut to fontstyle='italic'
         *fontstyle* takes precedence
-    fontweight : str or int, optional  (default None)
+    fontweight : str or int, optional
+        (default None)
         sets the 'style:font-weight'
         str options: 'normal', 'bold', 'lighter', 'bolder'
         int options: 0-1000
-    fontstyle : str, optional (default None)
+    fontstyle : str or None, optional
+        (default None)
         sets the 'style:font-style'
         see https://www.w3schools.com/cssref/pr_font_font-style.asp
         str options: normal, italic, oblique, initial, inherit
+    highlight : str or None, optional
+        (default None)
 
     """
     # doing style
@@ -104,7 +116,9 @@ printMD = printmd
 
 # ----------------------------------------------------------------------------
 
-def printltx(s, math=False, equation=False, matrix=False, label=''):
+def printltx(s: str, math: Union[str, bool]=False,
+             equation: Union[str, bool]=False,
+             matrix: Union[str, bool]=False, label: str='') -> None:
     r"""Print in latex.
 
     Parameters

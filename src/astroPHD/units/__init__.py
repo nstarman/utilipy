@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -7,21 +6,28 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""initialization file for units
-"""
+# Docstring and Metadata
+"""initialization file for units."""
 
 __author__ = "Nathaniel Starkman"
 
 #############################################################################
-### IMPORTS
+# IMPORTS
 
-# 3rd Party Imports
+# GENERAL
 from astropy.units import *
+from astropy.units import (  # explicit imports for mypy compatibility
+    # units
+    rad, deg,
+    m, AU, pc,
+    mag,
+    # functions
+    get_physical_type
+)
 
 # Custom Imports
-from .units import *
+from ._added_units import *
 from .decorators import *
 
 ##############################################################################
-### END
+# END

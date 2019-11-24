@@ -45,11 +45,13 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-# General
+# GENERAL
+from typing import Union, Any, Optional
+from typing_extensions import Literal
 import inspect
 from inspect import Parameter
 
-# Project-Specific
+# PROJECT-SPECIFIC
 from ..metaclasses import InheritDocstrings
 
 
@@ -62,13 +64,13 @@ _VAR_POSITIONAL = Parameter.VAR_POSITIONAL
 _KEYWORD_ONLY = Parameter.KEYWORD_ONLY
 _VAR_KEYWORD = Parameter.VAR_KEYWORD
 
-_empty = inspect._empty
+_empty = Parameter.empty
 
 
 ##############################################################################
 # Signature / ArgSpec Interface
 
-def get_annotations_from_signature(signature: inspect.Signature):
+def get_annotations_from_signature(signature: inspect.Signature) -> dict:
     """Get annotations from Signature object.
 
     Parameters
@@ -97,7 +99,7 @@ def get_annotations_from_signature(signature: inspect.Signature):
 # /def
 
 
-def get_defaults_from_signature(signature: inspect.Signature):
+def get_defaults_from_signature(signature: inspect.Signature) -> tuple:
     """Get defaults from Signature object.
 
     Parameters
@@ -131,7 +133,7 @@ def get_defaults_from_signature(signature: inspect.Signature):
 # /def
 
 
-def get_kwdefaults_from_signature(signature: inspect.Signature):
+def get_kwdefaults_from_signature(signature: inspect.Signature) -> dict:
     """Get key-word only defaults from Signature object.
 
     Parameters
@@ -168,7 +170,7 @@ def get_kwdefaults_from_signature(signature: inspect.Signature):
 get_kwonlydefaults_from_signature = get_kwdefaults_from_signature
 
 
-def get_kinds_from_signature(signature: inspect.Signature):
+def get_kinds_from_signature(signature: inspect.Signature) -> tuple:
     """Get parameter kinds from Signature object.
 
     Parameters
@@ -239,7 +241,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # ------------------------------------------
 
     @property
-    def __signature__(self):
+    def __signature__(self) -> inspect.Signature:
         """Return a classical Signature."""
         return inspect.Signature(parameters=list(self.parameters.values()),
                                  return_annotation=self._return_annotation,
@@ -247,7 +249,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # /def
 
     @property
-    def signature(self):
+    def signature(self) -> inspect.Signature:
         """Return a classical Signature."""
         return self.__signature__
     # /def
@@ -278,7 +280,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # /def
 
     @property
-    def annotations(self) -> dict:
+    def annotations(self) -> Any:
         """Get annotations from Signature object.
 
         Returns
@@ -299,7 +301,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # /def
 
     @property
-    def __defaults__(self) -> tuple:
+    def __defaults__(self) -> Optional[tuple]:
         """Get defaults.
 
         Returns
@@ -325,7 +327,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # /def
 
     @property
-    def defaults(self) -> tuple:
+    def defaults(self) -> Optional[tuple]:
         """Get defaults.
 
         Returns
@@ -345,7 +347,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # /def
 
     @property
-    def __kwdefaults__(self) -> dict:
+    def __kwdefaults__(self) -> Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -378,7 +380,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # /def
 
     @property
-    def kwdefaults(self) -> dict:
+    def kwdefaults(self) -> Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -405,7 +407,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # /def
 
     @property
-    def kwonlydefaults(self) -> dict:
+    def kwonlydefaults(self) -> Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -464,7 +466,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # ------------------------------------------
 
     @property
-    def index_positional(self) -> (tuple, False):
+    def index_positional(self) -> Union[tuple, Literal[False]]:
         """Index(ices) of positional arguments.
 
         This includes defaulted positional arguments.
@@ -485,7 +487,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # /def
 
     @property
-    def index_var_positional(self) -> (int, False):
+    def index_var_positional(self) -> Union[int, Literal[False]]:
         """Index of `*args`.
 
         Returns
@@ -504,7 +506,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # /def
 
     @property
-    def index_keyword_only(self) -> (tuple, False):
+    def index_keyword_only(self) -> Union[tuple, Literal[False]]:
         """Index of `*args`.
 
         Returns
@@ -539,7 +541,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # /def
 
     @property
-    def index_var_keyword(self) -> (int, False):
+    def index_var_keyword(self) -> Union[int, Literal[False]]:
         """Index of `**kwargs`.
 
         Returns
@@ -559,14 +561,15 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
 
     # ------------------------------------------
 
-    def copy(self):
+    def copy(self) -> inspect.Signature:
         """Copy of self."""
         return self.replace(parameters=list(self.parameters.values()))
 
     # ------------------------------------------
 
-    def replace_parameter(self, param: str, name: str=None, kind=None,
-                          default=None, annotation=None):
+    def replace_parameter(self, param: str, name: Optional[str]=None,
+                          kind: Any=None, default: Any=None,
+                          annotation: Any=None) -> inspect.Signature:
         """Replace a Parameter.
 
         Similar to `.replace,` but more convenient for modifying a single parameter
@@ -598,21 +601,22 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         # setup
         index = list(self.parameters.keys()).index(param)
         params = list(self.parameters.values())
-        param = params[index]
+        _param = params[index]
 
-        name = param.name if name is None else name
-        kind = param.kind if kind is None else kind
-        default = param.default if default is None else default
-        annotation = param.annotation if annotation is None else annotation
+        name = _param.name if name is None else name
+        kind = _param.kind if kind is None else kind
+        default = _param.default if default is None else default
+        annotation = _param.annotation if annotation is None else annotation
 
         # adjust parameter list
-        params[index] = param.replace(name=name, kind=kind, default=default,
-                                      annotation=annotation)
+        params[index] = _param.replace(name=name, kind=kind, default=default,
+                                       annotation=annotation)
 
         return self.replace(parameters=params)
     # /def
 
-    def replace_with_parameter(self, name: (int, str), param: Parameter):
+    def replace_with_parameter(self, name: Union[int, str], param: Parameter
+                               ) -> Any:
         """Replace a Parameter with another Parameter.
 
         Similar to `.replace,` but more convenient for modifying a single parameter
@@ -645,7 +649,8 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         return signature
     # /def
 
-    def insert_parameter(self, index: int, parameter: Parameter):
+    def insert_parameter(self, index: int, parameter: Parameter
+                         ) -> inspect.Signature:
         """Insert a new Parameter.
 
         Similar to .replace, but more convenient for adding a single parameter
@@ -670,7 +675,8 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         return self.replace(parameters=params)
     # /def
 
-    def drop_parameter(self, param: str):
+    def drop_parameter(self, param: str
+                       ) -> inspect.Signature:
         """Drop a Parameter.
 
         Parameters
@@ -697,7 +703,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
 
 # ----------------------------------------------------------------------------
 
-def signature(obj, *, follow_wrapped: bool=True) -> Signature:
+def signature(obj: Any, *, follow_wrapped: bool=True) -> Any:
     """Get a signature object for the passed callable."""
     return Signature.from_callable(obj, follow_wrapped=follow_wrapped)
 
@@ -739,25 +745,25 @@ def replace_parameter(signature: inspect.Signature, param: str, name: str=None,
     # setup
     index = list(signature.parameters.keys()).index(param)
     params = list(signature.parameters.values())
-    param = params[index]
+    _param = params[index]
 
     # replace
-    name = param.name if name is None else name
-    kind = param.kind if kind is None else kind
-    default = param.default if name is None else default
-    annotation = param.annotation if name is None else annotation
+    name = _param.name if name is None else name
+    kind = _param.kind if kind is None else kind
+    default = _param.default if name is None else default
+    annotation = _param.annotation if name is None else annotation
 
     # adjust parameter list
-    params[index] = param.replace(name=name, kind=kind, default=default,
-                                  annotation=annotation,
-                                  return_annotation=return_annotation)
+    params[index] = _param.replace(name=name, kind=kind, default=default,
+                                   annotation=annotation,
+                                   return_annotation=return_annotation)
 
     return signature.replace(parameters=params)
 # /def
 
 
 def insert_parameter(signature: inspect.Signature, index: int,
-                     parameter: Parameter) -> Signature:
+                     parameter: Parameter) -> Any:
     """Insert a new Parameter.
 
     Similar to .replace, but more convenient for adding a single parameter
@@ -783,7 +789,7 @@ def insert_parameter(signature: inspect.Signature, index: int,
 # /def
 
 
-def drop_parameter(signature: Signature, param: str) -> Signature:
+def drop_parameter(signature: Signature, param: str) -> Any:
     """Drop a Parameter.
 
     Parameters

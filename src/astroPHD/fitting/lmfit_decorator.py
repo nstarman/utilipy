@@ -18,7 +18,15 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # GENERAL
+from typing import Any, Union, Callable, Optional
 from wrapt import ObjectProxy
+
+try:
+    import lmfit
+except ImportError:
+    Parameters = Any
+else:
+    from lmfit import Parameters
 
 # PROJECT-SPECIFIC
 
@@ -62,7 +70,8 @@ class scipy_residual_to_lmfit(ObjectProxy):
 
     """
 
-    def __new__(cls, func=None, var_order: list=None):
+    def __new__(cls, func: Callable=None, var_order: Optional[list]=None
+                ) -> object:
         """Create Proxy."""
         if var_order is None:
             raise ValueError('var_order cannot be None')
@@ -79,25 +88,24 @@ class scipy_residual_to_lmfit(ObjectProxy):
     # /def
 
     @classmethod
-    def decorator(cls, var_order: list):
+    def decorator(cls, var_order: list) -> Callable:
         """Decorator."""
         # @functools.wraps(cls)  # not needed when using ObjectProxy
-        def wrapper(func):
+        def wrapper(func: Callable):
             """scipy_residual_to_lmfit wrapper."""
             return cls(func, var_order=var_order)
         # /def
-
         return wrapper
     # /def
 
-    def __init__(self, func, var_order: list):
+    def __init__(self, func: Callable, var_order: list) -> None:
         """Initialize Proxy."""
         super().__init__(func)  # inializing function into wrapt.ObjectProxy
         self.var_order = var_order
         return
     # /def
 
-    def lmfit(self, params, *args, **kwargs):
+    def lmfit(self, params: Parameters, *args: Any, **kwargs: Any) -> Any:
         """`lmfit` version of function."""
         vars = [params[n].value for n in self.var_order]
         return self.__wrapped__(vars, *args, **kwargs)

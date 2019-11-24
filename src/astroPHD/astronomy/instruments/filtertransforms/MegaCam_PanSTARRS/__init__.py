@@ -1,9 +1,15 @@
-"""MegaCam_Panstarrs.
+# -*- coding: utf-8 -*-
 
-TODO make all the function docstrings with a decorator
-    that grabs from Signature
+# ----------------------------------------------------------------------------
+#
+# TITLE   : MegaCam_PanSTARRS
+# AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
+#
+# ----------------------------------------------------------------------------
 
-"""
+# Docstring and Metadata
+"""MegaCam_Panstarrs."""
 
 __author__ = "Nathaniel Starkman"
 __credits__ = [
@@ -15,10 +21,13 @@ __credits__ = [
 # IMPORTS
 
 # GENERAL
+from typing import Any, Union
+from typing_extensions import Literal
 from astropy.table import Table, QTable
 
 # PROJECT-SPECIFIC
 from .. import units
+from ..units import quantity_io, mag as MAG
 
 from .MCgen1_PS1 import (
     # MegaCamGen1_from_PS1
@@ -64,22 +73,23 @@ from .MCgen3_PS1 import (
     mixed as mixed_MC3PS1, mixed as mixed_PS1MC3
 )
 
-
 #############################################################################
 # CODE
 #############################################################################
 
-def _b1mb2(ps, band1, band2, **kw):
+def _b1mb2(ps: Any, band1: str, band2: str, **kw: Any) -> Any:
+    """B1 - B2."""
     b1 = globals().get(band1)
     b2 = globals().get(band2)
     return b1(ps, **kw) - b2(ps, **kw)
 # /def
 
 
-@units.quantity_io()
+@quantity_io()
 def UmG(ps: Table,
-        u_band: {'9301', '9302'}='9302', g_band: {'9401', '9402'}='9402',
-        **kw) -> units.mag:
+        u_band: Literal['9301', '9302']='9302',
+        g_band: Literal['9401', '9402']='9402',
+        **kw) -> MAG:
     """U-G color.
 
     Parameters
@@ -107,10 +117,11 @@ def UmG(ps: Table,
 # /def
 
 
-@units.quantity_io()
+@quantity_io()
 def UmR(ps: Table,
-        u_band: {'9301', '9302'}='9302', r_band: {'9601', '9602'}='9602',
-        **kw) -> units.mag:
+        u_band: Literal['9301', '9302']='9302',
+        r_band: Literal['9601', '9602']='9602',
+        **kw) -> MAG:
     """U-R color.
 
     Parameters
@@ -138,11 +149,11 @@ def UmR(ps: Table,
 # /def
 
 
-@units.quantity_io()
+@quantity_io()
 def UmI(ps: Table,
-        u_band: {'9301', '9302'}='9302',
-        i_band: {'9701', '9702', '9703'}='9703',
-        **kw) -> units.mag:
+        u_band: Literal['9301', '9302']='9302',
+        i_band: Literal['9701', '9702', '9703']='9703',
+        **kw) -> MAG:
     """U-I color.
 
     Parameters
@@ -170,11 +181,11 @@ def UmI(ps: Table,
 # /def
 
 
-@units.quantity_io()
+@quantity_io()
 def UmZ(ps: Table,
-        u_band: {'9301', '9302'}='9302',
-        z_band: {'9801', '9901'}='9901',
-        **kw) -> units.mag:
+        u_band: Literal['9301', '9302']='9302',
+        z_band: Literal['9801', '9901']='9901',
+        **kw) -> MAG:
     """U-Z color.
 
     Parameters
@@ -202,11 +213,11 @@ def UmZ(ps: Table,
 # /def
 
 
-@units.quantity_io()
+@quantity_io()
 def GmR(ps: Table,
-        g_band: {'9401', '9402'}='9402',
-        r_band: {'9601', '9602'}='9602',
-        **kw) -> units.mag:
+        g_band: Literal['9401', '9402']='9402',
+        r_band: Literal['9601', '9602']='9602',
+        **kw) -> MAG:
     """G-R color.
 
     Parameters
@@ -234,11 +245,11 @@ def GmR(ps: Table,
 # /def
 
 
-@units.quantity_io()
+@quantity_io()
 def GmI(ps: Table,
-        g_band: {'9401', '9402'}='9402',
-        i_band: {'9701', '9702', '9703'}='9703',
-        **kw) -> units.mag:
+        g_band: Literal['9401', '9402']='9402',
+        i_band: Literal['9701', '9702', '9703']='9703',
+        **kw) -> MAG:
     """G-I color.
 
     Parameters
@@ -266,11 +277,11 @@ def GmI(ps: Table,
 # /def
 
 
-@units.quantity_io()
+@quantity_io()
 def GmZ(ps: Table,
-        g_band: {'9401', '9402'}='9402',
-        z_band: {'9801', '9901'}='9901',
-        **kw) -> units.mag:
+        g_band: Literal['9401', '9402']='9402',
+        z_band: Literal['9801', '9901']='9901',
+        **kw) -> MAG:
     """G-Z color.
 
     Parameters
@@ -298,13 +309,11 @@ def GmZ(ps: Table,
 # /def
 
 
-
-
-@units.quantity_io()
+@quantity_io()
 def RmI(ps: Table,
-        r_band: {'9601', '9602'}='9602',
-        i_band: {'9701', '9702', '9703'}='9703',
-        **kw) -> units.mag:
+        r_band: Literal['9601', '9602']='9602',
+        i_band: Literal['9701', '9702', '9703']='9703',
+        **kw) -> MAG:
     """R-I color.
 
     Parameters
@@ -332,13 +341,11 @@ def RmI(ps: Table,
 # /def
 
 
-
-
-@units.quantity_io()
+@quantity_io()
 def RmZ(ps: Table,
-        r_band: {'9601', '9602'}='9602',
-        z_band: {'9801', '9901'}='9901',
-        **kw) -> units.mag:
+        r_band: Literal['9601', '9602']='9602',
+        z_band: Literal['9801', '9901']='9901',
+        **kw) -> MAG:
     """R-Z color.
 
     Parameters
@@ -366,11 +373,11 @@ def RmZ(ps: Table,
 # /def
 
 
-@units.quantity_io()
+@quantity_io()
 def ImZ(ps: Table,
-        i_band: {'9701', '9702', '9703'}='9703',
-        z_band: {'9801', '9901'}='9901',
-        **kw) -> units.mag:
+        i_band: Literal['9701', '9702', '9703']='9703',
+        z_band: Literal['9801', '9901']='9901',
+        **kw) -> MAG:
     """G-I color.
 
     Parameters

@@ -1,15 +1,25 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# ----------------------------------------------------------------------------
+#
+# TITLE   : muulti initialization
+# AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
+#
+# ----------------------------------------------------------------------------
+
+# Docstring and Metadata
 """metaclass to inherit docstrings."""
 
+__author__ = "Nathaniel Starkman"
 __credits__ = ["astropy"]
 
 
 ##############################################################################
 # IMPORTS
 
-# General
+# GENERAL
+from typing import Any
 import inspect
 
 
@@ -44,7 +54,7 @@ class InheritDocstrings(type):
 
     """
 
-    def __init__(cls, name, bases, dct):
+    def __init__(cls, name: str, bases: Any, dct: dict) -> None:
         """Set up docstring inheritance."""
         def is_public_member(key):
             return (
@@ -67,6 +77,7 @@ class InheritDocstrings(type):
         # /for
 
         super().__init__(name, bases, dct)
+        return
     # /def
 # /class
 

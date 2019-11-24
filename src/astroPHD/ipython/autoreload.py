@@ -15,6 +15,7 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # General
+from typing import Any, Union, Optional
 from IPython import get_ipython
 
 # Project-Specific
@@ -29,7 +30,7 @@ _LOGFILE = LogPrint(header=False, verbose=0)
 ##############################################################################
 # CODE
 
-def set_autoreload(reload_type: (int, None)=None):
+def set_autoreload(reload_type: Optional[int]=None) -> None:
     """Global imports setting.
 
     Parameters
@@ -64,7 +65,7 @@ def set_autoreload(reload_type: (int, None)=None):
 
 
 # TODO support any list
-def aimport(*modules, autoreload: (bool, list, tuple)=True):
+def aimport(*modules: str, autoreload: Union[bool, list, tuple]=True) -> None:
     """Jupyter magic aimport.
 
     Parameters
@@ -106,6 +107,7 @@ def aimport(*modules, autoreload: (bool, list, tuple)=True):
 if get_ipython() is not None:
     get_ipython().magic('load_ext autoreload')  # autoreload extensions
     set_autoreload(1)
+
 
 ##############################################################################
 # END

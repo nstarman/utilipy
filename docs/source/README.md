@@ -29,12 +29,24 @@ Most of the modules have too much to reasonably document here. These are some of
 ## astronomy
 > Import using `from  astroPHD import astronomy`
 
+This module is very much a work in progress.
+
+<br><br><br>
+
+
+<a id="community"></a>
+## community
+> Import using `from  astroPHD import community`
+
+Community codes. These codes are documented elsewhere.
 
 <br><br><br>
 
 <a id="data_utils"></a>
 ## data_utils
 > Import using `from  astroPHD import data_utils`
+
+Data slicing and selection functions.
 
 <br><br><br>
 
@@ -141,7 +153,8 @@ Also provides **[astropy_imports_help](https://astrophd.readthedocs.io/en/latest
 ### extras
 
 
-#### galpy:
+<a id="galpy"></a>
+#### galpy
 > Import using `from  astroPHD.imports.galpy import *`
 
 Imports
@@ -156,7 +169,9 @@ Galpy : imports
 Also provides **[galpy_imports_help](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.galpy.galpy_imports_help)** function.
 
 <br>
-#### AMUSE:
+
+<a id="amuse"></a>
+#### AMUSE  
 > Import using `from  astroPHD.imports.amuse import *`
 
 Imports
@@ -235,7 +250,7 @@ This module deals with auto-reloading packages / modules / functions in IPython.
                             False])  # scipy will not, even though set_autoreload=2
           ```
 
-<a id="imports"></a>
+<a id="imports-1"></a>
 ### imports
 > `from  astroPHD.ipython import imports`
 
@@ -259,7 +274,7 @@ This module deals with auto-reloading packages / modules / functions in IPython.
 
 <br><br><br>
 
-<a id="plot"></a>
+<a id="plot-1"></a>
 ## plot
 > Import using `from  astroPHD import plot`
 
@@ -286,23 +301,23 @@ This module deals with auto-reloading packages / modules / functions in IPython.
 
 <br><br>
 
-<a id="Templates"></a>
+<a id="templates"></a>
 # Templates
 Templates are useful. Here are some.
 
-<a id="About-Text"></a>
+<a id="about-text"></a>
 ## About Text
 . [About.txt](templates/ABOUT/ABOUT.txt) : an about text in basic `.txt` format
 . [About.md](templates/ABOUT/ABOUT.md) : an about text in Markdown
 
-<a id="Python"></a>
+<a id="python"></a>
 ## Python
 
 . [\_\_init\_\_](templates/python/__init__.py "initialization file")
 . [python.py](templates/python/python.py "standard python file")
 . [notebook.ipynb](templates/python/notebook.ipynb "standard Jupter Notebook")
 
-<a id="Latex"></a>
+<a id="latex"></a>
 ## Latex
 
 . [tex file](templates/latex/main.tex)

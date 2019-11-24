@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Added functionality to ``functools``.
+"""Added functionality to `functools`.
 
 Routine Listings
 ----------------
@@ -36,6 +36,7 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # General
+from typing import Any, Union, Callable, Sequence, Optional
 from functools import *
 
 # Project-Specific
@@ -47,8 +48,9 @@ from .inspect._signature import _VAR_POSITIONAL, _KEYWORD_ONLY, _VAR_KEYWORD
 # CODE
 ################################################################################
 
-def makeFunction(code, globals_, name=None, signature=None, docstring=None,
-                 closure=None):
+def makeFunction(code: Any, globals_: Any, name: Optional[str]=None,
+                 signature: _Signature=None, docstring: str=None,
+                 closure: Any=None):
     """Make a function with a specified signature and docstring.
 
     This is pure python and may not make the fastest functions
@@ -100,7 +102,7 @@ def makeFunction(code, globals_, name=None, signature=None, docstring=None,
 
 # -----------------------------------------------------------------------------
 
-def copy_function(func):
+def copy_function(func: Callable):
     """Copy an existing function."""
     function = makeFunction(func.__code__, func.__globals__,
                             name=func.__name__,
@@ -125,12 +127,12 @@ SIGNATURE_ASSIGNMENTS = ('__kwdefaults__', '__annotations__')
 WRAPPER_UPDATES = ('__dict__',)
 
 
-def update_wrapper(wrapper, wrapped,
-                   signature: (_Signature, None, bool)=True,
-                   docstring: (str, None, bool)=None,
-                   assigned=WRAPPER_ASSIGNMENTS,
-                   updated=WRAPPER_UPDATES,
-                   _docstring_formatter=None):
+def update_wrapper(wrapper: Callable, wrapped: Callable,
+                   signature: Union[_Signature, None, bool]=True,
+                   docstring: Union[str, None, bool]=None,
+                   assigned: Sequence[str]=WRAPPER_ASSIGNMENTS,
+                   updated: Sequence[str]=WRAPPER_UPDATES,
+                   _docstring_formatter: Optional[dict]=None):
     """Update a wrapper function to look like the wrapped function.
 
     Parameters
@@ -183,7 +185,7 @@ def update_wrapper(wrapper, wrapped,
     if signature is True:
         _update_sig = True
         signature = _Signature.from_callable(wrapped)
-    elif signature in (None, False):
+    elif signature in {None, False}:
         pass
     else:  # convert to my signature object
         _update_sig = False
@@ -223,7 +225,7 @@ def update_wrapper(wrapper, wrapped,
     # ---------------------------------------
 
     # deal with signature
-    if signature in (None, False):
+    if signature in {None, False}:
         pass
 
     elif _update_sig:  # merge wrapped and wrapper signature
@@ -231,7 +233,7 @@ def update_wrapper(wrapper, wrapped,
         # go through parameters in wrapper_sig, merging into signature
         for param in wrapper_sig.parameters.values():
             # skip _VAR_POSITIONAL and _VAR_KEYWORD
-            if param.kind in (_VAR_POSITIONAL, _VAR_KEYWORD):
+            if param.kind in {_VAR_POSITIONAL, _VAR_KEYWORD}:
                 pass
             # already exists -> replace
             elif param.name in signature.parameters:
@@ -304,12 +306,12 @@ def update_wrapper(wrapper, wrapped,
 
 # -----------------------------------------------------------------------------
 
-def wraps(wrapped,
-          signature: (_Signature, None, bool)=True,
-          docstring: (str, None, bool)=None,
-          assigned=WRAPPER_ASSIGNMENTS,
-          updated=WRAPPER_UPDATES,
-          _docstring_formatter=None):
+def wraps(wrapped: Callable,
+          signature: Union[_Signature, None, bool]=True,
+          docstring: Union[str, None, bool]=None,
+          assigned: Sequence[str]=WRAPPER_ASSIGNMENTS,
+          updated: Sequence[str]=WRAPPER_UPDATES,
+          _docstring_formatter: Optional[dict]=None):
     """Decorator factory to apply ``update_wrapper()`` to a wrapper function.
 
     Returns a decorator that invokes ``update_wrapper()`` with the decorated

@@ -27,12 +27,11 @@ __credit__ = 'Jo Bovy'
 ##############################################################################
 # IMPORTS
 
+from typing import Union, Any, Optional
+from typing_extensions import Literal
 import os
 from os import path
-try:
-    import configparser
-except:  # pragma: no cover
-    from six.moves import configparser
+import configparser
 
 ##############################################################################
 # DEFAULT CONFIGURATION
@@ -76,7 +75,8 @@ def check_config(configuration: configparser.ConfigParser) -> bool:
 # /def
 
 
-def write_config(filename: str, configuration=None) -> None:
+def write_config(filename: str,
+                 configuration=Union[configparser.ConfigParser, None]) -> None:
     """Write configuration.
 
     Parameters
@@ -112,77 +112,84 @@ def write_config(filename: str, configuration=None) -> None:
 ##############################################################################
 # Set configuration variables on the fly
 
-def get_import_verbosity():
+def get_import_verbosity() -> bool:
     """Get whether the full import information is printed or not."""
     return __config__.getboolean('verbosity', 'verbose-imports')
 # /def
 
 
-def set_import_verbosity(verbosity: (bool, {'True', 'False'})):
+def set_import_verbosity(verbosity: Union[bool, Literal['True'], Literal['False']]) -> None:
     """Set whether the full import information is printed or not."""
-    assert str(verbosity) in ('True', 'False')
+    assert str(verbosity) in {'True', 'False'}
     __config__.set('verbosity', 'verbose-imports', str(verbosity))
+    return
 # /def
 
 
 class use_import_verbosity:
     """Docstring for use_import_verbosity."""
 
-    def __init__(self, verbosity: bool):
+    def __init__(self, verbosity: Optional[bool]) -> None:
         """__init__."""
         self.original_verbosity = get_import_verbosity()
         self.verbosity = verbosity
+        return
     # /def
 
-    def __enter__(self):
+    def __enter__(self) -> Any:
         """Enter with statement, using specified import verbosity."""
         if self.verbosity is not None:
             set_import_verbosity(self.verbosity)
         return self
     # /def
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type: Any, value: Any, traceback: Any) -> None:
         """Exit  with statement, restoring original import verbosity."""
         # Exception handling here
         set_import_verbosity(self.original_verbosity)
+        return
     # /def
 
 
 # ----------------------------------------------------------------------------
 
-def get_warnings_verbosity():
+def get_warnings_verbosity() -> None:
     """Get warnings verbosity."""
     __config__.get('verbosity', 'warnings')
+    return
 # /def
 
 
-def set_warnings_verbosity(key: (bool, str)):
+def set_warnings_verbosity(key: Union[bool, str]) -> None:
     """Set warnings verbosity."""
-    assert str(key) in ('True', 'False')
+    assert str(key) in {'True', 'False'}
     __config__.set('verbosity', 'warnings', str(key))
+    return
 # /def
 
 
 class use_warnings_verbosity:
     """Docstring for use_warnings_verbosity."""
 
-    def __init__(self, verbosity: bool):
+    def __init__(self, verbosity: bool) -> None:
         """__init__."""
         self.original_verbosity = get_import_verbosity()
         self.verbosity = verbosity
+        return
     # /def
 
-    def __enter__(self):
+    def __enter__(self) -> Any:
         """Enter with statement, using specified import verbosity."""
         if self.verbosity is not None:
             set_warnings_verbosity(self.verbosity)
         return self
     # /def
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type, value, traceback) -> None:
         """Exit  with statement, restoring original import verbosity."""
         # Exception handling here
         set_warnings_verbosity(self.original_verbosity)
+        return
     # /def
 
 

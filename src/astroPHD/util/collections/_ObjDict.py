@@ -4,6 +4,7 @@
 #
 # TITLE   : ObjDict
 # AUTHOR  : Nathaniel Starkman
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
@@ -15,12 +16,20 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# General
+# GENERAL
+from typing import Any, Union, Sequence, Tuple, Callable, Optional
 from collections import OrderedDict
 
-# Project-Specific
+# PROJECT-SPECIFIC
 from ..pickle import dump as _dump, load as _load
 from ...decorators.docstring import replace_docstring
+
+
+##############################################################################
+# PARAMETERS
+
+odict_values = type(OrderedDict().values())
+odict_items = type(OrderedDict().items())
 
 
 ##############################################################################
@@ -47,7 +56,7 @@ class ObjDict(OrderedDict):
 
     """
 
-    def __init__(self, name='', **kw):
+    def __init__(self, name: str='', **kw: Any) -> None:
         """Initialize ObjDict."""
         super().__init__()
 
@@ -60,7 +69,8 @@ class ObjDict(OrderedDict):
     # ----------------------------------
     # item get / set
 
-    def __getitem__(self, keys, _as_generator=False):
+    def __getitem__(self, keys: Union[str, Sequence[str]],
+                    _as_generator: bool=False) -> Any:
         """Override __getitem__.
 
         Parameters
@@ -76,9 +86,9 @@ class ObjDict(OrderedDict):
         Returns
         -------
         value(s): anything
-            if str: just the value from key-value pair
-            if list: list of values
-            if _as_generator: generator for list
+            if str, just the value from key-value pair
+            if list, list of values
+            if _as_generator, generator for list
 
         Examples
         --------
@@ -99,7 +109,8 @@ class ObjDict(OrderedDict):
     # /def
 
     @replace_docstring(docstring=__getitem__.__doc__)
-    def getitem(self, keys, _as_generator=False):
+    def getitem(self, keys: Union[str, Sequence[str]],
+                _as_generator: bool=False) -> Any:
         """Docstring from __getitem__."""
         return self.__getitem__(keys, _as_generator=_as_generator)
     # /def
@@ -108,12 +119,12 @@ class ObjDict(OrderedDict):
     # attribute get / set
     # redirects to item get / set
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: Any, value: Any) -> None:
         """Setattr -> setitem."""
         self[key] = value
     # /def
 
-    def __getattr__(self, key):
+    def __getattr__(self, key: Any) -> Any:
         """Getattr -> getitem."""
         return self[key]
     # /def
@@ -121,7 +132,7 @@ class ObjDict(OrderedDict):
     # ----------------------------------
     # Printing
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """__repr__."""
         if self.name == '':
             return super().__repr__()
@@ -131,7 +142,7 @@ class ObjDict(OrderedDict):
 
     # ----------------------------------
 
-    def values(self, *keys):
+    def values(self, *keys: Any) -> Union[odict_values, tuple]:
         """Values.
 
         Parameters
@@ -146,10 +157,10 @@ class ObjDict(OrderedDict):
         """
         if not keys:  # if no specific keys provided
             return super().values()
-        return [self[k] for k in keys]
+        return tuple([self[k] for k in keys])
     # /def
 
-    def items(self, *keys):
+    def items(self, *keys: Any) -> Union[odict_items, dict]:
         """Items.
 
         Parameters
@@ -167,7 +178,7 @@ class ObjDict(OrderedDict):
         return self.subset(*keys).items()
     # /def
 
-    def subset(self, *keys):
+    def subset(self, *keys: Any) -> Any:
         """Subset.
 
         Parameters
@@ -185,7 +196,7 @@ class ObjDict(OrderedDict):
         return {k: self[k] for k in keys}
     # /def
 
-    def keyslist(self):
+    def keyslist(self) -> list:
         """Keys in list form.
 
         Parameters
@@ -204,7 +215,7 @@ class ObjDict(OrderedDict):
     # ----------------------------------
     # Serialize (I/O)
 
-    def __reduce__(self):
+    def __reduce__(self) -> Tuple[Callable, str, odict_items]:
         """Reduction method for serialization.
 
         Info
@@ -219,7 +230,7 @@ class ObjDict(OrderedDict):
                 (self.name, ),
                 OrderedDict(self.items()))
 
-    def __setstate__(self, state):
+    def __setstate__(self, state: dict) -> None:
         """Set-state method for loading from pickle.
 
         sets by key, value pairs
@@ -229,7 +240,8 @@ class ObjDict(OrderedDict):
             self[key] = value
     # /def
 
-    def dump(self, fname, protocol=None, *, fopt='b', fix_imports=True):
+    def dump(self, fname: str, protocol: Optional[int]=None, *,
+             fopt: str='b', fix_imports: bool=True):
         """Dump to pickle file.
 
         Info
@@ -242,14 +254,15 @@ class ObjDict(OrderedDict):
     # /def
 
     @replace_docstring(docstring=dump.__doc__)
-    def save(self, fname, protocol=None, *, fopt='b', fix_imports=True):
+    def save(self, fname: str, protocol: Optional[int]=None, *,
+             fopt: str='b', fix_imports: bool=True):
         """.Dump alias."""
         self.dump(fname, protocol=protocol, fopt=fopt, fix_imports=fix_imports)
     # /def
 
     @staticmethod
-    def load(fname, *, fopt='b', fix_imports=True, encoding='ASCII',
-             errors='strict'):
+    def load(fname: str, *, fopt: str='b', fix_imports: bool=True,
+             encoding: str='ASCII', errors: str='strict'):
         """Load from pickle file.
 
         Info

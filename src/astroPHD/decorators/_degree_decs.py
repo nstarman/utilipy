@@ -9,22 +9,24 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # GENERAL
+from typing import Any, Union, Callable
 import numpy as np
 from functools import wraps
 
 # PROJECT-SPECIFIC
-from .._domain_factory import domain_factory
+from ..util._domain_factory import domain_factory
 
 
 #############################################################################
 # CODE
 #############################################################################
 
-def degreeDecorator(inDegrees=[], outDegrees=[], roof=False):
+def degreeDecorator(inDegrees: list=[], outDegrees: list=[],
+                    roof: bool=False) -> Callable:
     """Decorator to transform angles from and to degrees if necessary
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     inDegrees: list
         list specifitying indices of angle arguments
         ex: [index, index, ...]
@@ -35,26 +37,21 @@ def degreeDecorator(inDegrees=[], outDegrees=[], roof=False):
     outDegrees: list
         same as inDegrees, but for function return
 
-    HISTORY:
-
-       ____-__-__ - Written - Bovy
-       2019-03-02 - including domainDecorator & speedups - Nathaniel Starkman (UofT)
-
     """
     # speedup if no domain adjustments
     if all(map(np.isscalar, [*inDegrees, *outDegrees])):
         # (modified) old degree decorator
-        def wrapper(func):
-            @wraps(func)
-            def wrapped(*args, **kwargs):
-                isdeg = kwargs.get('degree', False)
+        def wrapper(function: Callable) -> Callable:
+            @wraps(function)
+            def wrapped(*args: Any, **kwargs: Any) -> Any:
+                isdeg: bool = kwargs.get('degree', False)
                 # PRE
                 if isdeg:
-                    args = [arg * np.pi / 180 if i in inDegrees else arg
-                            for i, arg in enumerate(args)]
+                    _args: list = [arg * np.pi / 180 if i in inDegrees else arg
+                                   for i, arg in enumerate(args)]
 
                 # CALLING
-                out = func(*args, **kwargs)
+                out = function(*_args, **kwargs)
 
                 # POST
                 if isdeg:
@@ -76,28 +73,30 @@ def degreeDecorator(inDegrees=[], outDegrees=[], roof=False):
                else (x[0], domain_factory(*x[1:], roof=roof))
                for x in outDegrees]
 
-    def wrapper(func):
-        @wraps(func)
-        def wrapped(*args, **kwargs):
-            isdeg = kwargs.get('degree', False)
+    def wrapper(function: Callable):
+        @wraps(function)
+        def wrapped(*args: Any, **kwargs: Any) -> Any:
+            isdeg: bool = kwargs.get('degree', False)
 
             # PRE
-            newargs = list(args)
-            for i, f in indegs:  # adjusting domain of in args
+            newargs: list = list(args)
+            i: int
+            func: Callable
+            for i, func in indegs:  # adjusting domain of in args
                 if isdeg:  # deg -> rad
-                    newargs[i] = f(args[i] * np.pi / 180.)
+                    newargs[i] = func(args[i] * np.pi / 180.)
                 else:  # already rad
-                    newargs[i] = f(args[i])
+                    newargs[i] = func(args[i])
 
             # CALLING
-            out = func(*newargs, **kwargs)
+            out: Any = function(*newargs, **kwargs)
 
             # POST
-            for i, f in outdegs:
+            for i, func in outdegs:
                 if isdeg:
-                    out[:, i] = f(out[:, i]) * 180 / np.pi
+                    out[:, i] = func(out[:, i]) * 180 / np.pi
                 else:
-                    out[:, i] = f(out[:, i])
+                    out[:, i] = func(out[:, i])
 
             return out
         # /def
@@ -105,3 +104,6 @@ def degreeDecorator(inDegrees=[], outDegrees=[], roof=False):
     # /def
     return wrapper
 # /def
+
+#############################################################################
+# END

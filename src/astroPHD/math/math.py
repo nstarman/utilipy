@@ -16,16 +16,16 @@ __author__ = "Nathaniel Starkman"
 ###############################################################################
 # IMPORTS
 
-# General
+# GENERAL
 import numpy as np
 
-# Project-Specific
+# PROJECT-SPECIFIC
 
 
 ###############################################################################
 # CODE
 
-def quadrature(*args, axis=0):
+def quadrature(*args: np.array, axis: int=0) -> np.array:
     """Return arguments summed in quadrature."""
     if len(args) == 0:
         raise ValueError
@@ -38,7 +38,7 @@ def quadrature(*args, axis=0):
 # ----------------------------------------------------------------------------
 
 
-def logsumexp(arr, axis=0):
+def logsumexp(arr: np.array, axis: int=0) -> np.array:
     """Logsumexp.
 
     Faster?

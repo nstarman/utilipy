@@ -19,15 +19,15 @@ import warnings
 from astropy.table import Table
 
 # PROJECT-SPECIFIC
-from .. import units
+from ..units import quantity_io, mag as MAG
 
 
 #############################################################################
 # CODE
 #############################################################################
 
-@units.quantity_io()
-def I_MP9702(ps: Table, **kw) -> units.mag:
+@quantity_io()
+def I_MP9702(ps: Table, **kw) -> MAG:
     r"""Convert Pan-STARRS1 bands to CFHT I-MP9702 band.
 
     Parameters
@@ -71,14 +71,14 @@ def I_MP9702(ps: Table, **kw) -> units.mag:
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * units.mag < gmi) & (gmi < 4 * units.mag)
+    ind = (-1. * MAG < gmi) & (gmi < 4 * MAG)
     if not all(ind):
         warnings.warn('MCg1.I: not all -1 mag < (g-i)_ps < 4 mag')
 
-    c0 = -.005 * units.mag
+    c0 = -.005 * MAG
     c1 = +.004
-    c2 = .0124 / units.mag
-    c3 = -.0048 / units.mag**2
+    c2 = .0124 / MAG
+    c3 = -.0048 / MAG**2
     i_ps = ps[i]
 
     z_cfht = i_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)

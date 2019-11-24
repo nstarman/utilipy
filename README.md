@@ -83,7 +83,6 @@ Data slicing and selection functions.
 ## [decorators](https://astrophd.readthedocs.io/en/latest/astroPHD.decorators.html#astrophd-decorators-package)
 > Import using `from  astroPHD import decorators`
 
-
 [Example Notebook explaining good decorators](examples/making_decorators.ipynb)
 
 <a id="fitting"></a>

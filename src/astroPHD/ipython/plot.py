@@ -34,7 +34,8 @@ import warnings
 ##############################################################################
 # CODE
 
-def configure_matplotlib(backend: str='inline', figure_format: str='retina'):
+def configure_matplotlib(backend: str='inline', figure_format: str='retina'
+                         ) -> None:
     """Configure Matplotlib Jupyter magic setting.
 
     Parameters
