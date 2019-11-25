@@ -66,6 +66,8 @@ requirements = [
     'astropy',
     'wrapt',
     'tqdm',  # or extras?
+    'typing',
+    'typing_extensions',
 ]
 
 classifiers = [
@@ -92,7 +94,8 @@ setup(
     install_requires=requirements,
     extras_require={
         "fitting": ['scipy', 'lmfit'],
-        "amuse": ['amuse-framework', 'amuse-bhtree', 'amuse-seba']
+        "amuse": ['amuse-framework', 'amuse-bhtree', 'amuse-seba'],
+        "galpy": ['galpy'],
     },
 )
 
