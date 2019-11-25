@@ -62,6 +62,7 @@ def check_config(configuration: configparser.ConfigParser) -> bool:
         whether the configuration is a valid astroPHD configuration.
 
     """
+    sec_key: str
     for sec_key in _DEFAULT_CONFIG.keys():  # iter through expected keys
         # check if section exists
         if not configuration.has_section(sec_key):
@@ -76,7 +77,7 @@ def check_config(configuration: configparser.ConfigParser) -> bool:
 
 
 def write_config(filename: str,
-                 configuration=Union[configparser.ConfigParser, None]) -> None:
+                 configuration:Optional[configparser.ConfigParser]=None) -> None:
     """Write configuration.
 
     Parameters
@@ -94,9 +95,11 @@ def write_config(filename: str,
     for sec_key in _DEFAULT_CONFIG.keys():
         writeconfig.add_section(sec_key)
         for key in _DEFAULT_CONFIG[sec_key]:
-            if configuration is None \
-                    or not configuration.has_section(sec_key) \
-                    or not configuration.has_option(sec_key, key):
+            if configuration is None:                    
+                writeconfig.set(sec_key, key,
+                                _DEFAULT_CONFIG[sec_key][key])
+            elif (not configuration.has_section(sec_key) or
+                  not configuration.has_option(sec_key, key)):
                 writeconfig.set(sec_key, key,
                                 _DEFAULT_CONFIG[sec_key][key])
             else:
