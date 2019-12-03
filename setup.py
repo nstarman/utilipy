@@ -68,6 +68,7 @@ requirements = [
     'tqdm',  # or extras?
     'typing',
     'typing_extensions',
+    'configparser',
 ]
 
 classifiers = [
