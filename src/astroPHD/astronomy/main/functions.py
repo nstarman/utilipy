@@ -27,13 +27,19 @@ import numpy as np
 
 # CUSTOM IMPORTS
 from ...units import (
-    quantity_io, get_physical_type,
-    rad as RAD, deg as DEG, pc as PC, mag as MAG, AU
+    quantity_io,
+    get_physical_type,
+    rad as RAD,
+    deg as DEG,
+    pc as PC,
+    mag as MAG,
+    AU,
 )
 
 
 ##############################################################################
 # Angular Distance
+
 
 @quantity_io()
 def angular_distance(lon1: DEG, lat1: DEG, lon2: DEG, lat2: DEG) -> Any:
@@ -75,19 +81,21 @@ def angular_distance(lon1: DEG, lat1: DEG, lon2: DEG, lat2: DEG) -> Any:
 
     """
     latcomp = np.sin(lat1) * np.sin(lat2)  # latitude component
-    loncomp = np.cos(lat1) * np.cos(lat2) * \
-        np.cos(lon1 - lon2)  # longitude component
+    loncomp = np.cos(lat1) * np.cos(lat2) * np.cos(lon1 - lon2)  # longitude component
 
     res = np.arccos(latcomp + loncomp)
 
     return res
+
+
 # /def
 
 
 ##############################################################################
 # Distance Modulus
 
-@quantity_io(m=MAG, d_L='distance')
+
+@quantity_io(m=MAG, d_L="distance")
 def apparent_to_absolute_magnitude(m: MAG, d_L: PC, **kw) -> Any:
     """Convert apparent to absolute magnitude.
 
@@ -109,10 +117,12 @@ def apparent_to_absolute_magnitude(m: MAG, d_L: PC, **kw) -> Any:
     """
     M = m - 5.0 * np.log10(d_L) + 5.0
     return M
+
+
 # /def
 
 
-@quantity_io(M=MAG, d_L='distance')
+@quantity_io(M=MAG, d_L="distance")
 def absolute_to_apparent_magnitude(M: MAG, d_L: PC, **kw) -> Any:
     """Convert absolute to apparent magnitude.
 
@@ -134,14 +144,16 @@ def absolute_to_apparent_magnitude(M: MAG, d_L: PC, **kw) -> Any:
     """
     m = M + 5.0 * np.log10(d_L) - 5.0
     return m
+
+
 # /def
 
 
 ##############################################################################
 # Distance Modulus
 
-@quantity_io(d='length', A=MAG,
-               annot2dfu=True, default_units={'A': MAG})
+
+@quantity_io(d="length", A=MAG, annot2dfu=True, default_units={"A": MAG})
 def distanceModulus_magnitude(d: PC, A=0 * MAG, obs=True, **kw) -> Any:
     r"""Distance Modulus distance to magnitude.
 
@@ -180,10 +192,13 @@ def distanceModulus_magnitude(d: PC, A=0 * MAG, obs=True, **kw) -> Any:
         A *= -1
 
     return (5 * MAG) * (np.log10(d.to_value(PC)) - 1) + A
+
+
 # /def
 
 
 # --------------------------------------------------------------------------
+
 
 @quantity_io(DM=MAG, annot2dfu=True)
 def distanceModulus_distance(DM: MAG, **kw) -> Any:
@@ -206,15 +221,16 @@ def distanceModulus_distance(DM: MAG, **kw) -> Any:
         no units attached
 
     """
-    return np.power(10., np.divide(DM, 5. * MAG) + 1) * PC
+    return np.power(10.0, np.divide(DM, 5.0 * MAG) + 1) * PC
+
+
 # /def
 
 
 # --------------------------------------------------------------------------
 
 # TODO annot2dfu = T/F?
-@quantity_io(arg=('length', MAG), A=MAG,
-             annot2dfu=True, default_units={'A': MAG})
+@quantity_io(arg=("length", MAG), A=MAG, annot2dfu=True, default_units={"A": MAG})
 def distanceModulus(arg, A=0 * MAG, obs=True, **kw) -> Any:
     r"""Distance Modulus.
 
@@ -248,7 +264,7 @@ def distanceModulus(arg, A=0 * MAG, obs=True, **kw) -> Any:
     :math:`true - M = 5 log10(d / 10) - A`
 
     """
-    if get_physical_type(arg) == 'length':
+    if get_physical_type(arg) == "length":
         if not obs:
             A *= -1
 
@@ -257,48 +273,58 @@ def distanceModulus(arg, A=0 * MAG, obs=True, **kw) -> Any:
         #                                  _skip_decorator=True)
 
     else:
-        return np.power(10., np.divide(arg, 5. * MAG) + 1) * PC
+        return np.power(10.0, np.divide(arg, 5.0 * MAG) + 1) * PC
         # return distanceModulus_distance(arg, _skip_decorator=True)
+
+
 # /def
 
 
 ##############################################################################
 # Parallax
 
-@quantity_io(d='length')
+
+@quantity_io(d="length")
 def parallax_angle(d: PC, **kw) -> Any:
     """Compute parallax angle."""
     return np.arctan(1 * AU / d)
+
+
 # /def
 
 # --------------------------------------------------------------------------
 
 
-@quantity_io(p='angle')
+@quantity_io(p="angle")
 def parallax_distance(p: DEG, **kw) -> Any:
     """Compute parallax distance."""
     return 1 * AU / np.tan(p)
+
+
 # /def
 
 # --------------------------------------------------------------------------
 
 
-@quantity_io(arg=('angle', 'length'))
+@quantity_io(arg=("angle", "length"))
 def parallax(arg, **kw) -> Any:
     """Parallax."""
-    if get_physical_type(arg) == 'angle':
+    if get_physical_type(arg) == "angle":
         return parallax_distance(arg)
-    elif get_physical_type(arg) == 'length':
+    elif get_physical_type(arg) == "length":
         return parallax_angle(arg)
     else:
         raise TypeError(f"{arg} must have units of distance or angle")
+
+
 # /def
 
 
 ##############################################################################
 # Angular Separation
 
-@quantity_io(doff='length', dto='length')
+
+@quantity_io(doff="length", dto="length")
 def max_angular_separation(doff, dto, **kw) -> Any:
     """Maximum angular separation.
 
@@ -317,6 +343,8 @@ def max_angular_separation(doff, dto, **kw) -> Any:
 
     """
     return np.fabs(np.arctan(np.divide(doff, dto))) * RAD
+
+
 # /def
 
 

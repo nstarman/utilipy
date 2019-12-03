@@ -63,9 +63,8 @@ __author__ = "Nathaniel Starkman"
 from astroPHD.util.config import __config__
 from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper,
-    _import_file_docstring_helper
+    _import_file_docstring_helper,
 )
-
 
 
 ##############################################################################
@@ -74,6 +73,7 @@ from astroPHD.decorators.docstring import (
 ## General
 # numpy
 from numpy.linalg import norm
+
 # scipy
 from scipy.stats import binned_statistic as binned_stats
 
@@ -81,15 +81,18 @@ from scipy.stats import binned_statistic as binned_stats
 ##############################################################################
 # Printing Information
 
-@_set_docstring_import_file_helper('extend', __doc__)  # doc from __doc__
+
+@_set_docstring_import_file_helper("extend", __doc__)  # doc from __doc__
 def extend_imports_help():
     """Help for extended base imports."""
     doc = _import_file_docstring_helper(extend_imports_help.__doc__)
     print(doc)
+
+
 # /def
 
 
-if __config__.getboolean('verbosity', 'verbose-imports'):
+if __config__.getboolean("verbosity", "verbose-imports"):
     extend_imports_help()
 
 ##############################################################################

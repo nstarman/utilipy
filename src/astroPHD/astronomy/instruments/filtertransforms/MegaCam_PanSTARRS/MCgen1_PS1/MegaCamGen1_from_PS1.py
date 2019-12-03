@@ -3,13 +3,24 @@
 """PanSTARRS 1 bands from Mega-Cam gen1 bands."""
 
 __author__ = "Nathaniel Starkman"
-__credits__ = [
-    "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
-]
+__credits__ = ["http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"]
 
 __all__ = [
-    'U_MP9301', 'G_MP9401', 'R_MP9601', 'I_MP9701', 'Z_MP9801',
-    'UmG', 'UmR', 'UmI', 'UmZ', 'GmR', 'GmI', 'GmZ', 'RmI', 'RmZ', 'ImZ'
+    "U_MP9301",
+    "G_MP9401",
+    "R_MP9601",
+    "I_MP9701",
+    "Z_MP9801",
+    "UmG",
+    "UmR",
+    "UmI",
+    "UmZ",
+    "GmR",
+    "GmI",
+    "GmZ",
+    "RmI",
+    "RmZ",
+    "ImZ",
 ]
 
 #############################################################################
@@ -26,6 +37,7 @@ from ..units import quantity_io, mag as MAG
 #############################################################################
 # CODE
 #############################################################################
+
 
 @quantity_io()
 def U_MP9301(ps, **kw) -> MAG:
@@ -64,27 +76,29 @@ def U_MP9301(ps, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    g, i = kw.get('g', 'g'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
+    g, i = kw.get("g", "g"), kw.get("i", "i")
+    gmi = kw.get("gmi", "g-i")
 
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (.3 * MAG < gmi) & (gmi < 1.5 * MAG)
+    ind = (0.3 * MAG < gmi) & (gmi < 1.5 * MAG)
     if not all(ind):
-        warnings.warn('MCg1.U: not all .3 mag < (g-i)_ps < 1.5 mag')
+        warnings.warn("MCg1.U: not all .3 mag < (g-i)_ps < 1.5 mag")
 
-    c0 = .523 * MAG
-    c1 = -.343
+    c0 = 0.523 * MAG
+    c1 = -0.343
     c2 = 2.44 / MAG
-    c3 = -.998 / MAG**2
+    c3 = -0.998 / MAG ** 2
     g_ps = ps[g]
 
-    u_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+    u_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
 
     return u_cfht
+
+
 # /def
 
 
@@ -125,26 +139,28 @@ def G_MP9401(ps, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    g, i = kw.get('g', 'g'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
+    g, i = kw.get("g", "g"), kw.get("i", "i")
+    gmi = kw.get("gmi", "g-i")
 
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * MAG < gmi) & (gmi < 4 * MAG)
+    ind = (-1.0 * MAG < gmi) & (gmi < 4 * MAG)
     if not all(ind):
-        warnings.warn('MCg1.G: not all -1 mag < (g-i)_ps < 4 mag')
+        warnings.warn("MCg1.G: not all -1 mag < (g-i)_ps < 4 mag")
 
-    c0 = -.001 * MAG
-    c1 = -.004
-    c2 = -.0056 / MAG
-    c3 = .00292 / MAG**2
+    c0 = -0.001 * MAG
+    c1 = -0.004
+    c2 = -0.0056 / MAG
+    c3 = 0.00292 / MAG ** 2
     g_ps = ps[g]
 
-    g_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+    g_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
     return g_cfht
+
+
 # /def
 
 
@@ -189,26 +205,28 @@ def R_MP9601(ps, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    g, r, i = kw.get('g', 'g'), kw.get('r', 'r'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
+    g, r, i = kw.get("g", "g"), kw.get("r", "r"), kw.get("i", "i")
+    gmi = kw.get("gmi", "g-i")
 
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * MAG < gmi) & (gmi < 4 * MAG)
+    ind = (-1.0 * MAG < gmi) & (gmi < 4 * MAG)
     if not all(ind):
-        warnings.warn('MCg1.R: not all -1 mag < (g-i)_ps < 4 mag')
+        warnings.warn("MCg1.R: not all -1 mag < (g-i)_ps < 4 mag")
 
-    c0 = .002 * MAG
-    c1 = -.017
-    c2 = .00554 / MAG
-    c3 = -.000692 / MAG**2
+    c0 = 0.002 * MAG
+    c1 = -0.017
+    c2 = 0.00554 / MAG
+    c3 = -0.000692 / MAG ** 2
     r_ps = ps[r]
 
-    r_cfht = r_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+    r_cfht = r_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
     return r_cfht
+
+
 # /def
 
 
@@ -249,26 +267,28 @@ def I_MP9701(ps, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    g, i = kw.get('g', 'g'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
+    g, i = kw.get("g", "g"), kw.get("i", "i")
+    gmi = kw.get("gmi", "g-i")
 
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * MAG < gmi) & (gmi < 4 * MAG)
+    ind = (-1.0 * MAG < gmi) & (gmi < 4 * MAG)
     if not all(ind):
-        warnings.warn('MCg1.I: not all -1 mag < (g-i)_ps < 4 mag')
+        warnings.warn("MCg1.I: not all -1 mag < (g-i)_ps < 4 mag")
 
-    c0 = .001 * MAG
-    c1 = -.021
-    c2 = .00398 / MAG
-    c3 = -.00369 / MAG**2
+    c0 = 0.001 * MAG
+    c1 = -0.021
+    c2 = 0.00398 / MAG
+    c3 = -0.00369 / MAG ** 2
     i_ps = ps[i]
 
-    i_cfht = i_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+    i_cfht = i_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
     return i_cfht
+
+
 # /def
 
 
@@ -312,31 +332,34 @@ def Z_MP9801(ps, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    g, i, z = kw.get('g', 'g'), kw.get('i', 'i'), kw.get('z', 'z')
-    gmi = kw.get('gmi', 'g-i')
+    g, i, z = kw.get("g", "g"), kw.get("i", "i"), kw.get("z", "z")
+    gmi = kw.get("gmi", "g-i")
 
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * MAG < gmi) & (gmi < 4 * MAG)
+    ind = (-1.0 * MAG < gmi) & (gmi < 4 * MAG)
     if not all(ind):
-        warnings.warn('MCg1.Z: not all -1 mag < (g-i)_ps < 4 mag')
+        warnings.warn("MCg1.Z: not all -1 mag < (g-i)_ps < 4 mag")
 
-    c0 = -.009 * MAG
-    c1 = -.029
-    c2 = .012 / MAG
-    c3 = -.00367 / MAG**2
+    c0 = -0.009 * MAG
+    c1 = -0.029
+    c2 = 0.012 / MAG
+    c3 = -0.00367 / MAG ** 2
     z_ps = ps[z]
 
-    z_cfht = z_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+    z_cfht = z_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
     return z_cfht
+
+
 # /def
 
 
 #############################################################################
 # Colors
+
 
 @quantity_io()
 def UmG(ps, **kw) -> MAG:
@@ -356,6 +379,8 @@ def UmG(ps, **kw) -> MAG:
 
     """
     return U_MP9301(ps, **kw) - G_MP9401(ps, **kw)
+
+
 # /def
 
 
@@ -377,6 +402,8 @@ def UmR(ps, **kw) -> MAG:
 
     """
     return U_MP9301(ps, **kw) - R_MP9601(ps, **kw)
+
+
 # /def
 
 
@@ -398,6 +425,8 @@ def UmI(ps, **kw) -> MAG:
 
     """
     return U_MP9301(ps, **kw) - I_MP9701(ps, **kw)
+
+
 # /def
 
 
@@ -419,6 +448,8 @@ def UmZ(ps, **kw) -> MAG:
 
     """
     return U_MP9301(ps, **kw) - Z_MP9801(ps, **kw)
+
+
 # /def
 
 
@@ -440,6 +471,8 @@ def GmR(ps, **kw) -> MAG:
 
     """
     return G_MP9401(ps, **kw) - R_MP9601(ps, **kw)
+
+
 # /def
 
 
@@ -461,6 +494,8 @@ def GmI(ps, **kw) -> MAG:
 
     """
     return G_MP9401(ps, **kw) - I_MP9701(ps, **kw)
+
+
 # /def
 
 
@@ -482,6 +517,8 @@ def GmZ(ps, **kw) -> MAG:
 
     """
     return G_MP9401(ps, **kw) - Z_MP9801(ps, **kw)
+
+
 # /def
 
 
@@ -503,6 +540,8 @@ def RmI(ps, **kw) -> MAG:
 
     """
     return R_MP9601(ps, **kw) - I_MP9701(ps, **kw)
+
+
 # /def
 
 
@@ -524,6 +563,8 @@ def RmZ(ps, **kw) -> MAG:
 
     """
     return R_MP9601(ps, **kw) - Z_MP9801(ps, **kw)
+
+
 # /def
 
 
@@ -545,6 +586,8 @@ def ImZ(ps, **kw) -> MAG:
 
     """
     return I_MP9701(ps, **kw) - Z_MP9801(ps, **kw)
+
+
 # /def
 
 #############################################################################

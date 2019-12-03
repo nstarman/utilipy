@@ -23,13 +23,19 @@ from typing import Any, Union, Optional
 ##############################################################################
 # LogPrint
 
+
 class LogPrint(object):
     """A basic logger wrapper for print."""
 
-    def __init__(self, verbose: int=0, sec_div: str='-',
-                 header: Union[str, bool, None]=None, show_header: bool=True,
-                 # for compatibility
-                 **kw: Any) -> None:
+    def __init__(
+        self,
+        verbose: int = 0,
+        sec_div: str = "-",
+        header: Union[str, bool, None] = None,
+        show_header: bool = True,
+        # for compatibility
+        **kw: Any,
+    ) -> None:
         """Initialize LogPrint.
 
         start the file header (just printing)
@@ -44,20 +50,26 @@ class LogPrint(object):
         # making file header
         if header is not False:
             if header in {None, True}:
-                header = ''
-            elif header[-1] != ' ':  # making sure ends in space
-                header += ' '
+                header = ""
+            elif header[-1] != " ":  # making sure ends in space
+                header += " "
 
-            self.write(f"{header}Log:", endsection='=', print=show_header)
+            self.write(f"{header}Log:", endsection="=", print=show_header)
         return
+
     # /def
 
     # ------------------------------------------------------------------------
 
     @classmethod
-    def open(cls, verbose: int=0, sec_div: str='-',
-             header: Union[bool, None, str]=None, show_header: bool=True,
-             **kw: Any) -> Any:
+    def open(
+        cls,
+        verbose: int = 0,
+        sec_div: str = "-",
+        header: Union[bool, None, str] = None,
+        show_header: bool = True,
+        **kw: Any,
+    ) -> Any:
         """Open LogPrint.
 
         TODO
@@ -65,14 +77,21 @@ class LogPrint(object):
         kw absorbs all extra kwargs to be consistent with LogFile
 
         """
-        return cls(verbose=verbose, sec_div=sec_div, header=header,
-                   show_header=show_header)
+        return cls(
+            verbose=verbose, sec_div=sec_div, header=header, show_header=show_header
+        )
+
     # /def
 
     @classmethod
-    def open_to_write(cls, verbose: int=0, sec_div: str='-',
-                      header: Union[bool, None, str]=None,
-                      show_header: bool=True, **kw: Any) -> Any:
+    def open_to_write(
+        cls,
+        verbose: int = 0,
+        sec_div: str = "-",
+        header: Union[bool, None, str] = None,
+        show_header: bool = True,
+        **kw: Any,
+    ) -> Any:
         """open_to_write.
 
         TODO
@@ -80,8 +99,10 @@ class LogPrint(object):
         **kw absorbs all extra kwargs to be consistent with LogFile
 
         """
-        return cls(verbose=verbose, sec_div=sec_div, header=header,
-                   show_header=show_header)
+        return cls(
+            verbose=verbose, sec_div=sec_div, header=header, show_header=show_header
+        )
+
     # /def
 
     @classmethod
@@ -102,12 +123,14 @@ class LogPrint(object):
 
         """
         return cls()
+
     # /def
 
     # ------------------------------------------------------------------------
 
-    def print(self, *text: str,
-              start: str='', sep: str=' ', end: str='\n') -> None:
+    def print(
+        self, *text: str, start: str = "", sep: str = " ", end: str = "\n"
+    ) -> None:
         r"""Wrap-function for print.
 
         Parameters
@@ -120,29 +143,32 @@ class LogPrint(object):
             the end for print
 
         """
-        print(start, end='')
+        print(start, end="")
         print(*text, sep=sep, end=end)
         return
+
     # /def
 
-    def _write(self, *string, start='', sep=' ', end='\n') -> None:
+    def _write(self, *string, start="", sep=" ", end="\n") -> None:
         """Writer method.
 
         this is implemented solely to be overwritten by child classes
 
         """
         pass
+
     # /def
 
-    def _print_and_write(self, *string, start='', sep=' ', end='\n') -> None:
+    def _print_and_write(self, *string, start="", sep=" ", end="\n") -> None:
         """Help method to print and call _write.
 
         this is implemented solely to be overwritten by child classes
 
         """
-        self.print(*string, start=start, sep=sep, end=end)   # printing
+        self.print(*string, start=start, sep=sep, end=end)  # printing
         self._write(*string, start=start, sep=sep, end=end)  # writing
         return
+
     # /def
 
     def newsection(self, title=None, div=None, print=True) -> None:
@@ -156,7 +182,7 @@ class LogPrint(object):
 
         """
         if title is None:
-            title = ''
+            title = ""
 
         if div is None:  # get default divider if custom one not provided
             div = self.sec_div
@@ -164,17 +190,23 @@ class LogPrint(object):
         full_div = div * int(79 / len(div))  # round out to full line length
 
         if print:
-            self._print_and_write(full_div, title,
-                                  start='\n', sep='\n', end='\n')
+            self._print_and_write(full_div, title, start="\n", sep="\n", end="\n")
         else:
-            self._write(full_div, title, start='\n', sep='\n', end='\n\n')
+            self._write(full_div, title, start="\n", sep="\n", end="\n\n")
         return
+
     # /def
 
-    def write(self, *text: str, start: str='', sep: str=' ', end: str='\n',
-              startsection: Union[bool, str]=False,
-              endsection: Union[bool, str]=False,
-              print: bool=True) -> None:
+    def write(
+        self,
+        *text: str,
+        start: str = "",
+        sep: str = " ",
+        end: str = "\n",
+        startsection: Union[bool, str] = False,
+        endsection: Union[bool, str] = False,
+        print: bool = True,
+    ) -> None:
         r"""Print text.
 
         Parameters
@@ -209,27 +241,47 @@ class LogPrint(object):
             else:
                 self.newsection(print=print)
         return
+
     # /def
 
-    def record(self, *text: str, start: str='', sep: str=' ', end: str='\n',
-               startsection: Union[bool, str]=False,
-               endsection: Union[bool, str]=False) -> None:
+    def record(
+        self,
+        *text: str,
+        start: str = "",
+        sep: str = " ",
+        end: str = "\n",
+        startsection: Union[bool, str] = False,
+        endsection: Union[bool, str] = False,
+    ) -> None:
         """Redirects to write, which goes to print.
 
         this is implemented solely for compatibility with LogFile
 
         """
-        self.write(*text, start=start, sep=sep, end=end,
-                   startsection=startsection, endsection=endsection,
-                   print=False)
+        self.write(
+            *text,
+            start=start,
+            sep=sep,
+            end=end,
+            startsection=startsection,
+            endsection=endsection,
+            print=False,
+        )
         return
+
     # /def
 
     # ------------------------------------------------------------------------
 
-    def report(self, *msgs: str, verbose: Optional[int]=None,
-               print: bool=True, write: bool=True, start_at: int=1, **kw: Any
-               ) -> None:
+    def report(
+        self,
+        *msgs: str,
+        verbose: Optional[int] = None,
+        print: bool = True,
+        write: bool = True,
+        start_at: int = 1,
+        **kw: Any,
+    ) -> None:
         """Report function whose message is determined by `verbose`.
 
         Parameters
@@ -255,14 +307,14 @@ class LogPrint(object):
         if verbose is None:
             verbose = self.verbose
 
-        if verbose < start_at:                 # below starting verbosity
+        if verbose < start_at:  # below starting verbosity
             msg = None
         elif verbose - start_at >= len(msgs):  # above / at last message
             msg = msgs[-1]
-        else:                                   # inside message options
+        else:  # inside message options
             msg = msgs[verbose - start_at]
 
-        if str(msg) == '':
+        if str(msg) == "":
             msg = None  # catching null messages
 
         if msg is not None:
@@ -271,6 +323,7 @@ class LogPrint(object):
             else:
                 self.print(msg, **kw)
         return
+
     # /def
 
     # ------------------------------------------------------------------------
@@ -282,12 +335,20 @@ class LogPrint(object):
 
         """
         pass
+
     # /def
 
     @classmethod
-    def read_log(cls, filename: str, buffering: int=-1, encoding: Any=None,
-                 errors: Any=None, newline: Any=None, closefd: bool=True,
-                 opener: None=None) -> str:
+    def read_log(
+        cls,
+        filename: str,
+        buffering: int = -1,
+        encoding: Any = None,
+        errors: Any = None,
+        newline: Any = None,
+        closefd: bool = True,
+        opener: None = None,
+    ) -> str:
         """Read and print out a previous log
 
         Parameters
@@ -301,14 +362,23 @@ class LogPrint(object):
         what should this return?
 
         """
-        file = open(filename, mode='r', buffering=buffering, encoding=encoding,
-                    errors=errors, newline=newline, closefd=closefd,
-                    opener=opener)
+        file = open(
+            filename,
+            mode="r",
+            buffering=buffering,
+            encoding=encoding,
+            errors=errors,
+            newline=newline,
+            closefd=closefd,
+            opener=opener,
+        )
         log = file.read()
 
         print(log)
         return log
+
     # /def
+
 
 # /class
 

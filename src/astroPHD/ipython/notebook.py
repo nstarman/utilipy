@@ -34,6 +34,7 @@ from IPython.display import HTML
 ##############################################################################
 # CODE
 
+
 def add_raw_code_toggle() -> HTML:
     """Add a toggle for code cells when Notebook is exported to HTML.
 
@@ -44,7 +45,8 @@ def add_raw_code_toggle() -> HTML:
     code from Jo Bovy
 
     """
-    return HTML("""<script>
+    return HTML(
+        """<script>
     code_show=true;
     function code_toggle() {
      if (code_show){
@@ -58,7 +60,10 @@ def add_raw_code_toggle() -> HTML:
     </script>
     <form action="javascript:code_toggle()">
     <input type="submit" value="Click here to toggle on/off the raw code.">
-    </form>""")
+    </form>"""
+    )
+
+
 # /def
 
 ##############################################################################

@@ -32,15 +32,20 @@ from pathlib import Path
 ##############################################################################
 # CODE
 
+
 def get_absolute_path(path: Union[str, Path]) -> Union[str, Path]:
     """Get absolute path."""
     return Path(path).resolve()
+
+
 # /def
 
 
 def parent_file_directory(path: Union[str, Path]) -> Union[str, Path]:
     """Parent file directory."""
     return Path(path).parent
+
+
 # /def
 
 ##############################################################################

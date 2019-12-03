@@ -42,9 +42,8 @@ __author__ = "Nathaniel Starkman"
 from astroPHD.util.config import __config__
 from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper,
-    _import_file_docstring_helper
+    _import_file_docstring_helper,
 )
-
 
 
 ##############################################################################
@@ -53,7 +52,7 @@ from astroPHD.decorators.docstring import (
 # Astropy
 import astropy
 
-from astropy import units as u             # units TODO replace with mine
+from astropy import units as u  # units TODO replace with mine
 from astropy import coordinates as coords  # coordinates
 
 from astropy.coordinates import SkyCoord
@@ -73,15 +72,18 @@ quantity_support()
 ##############################################################################
 # Printing Information
 
-@_set_docstring_import_file_helper('astropy', __doc__)  # doc from __doc__
+
+@_set_docstring_import_file_helper("astropy", __doc__)  # doc from __doc__
 def astropy_imports_help():
     """Help for extended base imports."""
     doc = _import_file_docstring_helper(astropy_imports_help.__doc__)
     print(doc)
+
+
 # /def
 
 
-if __config__.getboolean('verbosity', 'verbose-imports'):
+if __config__.getboolean("verbosity", "verbose-imports"):
     astropy_imports_help()
 
 ##############################################################################

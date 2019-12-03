@@ -31,37 +31,45 @@ _ns = globals()
 ##############################################################################
 # New Units
 
-def_unit(['m_s', 'mps'], represents=units.m / units.s,
-         doc='meter per second composite unit',
-         format={'latex': r'\frac{m}{s}',
-                 'latex_inline': r'm\,s^{-1}'},
-         namespace=_ns)
+def_unit(
+    ["m_s", "mps"],
+    represents=units.m / units.s,
+    doc="meter per second composite unit",
+    format={"latex": r"\frac{m}{s}", "latex_inline": r"m\,s^{-1}"},
+    namespace=_ns,
+)
 
-def_unit(['km_s', 'kmps'], represents=units.km / units.s,
-         doc='kilometer per second composite unit',
-         format={'latex': r'\frac{km}{s}',
-                 'latex_inline': r'km\,s^{-1}'},
-         namespace=_ns)
+def_unit(
+    ["km_s", "kmps"],
+    represents=units.km / units.s,
+    doc="kilometer per second composite unit",
+    format={"latex": r"\frac{km}{s}", "latex_inline": r"km\,s^{-1}"},
+    namespace=_ns,
+)
 
-def_unit(['km_sMPc', 'kmpspMpc', 'hubble'],
-         represents=units.km / units.s / units.Mpc,
-         doc='kilometer per second per Megaparsec composite unit',
-         format={'latex': r'\frac{km}{s Mpc}',
-                 'latex_inline': r'km\,s^{-1}\,{Mpc}^{-1}'},
-         namespace=_ns)
+def_unit(
+    ["km_sMPc", "kmpspMpc", "hubble"],
+    represents=units.km / units.s / units.Mpc,
+    doc="kilometer per second per Megaparsec composite unit",
+    format={"latex": r"\frac{km}{s Mpc}", "latex_inline": r"km\,s^{-1}\,{Mpc}^{-1}"},
+    namespace=_ns,
+)
 
-def_unit(['km_skpc', 'kmpspkpc'],
-         represents=units.km / units.s / units.kpc,
-         doc='kilometer per second per kiloparsec composite unit',
-         format={'latex': r'\frac{km}{s kpc}',
-                 'latex_inline': r'km\,s^{-1}\,{kpc}^{-1}'},
-         namespace=_ns)
+def_unit(
+    ["km_skpc", "kmpspkpc"],
+    represents=units.km / units.s / units.kpc,
+    doc="kilometer per second per kiloparsec composite unit",
+    format={"latex": r"\frac{km}{s kpc}", "latex_inline": r"km\,s^{-1}\,{kpc}^{-1}"},
+    namespace=_ns,
+)
 
-def_unit(['mas_yr', 'maspyr'], represents=units.mas / units.yr,
-         doc='milli-arcseconds / year composite unit',
-         format={'latex': r'\frac{mas}{yr}',
-                 'latex_inline': r'mas\,yr^{-1}'},
-         namespace=_ns)
+def_unit(
+    ["mas_yr", "maspyr"],
+    represents=units.mas / units.yr,
+    doc="milli-arcseconds / year composite unit",
+    format={"latex": r"\frac{mas}{yr}", "latex_inline": r"mas\,yr^{-1}"},
+    namespace=_ns,
+)
 
 
 ###########################################################################
@@ -76,11 +84,13 @@ def_unit(['mas_yr', 'maspyr'], represents=units.mas / units.yr,
 # mol = ('amount of substance', 'mole', 'mol', system)
 # cd = ('luminous intensity', 'candela', 'cd', system)
 
-def_unit(['kelvin'], represents=units.K,
-         doc='kelvin, AMUSE compatibility',
-         format={'latex': r'K',
-                 'latex_inline': r'K'},
-         namespace=_ns)
+def_unit(
+    ["kelvin"],
+    represents=units.K,
+    doc="kelvin, AMUSE compatibility",
+    format={"latex": r"K", "latex_inline": r"K"},
+    namespace=_ns,
+)
 
 # TODO SI prefixes
 # deca, hecto, kilo, mega, giga, tera, peta, exa, zetta, yotta,
@@ -115,19 +125,23 @@ def_unit(['kelvin'], represents=units.K,
 # ms = named('meter per seconds', 'ms', m / s)
 # kms = named('kilometer per seconds', 'kms', km / s)
 
-def_unit(['julianyr'], represents=365.25 * units.day,
-         doc='julian year, AMUSE compatibility',
-         format={'latex': r'365.25{\cdot}d',
-                 'latex_inline': r'365.25{\cdot}d'},
-         namespace=_ns)
+def_unit(
+    ["julianyr"],
+    represents=365.25 * units.day,
+    doc="julian year, AMUSE compatibility",
+    format={"latex": r"365.25{\cdot}d", "latex_inline": r"365.25{\cdot}d"},
+    namespace=_ns,
+)
 
 # CANNOT DO ms B/C MEANS millisecond in astropy
 
-def_unit(['kms'], represents=units.km / units.s,
-         doc='kilometer per second composite unit, AMUSE compatibility',
-         format={'latex': r'\frac{km}{s}',
-                 'latex_inline': r'\rm{km}\,\rm{s}^{-1}'},
-         namespace=_ns)
+def_unit(
+    ["kms"],
+    represents=units.km / units.s,
+    doc="kilometer per second composite unit, AMUSE compatibility",
+    format={"latex": r"\frac{km}{s}", "latex_inline": r"\rm{km}\,\rm{s}^{-1}"},
+    namespace=_ns,
+)
 
 # # units based on measured quantities
 # e = named('electron charge', 'e', constants.elementary_charge.as_unit())
@@ -138,21 +152,27 @@ def_unit(['kms'], represents=units.km / units.s,
 # amu = named('atomic mass unit', 'amu', constants.u.as_unit())
 # Ry = named('rydberg unit', 'Ry', (constants.Rydberg_constant * constants.h * constants.c).as_quantity_in(eV).as_unit())
 
-def_unit(['e'], represents=constants.e,
-         doc='electron charge, AMUSE compatibility',
-         format={'latex': r'|\rm{e}^{-1}|',
-                 'latex_inline': r'|\rm{e}^{-1}|'},
-         namespace=_ns)
-def_unit(['E_h', 'Hartree_energy'], represents=2 * units.Ry,
-         doc='Hartree energy, AMUSE compatibility',
-         format={'latex': r'2\rm{Ryd}',
-                 'latex_inline': r'2\rm{Ryd}'},
-         namespace=_ns)
-def_unit(['amu'], represents=units.u,
-         doc='atomic mass unit, AMUSE compatibility',
-         format={'latex': r'\rm{amu}',
-                 'latex_inline': r'\rm{amu}'},
-         namespace=_ns)
+def_unit(
+    ["e"],
+    represents=constants.e,
+    doc="electron charge, AMUSE compatibility",
+    format={"latex": r"|\rm{e}^{-1}|", "latex_inline": r"|\rm{e}^{-1}|"},
+    namespace=_ns,
+)
+def_unit(
+    ["E_h", "Hartree_energy"],
+    represents=2 * units.Ry,
+    doc="Hartree energy, AMUSE compatibility",
+    format={"latex": r"2\rm{Ryd}", "latex_inline": r"2\rm{Ryd}"},
+    namespace=_ns,
+)
+def_unit(
+    ["amu"],
+    represents=units.u,
+    doc="atomic mass unit, AMUSE compatibility",
+    format={"latex": r"\rm{amu}", "latex_inline": r"\rm{amu}"},
+    namespace=_ns,
+)
 
 # # astronomical units
 # angstrom = named('angstrom', 'angstrom', 1e-10*m)
@@ -178,67 +198,87 @@ def_unit(['amu'], represents=units.u,
 # Gyr = gyr
 # pc = parsec
 
-def_unit(['AUd'], represents=149597870691.0 * units.m / units.day,
-         doc='AU per day, AMUSE compatibility',
-         format={'latex': r'\rm{AUd}',
-                 'latex_inline': r'\rm{AUd}'},
-         namespace=_ns)
+def_unit(
+    ["AUd"],
+    represents=149597870691.0 * units.m / units.day,
+    doc="AU per day, AMUSE compatibility",
+    format={"latex": r"\rm{AUd}", "latex_inline": r"\rm{AUd}"},
+    namespace=_ns,
+)
 
-def_unit(['ly'], represents=units.lyr,
-         doc='light year, AMUSE compatibility',
-         format={'latex': r'\rm{lyr}',
-                 'latex_inline': r'\rm{lyr}'},
-         namespace=_ns)
+def_unit(
+    ["ly"],
+    represents=units.lyr,
+    doc="light year, AMUSE compatibility",
+    format={"latex": r"\rm{lyr}", "latex_inline": r"\rm{lyr}"},
+    namespace=_ns,
+)
 
-def_unit(['LSun'], represents=units.solLum,
-         doc='solar luminosity, AMUSE compatibility',
-         format={'latex': r'\rm{L}_{\odot}',
-                 'latex_inline': r'\rm{L}_{\odot}'},
-         namespace=_ns)
+def_unit(
+    ["LSun"],
+    represents=units.solLum,
+    doc="solar luminosity, AMUSE compatibility",
+    format={"latex": r"\rm{L}_{\odot}", "latex_inline": r"\rm{L}_{\odot}"},
+    namespace=_ns,
+)
 
-def_unit(['MSun'], represents=units.M_sun,
-         doc='solar mass, AMUSE compatibility',
-         format={'latex': r'\rm{M}_{\odot}',
-                 'latex_inline': r'\rm{M}_{\odot}'},
-         namespace=_ns)
+def_unit(
+    ["MSun"],
+    represents=units.M_sun,
+    doc="solar mass, AMUSE compatibility",
+    format={"latex": r"\rm{M}_{\odot}", "latex_inline": r"\rm{M}_{\odot}"},
+    namespace=_ns,
+)
 
-def_unit(['MJupiter'], represents=units.M_jup,
-         doc='Jupiter mass, AMUSE compatibility',
-         format={'latex': r'\rm{M}_{\rm{J}}',
-                 'latex_inline': r'\rm{M}_{\rm{J}}'},
-         namespace=_ns)
+def_unit(
+    ["MJupiter"],
+    represents=units.M_jup,
+    doc="Jupiter mass, AMUSE compatibility",
+    format={"latex": r"\rm{M}_{\rm{J}}", "latex_inline": r"\rm{M}_{\rm{J}}"},
+    namespace=_ns,
+)
 
-def_unit(['MEarth'], represents=units.M_earth,
-         doc='Jupiter mass, AMUSE compatibility',
-         format={'latex': r'\rm{M}_{\oplus}',
-                 'latex_inline': r'\rm{M}_{\oplus}'},
-         namespace=_ns)
+def_unit(
+    ["MEarth"],
+    represents=units.M_earth,
+    doc="Jupiter mass, AMUSE compatibility",
+    format={"latex": r"\rm{M}_{\oplus}", "latex_inline": r"\rm{M}_{\oplus}"},
+    namespace=_ns,
+)
 
-def_unit(['RSun'], represents=units.R_sun,
-         doc='solar radius, AMUSE compatibility',
-         format={'latex': r'\rm{R}_{\odot}',
-                 'latex_inline': r'\rm{R}_{\odot}'},
-         namespace=_ns)
+def_unit(
+    ["RSun"],
+    represents=units.R_sun,
+    doc="solar radius, AMUSE compatibility",
+    format={"latex": r"\rm{R}_{\odot}", "latex_inline": r"\rm{R}_{\odot}"},
+    namespace=_ns,
+)
 
-def_unit(['RJupiter'], represents=units.R_jup,
-         doc='Jupiter radius, AMUSE compatibility',
-         format={'latex': r'\rm{R}_{\rm{J}}',
-                 'latex_inline': r'\rm{R}_{\rm{J}}'},
-         namespace=_ns)
+def_unit(
+    ["RJupiter"],
+    represents=units.R_jup,
+    doc="Jupiter radius, AMUSE compatibility",
+    format={"latex": r"\rm{R}_{\rm{J}}", "latex_inline": r"\rm{R}_{\rm{J}}"},
+    namespace=_ns,
+)
 
-def_unit(['REarth'], represents=units.R_earth,
-         doc='Jupiter radius, AMUSE compatibility',
-         format={'latex': r'\rm{R}_{\oplus}',
-                 'latex_inline': r'\rm{R}_{\oplus}'},
-         namespace=_ns)
+def_unit(
+    ["REarth"],
+    represents=units.R_earth,
+    doc="Jupiter radius, AMUSE compatibility",
+    format={"latex": r"\rm{R}_{\oplus}", "latex_inline": r"\rm{R}_{\oplus}"},
+    namespace=_ns,
+)
 
 # CANNOT DO myr B/C MEANS milliyear in astropy
 
-def_unit(['gyr'], represents=units.Gyr,
-         doc='giga year, AMUSE compatibility',
-         format={'latex': r'\rm{Gyr}',
-                 'latex_inline': r'\rm{Gyr}'},
-         namespace=_ns)
+def_unit(
+    ["gyr"],
+    represents=units.Gyr,
+    doc="giga year, AMUSE compatibility",
+    format={"latex": r"\rm{Gyr}", "latex_inline": r"\rm{Gyr}"},
+    namespace=_ns,
+)
 
 # # cgs units
 # g = named('gram','g', 1e-3 * kg)
@@ -255,11 +295,13 @@ def_unit(['gyr'], represents=units.Gyr,
 # arcmin=named('arcminutes', 'arcmin', (1./60) * deg)
 # arcsec=named('arcseconds', 'arcsec', (1./3600) * deg)
 
-def_unit(['pi'], represents=np.pi * units.rad,
-         doc='pi radians, AMUSE compatibility',
-         format={'latex': r'\pi\rm{rad}',
-                 'latex_inline': r'\pi\rm{rad}'},
-         namespace=_ns)
+def_unit(
+    ["pi"],
+    represents=np.pi * units.rad,
+    doc="pi radians, AMUSE compatibility",
+    format={"latex": r"\pi\rm{rad}", "latex_inline": r"\pi\rm{rad}"},
+    namespace=_ns,
+)
 
 
 ##############################################################################

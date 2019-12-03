@@ -3,13 +3,9 @@
 """PanSTARRS 1 bands from Mega-Cam gen1 bands."""
 
 __author__ = "Nathaniel Starkman"
-__credits__ = [
-    "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
-]
+__credits__ = ["http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"]
 
-__all__ = [
-    'U_MP9302', 'G_MP9402', 'R_MP9602', 'I_MP9703', 'Z_MP9901', 'GRI_MP9605'
-]
+__all__ = ["U_MP9302", "G_MP9402", "R_MP9602", "I_MP9703", "Z_MP9901", "GRI_MP9605"]
 
 
 #############################################################################
@@ -26,6 +22,7 @@ from ..units import quantity_io, mag as MAG
 #############################################################################
 # CODE
 #############################################################################
+
 
 @quantity_io()
 def U_MP9302(ps, **kw) -> MAG:
@@ -64,26 +61,28 @@ def U_MP9302(ps, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    g, i = kw.get('g', 'g'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
+    g, i = kw.get("g", "g"), kw.get("i", "i")
+    gmi = kw.get("gmi", "g-i")
 
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (.3 * MAG < gmi) & (gmi < 1.5 * MAG)
+    ind = (0.3 * MAG < gmi) & (gmi < 1.5 * MAG)
     if not all(ind):
-        warnings.warn('MCg1.U: not all .3 mag < (g-i)_ps < 1.5 mag')
+        warnings.warn("MCg1.U: not all .3 mag < (g-i)_ps < 1.5 mag")
 
-    c0 = .823 * MAG
+    c0 = 0.823 * MAG
     c1 = -1.360
     c2 = 4.18 / MAG
-    c3 = -1.64 / MAG**2
+    c3 = -1.64 / MAG ** 2
     g_ps = ps[g]
 
-    u_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+    u_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
     return u_cfht
+
+
 # /def
 
 
@@ -124,26 +123,28 @@ def G_MP9402(ps, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    g, i = kw.get('g', 'g'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
+    g, i = kw.get("g", "g"), kw.get("i", "i")
+    gmi = kw.get("gmi", "g-i")
 
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * MAG < gmi) & (gmi < 4 * MAG)
+    ind = (-1.0 * MAG < gmi) & (gmi < 4 * MAG)
     if not all(ind):
-        warnings.warn('MCg1.G: not all -1 mag < (g-i)_ps < 4 mag')
+        warnings.warn("MCg1.G: not all -1 mag < (g-i)_ps < 4 mag")
 
-    c0 = .014 * MAG
-    c1 = .059
-    c2 = -.00313 / MAG
-    c3 = -.00178 / MAG**2
+    c0 = 0.014 * MAG
+    c1 = 0.059
+    c2 = -0.00313 / MAG
+    c3 = -0.00178 / MAG ** 2
     g_ps = ps[g]
 
-    g_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+    g_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
     return g_cfht
+
+
 # /def
 
 
@@ -187,26 +188,28 @@ def R_MP9602(ps, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    g, r, i = kw.get('g', 'g'), kw.get('r', 'r'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
+    g, r, i = kw.get("g", "g"), kw.get("r", "r"), kw.get("i", "i")
+    gmi = kw.get("gmi", "g-i")
 
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * MAG < gmi) & (gmi < 3. * MAG)
+    ind = (-1.0 * MAG < gmi) & (gmi < 3.0 * MAG)
     if not all(ind):
-        warnings.warn('MCg1.R: not all -1 mag < (g-i)_ps < 3 mag')
+        warnings.warn("MCg1.R: not all -1 mag < (g-i)_ps < 3 mag")
 
-    c0 = .003 * MAG
-    c1 = -.050
-    c2 = .0125 / MAG
-    c3 = -.00699 / MAG**2
+    c0 = 0.003 * MAG
+    c1 = -0.050
+    c2 = 0.0125 / MAG
+    c3 = -0.00699 / MAG ** 2
     r_ps = ps[r]
 
-    r_cfht = r_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+    r_cfht = r_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
     return r_cfht
+
+
 # /def
 
 
@@ -247,31 +250,33 @@ def I_MP9703(ps, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    g, i = kw.get('g', 'g'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
+    g, i = kw.get("g", "g"), kw.get("i", "i")
+    gmi = kw.get("gmi", "g-i")
 
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * MAG < gmi) & (gmi < 3.6 * MAG)
+    ind = (-1.0 * MAG < gmi) & (gmi < 3.6 * MAG)
     if not all(ind):
-        warnings.warn('MCg1.I: not all -1 mag < (g-i)_ps < 3.6 mag')
+        warnings.warn("MCg1.I: not all -1 mag < (g-i)_ps < 3.6 mag")
 
-    c0 = .006 * MAG
-    c1 = -.024
-    c2 = .00627 / MAG
-    c3 = -.00523 / MAG**2
+    c0 = 0.006 * MAG
+    c1 = -0.024
+    c2 = 0.00627 / MAG
+    c3 = -0.00523 / MAG ** 2
     i_ps = ps[i]
 
-    i_cfht = i_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+    i_cfht = i_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
     return i_cfht
+
+
 # /def
 
 
 @quantity_io()
-def Z_MP9901(ps, g='g', i='i', z='z', gmi='g-i', **kw) -> MAG:
+def Z_MP9901(ps, g="g", i="i", z="z", gmi="g-i", **kw) -> MAG:
     r"""Convert Pan-STARRS1 bands to CFHT Z-MP9901 band.
 
     Parameters
@@ -315,18 +320,20 @@ def Z_MP9901(ps, g='g', i='i', z='z', gmi='g-i', **kw) -> MAG:
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * MAG < gmi) & (gmi < 4. * MAG)
+    ind = (-1.0 * MAG < gmi) & (gmi < 4.0 * MAG)
     if not all(ind):
-        warnings.warn('MCg1.Z: not all -1 mag < (g-i)_ps < 4 mag')
+        warnings.warn("MCg1.Z: not all -1 mag < (g-i)_ps < 4 mag")
 
-    c0 = -.016 * MAG
-    c1 = -.069
-    c2 = .0239 / MAG
-    c3 = -.0056 / MAG**2
+    c0 = -0.016 * MAG
+    c1 = -0.069
+    c2 = 0.0239 / MAG
+    c3 = -0.0056 / MAG ** 2
     z_ps = ps[z]
 
-    z_cfht = z_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+    z_cfht = z_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
     return z_cfht
+
+
 # /def
 
 
@@ -370,27 +377,29 @@ def GRI_MP9605(ps, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_
 
     """
-    g, r, i = kw.get('g', 'g'), kw.get('r', 'r'), kw.get('i', 'i')
-    gmi = kw.get('gmi', 'g-i')
+    g, r, i = kw.get("g", "g"), kw.get("r", "r"), kw.get("i", "i")
+    gmi = kw.get("gmi", "g-i")
 
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (-1. * MAG < gmi) & (gmi < 1.2 * MAG)
+    ind = (-1.0 * MAG < gmi) & (gmi < 1.2 * MAG)
     if not all(ind):
-        warnings.warn('MCg1.G: not all -1 mag < (g-i)_ps < 1.2 mag')
+        warnings.warn("MCg1.G: not all -1 mag < (g-i)_ps < 1.2 mag")
 
-    c0 = .005 * MAG
-    c1 = .244
-    c2 = -.0692 / MAG
-    c3 = -.0014 / MAG**2
+    c0 = 0.005 * MAG
+    c1 = 0.244
+    c2 = -0.0692 / MAG
+    c3 = -0.0014 / MAG ** 2
     r_ps = ps[r]
 
-    r_cfht = r_ps + c0 + (c1 * gmi) + (c2 * gmi**2) + (c3 * gmi**3)
+    r_cfht = r_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
 
     return r_cfht
+
+
 # /def
 
 #############################################################################

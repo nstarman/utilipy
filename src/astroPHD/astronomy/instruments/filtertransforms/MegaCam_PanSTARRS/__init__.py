@@ -12,9 +12,7 @@
 """MegaCam_Panstarrs."""
 
 __author__ = "Nathaniel Starkman"
-__credits__ = [
-    "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
-]
+__credits__ = ["http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"]
 
 
 #############################################################################
@@ -36,60 +34,77 @@ from .MCgen1_PS1 import (
     R_MP9601,
     I_MP9701,
     Z_MP9801,
-    umg_MC as umg_MC1PS1, umr_MC as umr_MC1PS1, umi_MC as umi_MC1PS1,
+    umg_MC as umg_MC1PS1,
+    umr_MC as umr_MC1PS1,
+    umi_MC as umi_MC1PS1,
     umz_MC as umz_MC1PS1,
-    gmr_MC as gmr_MC1PS1, gmi_MC as gmi_MC1PS1, gmz_MC as gmz_MC1PS1,
-    rmi_MC as rmi_MC1PS1, rmz_MC as rmz_MC1PS1,
+    gmr_MC as gmr_MC1PS1,
+    gmi_MC as gmi_MC1PS1,
+    gmz_MC as gmz_MC1PS1,
+    rmi_MC as rmi_MC1PS1,
+    rmz_MC as rmz_MC1PS1,
     imz_MC as imz_MC1PS1,
-
     # PS1_from_MegaCamGen1
-    g_PS as g_PS1MC1, r_PS as r_PS1MC1, i_PS as i_PS1MC1, z_PS as z_PS1MC1,
-    gmr_PS as gmr_PS1MC1, gmi_PS as gmi_PS1MC1, gmz_PS as gmz_PS1MC1,
-    rmi_PS as rmi_PS1MC1, rmz_PS as rmz_PS1MC1,
+    g_PS as g_PS1MC1,
+    r_PS as r_PS1MC1,
+    i_PS as i_PS1MC1,
+    z_PS as z_PS1MC1,
+    gmr_PS as gmr_PS1MC1,
+    gmi_PS as gmi_PS1MC1,
+    gmz_PS as gmz_PS1MC1,
+    rmi_PS as rmi_PS1MC1,
+    rmz_PS as rmz_PS1MC1,
     imz_PS as imz_PS1MC1,
-
     # mixed
-    mixed as mixed_MC1PS1, mixed as mixed_PS1MC1
+    mixed as mixed_MC1PS1,
+    mixed as mixed_PS1MC1,
 )
 
 from .MCgen2_PS1 import (
     # MegaCamGen2_from_PS1
     I_MP9702,
-
     # PS1_from_MegaCamGen2
-
     # mixed
-    mixed as mixed_MC2PS1, mixed as mixed_PS1MC2
+    mixed as mixed_MC2PS1,
+    mixed as mixed_PS1MC2,
 )
 
 from .MCgen3_PS1 import (
     # MegaCamGen3_from_PS1
-    U_MP9302, G_MP9402, R_MP9602, I_MP9703, Z_MP9901,
+    U_MP9302,
+    G_MP9402,
+    R_MP9602,
+    I_MP9703,
+    Z_MP9901,
     GRI_MP9605,
-
     # PS1_from_MegaCamGen3
-
     # mixed
-    mixed as mixed_MC3PS1, mixed as mixed_PS1MC3
+    mixed as mixed_MC3PS1,
+    mixed as mixed_PS1MC3,
 )
 
 #############################################################################
 # CODE
 #############################################################################
 
+
 def _b1mb2(ps: Any, band1: str, band2: str, **kw: Any) -> Any:
     """B1 - B2."""
     b1 = globals().get(band1)
     b2 = globals().get(band2)
     return b1(ps, **kw) - b2(ps, **kw)
+
+
 # /def
 
 
 @quantity_io()
-def UmG(ps: Table,
-        u_band: Literal['9301', '9302']='9302',
-        g_band: Literal['9401', '9402']='9402',
-        **kw) -> MAG:
+def UmG(
+    ps: Table,
+    u_band: Literal["9301", "9302"] = "9302",
+    g_band: Literal["9401", "9402"] = "9402",
+    **kw
+) -> MAG:
     """U-G color.
 
     Parameters
@@ -113,15 +128,19 @@ def UmG(ps: Table,
     U-G color
 
     """
-    return _b1mb2(ps, 'U_MP' + u_band, 'G_MP' + g_band, **kw)
+    return _b1mb2(ps, "U_MP" + u_band, "G_MP" + g_band, **kw)
+
+
 # /def
 
 
 @quantity_io()
-def UmR(ps: Table,
-        u_band: Literal['9301', '9302']='9302',
-        r_band: Literal['9601', '9602']='9602',
-        **kw) -> MAG:
+def UmR(
+    ps: Table,
+    u_band: Literal["9301", "9302"] = "9302",
+    r_band: Literal["9601", "9602"] = "9602",
+    **kw
+) -> MAG:
     """U-R color.
 
     Parameters
@@ -145,15 +164,19 @@ def UmR(ps: Table,
     U-R color
 
     """
-    return _b1mb2(ps, 'U_MP' + u_band, 'R_MP' + r_band, **kw)
+    return _b1mb2(ps, "U_MP" + u_band, "R_MP" + r_band, **kw)
+
+
 # /def
 
 
 @quantity_io()
-def UmI(ps: Table,
-        u_band: Literal['9301', '9302']='9302',
-        i_band: Literal['9701', '9702', '9703']='9703',
-        **kw) -> MAG:
+def UmI(
+    ps: Table,
+    u_band: Literal["9301", "9302"] = "9302",
+    i_band: Literal["9701", "9702", "9703"] = "9703",
+    **kw
+) -> MAG:
     """U-I color.
 
     Parameters
@@ -177,15 +200,19 @@ def UmI(ps: Table,
     U-I color
 
     """
-    return _b1mb2(ps, 'U_MP' + u_band, 'I_MP' + i_band, **kw)
+    return _b1mb2(ps, "U_MP" + u_band, "I_MP" + i_band, **kw)
+
+
 # /def
 
 
 @quantity_io()
-def UmZ(ps: Table,
-        u_band: Literal['9301', '9302']='9302',
-        z_band: Literal['9801', '9901']='9901',
-        **kw) -> MAG:
+def UmZ(
+    ps: Table,
+    u_band: Literal["9301", "9302"] = "9302",
+    z_band: Literal["9801", "9901"] = "9901",
+    **kw
+) -> MAG:
     """U-Z color.
 
     Parameters
@@ -209,15 +236,19 @@ def UmZ(ps: Table,
     U-Z color
 
     """
-    return _b1mb2(ps, 'U_MP' + u_band, 'Z_MP' + z_band, **kw)
+    return _b1mb2(ps, "U_MP" + u_band, "Z_MP" + z_band, **kw)
+
+
 # /def
 
 
 @quantity_io()
-def GmR(ps: Table,
-        g_band: Literal['9401', '9402']='9402',
-        r_band: Literal['9601', '9602']='9602',
-        **kw) -> MAG:
+def GmR(
+    ps: Table,
+    g_band: Literal["9401", "9402"] = "9402",
+    r_band: Literal["9601", "9602"] = "9602",
+    **kw
+) -> MAG:
     """G-R color.
 
     Parameters
@@ -241,15 +272,19 @@ def GmR(ps: Table,
     G-R color
 
     """
-    return _b1mb2(ps, 'G_MP' + g_band, 'R_MP' + r_band, **kw)
+    return _b1mb2(ps, "G_MP" + g_band, "R_MP" + r_band, **kw)
+
+
 # /def
 
 
 @quantity_io()
-def GmI(ps: Table,
-        g_band: Literal['9401', '9402']='9402',
-        i_band: Literal['9701', '9702', '9703']='9703',
-        **kw) -> MAG:
+def GmI(
+    ps: Table,
+    g_band: Literal["9401", "9402"] = "9402",
+    i_band: Literal["9701", "9702", "9703"] = "9703",
+    **kw
+) -> MAG:
     """G-I color.
 
     Parameters
@@ -273,15 +308,19 @@ def GmI(ps: Table,
     G-I color
 
     """
-    return _b1mb2(ps, 'G_MP' + g_band, 'I_MP' + i_band, **kw)
+    return _b1mb2(ps, "G_MP" + g_band, "I_MP" + i_band, **kw)
+
+
 # /def
 
 
 @quantity_io()
-def GmZ(ps: Table,
-        g_band: Literal['9401', '9402']='9402',
-        z_band: Literal['9801', '9901']='9901',
-        **kw) -> MAG:
+def GmZ(
+    ps: Table,
+    g_band: Literal["9401", "9402"] = "9402",
+    z_band: Literal["9801", "9901"] = "9901",
+    **kw
+) -> MAG:
     """G-Z color.
 
     Parameters
@@ -305,15 +344,19 @@ def GmZ(ps: Table,
     G-Z color
 
     """
-    return _b1mb2(ps, 'G_MP' + g_band, 'Z_MP' + z_band, **kw)
+    return _b1mb2(ps, "G_MP" + g_band, "Z_MP" + z_band, **kw)
+
+
 # /def
 
 
 @quantity_io()
-def RmI(ps: Table,
-        r_band: Literal['9601', '9602']='9602',
-        i_band: Literal['9701', '9702', '9703']='9703',
-        **kw) -> MAG:
+def RmI(
+    ps: Table,
+    r_band: Literal["9601", "9602"] = "9602",
+    i_band: Literal["9701", "9702", "9703"] = "9703",
+    **kw
+) -> MAG:
     """R-I color.
 
     Parameters
@@ -337,15 +380,19 @@ def RmI(ps: Table,
     R-I color
 
     """
-    return _b1mb2(ps, 'R_MP' + r_band, 'I_MP' + i_band, **kw)
+    return _b1mb2(ps, "R_MP" + r_band, "I_MP" + i_band, **kw)
+
+
 # /def
 
 
 @quantity_io()
-def RmZ(ps: Table,
-        r_band: Literal['9601', '9602']='9602',
-        z_band: Literal['9801', '9901']='9901',
-        **kw) -> MAG:
+def RmZ(
+    ps: Table,
+    r_band: Literal["9601", "9602"] = "9602",
+    z_band: Literal["9801", "9901"] = "9901",
+    **kw
+) -> MAG:
     """R-Z color.
 
     Parameters
@@ -369,15 +416,19 @@ def RmZ(ps: Table,
     R-Z color
 
     """
-    return _b1mb2(ps, 'R_MP' + r_band, 'Z_MP' + z_band, **kw)
+    return _b1mb2(ps, "R_MP" + r_band, "Z_MP" + z_band, **kw)
+
+
 # /def
 
 
 @quantity_io()
-def ImZ(ps: Table,
-        i_band: Literal['9701', '9702', '9703']='9703',
-        z_band: Literal['9801', '9901']='9901',
-        **kw) -> MAG:
+def ImZ(
+    ps: Table,
+    i_band: Literal["9701", "9702", "9703"] = "9703",
+    z_band: Literal["9801", "9901"] = "9901",
+    **kw
+) -> MAG:
     """G-I color.
 
     Parameters
@@ -401,7 +452,9 @@ def ImZ(ps: Table,
     I-Z color
 
     """
-    return _b1mb2(ps, 'I_MP' + i_band, 'Z_MP' + z_band, **kw)
+    return _b1mb2(ps, "I_MP" + i_band, "Z_MP" + z_band, **kw)
+
+
 # /def
 
 #############################################################################

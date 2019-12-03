@@ -18,11 +18,14 @@ __author__ = "Nathaniel Starkman"
 from astropy.units import *
 from astropy.units import (  # explicit imports for mypy compatibility
     # units
-    rad, deg,
-    m, AU, pc,
+    rad,
+    deg,
+    m,
+    AU,
+    pc,
     mag,
     # functions
-    get_physical_type
+    get_physical_type,
 )
 
 # Custom Imports

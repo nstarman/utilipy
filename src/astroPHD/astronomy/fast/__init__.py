@@ -24,12 +24,16 @@ __author__ = "Nathaniel Starkman"
 
 from .functions import (
     # magnitudes
-    apparent_to_absolute_magnitude, absolute_to_apparent_magnitude,
+    apparent_to_absolute_magnitude,
+    absolute_to_apparent_magnitude,
     # distance modulus
-    distanceModulus_magnitude, distanceModulus_distance,
+    distanceModulus_magnitude,
+    distanceModulus_distance,
     distanceModulus,
     # parallax
-    parallax_angle, parallax_distance, parallax,
+    parallax_angle,
+    parallax_distance,
+    parallax,
     # angular separation
     max_angular_separation,
 )

@@ -19,15 +19,14 @@ from typing import Any, Union, Callable, Optional
 # CODE
 
 
-class DecoratorBaseClass():
+class DecoratorBaseClass:
     """DecoratorBaseClass."""
 
     @staticmethod
     def _doc_func(docstring: str) -> str:
         return docstring
 
-    def __new__(cls, func: Optional[Callable]=None,
-                **kwargs: Any) -> object:
+    def __new__(cls, func: Optional[Callable] = None, **kwargs: Any) -> object:
         """__new__.
 
         this is a quick and dirty method for class-based decorator creation
@@ -51,10 +50,10 @@ class DecoratorBaseClass():
             # for when using as a @decorator
             # __init__ will be automatically called after this
             return self
+
     # /def
 
-    def __init__(self, func: Optional[Callable]=None,
-                 **kwargs: Any) -> None:
+    def __init__(self, func: Optional[Callable] = None, **kwargs: Any) -> None:
         """__init__.
 
         these are stored to be used inside of __call__
@@ -71,11 +70,13 @@ class DecoratorBaseClass():
         self.__post_init__()
 
         return
+
     # /def
 
     def __post_init__(self) -> None:
         """__post_init__."""
         pass
+
     # /def
 
     def _edit_docstring(self, wrapper: Callable) -> Callable:
@@ -90,12 +91,15 @@ class DecoratorBaseClass():
         # wrapper._doc_func = self._doc_func
 
         return wrapper
+
     # /def
 
     def __call__(self, wrapper: Callable) -> Callable:
         """__call__."""
         return self._edit_docstring(wrapper)
+
     # /def
+
 
 # /class
 

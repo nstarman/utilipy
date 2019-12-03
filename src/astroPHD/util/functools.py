@@ -40,17 +40,28 @@ from typing import Any, Union, Callable, Sequence, Optional
 from functools import *
 
 # Project-Specific
-from .inspect import Signature as _Signature, cleandoc as _cleandoc
-from .inspect._signature import _VAR_POSITIONAL, _KEYWORD_ONLY, _VAR_KEYWORD
+from .inspect import (
+    Signature as _Signature,
+    cleandoc as _cleandoc,
+    _VAR_POSITIONAL,
+    _KEYWORD_ONLY,
+    _VAR_KEYWORD,
+)
 
 
 ################################################################################
 # CODE
 ################################################################################
 
-def makeFunction(code: Any, globals_: Any, name: Optional[str]=None,
-                 signature: _Signature=None, docstring: str=None,
-                 closure: Any=None):
+
+def makeFunction(
+    code: Any,
+    globals_: Any,
+    name: Optional[str] = None,
+    signature: _Signature = None,
+    docstring: str = None,
+    closure: Any = None,
+):
     """Make a function with a specified signature and docstring.
 
     This is pure python and may not make the fastest functions
@@ -78,17 +89,18 @@ def makeFunction(code: Any, globals_: Any, name: Optional[str]=None,
 
     """
     if not isinstance(signature, _Signature):  # not my custom signature
-        signature = _Signature(parameters=signature.parameters,
-                               return_annotation=signature.return_annotation,
-                               # docstring=docstring  # not yet implemented
-                               )
+        signature = _Signature(
+            parameters=signature.parameters,
+            return_annotation=signature.return_annotation,
+            # docstring=docstring  # not yet implemented
+        )
     else:
         pass  # docstring considerations not yet implemented
 
     # make function
-    function = types.FunctionType(code, globals_, name=name,
-                                  argdefs=signature.defaults,
-                                  closure=closure)
+    function = types.FunctionType(
+        code, globals_, name=name, argdefs=signature.defaults, closure=closure
+    )
 
     # assign properties not (properly) handled by FunctionType
     function.__kwdefaults__ = signature.__kwdefaults__
@@ -97,23 +109,31 @@ def makeFunction(code: Any, globals_: Any, name: Optional[str]=None,
     function.__doc__ = docstring
 
     return function
+
+
 # /def
 
 
 # -----------------------------------------------------------------------------
 
+
 def copy_function(func: Callable):
     """Copy an existing function."""
-    function = makeFunction(func.__code__, func.__globals__,
-                            name=func.__name__,
-                            signature=inspect.signature(func),
-                            docstring=func.__doc__,
-                            closure=func.__closure__)
+    function = makeFunction(
+        func.__code__,
+        func.__globals__,
+        name=func.__name__,
+        signature=inspect.signature(func),
+        docstring=func.__doc__,
+        closure=func.__closure__,
+    )
 
     # TODO necessary?
     function.__dict__.update(func.__dict__)
 
     return function
+
+
 # /def
 
 
@@ -121,18 +141,26 @@ def copy_function(func: Callable):
 # update_wrapper() and wraps() decorator
 ################################################################################
 
-WRAPPER_ASSIGNMENTS = ('__module__', '__name__', '__qualname__',
-                       '__doc__', '__annotations__')
-SIGNATURE_ASSIGNMENTS = ('__kwdefaults__', '__annotations__')
-WRAPPER_UPDATES = ('__dict__',)
+WRAPPER_ASSIGNMENTS = (
+    "__module__",
+    "__name__",
+    "__qualname__",
+    "__doc__",
+    "__annotations__",
+)
+SIGNATURE_ASSIGNMENTS = ("__kwdefaults__", "__annotations__")
+WRAPPER_UPDATES = ("__dict__",)
 
 
-def update_wrapper(wrapper: Callable, wrapped: Callable,
-                   signature: Union[_Signature, None, bool]=True,
-                   docstring: Union[str, None, bool]=None,
-                   assigned: Sequence[str]=WRAPPER_ASSIGNMENTS,
-                   updated: Sequence[str]=WRAPPER_UPDATES,
-                   _docstring_formatter: Optional[dict]=None):
+def update_wrapper(
+    wrapper: Callable,
+    wrapped: Callable,
+    signature: Union[_Signature, None, bool] = True,
+    docstring: Union[str, None, bool] = None,
+    assigned: Sequence[str] = WRAPPER_ASSIGNMENTS,
+    updated: Sequence[str] = WRAPPER_UPDATES,
+    _docstring_formatter: Optional[dict] = None,
+):
     """Update a wrapper function to look like the wrapped function.
 
     Parameters
@@ -185,25 +213,26 @@ def update_wrapper(wrapper: Callable, wrapped: Callable,
     if signature is True:
         _update_sig = True
         signature = _Signature.from_callable(wrapped)
-    elif signature in {None, False}:
+    elif signature in (None, False):
         pass
     else:  # convert to my signature object
         _update_sig = False
         if not (type(signature) == _Signature):  # not my custom signature
-            signature = _Signature(parameters=signature.parameters,
-                                   return_annotation=signature.return_annotation,
-                                   # docstring=docstring  # not yet implemented
-                                   )
+            signature = _Signature(
+                parameters=signature.parameters,
+                return_annotation=signature.return_annotation,
+                # docstring=docstring  # not yet implemented
+            )
         elif isinstance(signature, _Signature):  #  checking a signature object
             pass  # docstring considerations not yet implemented
         else:
-            raise ValueError('signature must be a Signature object')
+            raise ValueError("signature must be a Signature object")
 
     # need to get wrapper properties now
     wrapper_sig = _Signature.from_callable(wrapper)
 
-    wrapper_doc = (wrapper.__doc__ or '')
-    wrapper_doc = '\n'.join(wrapper_doc.split('\n')[1:])  # drop title
+    wrapper_doc = wrapper.__doc__ or ""
+    wrapper_doc = "\n".join(wrapper_doc.split("\n")[1:])  # drop title
 
     if _docstring_formatter is None:
         _docstring_formatter = {}
@@ -225,7 +254,7 @@ def update_wrapper(wrapper: Callable, wrapped: Callable,
     # ---------------------------------------
 
     # deal with signature
-    if signature in {None, False}:
+    if signature in (None, False):
         pass
 
     elif _update_sig:  # merge wrapped and wrapper signature
@@ -239,13 +268,18 @@ def update_wrapper(wrapper: Callable, wrapped: Callable,
             elif param.name in signature.parameters:
                 # ensure kind matching
                 if param.kind != signature.parameters[param.name].kind:
-                    raise TypeError(f'{param.name} must match kind in function signature')
+                    raise TypeError(
+                        f"{param.name} must match kind in function signature"
+                    )
                 # can only merge key-word only
                 if param.kind == _KEYWORD_ONLY:
                     signature.replace_parameter(
                         param.name,
-                        name=None, kind=None,  # inherit b/c matching
-                        default=param.default, annotation=param.annotation)
+                        name=None,
+                        kind=None,  # inherit b/c matching
+                        default=param.default,
+                        annotation=param.annotation,
+                    )
 
                     # track for docstring
                     _docstring_formatter[param.name] = param.default
@@ -255,7 +289,8 @@ def update_wrapper(wrapper: Callable, wrapped: Callable,
                 # can only merge key-word only
                 if param.kind == _KEYWORD_ONLY:
                     signature = signature.insert_parameter(
-                        signature.index_end_keyword_only, param)
+                        signature.index_end_keyword_only, param
+                    )
 
                     # track for docstring
                     _docstring_formatter[param.name] = param.default
@@ -289,10 +324,10 @@ def update_wrapper(wrapper: Callable, wrapped: Callable,
     if docstring is False:  # just inherit
         wrapper.__doc__ = wrapped.__doc__
     elif docstring is None:  # append wrapper docstring
-        wrapper_doc = '\n' + _cleandoc(wrapper_doc)
-        wrapper.__doc__ = (wrapped.__doc__ or '') + wrapper_doc
+        wrapper_doc = "\n" + _cleandoc(wrapper_doc)
+        wrapper.__doc__ = (wrapped.__doc__ or "") + wrapper_doc
     elif docstring is True:  # smart merge docstrings
-        raise ValueError('NOT YET IMPLEMENTED')
+        raise ValueError("NOT YET IMPLEMENTED")
     else:  # assign docstring
         wrapper.__doc__ = docstring
 
@@ -301,17 +336,22 @@ def update_wrapper(wrapper: Callable, wrapped: Callable,
     wrapper.__wrapped__ = wrapped
     # Return the wrapper so this can be used as a decorator via partial()
     return wrapper
+
+
 # /def
 
 
 # -----------------------------------------------------------------------------
 
-def wraps(wrapped: Callable,
-          signature: Union[_Signature, None, bool]=True,
-          docstring: Union[str, None, bool]=None,
-          assigned: Sequence[str]=WRAPPER_ASSIGNMENTS,
-          updated: Sequence[str]=WRAPPER_UPDATES,
-          _docstring_formatter: Optional[dict]=None):
+
+def wraps(
+    wrapped: Callable,
+    signature: Union[_Signature, None, bool] = True,
+    docstring: Union[str, None, bool] = None,
+    assigned: Sequence[str] = WRAPPER_ASSIGNMENTS,
+    updated: Sequence[str] = WRAPPER_UPDATES,
+    _docstring_formatter: Optional[dict] = None,
+):
     """Decorator factory to apply ``update_wrapper()`` to a wrapper function.
 
     Returns a decorator that invokes ``update_wrapper()`` with the decorated
@@ -321,10 +361,15 @@ def wraps(wrapped: Callable,
     ``update_wrapper()``.
 
     """
-    return partial(update_wrapper, wrapped=wrapped,
-                   signature=signature, docstring=docstring,
-                   assigned=assigned, updated=updated,
-                   _docstring_formatter=_docstring_formatter)
+    return partial(
+        update_wrapper,
+        wrapped=wrapped,
+        signature=signature,
+        docstring=docstring,
+        assigned=assigned,
+        updated=updated,
+        _docstring_formatter=_docstring_formatter,
+    )
 
 
 ##############################################################################

@@ -21,8 +21,10 @@ from ..util._domain_factory import domain_factory
 # CODE
 #############################################################################
 
-def degreeDecorator(inDegrees: list=[], outDegrees: list=[],
-                    roof: bool=False) -> Callable:
+
+def degreeDecorator(
+    inDegrees: list = [], outDegrees: list = [], roof: bool = False
+) -> Callable:
     """Decorator to transform angles from and to degrees if necessary
 
     Parameters
@@ -44,11 +46,13 @@ def degreeDecorator(inDegrees: list=[], outDegrees: list=[],
         def wrapper(function: Callable) -> Callable:
             @wraps(function)
             def wrapped(*args: Any, **kwargs: Any) -> Any:
-                isdeg: bool = kwargs.get('degree', False)
+                isdeg: bool = kwargs.get("degree", False)
                 # PRE
                 if isdeg:
-                    _args: list = [arg * np.pi / 180 if i in inDegrees else arg
-                                   for i, arg in enumerate(args)]
+                    _args: list = [
+                        arg * np.pi / 180 if i in inDegrees else arg
+                        for i, arg in enumerate(args)
+                    ]
 
                 # CALLING
                 out = function(*_args, **kwargs)
@@ -56,27 +60,35 @@ def degreeDecorator(inDegrees: list=[], outDegrees: list=[],
                 # POST
                 if isdeg:
                     for i in outDegrees:
-                        out[:, i] *= 180. / np.pi
+                        out[:, i] *= 180.0 / np.pi
                 return out
+
             # /def
             return wrapped
+
         # /def
         return wrapper
     # /def
 
     # else:  # need to adjust domains
 
-    indegs = [(x, lambda x: x) if np.isscalar(x)
-              else (x[0], domain_factory(*x[1:], roof=roof))
-              for x in inDegrees]
-    outdegs = [(x, lambda x: x) if np.isscalar(x)
-               else (x[0], domain_factory(*x[1:], roof=roof))
-               for x in outDegrees]
+    indegs = [
+        (x, lambda x: x)
+        if np.isscalar(x)
+        else (x[0], domain_factory(*x[1:], roof=roof))
+        for x in inDegrees
+    ]
+    outdegs = [
+        (x, lambda x: x)
+        if np.isscalar(x)
+        else (x[0], domain_factory(*x[1:], roof=roof))
+        for x in outDegrees
+    ]
 
     def wrapper(function: Callable):
         @wraps(function)
         def wrapped(*args: Any, **kwargs: Any) -> Any:
-            isdeg: bool = kwargs.get('degree', False)
+            isdeg: bool = kwargs.get("degree", False)
 
             # PRE
             newargs: list = list(args)
@@ -84,7 +96,7 @@ def degreeDecorator(inDegrees: list=[], outDegrees: list=[],
             func: Callable
             for i, func in indegs:  # adjusting domain of in args
                 if isdeg:  # deg -> rad
-                    newargs[i] = func(args[i] * np.pi / 180.)
+                    newargs[i] = func(args[i] * np.pi / 180.0)
                 else:  # already rad
                     newargs[i] = func(args[i])
 
@@ -99,10 +111,14 @@ def degreeDecorator(inDegrees: list=[], outDegrees: list=[],
                     out[:, i] = func(out[:, i])
 
             return out
+
         # /def
         return wrapped
+
     # /def
     return wrapper
+
+
 # /def
 
 #############################################################################

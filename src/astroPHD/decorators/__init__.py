@@ -23,9 +23,13 @@ from .dtype_decorator import (
     dtypeDecorator,
     dtypeDecoratorMaker,
     # standard types
-    intDecorator, floatDecorator, strDecorator, boolDecorator,
+    intDecorator,
+    floatDecorator,
+    strDecorator,
+    boolDecorator,
     # numpy
-    ndarrayDecorator, ndfloat64Decorator
+    ndarrayDecorator,
+    ndfloat64Decorator,
 )
 
 # bool array to index decorator

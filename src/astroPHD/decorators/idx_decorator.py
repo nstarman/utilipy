@@ -16,6 +16,7 @@
 # GENERAL
 from typing import Any, Union, Callable, Optional
 import numpy as np
+
 # from functools import wraps
 
 # PROJECT-SPECIFIC
@@ -25,8 +26,10 @@ from ..util import functools
 ##############################################################################
 # CODE
 
-def idxDecorator(function: Optional[Callable]=None, *,
-                 as_ind: bool=False) -> Callable:
+
+def idxDecorator(
+    function: Optional[Callable] = None, *, as_ind: bool = False
+) -> Callable:
     """Control whether to return boolean array or indices.
 
     for functions which return bool arrays
@@ -103,7 +106,7 @@ def idxDecorator(function: Optional[Callable]=None, *,
         return functools.partial(idxDecorator, as_ind=as_ind)
 
     @functools.wraps(function)
-    def wrapper(*args: Any, as_ind: bool=as_ind, **kwargs: Any) -> Any:
+    def wrapper(*args: Any, as_ind: bool = as_ind, **kwargs: Any) -> Any:
         """Docstring for wrapper.
 
         Other Parameters
@@ -119,9 +122,12 @@ def idxDecorator(function: Optional[Callable]=None, *,
             return np.where(np.asarray(return_) == True)
         else:
             return return_
+
     # /def
 
     return wrapper
+
+
 # /def
 
 

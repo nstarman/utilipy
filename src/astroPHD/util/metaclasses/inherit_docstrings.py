@@ -26,6 +26,7 @@ import inspect
 ##############################################################################
 # CODE
 
+
 class InheritDocstrings(type):
     """Docstring inheritance metaclass.
 
@@ -56,17 +57,20 @@ class InheritDocstrings(type):
 
     def __init__(cls, name: str, bases: Any, dct: dict) -> None:
         """Set up docstring inheritance."""
+
         def is_public_member(key):
             return (
-                (key.startswith('__') and key.endswith('__') and
-                 len(key) > 4) or not key.startswith('_')
-            )
+                key.startswith("__") and key.endswith("__") and len(key) > 4
+            ) or not key.startswith("_")
+
         # /def
 
         for key, val in dct.items():
-            if ((inspect.isfunction(val) or inspect.isdatadescriptor(val)) and
-                    is_public_member(key) and
-                    val.__doc__ is None):
+            if (
+                (inspect.isfunction(val) or inspect.isdatadescriptor(val))
+                and is_public_member(key)
+                and val.__doc__ is None
+            ):
 
                 for base in cls.__mro__[1:]:
                     super_method = getattr(base, key, None)
@@ -78,7 +82,10 @@ class InheritDocstrings(type):
 
         super().__init__(name, bases, dct)
         return
+
     # /def
+
+
 # /class
 
 ##############################################################################

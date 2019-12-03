@@ -26,6 +26,7 @@ from typing import Any, Union, Callable, Optional
 ##############################################################################
 # SemiStaticMethod
 
+
 class SemiStaticMethod(object):
     """Mixes a ``staticmethod`` and ``classmethod``.
 
@@ -65,20 +66,23 @@ class SemiStaticMethod(object):
 
     """
 
-    def __init__(self, func: Callable) ->  None:
+    def __init__(self, func: Callable) -> None:
         """Initialize with function."""
         self._func = func
 
-    def __get__(self, obj: Any, klass: Optional[object]=None) -> Callable:
+    def __get__(self, obj: Any, klass: Optional[object] = None) -> Callable:
         """Make a semi-static method."""
         if klass is None:
             klass = type(obj)
 
         def newfunc(*args: Any, **kwargs: Any):
             return self._func(obj, *args, **kwargs)
+
         # /def
         return newfunc
+
     # /def
+
 
 ##############################################################################
 # END

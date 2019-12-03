@@ -23,6 +23,7 @@ __author__ = "Nathaniel Starkman"
 # GENERAL
 from typing import Any, Union, Optional
 import pickle
+
 # import tempfile
 
 # PROJECT-SPECIFIC
@@ -38,12 +39,19 @@ _LOGFILE = LogPrint(header=False)
 #############################################################################
 # CODE
 
-@format_doc(None, odoc='\n\t'.join(pickle.dump.__doc__.split('\n')))
-def dump(obj: Any, fname: str, protocol: Any=None, *, fopt: str='b',
-         fix_imports: bool=True,
-         # logger
-         logger: LogPrint=_LOGFILE, verbose: Optional[int]=None
-         ) -> None:
+
+@format_doc(None, odoc="\n\t".join(pickle.dump.__doc__.split("\n")))
+def dump(
+    obj: Any,
+    fname: str,
+    protocol: Any = None,
+    *,
+    fopt: str = "b",
+    fix_imports: bool = True,
+    # logger
+    logger: LogPrint = _LOGFILE,
+    verbose: Optional[int] = None,
+) -> None:
     """Wrap pickle.dump.
 
     *fname* replaces *file* and is a string for the filename
@@ -56,15 +64,21 @@ def dump(obj: Any, fname: str, protocol: Any=None, *, fopt: str='b',
         {odoc}
 
     """
-    logger.report(f"dumping obj at {fname}",
-                  (f"dumping obj at {fname} with fopt='{'w' + fopt}, "
-                   f"protocol=protocol, fix_imports={fix_imports}'"),
-                  verbose=verbose)
+    logger.report(
+        f"dumping obj at {fname}",
+        (
+            f"dumping obj at {fname} with fopt='{'w' + fopt}, "
+            f"protocol=protocol, fix_imports={fix_imports}'"
+        ),
+        verbose=verbose,
+    )
 
-    with open(fname, 'w' + fopt) as file:
+    with open(fname, "w" + fopt) as file:
         pickle.dump(obj, file, protocol=protocol, fix_imports=fix_imports)
 
     return
+
+
 # /def
 
 
@@ -73,11 +87,19 @@ save = dump
 
 # --------------------------------------------------------------------------
 
-@format_doc(None, odoc='\n\t'.join(pickle.load.__doc__.split('\n')))
-def load(fname: str, *, fopt: str='b', fix_imports: bool=True,
-         encoding: str='ASCII', errors: str='strict',
-         # logger
-         logger: LogPrint=_LOGFILE, verbose: Optional[int]=None):
+
+@format_doc(None, odoc="\n\t".join(pickle.load.__doc__.split("\n")))
+def load(
+    fname: str,
+    *,
+    fopt: str = "b",
+    fix_imports: bool = True,
+    encoding: str = "ASCII",
+    errors: str = "strict",
+    # logger
+    logger: LogPrint = _LOGFILE,
+    verbose: Optional[int] = None,
+):
     """Wrap pickle.load.
 
     *fname* replaces *file* and is a string for the filename
@@ -90,16 +112,23 @@ def load(fname: str, *, fopt: str='b', fix_imports: bool=True,
         {odoc}
 
     """
-    logger.report(f"loading obj at {fname}",
-                  (f"loading obj at {fname} with fopt='{'r' + fopt}, "
-                   f"fix_imports={fix_imports}', encoding={encoding}, "
-                   f"errors={errors}"),
-                  verbose=verbose)
+    logger.report(
+        f"loading obj at {fname}",
+        (
+            f"loading obj at {fname} with fopt='{'r' + fopt}, "
+            f"fix_imports={fix_imports}', encoding={encoding}, "
+            f"errors={errors}"
+        ),
+        verbose=verbose,
+    )
 
-    with open(fname, 'r' + fopt) as file:
-        res = pickle.load(file, fix_imports=fix_imports,
-                          encoding=encoding, errors=errors)
+    with open(fname, "r" + fopt) as file:
+        res = pickle.load(
+            file, fix_imports=fix_imports, encoding=encoding, errors=errors
+        )
     return res
+
+
 # /def
 
 # --------------------------------------------------------------------------

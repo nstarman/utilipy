@@ -32,9 +32,14 @@ from astropy.utils.misc import isiterable
 # CODE
 ###############################################################################
 
-def unit_output(res: Any, unit: Unit=None, to_value: bool=False,
-                equivalencies: Sequence=[],
-                decompose: Union[bool, Sequence]=False) -> Any:
+
+def unit_output(
+    res: Any,
+    unit: Unit = None,
+    to_value: bool = False,
+    equivalencies: Sequence = [],
+    decompose: Union[bool, Sequence] = False,
+) -> Any:
     """Control return of Quantities.
 
     Parameters
@@ -106,8 +111,12 @@ def unit_output(res: Any, unit: Unit=None, to_value: bool=False,
 
     """
     # fast check to do nothing
-    if ((unit is None) & (to_value is False) &
-            (equivalencies == []) & (decompose is False)):
+    if (
+        (unit is None)
+        & (to_value is False)
+        & (equivalencies == [])
+        & (decompose is False)
+    ):
         return res
 
     # First decomposing
@@ -115,8 +124,7 @@ def unit_output(res: Any, unit: Unit=None, to_value: bool=False,
         res = res.decompose()
     elif decompose:  # decompose is NOT empty list
         cls = (Unit, IrreducibleUnit)
-        bases = [Unit(x) if not issubclass(x.__class__, cls) else x
-                 for x in decompose]
+        bases = [Unit(x) if not issubclass(x.__class__, cls) else x for x in decompose]
         res = res.decompose(bases=bases)
 
     # Now Converting
@@ -125,6 +133,8 @@ def unit_output(res: Any, unit: Unit=None, to_value: bool=False,
     elif to_value is True:  # return value
         return res.to_value(unit, equivalencies)
     return res.to(unit, equivalencies)
+
+
 # /def
 
 

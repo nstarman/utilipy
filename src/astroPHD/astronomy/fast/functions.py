@@ -13,21 +13,26 @@ import numpy as np
 # Parameters
 
 _AU_to_pc: float = 0.000004848137
-_pc_to_AU: float = 1. / _AU_to_pc
+_pc_to_AU: float = 1.0 / _AU_to_pc
 
 
 ###############################################################################
 # Distance Conversion
 
+
 def AU_to_pc(AU: Union[np.array, float]) -> Union[np.array, float]:
     """Convert AU to pc."""
     return AU * _AU_to_pc
+
+
 # /def
 
 
 def pc_from_AU(AU: Union[np.array, float]) -> Union[np.array, float]:
     """Convert AU to pc."""
     return AU * _AU_to_pc
+
+
 # /def
 
 # -------------------------------------------------------------------------
@@ -45,6 +50,7 @@ def pc_to_AU(pc: Union[np.array, float]) -> Union[np.array, float]:
 
 ###############################################################################
 # Distance Modulus
+
 
 def apparent_to_absolute_magnitude(m: Sequence, d_L: Sequence) -> Sequence:
     """Calculate the absolute magnitude.
@@ -66,10 +72,13 @@ def apparent_to_absolute_magnitude(m: Sequence, d_L: Sequence) -> Sequence:
     """
     M = m - 5.0 * np.log10(d_L) + 5.0
     return M
+
+
 # /def
 
 
 # -------------------------------------------------------------------------
+
 
 def absolute_to_apparent_magnitude(M: Sequence, d_L: Sequence) -> Sequence:
     """Calculate the apparent magnitude.
@@ -91,10 +100,13 @@ def absolute_to_apparent_magnitude(M: Sequence, d_L: Sequence) -> Sequence:
     """
     m = M + 5.0 * np.log10(d_L) - 5.0
     return m
+
+
 # /def
 
 
 # -------------------------------------------------------------------------
+
 
 def distanceModulus_magnitude(distance: Sequence) -> Sequence:
     """Distance Modulus.
@@ -115,10 +127,13 @@ def distanceModulus_magnitude(distance: Sequence) -> Sequence:
 
     """
     return 5 * (np.log10(distance) - 1)
+
+
 # /def
 
 
 # -------------------------------------------------------------------------
+
 
 def distanceModulus_distance(DM: Sequence) -> Sequence:
     r"""Distance Modulus.
@@ -141,13 +156,16 @@ def distanceModulus_distance(DM: Sequence) -> Sequence:
         no units attached
 
     """
-    return np.power(10., np.divide(DM, 5.) + 1)
+    return np.power(10.0, np.divide(DM, 5.0) + 1)
+
+
 # /def
 
 
 # -------------------------------------------------------------------------
 
-def distanceModulus(arg: Sequence, d2dm: bool=True) -> Sequence:
+
+def distanceModulus(arg: Sequence, d2dm: bool = True) -> Sequence:
     r"""Distance Modulus.
 
     ..math::
@@ -175,11 +193,14 @@ def distanceModulus(arg: Sequence, d2dm: bool=True) -> Sequence:
     if d2dm:
         return distanceModulus_magnitude(arg)
     return distanceModulus_distance(arg)
+
+
 # /def
 
 
 ###############################################################################
 # Parallax
+
 
 def parallax_angle(d: Sequence) -> Sequence:
     r"""Compute parallax angle.
@@ -197,10 +218,13 @@ def parallax_angle(d: Sequence) -> Sequence:
 
     """
     return np.arctan(_AU_to_pc / d) * np.pi / 180
+
+
 # /def
 
 
 # -------------------------------------------------------------------------
+
 
 def parallax_distance(p: Sequence) -> Sequence:
     r"""Compute parallax distance.
@@ -219,12 +243,15 @@ def parallax_distance(p: Sequence) -> Sequence:
 
     """
     return 1 / np.tan(p)
+
+
 # /def
 
 
 # -------------------------------------------------------------------------
 
-def parallax(arg: Sequence, d2p: bool=True) -> Sequence:
+
+def parallax(arg: Sequence, d2p: bool = True) -> Sequence:
     r"""Parallax.
 
     Not as fast as calling parallax_angle(distance) directly
@@ -248,11 +275,14 @@ def parallax(arg: Sequence, d2p: bool=True) -> Sequence:
     if d2p:
         return parallax_angle(arg)
     return parallax_distance(arg)
+
+
 # /def
 
 
 ###############################################################################
 # Angular Separation
+
 
 def max_angular_separation(doff: Sequence, dto: Sequence) -> Sequence:
     """Maximum angular separation.
@@ -270,6 +300,8 @@ def max_angular_separation(doff: Sequence, dto: Sequence) -> Sequence:
 
     """
     return np.fabs(np.arctan(np.divide(doff, dto)))
+
+
 # /def
 
 

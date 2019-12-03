@@ -28,13 +28,20 @@ import numpy as np
 
 # Custom Imports
 from ...units import (
-    quantity_io, get_physical_type,
-    rad as RAD, deg as DEG, pc as PC, mag as MAG, AU, m as METER
+    quantity_io,
+    get_physical_type,
+    rad as RAD,
+    deg as DEG,
+    pc as PC,
+    mag as MAG,
+    AU,
+    m as METER,
 )
 
 
 ###############################################################################
 # Distance Modulus
+
 
 @quantity_io(m=MAG)
 def apparent_to_absolute_magnitude(sc, m: MAG, **kw) -> MAG:
@@ -58,6 +65,8 @@ def apparent_to_absolute_magnitude(sc, m: MAG, **kw) -> MAG:
     """
     M = m - 5.0 * np.log10(sc.spherical.distance) + 5.0
     return M
+
+
 # /def
 
 
@@ -83,6 +92,8 @@ def absolute_to_apparent_magnitude(sc, M: MAG, **kw) -> MAG:
     """
     m = M + 5.0 * np.log10(sc.spherical.distance) - 5.0
     return m
+
+
 # /def
 
 
@@ -107,6 +118,8 @@ def distanceModulus_magnitude(sc, **kw) -> MAG:
 
     """
     return sc.spherical.distance.distmod
+
+
 # /def
 
 
@@ -131,6 +144,8 @@ def distanceModulus_distance(sc, **kw) -> PC:
 
     """
     return sc.spherical.distance
+
+
 # /def
 
 
@@ -161,6 +176,8 @@ def distanceModulus(sc, d2dm=True, **kw):
         distanceModulus_magnitude(sc)
     else:
         distanceModulus_distance(sc)
+
+
 # /def
 
 
@@ -184,6 +201,8 @@ def parallax_angle(sc, **kw) -> DEG:
 
     """
     return np.arctan(1 * AU / sc.spherical.distance)
+
+
 # /def
 
 
@@ -199,6 +218,8 @@ def parallax_distance(sc, **kw) -> PC:
     """
     return np.arctan(1 * AU / sc.spherical.distance)
     # return 1 * AU / np.tan(p)
+
+
 # /def
 
 
@@ -222,11 +243,14 @@ def parallax(sc, d2p=True, **kw):
         return parallax_angle(sc)
     else:
         return parallax_distance(sc)
+
+
 # /def
 
 
 ###############################################################################
 # Angular Separation
+
 
 @quantity_io()
 def max_angular_separation(sc, doff: METER, **kw):
@@ -245,4 +269,6 @@ def max_angular_separation(sc, doff: METER, **kw):
     """
 
     return np.fabs(np.arctan(np.divide(doff, sc.spherical.distance)))
+
+
 # /def

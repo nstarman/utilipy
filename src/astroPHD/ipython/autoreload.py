@@ -30,7 +30,8 @@ _LOGFILE = LogPrint(header=False, verbose=0)
 ##############################################################################
 # CODE
 
-def set_autoreload(reload_type: Optional[int]=None) -> None:
+
+def set_autoreload(reload_type: Optional[int] = None) -> None:
     """Global imports setting.
 
     Parameters
@@ -53,11 +54,13 @@ def set_autoreload(reload_type: Optional[int]=None) -> None:
     if reload_type is not None:
 
         # set autoreload type
-        get_ipython().magic(f'autoreload {reload_type}')
+        get_ipython().magic(f"autoreload {reload_type}")
 
-        _LOGFILE.write(f'set autoreload to {reload_type}')
+        _LOGFILE.write(f"set autoreload to {reload_type}")
 
     return
+
+
 # /def
 
 
@@ -65,7 +68,7 @@ def set_autoreload(reload_type: Optional[int]=None) -> None:
 
 
 # TODO support any list
-def aimport(*modules: str, autoreload: Union[bool, list, tuple]=True) -> None:
+def aimport(*modules: str, autoreload: Union[bool, list, tuple] = True) -> None:
     """Jupyter magic aimport.
 
     Parameters
@@ -84,7 +87,7 @@ def aimport(*modules: str, autoreload: Union[bool, list, tuple]=True) -> None:
     elif len(autoreload) == len(modules):  # any list
         pass
     else:
-        raise ValueError('len(autoreload) != len(modules)')
+        raise ValueError("len(autoreload) != len(modules)")
 
     for module, reload_type in zip(modules, autoreload):
         # testing correct data types
@@ -92,12 +95,14 @@ def aimport(*modules: str, autoreload: Union[bool, list, tuple]=True) -> None:
         assert isinstance(reload_type, bool)
 
         if not reload_type:
-            module = '-' + module  # mark for not autoreloading
+            module = "-" + module  # mark for not autoreloading
 
         # import
-        get_ipython().magic(f'aimport {module}')
+        get_ipython().magic(f"aimport {module}")
 
     return
+
+
 # /def
 
 
@@ -105,7 +110,7 @@ def aimport(*modules: str, autoreload: Union[bool, list, tuple]=True) -> None:
 # SETTING STATE
 
 if get_ipython() is not None:
-    get_ipython().magic('load_ext autoreload')  # autoreload extensions
+    get_ipython().magic("load_ext autoreload")  # autoreload extensions
     set_autoreload(1)
 
 

@@ -31,19 +31,24 @@ import_amuse
 __author__ = "Nathaniel Starkman"
 
 __all__ = [
-    'import_from_file', 'run_imports',
-    'aimport', 'set_autoreload',
+    "import_from_file",
+    "run_imports",
+    "aimport",
+    "set_autoreload",
     # specific importers
-    'import_base', 'import_extended',
-    'import_astropy', 'import_matplotlib',  # 'import_plotly',
-    'import_galpy', 'import_amuse'
+    "import_base",
+    "import_extended",
+    "import_astropy",
+    "import_matplotlib",  # 'import_plotly',
+    "import_galpy",
+    "import_amuse",
 ]
 
 ##############################################################################
 # IMPORTS
 
 # General
-from typing import Any, Union, Optional
+from typing import Any, Union, Optional, Dict
 import ast
 from IPython import get_ipython
 
@@ -51,10 +56,7 @@ from IPython import get_ipython
 from ..util import functools
 from ..util.config import use_import_verbosity
 from ..util.logging import LogFile
-from ..util.paths import (
-    get_absolute_path as _gap,
-    parent_file_directory as _pfd
-)
+from ..util.paths import get_absolute_path as _gap, parent_file_directory as _pfd
 
 from .autoreload import aimport, set_autoreload
 
@@ -62,17 +64,21 @@ from .autoreload import aimport, set_autoreload
 # SETUP
 
 _LOGFILE = LogFile(header=False, verbose=0)
-_LOGGER_KW = {'print': False}
+_LOGGER_KW = {"print": False}
 
 
 ##############################################################################
 # CODE
 
-def import_from_file(*files: str, is_relative: bool=True,
-                     verbose_imports: Optional[bool]=None,
-                     logger: LogFile=_LOGFILE, verbose=None,
-                     logger_kw: dict=_LOGGER_KW
-                     ) -> None:
+
+def import_from_file(
+    *files: str,
+    is_relative: bool = True,
+    verbose_imports: Optional[bool] = None,
+    logger: LogFile = _LOGFILE,
+    verbose=None,
+    logger_kw: Dict = _LOGGER_KW,
+) -> None:
     """Run import(s) from a file(s).
 
     Parameters
@@ -106,29 +112,38 @@ def import_from_file(*files: str, is_relative: bool=True,
 
             # logging
             # implemented separately b/c files often have own print statements
-            logger.report(f'imported {file}', verbose=verbose, **logger_kw)
+            logger.report(f"imported {file}", verbose=verbose, **logger_kw)
 
     return
+
+
 # /def
 
 
 # ----------------------------------------------------------------------------
 
-def run_imports(*files: str, is_relative: bool=True,
-                # standard import files
-                base: bool=False, extended: bool=False,
-                # extra standard files
-                astropy: bool=False,
-                matplotlib: bool=False,
-                # plotly: bool=False,
-                # additional, requires extra installs
-                galpy: bool=False, amuse: bool=False,
-                # autoreload
-                set_autoreload_to: Optional[int]=None,
-                verbose_imports: Optional[bool]=None,
-                # logging
-                logger: LogFile=_LOGFILE, verbose=0, logger_kw: dict={}
-                ) -> None:
+
+def run_imports(
+    *files: str,
+    is_relative: bool = True,
+    # standard import files
+    base: bool = False,
+    extended: bool = False,
+    # extra standard files
+    astropy: bool = False,
+    matplotlib: bool = False,
+    # plotly: bool=False,
+    # additional, requires extra installs
+    galpy: bool = False,
+    amuse: bool = False,
+    # autoreload
+    set_autoreload_to: Optional[int] = None,
+    verbose_imports: Optional[bool] = None,
+    # logging
+    logger: LogFile = _LOGFILE,
+    verbose: Optional[int] = 0,
+    logger_kw: Dict = {},
+) -> None:
     """Import file using ipython magic.
 
     if `astropy` & `matplotlib`, sets matplotlib style to astropy_mpl_style
@@ -181,23 +196,21 @@ def run_imports(*files: str, is_relative: bool=True,
     # base
 
     if base:
-        import_base(verbose_imports=verbose_imports,
-                    logger=logger, verbose=verbose)
+        import_base(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
 
     if extended:
-        import_extended(verbose_imports=verbose_imports,
-                        logger=logger, verbose=verbose)
+        import_extended(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
 
     # ---------------------------------------------
     # basic
 
     if astropy:
-        import_astropy(verbose_imports=verbose_imports,
-                       logger=logger, verbose=verbose)
+        import_astropy(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
 
     if matplotlib:
-        import_matplotlib(verbose_imports=verbose_imports,
-                          logger=logger, verbose=verbose)
+        import_matplotlib(
+            verbose_imports=verbose_imports, logger=logger, verbose=verbose
+        )
     # if plotly:
     #     import_plotly(logger=logger, verbose=verbose)
 
@@ -205,12 +218,10 @@ def run_imports(*files: str, is_relative: bool=True,
     # extras
 
     if galpy:
-        import_galpy(verbose_imports=verbose_imports,
-                     logger=logger, verbose=verbose)
+        import_galpy(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
 
     if amuse:
-        import_amuse(verbose_imports=verbose_imports,
-                     logger=logger, verbose=verbose)
+        import_amuse(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
 
     # ---------------------------------------------
 
@@ -218,6 +229,7 @@ def run_imports(*files: str, is_relative: bool=True,
     if astropy & matplotlib:
         from matplotlib import pyplot
         from astropy.visualization import astropy_mpl_style
+
         pyplot.style.use(astropy_mpl_style)
 
     if galpy & amuse:  # TODO, embed in galpy_imports using argparse
@@ -225,10 +237,14 @@ def run_imports(*files: str, is_relative: bool=True,
 
     # other import filess
     if files:  # True if not empty
-        import_from_file(*files, is_relative=is_relative,
-                         verbose_imports=verbose_imports,
-                         logger=logger, verbose=verbose,
-                         logger_kw=logger_kw)
+        import_from_file(
+            *files,
+            is_relative=is_relative,
+            verbose_imports=verbose_imports,
+            logger=logger,
+            verbose=verbose,
+            logger_kw=logger_kw,
+        )
 
     # ---------------------------------------------
     # autoreload
@@ -236,15 +252,20 @@ def run_imports(*files: str, is_relative: bool=True,
     set_autoreload(set_autoreload_to)
 
     return
+
+
 # /def
 
 
 # ----------------------------------------------------------------------------
 # UTILITIES TODO BETTER
 
+
 def _join_pfd(path: str) -> str:
     # TODO better way to get this file directory & join path file
     return _pfd(__file__).joinpath(path)
+
+
 # /def
 
 
@@ -265,21 +286,25 @@ def _set_docstring_import_x(module: str) -> str:
         module_doc = ast.get_docstring(ast.parse(fd.read()))
 
     # process docstring
-    ind = module_doc.find('Returns')
-    len_title = 2 * len('Returns')
-    end_ind = ind + module_doc[ind + len_title:].find('---') + 2
+    ind = module_doc.find("Returns")
+    len_title = 2 * len("Returns")
+    end_ind = ind + module_doc[ind + len_title :].find("---") + 2
 
     doc = module_doc[ind:end_ind]  # get section (+ next header)
 
     # modify function with a basic decorator
     def decorator(func):
-        @functools.wraps(func, docstring=func.__doc__ + '\n\n' + doc)
+        @functools.wraps(func, docstring=func.__doc__ + "\n\n" + doc)
         def wrapper(*args, **kwargs):
             return func(*args, **kwargs)
+
         # /def
         return wrapper
+
     # /def
     return decorator
+
+
 # /def
 
 
@@ -287,63 +312,101 @@ def _set_docstring_import_x(module: str) -> str:
 # Specific Imports
 # TODO make these with a function
 
-@_set_docstring_import_x(_join_pfd('../imports/base.py'))
-def import_base(verbose_imports: Optional[bool]=None,
-                logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
-                logger_kw: dict=_LOGGER_KW
-                ) -> None:
+
+@_set_docstring_import_x(_join_pfd("../imports/base.py"))
+def import_base(
+    verbose_imports: Optional[bool] = None,
+    logger: LogFile = _LOGFILE,
+    verbose: Optional[int] = None,
+    logger_kw: Dict = _LOGGER_KW,
+) -> None:
     """Import base packages."""
-    import_from_file(_join_pfd('../imports/base.py'),
-                     is_relative=False, verbose_imports=verbose_imports,
-                     logger=logger, verbose=verbose, logger_kw=logger_kw)
+    import_from_file(
+        _join_pfd("../imports/base.py"),
+        is_relative=False,
+        verbose_imports=verbose_imports,
+        logger=logger,
+        verbose=verbose,
+        logger_kw=logger_kw,
+    )
     return
+
+
 # /def
 
 
-@_set_docstring_import_x(_join_pfd('../imports/extended.py'))
-def import_extended(verbose_imports: Optional[bool]=None,
-                    logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
-                    logger_kw: dict=_LOGGER_KW
-                    ) -> None:
+@_set_docstring_import_x(_join_pfd("../imports/extended.py"))
+def import_extended(
+    verbose_imports: Optional[bool] = None,
+    logger: LogFile = _LOGFILE,
+    verbose: Optional[int] = None,
+    logger_kw: Dict = _LOGGER_KW,
+) -> None:
     """Import extended packages."""
-    import_from_file(_join_pfd('../imports/extended.py'),
-                     is_relative=False, verbose_imports=verbose_imports,
-                     logger=logger, verbose=verbose, logger_kw=logger_kw)
+    import_from_file(
+        _join_pfd("../imports/extended.py"),
+        is_relative=False,
+        verbose_imports=verbose_imports,
+        logger=logger,
+        verbose=verbose,
+        logger_kw=logger_kw,
+    )
     return
+
+
 # /def
 
 
-@_set_docstring_import_x(_join_pfd('../imports/astropy.py'))
-def import_astropy(verbose_imports: Optional[bool]=None,
-                   logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
-                   logger_kw: dict=_LOGGER_KW
-                   ) -> None:
+@_set_docstring_import_x(_join_pfd("../imports/astropy.py"))
+def import_astropy(
+    verbose_imports: Optional[bool] = None,
+    logger: LogFile = _LOGFILE,
+    verbose: Optional[int] = None,
+    logger_kw: Dict = _LOGGER_KW,
+) -> None:
     """Import basic astropy packages."""
-    import_from_file(_join_pfd('../imports/astropy.py'),
-                     is_relative=False, verbose_imports=verbose_imports,
-                     logger=logger, verbose=verbose, logger_kw=logger_kw)
+    import_from_file(
+        _join_pfd("../imports/astropy.py"),
+        is_relative=False,
+        verbose_imports=verbose_imports,
+        logger=logger,
+        verbose=verbose,
+        logger_kw=logger_kw,
+    )
     return
+
+
 # /def
 
 
 # ----------------------------------------------------------------------------
 # plotting
 
-@_set_docstring_import_x(_join_pfd('../imports/matplotlib.py'))
-def import_matplotlib(verbose_imports: Optional[bool]=None,
-                      logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
-                      logger_kw: dict=_LOGGER_KW
-                      ) -> None:
+
+@_set_docstring_import_x(_join_pfd("../imports/matplotlib.py"))
+def import_matplotlib(
+    verbose_imports: Optional[bool] = None,
+    logger: LogFile = _LOGFILE,
+    verbose: Optional[int] = None,
+    logger_kw: Dict = _LOGGER_KW,
+) -> None:
     """Import basic Matplotlib packages."""
-    import_from_file(_join_pfd('../imports/matplotlib.py'),
-                     is_relative=False, verbose_imports=verbose_imports,
-                     logger=logger, verbose=verbose, logger_kw=logger_kw)
+    import_from_file(
+        _join_pfd("../imports/matplotlib.py"),
+        is_relative=False,
+        verbose_imports=verbose_imports,
+        logger=logger,
+        verbose=verbose,
+        logger_kw=logger_kw,
+    )
     return
+
+
 # /def
 
 
 # @_set_docstring_import_x(_join_pfd('../imports/plotly.py'))
-# def import_plotly(logger:LogFile=_LOGFILE, verbose:Optional[int]=None, logger_kw: dict=_LOGGER_KW
+# def import_plotly(logger:LogFile=_LOGFILE, verbose:Optional[int]=None, logger_kw: Dict=_LOGGER_KW
 #                   ) -> None:
 #     """Import basic plotly packages."""
 #     import_from_file(_join_pfd('../imports/plotly.py'),
@@ -356,28 +419,48 @@ def import_matplotlib(verbose_imports: Optional[bool]=None,
 # ----------------------------------------------------------------------------
 # extras
 
-@_set_docstring_import_x(_join_pfd('../imports/galpy.py'))
-def import_galpy(verbose_imports: Optional[bool]=None,
-                 logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
-                 logger_kw: dict=_LOGGER_KW
-                 ) -> None:
+
+@_set_docstring_import_x(_join_pfd("../imports/galpy.py"))
+def import_galpy(
+    verbose_imports: Optional[bool] = None,
+    logger: LogFile = _LOGFILE,
+    verbose: Optional[int] = None,
+    logger_kw: Dict = _LOGGER_KW,
+) -> None:
     """Import basic galpy packages."""
-    import_from_file(_join_pfd('../imports/galpy.py'),
-                     is_relative=False, verbose_imports=verbose_imports,
-                     logger=logger, verbose=verbose, logger_kw=logger_kw)
+    import_from_file(
+        _join_pfd("../imports/galpy.py"),
+        is_relative=False,
+        verbose_imports=verbose_imports,
+        logger=logger,
+        verbose=verbose,
+        logger_kw=logger_kw,
+    )
     return
+
+
 # /def
 
-@_set_docstring_import_x(_join_pfd('../imports/amuse.py'))
-def import_amuse(verbose_imports: Optional[bool]=None,
-                 logger: LogFile=_LOGFILE, verbose: Optional[int]=None,
-                 logger_kw: dict=_LOGGER_KW
-                 ) -> None:
+
+@_set_docstring_import_x(_join_pfd("../imports/amuse.py"))
+def import_amuse(
+    verbose_imports: Optional[bool] = None,
+    logger: LogFile = _LOGFILE,
+    verbose: Optional[int] = None,
+    logger_kw: Dict = _LOGGER_KW,
+) -> None:
     """Import basic amuse packages."""
-    import_from_file(_join_pfd('../imports/amuse.py'),
-                     is_relative=False, verbose_imports=verbose_imports,
-                     logger=logger, verbose=verbose, logger_kw=logger_kw)
+    import_from_file(
+        _join_pfd("../imports/amuse.py"),
+        is_relative=False,
+        verbose_imports=verbose_imports,
+        logger=logger,
+        verbose=verbose,
+        logger_kw=logger_kw,
+    )
     return
+
+
 # /def
 
 

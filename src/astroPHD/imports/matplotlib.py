@@ -42,7 +42,7 @@ __author__ = "Nathaniel Starkman"
 from astroPHD.util.config import __config__
 from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper,
-    _import_file_docstring_helper
+    _import_file_docstring_helper,
 )
 
 
@@ -86,21 +86,24 @@ else:
 
 if _HAS_IPYTHON:
 
-    configure_matplotlib(backend='inline', figure_format='retina')
+    configure_matplotlib(backend="inline", figure_format="retina")
 
 
 ##############################################################################
 # Printing Information
 
-@_set_docstring_import_file_helper('Matplotlib', __doc__)  # doc from __doc__
+
+@_set_docstring_import_file_helper("Matplotlib", __doc__)  # doc from __doc__
 def matplotlib_imports_help():
     """Help for Matplotlib base imports."""
     doc = _import_file_docstring_helper(matplotlib_imports_help.__doc__)
     print(doc)
+
+
 # /def
 
 
-if __config__.getboolean('verbosity', 'verbose-imports'):
+if __config__.getboolean("verbosity", "verbose-imports"):
     matplotlib_imports_help()
 
 

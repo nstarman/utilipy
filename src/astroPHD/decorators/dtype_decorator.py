@@ -19,15 +19,16 @@ add in_dtype and out_dtype kwargs to wrapped functions which override defaults
 """
 
 __all__ = [
-    'dtypeDecorator',
-    'dtypeDecoratorMaker',
+    "dtypeDecorator",
+    "dtypeDecoratorMaker",
     # built-in types
-    'boolDecorator',
-    'intDecorator', 'floatDecorator',
-    'strDecorator',
+    "boolDecorator",
+    "intDecorator",
+    "floatDecorator",
+    "strDecorator",
     # numpy types
-    'ndarrayDecorator',
-    'ndfloat64Decorator',
+    "ndarrayDecorator",
+    "ndfloat64Decorator",
 ]
 
 
@@ -46,7 +47,7 @@ from ..util import functools
 # MAKING DECORATORS
 
 
-class dtypeDecorator():
+class dtypeDecorator:
     """ensure arguments are type *dtype*
 
     Parameters
@@ -65,8 +66,12 @@ class dtypeDecorator():
 
     """
 
-    def __new__(cls, func: Optional[Callable]=None,
-                in_dtype: Any=None, out_dtype: Any=None):
+    def __new__(
+        cls,
+        func: Optional[Callable] = None,
+        in_dtype: Any = None,
+        out_dtype: Any = None,
+    ):
         """__new__."""
         self = super().__new__(cls)  # making instance of self
 
@@ -85,9 +90,10 @@ class dtypeDecorator():
             return self(func)
         # else:
         return self
+
     # /def
 
-    def __init__(self, in_dtype: Any=None, out_dtype: Any=None) -> None:
+    def __init__(self, in_dtype: Any = None, out_dtype: Any = None) -> None:
         super().__init__()
 
         # in_dtype
@@ -99,6 +105,7 @@ class dtypeDecorator():
         self._out_dtype = out_dtype
 
         return
+
     # /def
 
     def __call__(self, wrapped_func: Callable) -> Callable:
@@ -114,7 +121,7 @@ class dtypeDecorator():
             elif len(args) == 1:
                 # TODO better
                 if len(self._in_dtype) != 1 or self._in_dtype[0][0] != 0:
-                    raise IndexError('too many indices')
+                    raise IndexError("too many indices")
                 arg = self._in_dtype[0][1](args[0])
                 return_ = wrapped_func(arg, **kw)
             else:
@@ -134,17 +141,20 @@ class dtypeDecorator():
                         return_[i] = dtype(return_[i])
                 else:
                     if len(self._out_dtype) != 1:  # TODO do this check?
-                        raise ValueError('out_dtype has too many indices')
+                        raise ValueError("out_dtype has too many indices")
                     return_ = self._out_dtype[0][1](return_)
 
             return return_
+
         # /def
         return wrapper
+
     # /def
 
 
 #############################################################################
 # SINGLE-DECORATOR FACTORY
+
 
 def dtypeDecoratorMaker(dtype: Any):
     """function to make a dtype decorator
@@ -173,7 +183,7 @@ def dtypeDecoratorMaker(dtype: Any):
     1, 2.2, 3
     """
 
-    class dtypeDecorator():
+    class dtypeDecorator:
         """ensure arguments are type *dtype*
 
         Parameters
@@ -213,8 +223,9 @@ def dtypeDecoratorMaker(dtype: Any):
         >>> 1, 2, 3
         """
 
-        def __new__(cls, func: Callable=None,
-                    inargs: Any=None, outargs: Any=None):
+        def __new__(
+            cls, func: Callable = None, inargs: Any = None, outargs: Any = None
+        ):
             """__new__."""
             self = super().__new__(cls)  # making instance of self
 
@@ -233,9 +244,10 @@ def dtypeDecoratorMaker(dtype: Any):
                 return self(func)
             else:
                 return self
+
         # /def
 
-        def __init__(self, inargs: Any=None, outargs: Any=None) -> None:
+        def __init__(self, inargs: Any = None, outargs: Any = None) -> None:
             super().__init__()
 
             # data type
@@ -245,15 +257,16 @@ def dtypeDecoratorMaker(dtype: Any):
 
             # inargs
             self._inargs = inargs
-            if inargs == 'all':
+            if inargs == "all":
                 self._inargs = slice(None)
 
             # outargs
             self._outargs = outargs
-            if outargs == 'all':
+            if outargs == "all":
                 self._outargs = slice(None)
             if np.isscalar(self._outargs):
-                self._outargs = [self._outargs, ]
+                self._outargs = [self._outargs]
+
         # /def
 
         def __call__(self, wrapped_func: Callable) -> Callable:
@@ -291,26 +304,28 @@ def dtypeDecoratorMaker(dtype: Any):
                     try:  # need to figure out whether return_ is a scalar or a list
                         return_[0]
                     except IndexError:  # scalar output
-                        inds = np.arange(len(args), dtype=self._dtype)[
-                            self._outargs]
+                        inds = np.arange(len(args), dtype=self._dtype)[self._outargs]
                         if inds == 0:
                             return self._dtype(return_)
                         else:  # inds doesn't match return_
                             raise ValueError
                     else:
                         return_ = list(return_)
-                        inds = np.arange(len(args), dtype=self._dtype)[
-                            self._outargs]
+                        inds = np.arange(len(args), dtype=self._dtype)[self._outargs]
                         for i in inds:
                             return_[i] = self._dtype(return_[i])
 
                     return return_
                 # /POST
                 # /def
+
             return wrapper
+
         # /def
 
     return dtypeDecorator
+
+
 # /def
 
 

@@ -78,7 +78,7 @@ __author__ = "Nathaniel Starkman"
 from astroPHD.util.config import __config__
 from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper,
-    _import_file_docstring_helper
+    _import_file_docstring_helper,
 )
 
 
@@ -104,7 +104,7 @@ import tqdm as TQDM
 from tqdm import tqdm as tqdm, tqdm_notebook as tqdmn
 
 # Custom
-from astroPHD.util import ObjDict          # custom dictionary-like object
+from astroPHD.util import ObjDict  # custom dictionary-like object
 from astroPHD.util.logging import LogFile  # LoggerFile  # custom logging
 
 
@@ -131,17 +131,22 @@ else:
     from IPython.core.interactiveshell import InteractiveShell
     from IPython.core.debugger import set_trace
     from IPython.display import (
-        display,               # display is a better print
-        Latex, Markdown       # for printing LaTeX or Markdown strings
+        display,  # display is a better print
+        Latex,
+        Markdown,  # for printing LaTeX or Markdown strings
     )
 
     # %run runs in the main namespace, so need to run as 'src.', not '.''
     from astroPHD.ipython import (
-        printmd, printMD,               # markdown printing
-        printltx, printLaTeX,           # LaTeX printing
-        set_autoreload, aimport,        # imports
-        run_imports, import_from_file,  # imports
-        add_raw_code_toggle,            # notebook
+        printmd,
+        printMD,  # markdown printing
+        printltx,
+        printLaTeX,  # LaTeX printing
+        set_autoreload,
+        aimport,  # imports
+        run_imports,
+        import_from_file,  # imports
+        add_raw_code_toggle,  # notebook
     )
 
 
@@ -156,15 +161,18 @@ if _HAS_IPYTHON:
 ##############################################################################
 # Printing Information
 
-@_set_docstring_import_file_helper('base', __doc__)  # doc from __doc__
+
+@_set_docstring_import_file_helper("base", __doc__)  # doc from __doc__
 def base_imports_help():
     """Help for Matplotlib base imports."""
     doc = _import_file_docstring_helper(base_imports_help.__doc__)
     print(doc)
+
+
 # /def
 
 
-if __config__.getboolean('verbosity', 'verbose-imports'):
+if __config__.getboolean("verbosity", "verbose-imports"):
     base_imports_help()
 
 ##############################################################################

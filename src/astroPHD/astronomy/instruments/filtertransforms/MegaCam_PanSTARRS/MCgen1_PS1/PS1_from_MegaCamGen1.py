@@ -4,14 +4,9 @@
 """Mega-Cam gen1 bands from PanSTARRS 1 bands."""
 
 __author__ = "Nathaniel Starkman"
-__credits__ = [
-    "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
-]
+__credits__ = ["http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"]
 
-__all__ = [
-    'G', 'R', 'I', 'Z',
-    'GmR', 'GmI', 'GmZ', 'RmI', 'RmZ', 'ImZ'
-]
+__all__ = ["G", "R", "I", "Z", "GmR", "GmI", "GmZ", "RmI", "RmZ", "ImZ"]
 
 #############################################################################
 # IMPORTS
@@ -27,6 +22,7 @@ from ..units import quantity_io, mag as MAG
 #############################################################################
 # CODE
 #############################################################################
+
 
 @quantity_io()
 def G(cfht: Table, **kw) -> MAG:
@@ -61,8 +57,8 @@ def G(cfht: Table, **kw) -> MAG:
     `MegaCam to Pan-STARRS <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    g, r = kw.get('g', 'g'), kw.get('r', 'r')
-    gmr = kw.get('gmr', 'g-r')
+    g, r = kw.get("g", "g"), kw.get("r", "r")
+    gmr = kw.get("gmr", "g-r")
 
     if gmr in cfht.colnames:
         gmr = cfht[gmr]
@@ -71,10 +67,10 @@ def G(cfht: Table, **kw) -> MAG:
 
     ind = (-1.5 * MAG < gmr) & (gmr < 2.5 * MAG)
     if not all(ind):
-        warnings.warn('PS1.G: not all -1.5 mag < (g-r)_ps < 2.5 mag')
+        warnings.warn("PS1.G: not all -1.5 mag < (g-r)_ps < 2.5 mag")
 
-    c0 = 0. * MAG
-    c1 = .004
+    c0 = 0.0 * MAG
+    c1 = 0.004
     g_cfht = cfht[g]
 
     g_ps = g_cfht + c0 + (c1 * gmr)
@@ -113,19 +109,19 @@ def R(cfht: Table, **kw) -> MAG:
     `MegaCam to Pan-STARRS <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    r, i = kw.get('r', 'r'), kw.get('i', 'i')
-    rmi = kw.get('rmi', 'r-i')
+    r, i = kw.get("r", "r"), kw.get("i", "i")
+    rmi = kw.get("rmi", "r-i")
 
     if rmi in cfht.colnames:
         rmi = cfht[rmi]
     else:
         rmi = cfht[r] - cfht[i]
 
-    ind = (-.9 * MAG < rmi) & (rmi < 3 * MAG)
+    ind = (-0.9 * MAG < rmi) & (rmi < 3 * MAG)
     if not all(ind):
-        warnings.warn('PS1.R: not all -.9 mag < (g-i)_ps < 3 mag')
+        warnings.warn("PS1.R: not all -.9 mag < (g-i)_ps < 3 mag")
 
-    c0 = -.001 * MAG
+    c0 = -0.001 * MAG
     c1 = 0.023
     r_cfht = cfht[r]
 
@@ -166,20 +162,20 @@ def I(cfht: Table, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    r, i = kw.get('r', 'r'), kw.get('i', 'i')
-    rmi = kw.get('rmi', 'r-i')
+    r, i = kw.get("r", "r"), kw.get("i", "i")
+    rmi = kw.get("rmi", "r-i")
 
     if rmi in cfht.colnames:
         rmi = cfht[rmi]
     else:
         rmi = cfht[r] - cfht[i]
 
-    ind = (.1 * MAG < rmi) & (rmi < 3 * MAG)
+    ind = (0.1 * MAG < rmi) & (rmi < 3 * MAG)
     if not all(ind):
-        warnings.warn('PS1.I not all .1 mag < (g-i)_ps < 3 mag')
+        warnings.warn("PS1.I not all .1 mag < (g-i)_ps < 3 mag")
 
-    c0 = -.007 * MAG
-    c1 = .078
+    c0 = -0.007 * MAG
+    c1 = 0.078
     i_cfht = cfht[i]
 
     i_ps = i_cfht + c0 + (c1 * rmi)
@@ -219,29 +215,30 @@ def Z(cfht: Table, **kw) -> MAG:
     <http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html>`_.
 
     """
-    i, z = kw.get('i', 'i'), kw.get('z', 'z')
-    imz = kw.get('imz', 'i-z')
+    i, z = kw.get("i", "i"), kw.get("z", "z")
+    imz = kw.get("imz", "i-z")
 
     if imz in cfht.colnames:
         imz = cfht[imz]
     else:
         imz = cfht[i] - cfht[z]
 
-    ind = (-.1 * MAG < imz) & (imz < 2.5 * MAG)
+    ind = (-0.1 * MAG < imz) & (imz < 2.5 * MAG)
     if not all(ind):
-        warnings.warn('PS1.Z not all -.1 mag < (g-i)_ps < 3 mag')
+        warnings.warn("PS1.Z not all -.1 mag < (g-i)_ps < 3 mag")
 
-    c0 = 0. * MAG
-    c1 = .078
-    c2 = .029 / MAG
+    c0 = 0.0 * MAG
+    c1 = 0.078
+    c2 = 0.029 / MAG
     z_cfht = cfht[z]
 
-    z_ps = z_cfht + c0 + (c1 * imz) + (c2 * imz**2)
+    z_ps = z_cfht + c0 + (c1 * imz) + (c2 * imz ** 2)
     return z_ps
 
 
 #############################################################################
 # Colors
+
 
 @quantity_io()
 def GmR(cfht: Table, **kw) -> MAG:

@@ -60,9 +60,8 @@ __author__ = "Nathaniel Starkman"
 from astroPHD.util.config import __config__
 from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper,
-    _import_file_docstring_helper
+    _import_file_docstring_helper,
 )
-
 
 
 ##############################################################################
@@ -75,7 +74,8 @@ try:
 except ImportError:
 
     import warnings
-    warnings.warn('Cannot import amuse')
+
+    warnings.warn("Cannot import amuse")
 
 else:
 
@@ -91,15 +91,18 @@ else:
 ##############################################################################
 # Printing Information
 
-@_set_docstring_import_file_helper('amuse', __doc__)  # doc from __doc__
+
+@_set_docstring_import_file_helper("amuse", __doc__)  # doc from __doc__
 def amuse_imports_help():
     """Help for amuse base imports."""
     doc = _import_file_docstring_helper(amuse_imports_help.__doc__)
     print(doc)
+
+
 # /def
 
 
-if __config__.getboolean('verbosity', 'verbose-imports'):
+if __config__.getboolean("verbosity", "verbose-imports"):
     amuse_imports_help()
 
 ##############################################################################

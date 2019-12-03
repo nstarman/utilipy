@@ -17,12 +17,7 @@
 from .logging import LogPrint, LogFile  # , LoggerFile
 from .collections import ObjDict
 
-from . import (
-    config,
-    collections,
-    functools,
-    pickle
-)
+from . import config, collections, functools, pickle
 
 
 #############################################################################

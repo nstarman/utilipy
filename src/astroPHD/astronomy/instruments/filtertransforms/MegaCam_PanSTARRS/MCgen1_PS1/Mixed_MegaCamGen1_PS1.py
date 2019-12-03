@@ -12,13 +12,9 @@
 """Mega-Cam gen1 and PanSTARRS1 Mixed Functions."""
 
 __author__ = "Nathaniel Starkman"
-__credits__ = [
-    "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
-]
+__credits__ = ["http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"]
 
-__all__ = [
-    'iCFHT', 'rPS', 'CFHTtoPanstarrs_gmr'
-]
+__all__ = ["iCFHT", "rPS", "CFHTtoPanstarrs_gmr"]
 
 #############################################################################
 # IMPORTS
@@ -35,6 +31,7 @@ from . import MegaCamGen1_from_PS1
 #############################################################################
 # CODE
 #############################################################################
+
 
 @quantity_io()
 def iCFHT(cfht: Table, ps: Table, **kw) -> MAG:
@@ -68,11 +65,13 @@ def iCFHT(cfht: Table, ps: Table, **kw) -> MAG:
     http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html.
 
     """
-    r = kw.get('r', 'r')
-    i = kw.get('i', 'i')
+    r = kw.get("r", "r")
+    i = kw.get("i", "i")
 
-    i_cfht = (ps[i] + .007 * MAG - .078 * cfht[r]) / (1 - .078)
+    i_cfht = (ps[i] + 0.007 * MAG - 0.078 * cfht[r]) / (1 - 0.078)
     return i_cfht
+
+
 # /def
 
 
@@ -105,11 +104,13 @@ def rPS(cfht: Table, ps: Table, **kw) -> MAG:
         Pan-STARRS1 r-band
 
     """
-    r = kw.get('r', 'r')
+    r = kw.get("r", "r")
     i_cfht = iCFHT(cfht, ps, **kw)
 
     r_ps = cfht[r] - 0.001 * MAG + 0.023 * (cfht[r] - i_cfht)
     return r_ps
+
+
 # /def
 
 
@@ -146,6 +147,8 @@ def CFHTtoPanstarrs_gmr(cfht: Table, ps: Table, **kw) -> MAG:
     # r filter
     r_ps = rPS(cfht, ps, **kw)
     return g_ps - r_ps
+
+
 # /def
 
 

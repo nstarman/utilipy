@@ -25,20 +25,23 @@ import numpy as np
 ###############################################################################
 # CODE
 
-def quadrature(*args: np.array, axis: int=0) -> np.array:
+
+def quadrature(*args: np.array, axis: int = 0) -> np.array:
     """Return arguments summed in quadrature."""
     if len(args) == 0:
         raise ValueError
     if len(args) == 1:
         args = args[0]
     return np.sqrt(np.sum(np.square(args), axis=axis))
+
+
 # /def
 
 
 # ----------------------------------------------------------------------------
 
 
-def logsumexp(arr: np.array, axis: int=0) -> np.array:
+def logsumexp(arr: np.array, axis: int = 0) -> np.array:
     """Logsumexp.
 
     Faster?
@@ -55,11 +58,12 @@ def logsumexp(arr: np.array, axis: int=0) -> np.array:
     elif axis is None:
         minminarr = np.tile(minarr, arr.shape)
     else:
-        raise NotImplementedError(
-            "logsumexp' not implemented for axis > 2")
+        raise NotImplementedError("logsumexp' not implemented for axis > 2")
     if axis == 1:
         minarr = np.reshape(minarr, (arr.shape[0]))
     return minarr + np.log(np.sum(np.exp(arr - minminarr), axis=axis))
+
+
 # /def
 
 

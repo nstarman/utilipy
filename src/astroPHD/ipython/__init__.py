@@ -69,9 +69,7 @@ __author__ = "Nathaniel Starkman"
 
 # from ..decorators.docstring import set_docstring
 from astroPHD.util.config import __config__
-from astroPHD.decorators.docstring import (
-    _set_docstring_import_file_helper
-)
+from astroPHD.decorators.docstring import _set_docstring_import_file_helper
 
 _HAS_IPYTHON: bool = False
 
@@ -98,9 +96,10 @@ else:
     from IPython.core.interactiveshell import InteractiveShell
     from IPython.core.debugger import set_trace
     from IPython.display import (
-        display,        # display is a better print
-        Latex,          # for printing LaTeX
-        Markdown, HTML  # for printing Markdown & HTML
+        display,  # display is a better print
+        Latex,  # for printing LaTeX
+        Markdown,
+        HTML,  # for printing Markdown & HTML
     )
 
     # Project-Specific
@@ -111,8 +110,10 @@ else:
     from .notebook import add_raw_code_toggle
     from .plot import configure_matplotlib
     from .printing import (
-        printmd, printMD,     # markdown printing
-        printltx, printLaTeX  # LaTeX printing
+        printmd,
+        printMD,  # markdown printing
+        printltx,
+        printLaTeX,  # LaTeX printing
     )
 
 
@@ -124,7 +125,7 @@ if _HAS_IPYTHON:
     # Running Imported Functions
     InteractiveShell.ast_node_interactivity = "all"
 
-    configure_matplotlib(backend='inline', figure_format='retina')
+    configure_matplotlib(backend="inline", figure_format="retina")
 
 
 ##############################################################################
@@ -136,6 +137,8 @@ def help():
     """Help for ipython module."""
     print(__doc__)
     return
+
+
 # /def
 
 

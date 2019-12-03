@@ -42,8 +42,8 @@ from ..decorators import idxDecorator, ndarrayDecorator
 #############################################################################
 # Functions
 
-def _inRange(x: np.array, rng: list,
-             lbi: bool=True, ubi: bool=False) -> np.array:
+
+def _inRange(x: np.array, rng: list, lbi: bool = True, ubi: bool = False) -> np.array:
     """`inRange` helper function.
 
     Parameters
@@ -96,15 +96,21 @@ def _inRange(x: np.array, rng: list,
             out[i, :] = _inRange(row, lu, lbi=lbi, ubi=ubi)
 
         return out
+
+
 # /def
 
 
 # -----------------------------------------------------------------------------
 
+
 @idxDecorator()
-def inRange(*args: Union[np.array, Sequence],
-            rng: Union[list, type(Ellipsis)]=Ellipsis,
-            lbi: bool=True, ubi: bool=False) -> np.array:
+def inRange(
+    *args: Union[np.array, Sequence],
+    rng: Union[list, type(Ellipsis)] = Ellipsis,
+    lbi: bool = True,
+    ubi: bool = False
+) -> np.array:
     """Multidimensional box selection.
 
     Parameters
@@ -169,10 +175,9 @@ def inRange(*args: Union[np.array, Sequence],
 
     # if only one arg
     if len(args) == 1:
-        rng = (rng, )
+        rng = (rng,)
 
-    rowbool = np.array([_inRange(v, lu, lbi=lbi, ubi=ubi)
-                        for v, lu in zip(args, rng)])
+    rowbool = np.array([_inRange(v, lu, lbi=lbi, ubi=ubi) for v, lu in zip(args, rng)])
 
     numtrues = len(args)
 
@@ -180,9 +185,11 @@ def inRange(*args: Union[np.array, Sequence],
     # collapses column to 1 row
     # check where all rows=True for each collapsed column
     allbool = rowbool.sum(axis=0)
-    inrange = (allbool == numtrues)
+    inrange = allbool == numtrues
 
     return inrange
+
+
 # /def
 
 
@@ -192,10 +199,14 @@ def inRange(*args: Union[np.array, Sequence],
 
 # -----------------------------------------------------------------------------
 
+
 @idxDecorator()
-def outRange(*args: Union[np.array, Sequence],
-             rng: Optional[Sequence]=None,
-             lbi: bool=True, ubi: bool=False) -> np.array:
+def outRange(
+    *args: Union[np.array, Sequence],
+    rng: Optional[Sequence] = None,
+    lbi: bool = True,
+    ubi: bool = False
+) -> np.array:
     """Multidimensional box exclusion.
 
     equivelent to ~inRange
@@ -238,15 +249,20 @@ def outRange(*args: Union[np.array, Sequence],
 
     """
     return ~inRange(*args, rng=rng, lbi=lbi, ubi=ubi)
+
+
 # /def
 
 
 # -----------------------------------------------------------------------------
 
+
 @idxDecorator
-def ioRange(incl: Union[np.array, Sequence]=None,
-            excl: Union[np.array, Sequence]=None,
-            rng: Optional[Sequence]=None) -> np.array:
+def ioRange(
+    incl: Union[np.array, Sequence] = None,
+    excl: Union[np.array, Sequence] = None,
+    rng: Optional[Sequence] = None,
+) -> np.array:
     """Supports inRange and outRange.
 
     Parameters
@@ -274,7 +290,7 @@ def ioRange(incl: Union[np.array, Sequence]=None,
     """
     # Nothing passed. Raise error
     if (incl is None) & (excl is None):
-        raise ValueError('incl and excl are None')
+        raise ValueError("incl and excl are None")
     # Only inclusion passed
     elif excl is None:
         if isinstance(incl, tuple):
@@ -290,32 +306,38 @@ def ioRange(incl: Union[np.array, Sequence]=None,
     # Both inclusion and exclusion
     else:
         if isinstance(incl, tuple):
-            inclrng = rng[:len(incl)] if rng is not None else None
+            inclrng = rng[: len(incl)] if rng is not None else None
             out = inRange(*incl, rng=inclrng)
         else:
-            inclrng = rng[:np.shape(incl)[0] - 1] if rng is not None else None
+            inclrng = rng[: np.shape(incl)[0] - 1] if rng is not None else None
             if len(inclrng) == 1:
                 inclrng = inclrng[0]
             out = inRange(incl, rng=inclrng)
 
         if isinstance(excl, tuple):
-            exclrng = rng[len(excl):] if rng is not None else None
+            exclrng = rng[len(excl) :] if rng is not None else None
             out &= outRange(*excl, rng=exclrng)
         else:
-            exclrng = rng[np.shape(excl)[0] - 1:] if rng is not None else None
+            exclrng = rng[np.shape(excl)[0] - 1 :] if rng is not None else None
             if len(exclrng) == 1:
                 exclrng = exclrng[0]
             out &= outRange(excl, rng=exclrng)
 
     return out
+
+
 # /def
 
 
 # -----------------------------------------------------------------------------
 
+
 @idxDecorator
-def ellipse(*x: Union[np.array, Sequence], x0: Union[float, Sequence]=0.,
-            dx: Union[float, Sequence]=1.) -> np.array:
+def ellipse(
+    *x: Union[np.array, Sequence],
+    x0: Union[float, Sequence] = 0.0,
+    dx: Union[float, Sequence] = 1.0
+) -> np.array:
     r"""Elliptical selection of data in many dimensions.
 
     Supports selection with variable center and radius::
@@ -353,14 +375,20 @@ def ellipse(*x: Union[np.array, Sequence], x0: Union[float, Sequence]=0.,
     arr = np.divide(np.subtract(x, x0), dx)
 
     return np.sqrt(np.sum(np.square(arr), axis=0)) < 1
+
+
 # /def
 
 
 # -----------------------------------------------------------------------------
 
+
 @idxDecorator
-def circle(*x: Union[np.array, Sequence], x0: Union[float, Sequence]=0.,
-           radius: Union[float, Sequence]=1.) -> np.array:
+def circle(
+    *x: Union[np.array, Sequence],
+    x0: Union[float, Sequence] = 0.0,
+    radius: Union[float, Sequence] = 1.0
+) -> np.array:
     """Circular selection of data in many dimensions.
 
     Elliptical selection with fixed radius::
@@ -393,6 +421,8 @@ def circle(*x: Union[np.array, Sequence], x0: Union[float, Sequence]=0.,
 
     """
     return ellipse(*x, x0=x0, dx=radius)
+
+
 # /def
 
 #############################################################################

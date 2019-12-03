@@ -37,9 +37,8 @@ __author__ = "Nathaniel Starkman"
 from astroPHD.util.config import __config__
 from astroPHD.decorators.docstring import (
     _set_docstring_import_file_helper,
-    _import_file_docstring_helper
+    _import_file_docstring_helper,
 )
-
 
 
 ##############################################################################
@@ -52,7 +51,8 @@ try:
 except ImportError:
 
     import warnings
-    warnings.warn('Cannot import galpy')
+
+    warnings.warn("Cannot import galpy")
 
 else:
 
@@ -73,15 +73,18 @@ else:
 ##############################################################################
 # Printing Information
 
-@_set_docstring_import_file_helper('galpy', __doc__)  # doc from __doc__
+
+@_set_docstring_import_file_helper("galpy", __doc__)  # doc from __doc__
 def galpy_imports_help():
     """Help for galpy base imports."""
     doc = _import_file_docstring_helper(galpy_imports_help.__doc__)
     print(doc)
+
+
 # /def
 
 
-if __config__.getboolean('verbosity', 'verbose-imports'):
+if __config__.getboolean("verbosity", "verbose-imports"):
     galpy_imports_help()
 
 ##############################################################################

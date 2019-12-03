@@ -36,12 +36,16 @@ from IPython.display import Latex, Markdown, HTML
 ##############################################################################
 
 
-def printmd(s: str, color: Optional[str]=None,
-            size: Optional[float]=None,
-            bold: bool=False, italic: bool=False,
-            fontweight: Optional[float]=None,
-            fontstyle: Optional[str]=None, highlight: Optional[str]=None
-            ) -> None:
+def printmd(
+    s: str,
+    color: Optional[str] = None,
+    size: Optional[float] = None,
+    bold: bool = False,
+    italic: bool = False,
+    fontweight: Optional[float] = None,
+    fontstyle: Optional[str] = None,
+    highlight: Optional[str] = None,
+) -> None:
     """Print in Markdown.
 
     uses <span>
@@ -81,31 +85,33 @@ def printmd(s: str, color: Optional[str]=None,
     # doing style
     styleattrs = []
     if color is not None:
-        styleattrs.append(f'color:{color}')
+        styleattrs.append(f"color:{color}")
     if size is not None:
-        styleattrs.append(f'font-size:{size}px')
+        styleattrs.append(f"font-size:{size}px")
     # if textalign is not None:  # FIXME doesn't work in jupyter-lab
     #    styleattrs.append(f'text-align:{textalign}')
 
     if fontweight is not None:
-        styleattrs.append(f'font-weight:{fontweight}')
+        styleattrs.append(f"font-weight:{fontweight}")
     elif bold:
-        styleattrs.append('font-weight:bold')
+        styleattrs.append("font-weight:bold")
 
     if fontstyle is not None:
-        styleattrs.append(f'font-style:{fontstyle}')
+        styleattrs.append(f"font-style:{fontstyle}")
     elif italic:
-        styleattrs.append('font-style:italic')
+        styleattrs.append("font-style:italic")
 
     elif highlight is not None:
-        styleattrs.append('background-color:{highlight}')
+        styleattrs.append("background-color:{highlight}")
 
     # TODO: add more options
 
-    style = "style='{}'".format(';'.join(styleattrs))
+    style = "style='{}'".format(";".join(styleattrs))
 
     string = f"<span {style}>{s}</span>"
     display(Markdown(string))
+
+
 # /def
 
 
@@ -116,9 +122,14 @@ printMD = printmd
 
 # ----------------------------------------------------------------------------
 
-def printltx(s: str, math: Union[str, bool]=False,
-             equation: Union[str, bool]=False,
-             matrix: Union[str, bool]=False, label: str='') -> None:
+
+def printltx(
+    s: str,
+    math: Union[str, bool] = False,
+    equation: Union[str, bool] = False,
+    matrix: Union[str, bool] = False,
+    label: str = "",
+) -> None:
     r"""Print in latex.
 
     Parameters
@@ -139,29 +150,31 @@ def printltx(s: str, math: Union[str, bool]=False,
         only used in equation or matrix
 
     """
-    if label == '':
+    if label == "":
         pass
     else:
-        label = r'\label{' + label + '}'
+        label = r"\label{" + label + "}"
 
     if isinstance(math, str):
         s = math + s + math
     elif math:  # (True)
-        s = '$' + s + '$'
+        s = "$" + s + "$"
 
     if equation:
-        s = r'\begin{equation}' + label + s + r'\end{equation}'
+        s = r"\begin{equation}" + label + s + r"\end{equation}"
     elif equation is None:
-        s = r'\begin{equation*}' + label + s + r'\end{equation*}'
+        s = r"\begin{equation*}" + label + s + r"\end{equation*}"
 
     if isinstance(matrix, str):
-        if matrix == 'b':
-            matrix = 'bmatrix'
-        s = r'\begin{' + matrix + '}' + label + s + r'\end{' + matrix + '}'
+        if matrix == "b":
+            matrix = "bmatrix"
+        s = r"\begin{" + matrix + "}" + label + s + r"\end{" + matrix + "}"
     elif matrix:
-        s = r'\begin{matrix}' + label + s + r'\end{matrix}'
+        s = r"\begin{matrix}" + label + s + r"\end{matrix}"
 
     display(Latex(s))
+
+
 # /def
 
 

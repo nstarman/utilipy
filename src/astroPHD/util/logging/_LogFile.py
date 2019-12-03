@@ -32,6 +32,7 @@ from ..metaclasses import InheritDocstrings
 ##############################################################################
 # LogFile
 
+
 class LogFile(LogPrint, metaclass=InheritDocstrings):
     """Class for basic logger that can both print and record to a file.
 
@@ -84,36 +85,56 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
     ._print_and_write: prints and writes
     """
 
-    def __new__(cls, filename: Optional[str]=None, verbose: int=0,
-                sec_div: str='-',
-                header: Union[str, None, bool]=None, show_header: bool=True,
-                # for open
-                mode: str='w', buffering: int=-1, encoding: None=None,
-                errors: None=None, newline: None=None, closefd: bool=True,
-                opener: None=None) -> None:
+    def __new__(
+        cls,
+        filename: Optional[str] = None,
+        verbose: int = 0,
+        sec_div: str = "-",
+        header: Union[str, None, bool] = None,
+        show_header: bool = True,
+        # for open
+        mode: str = "w",
+        buffering: int = -1,
+        encoding: None = None,
+        errors: None = None,
+        newline: None = None,
+        closefd: bool = True,
+        opener: None = None,
+    ) -> None:
         """LogFile.
 
         if no filename, makes a LogPrint instead
 
         """
-        if mode == '+':
-            raise ValueError('+ not allowed')
+        if mode == "+":
+            raise ValueError("+ not allowed")
 
         if filename is None:
-            return LogPrint(verbose=verbose, sec_div=sec_div,
-                            header=header, show_header=show_header)
+            return LogPrint(
+                verbose=verbose, sec_div=sec_div, header=header, show_header=show_header
+            )
         # else:
         self = super().__new__(cls)
         return self
+
     # /def
 
-    def __init__(self, filename: Optional[str]=None, verbose: int=0,
-                 sec_div: str='-',
-                 header: Union[str, None, bool]=None, show_header: bool=True,
-                 # for open
-                 mode: str='w', buffering: int=-1, encoding: None=None,
-                 errors: None=None, newline: None=None, closefd: bool=True,
-                 opener: None=None) -> None:
+    def __init__(
+        self,
+        filename: Optional[str] = None,
+        verbose: int = 0,
+        sec_div: str = "-",
+        header: Union[str, None, bool] = None,
+        show_header: bool = True,
+        # for open
+        mode: str = "w",
+        buffering: int = -1,
+        encoding: None = None,
+        errors: None = None,
+        newline: None = None,
+        closefd: bool = True,
+        opener: None = None,
+    ) -> None:
         """LogFile.
 
         set the filename and make the file
@@ -128,43 +149,61 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
 
         # the Logger
         self.file = open(
-            filename, mode=mode, buffering=buffering, encoding=encoding,
-            errors=errors, newline=newline, closefd=closefd, opener=opener
+            filename,
+            mode=mode,
+            buffering=buffering,
+            encoding=encoding,
+            errors=errors,
+            newline=newline,
+            closefd=closefd,
+            opener=opener,
         )
 
-        if mode == 'r':
+        if mode == "r":
             return
 
         # making file header
         if header is False:  # no header
-            self.write(f"{''} Log:", endsection='=', print=False)
+            self.write(f"{''} Log:", endsection="=", print=False)
         else:  # there is a header
             if header is None:  # header should be filename
-                header = filename + ' '
+                header = filename + " "
             elif header is True:  # blank header
-                header = ''
-            elif header[-1] != ' ':  # making sure ends in space
-                header += ' '
+                header = ""
+            elif header[-1] != " ":  # making sure ends in space
+                header += " "
 
-            self.write(f"{header}Log:", endsection='=', print=show_header)
+            self.write(f"{header}Log:", endsection="=", print=show_header)
 
         return
+
     # /def
 
     def __getattr__(self, name: str) -> Any:
         """Redirect non-defined attributes to self.file."""
         return getattr(self.file, name)
+
     # /def
 
     # ------------------------------------------------------------------------
 
     @classmethod
-    def open(cls, filename: str, verbose: int=0, sec_div: str='-',
-             header: Optional[str]=None, show_header: bool=True,
-             # for open
-             mode: str='w', buffering: int=-1, encoding: None=None,
-             errors: None=None, newline: None=None, closefd: bool=True,
-             opener: None=None) -> Any:
+    def open(
+        cls,
+        filename: str,
+        verbose: int = 0,
+        sec_div: str = "-",
+        header: Optional[str] = None,
+        show_header: bool = True,
+        # for open
+        mode: str = "w",
+        buffering: int = -1,
+        encoding: None = None,
+        errors: None = None,
+        newline: None = None,
+        closefd: bool = True,
+        opener: None = None,
+    ) -> Any:
         """Make basic logger that can both print and record to a file.
 
         this class uses `open', not a more extensive logger, like `logging'
@@ -198,19 +237,40 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
             '+' open a disk file for updating (reading and writing)
 
         """
-        return cls(filename, verbose=verbose, mode=mode, sec_div=sec_div,
-                   header=header, show_header=show_header,
-                   buffering=buffering, encoding=encoding, errors=errors,
-                   newline=newline, closefd=closefd, opener=opener)
+        return cls(
+            filename,
+            verbose=verbose,
+            mode=mode,
+            sec_div=sec_div,
+            header=header,
+            show_header=show_header,
+            buffering=buffering,
+            encoding=encoding,
+            errors=errors,
+            newline=newline,
+            closefd=closefd,
+            opener=opener,
+        )
+
     # /def
 
     @classmethod
-    def open_to_write(cls, filename: str, verbose: int=0, sec_div: str='-',
-                      header: Optional[str]=None, show_header: bool=True,
-                      # for open
-                      mode: int='w', buffering: int=-1, encoding: None=None,
-                      errors: None=None, newline: None=None,
-                      closefd: bool=True, opener: None=None) -> Any:
+    def open_to_write(
+        cls,
+        filename: str,
+        verbose: int = 0,
+        sec_div: str = "-",
+        header: Optional[str] = None,
+        show_header: bool = True,
+        # for open
+        mode: int = "w",
+        buffering: int = -1,
+        encoding: None = None,
+        errors: None = None,
+        newline: None = None,
+        closefd: bool = True,
+        opener: None = None,
+    ) -> Any:
         """Make basic logger that can both print and record to a file.
 
         this class uses `open', not a more extensive logger, like `logging'
@@ -244,21 +304,38 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
             '+' open a disk file for updating (reading and writing)
 
         """
-        if mode == 'r':
-            raise ValueError('mode must be set to write')
+        if mode == "r":
+            raise ValueError("mode must be set to write")
 
-        return cls(filename, verbose=verbose, mode=mode, sec_div=sec_div,
-                   header=header, show_header=show_header,
-                   buffering=buffering, encoding=encoding, errors=errors,
-                   newline=newline, closefd=closefd, opener=opener)
+        return cls(
+            filename,
+            verbose=verbose,
+            mode=mode,
+            sec_div=sec_div,
+            header=header,
+            show_header=show_header,
+            buffering=buffering,
+            encoding=encoding,
+            errors=errors,
+            newline=newline,
+            closefd=closefd,
+            opener=opener,
+        )
+
     # /def
 
     @classmethod
-    def open_to_read(cls, filename: str,
-                     # for open
-                     buffering: int=-1, encoding: None=None, errors: None=None,
-                     newline: None=None, closefd: bool=True, opener: None=None
-                     ) -> Any:
+    def open_to_read(
+        cls,
+        filename: str,
+        # for open
+        buffering: int = -1,
+        encoding: None = None,
+        errors: None = None,
+        newline: None = None,
+        closefd: bool = True,
+        opener: None = None,
+    ) -> Any:
         """Make basic logger that can both print and record to a file.
 
         this class uses `open', not a more extensive logger, like `logging'
@@ -273,15 +350,24 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
             the file name / path at which to save this log
 
         """
-        return cls(filename, mode='r', buffering=buffering, encoding=encoding,
-                   errors=errors, newline=newline, closefd=closefd,
-                   opener=opener)
+        return cls(
+            filename,
+            mode="r",
+            buffering=buffering,
+            encoding=encoding,
+            errors=errors,
+            newline=newline,
+            closefd=closefd,
+            opener=opener,
+        )
+
     # /def
 
     # ------------------------------------------------------------------------
 
-    def _write(self, *string: str, start: str='', sep: str=' ', end: str='\n'
-               ) -> None:
+    def _write(
+        self, *string: str, start: str = "", sep: str = " ", end: str = "\n"
+    ) -> None:
         r"""Write helper method.
 
         this is used by all write methods
@@ -290,7 +376,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
 
         """
         if len(string) == 0:  # checking there is a string
-            raise ValueError('needs a value')
+            raise ValueError("needs a value")
 
         self.file.write(start)  # start
 
@@ -303,11 +389,19 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
                 self.file.write(str(s) + sep)
             self.file.write(str(string[-1]) + end)  # last string
         return
+
     # /def
 
-    def write(self, *text: str, start: str='', sep: str=' ', end: str='\n',
-              startsection: bool=False, endsection: bool=False,
-              print: bool=True) -> Any:
+    def write(
+        self,
+        *text: str,
+        start: str = "",
+        sep: str = " ",
+        end: str = "\n",
+        startsection: bool = False,
+        endsection: bool = False,
+        print: bool = True,
+    ) -> Any:
         r"""Write string to stream and print it to output.
 
         Parameters
@@ -325,23 +419,48 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         endsection:  bool  (default False)
 
         """
-        return super().write(*text, start=start, sep=sep, end=end,
-                             startsection=startsection, endsection=endsection,
-                             print=print)
+        return super().write(
+            *text,
+            start=start,
+            sep=sep,
+            end=end,
+            startsection=startsection,
+            endsection=endsection,
+            print=print,
+        )
+
     # /def
 
-    def record(self, *text: str, start: str='', end: str='\n',
-               startsection: bool=False, endsection: bool=False) -> Any:
+    def record(
+        self,
+        *text: str,
+        start: str = "",
+        end: str = "\n",
+        startsection: bool = False,
+        endsection: bool = False,
+    ) -> Any:
         """Write, but doesn't print as well as write to file."""
-        return super().record(*text, start=start, end=end,
-                              startsection=startsection, endsection=endsection)
+        return super().record(
+            *text,
+            start=start,
+            end=end,
+            startsection=startsection,
+            endsection=endsection,
+        )
+
     # /def
 
     # ------------------------------------------------------------------------
 
-    def report(self, *msgs: str, verbose: Optional[int]=None,
-               print: bool=True, write: bool=True,
-               start_at: int=1, **kw) -> Any:
+    def report(
+        self,
+        *msgs: str,
+        verbose: Optional[int] = None,
+        print: bool = True,
+        write: bool = True,
+        start_at: int = 1,
+        **kw,
+    ) -> Any:
         """a report function whose message is determined by the `verbose`.
 
         Parameters
@@ -362,18 +481,22 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         kw: kwargs for self.write or self.print
 
         """
-        return super().report(*msgs, verbose=verbose, print=print, write=write,
-                              start_at=start_at, **kw)
+        return super().report(
+            *msgs, verbose=verbose, print=print, write=write, start_at=start_at, **kw
+        )
+
     # /def
 
     # ------------------------------------------------------------------------
 
     def close(self) -> None:
         """Close the file."""
-        self.newsection(title='closing file', div='=')
+        self.newsection(title="closing file", div="=")
         self.file.close()
         return
+
     # /def
+
 
 # /class
 
