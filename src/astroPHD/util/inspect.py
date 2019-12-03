@@ -1,59 +1,44 @@
-"""Added functionality to ``inspect.signature``.
+# -*- coding: utf-8 -*-
 
-Routine Listings
-----------------
-Signature
-
-get_annotations_from_signature
-
-get_defaults_from_signature
-
-get_kwdefaults_from_signature
-
-get_kwonlydefaults_from_signature
-
-replace_parameter
-
-insert_parameter
-
-drop_parameter
-
-
-TODO
-----
-have the `get_` methods use `Signature.method` if it is my custom signature object
-
-"""
+"""initialization file for `inspect`."""
 
 __author__ = "Nathaniel Starkman"
 
-__all__ = [
-    # Signature
-    'Signature',
-    # Signature / ArgSpec Interface
-    'get_annotations_from_signature',
-    'get_defaults_from_signature',
-    'get_kwdefaults_from_signature',
-    'get_kwonlydefaults_from_signature',
-    # Signature Methods
-    'replace_parameter',
-    'insert_parameter',
-    'drop_parameter',
-]
-
+# __all__ = [
+#     # Signature
+#     'Signature',
+#     # Signature / ArgSpec Interface
+#     'get_annotations_from_signature',
+#     'get_defaults_from_signature',
+#     'get_kwdefaults_from_signature',
+#     'get_kwonlydefaults_from_signature',
+#     # Signature Methods
+#     'replace_parameter',
+#     'insert_parameter',
+#     'drop_parameter',
+#     # FullerArgSpec,
+#     ''
+# ]
 
 ##############################################################################
 # IMPORTS
 
 # GENERAL
-from typing import Union, Any, Optional
-from typing_extensions import Literal
-import inspect
-from inspect import Parameter
+from inspect import *
+import inspect as _inspect
+from inspect import getfullargspec, FullArgSpec, Parameter, Signature as _Signature
+
+from typing import (
+    Callable as _Callable,
+    Union as _Union,
+    Any as _Any,
+    Optional as _Optional,
+)
+from typing_extensions import Literal as _Literal
+from collections import namedtuple as _namedtuple
 
 # PROJECT-SPECIFIC
-from ..metaclasses import InheritDocstrings
-
+from .metaclasses import InheritDocstrings as _InheritDocstrings
 
 ##############################################################################
 # Parameters
@@ -68,9 +53,88 @@ _empty = Parameter.empty
 
 
 ##############################################################################
+# Types
+
+FullerArgSpec: _namedtuple = _namedtuple(
+    "FullerArgSpec",
+    [
+        "args",
+        "defaultargs",
+        "argdefaults",
+        "varargs",
+        "kwonlyargs",
+        "kwonlydefaults",
+        "varkw",
+        "annotations",
+        "docstring",
+    ],
+)
+
+
+##############################################################################
+# getfullerargspec
+
+
+def getfullerargspec(func: _Callable) -> FullerArgSpec:
+    """Separated version of FullerArgSpec.
+
+    fullargspec with separation of mandatory and optional arguments
+    adds *defargs* which corresponds *defaults*
+
+    Parameters
+    ----------
+    func : function
+        the function to inspect
+
+    Returns
+    -------
+    FullerArgSpec : namedtuple
+        args             : the mandatory arguments
+        defargs          : arguments with defaults
+        defaults         : dictionary of defaults to `defargs`
+        varargs          : variable arguments (args)
+        kwonlyargs       : key-word only arguments
+        kwonlydefaults   : key-word only argument defaults
+        varkw            : variable key-word arguments (kwargs)
+        annotations      : function annotations
+        docstring        : function docstring
+
+    """
+    spec: FullArgSpec = getfullargspec(func)  # get argspec
+
+    if spec.defaults is not None:  # separate out argument types
+
+        args = spec.args[: -len(spec.defaults)]
+        defargs = spec.args[-len(spec.defaults) :]
+        defaults = {k: v for k, v in zip(defargs, spec.defaults)}
+
+    else:  # nothing to separate
+        args = spec.args
+        defargs = None
+        defaults = None
+
+    # build FullerArgSpec
+    return FullerArgSpec(
+        args,
+        defargs,
+        defaults,
+        spec.varargs,
+        spec.kwonlyargs,
+        spec.kwonlydefaults,
+        spec.varkw,
+        spec.annotations,
+        func.__doc__,
+    )
+
+
+# /def
+
+
+##############################################################################
 # Signature / ArgSpec Interface
 
-def get_annotations_from_signature(signature: inspect.Signature) -> dict:
+
+def get_annotations_from_signature(signature: _Signature) -> dict:
     """Get annotations from Signature object.
 
     Parameters
@@ -92,14 +156,19 @@ def get_annotations_from_signature(signature: inspect.Signature) -> dict:
     {'x': 'x annotation', 'return': 'return annotation'}
 
     """
-    annotations = {k: v.annotation for k, v in signature.parameters.items()
-                   if v.annotation != _empty}
-    annotations['return'] = signature.return_annotation
+    annotations = {
+        k: v.annotation
+        for k, v in signature.parameters.items()
+        if v.annotation != _empty
+    }
+    annotations["return"] = signature.return_annotation
     return annotations
+
+
 # /def
 
 
-def get_defaults_from_signature(signature: inspect.Signature) -> tuple:
+def get_defaults_from_signature(signature: _Signature) -> tuple:
     """Get defaults from Signature object.
 
     Parameters
@@ -127,13 +196,19 @@ def get_defaults_from_signature(signature: inspect.Signature) -> tuple:
     (2,)
 
     """
-    return tuple([p.default for p in signature.parameters.values()
-                  if ((p.kind == _POSITIONAL_OR_KEYWORD) &  # the kind
-                      (p.default != _empty))])     # only defaulted
+    return tuple(
+        [
+            p.default
+            for p in signature.parameters.values()
+            if ((p.kind == _POSITIONAL_OR_KEYWORD) & (p.default != _empty))  # the kind
+        ]
+    )  # only defaulted
+
+
 # /def
 
 
-def get_kwdefaults_from_signature(signature: inspect.Signature) -> dict:
+def get_kwdefaults_from_signature(signature: _Signature) -> dict:
     """Get key-word only defaults from Signature object.
 
     Parameters
@@ -161,16 +236,20 @@ def get_kwdefaults_from_signature(signature: inspect.Signature) -> dict:
     (3,)
 
     """
-    return {n: p.default for n, p in signature.parameters.items()
-            if ((p.kind == _KEYWORD_ONLY) &
-                (p.default != _empty))}
+    return {
+        n: p.default
+        for n, p in signature.parameters.items()
+        if ((p.kind == _KEYWORD_ONLY) & (p.default != _empty))
+    }
+
+
 # /def
 
 
 get_kwonlydefaults_from_signature = get_kwdefaults_from_signature
 
 
-def get_kinds_from_signature(signature: inspect.Signature) -> tuple:
+def get_kinds_from_signature(signature: _Signature) -> tuple:
     """Get parameter kinds from Signature object.
 
     Parameters
@@ -192,13 +271,16 @@ def get_kinds_from_signature(signature: inspect.Signature) -> tuple:
 
     """
     return tuple([p.kind for p in signature.parameters.values()])
+
+
 # /def
 
 
 ##############################################################################
 # Signature
 
-class Signature(inspect.Signature, metaclass=InheritDocstrings):
+
+class Signature(_Signature, metaclass=_InheritDocstrings):
     """Signature with better ArgSpec compatibility.
 
     Though `Signature` is the new object, python still largely
@@ -241,17 +323,21 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
     # ------------------------------------------
 
     @property
-    def __signature__(self) -> inspect.Signature:
+    def __signature__(self) -> _Signature:
         """Return a classical Signature."""
-        return inspect.Signature(parameters=list(self.parameters.values()),
-                                 return_annotation=self._return_annotation,
-                                 __validate_parameters__=False)
+        return _Signature(
+            parameters=list(self.parameters.values()),
+            return_annotation=self._return_annotation,
+            __validate_parameters__=False,
+        )
+
     # /def
 
     @property
-    def signature(self) -> inspect.Signature:
+    def signature(self) -> _Signature:
         """Return a classical Signature."""
         return self.__signature__
+
     # /def
 
     @property
@@ -272,15 +358,19 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         {'x': 'x annotation', 'return': 'return annotation'}
 
         """
-        res = {k: v.annotation for k, v in self.parameters.items()
-               if v.annotation != _empty}
+        res = {
+            k: v.annotation
+            for k, v in self.parameters.items()
+            if v.annotation != _empty
+        }
         if self.return_annotation is not _empty:
-            res['return'] = self.return_annotation
+            res["return"] = self.return_annotation
         return res
+
     # /def
 
     @property
-    def annotations(self) -> Any:
+    def annotations(self) -> _Any:
         """Get annotations from Signature object.
 
         Returns
@@ -298,10 +388,11 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
 
         """
         return self.__annotations__
+
     # /def
 
     @property
-    def __defaults__(self) -> Optional[tuple]:
+    def __defaults__(self) -> _Optional[tuple]:
         """Get defaults.
 
         Returns
@@ -317,17 +408,22 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         (2,)
 
         """
-        out = tuple([p.default for p in self.parameters.values()
-                     if ((p.kind == _POSITIONAL_OR_KEYWORD) &
-                         (p.default != _empty))])
+        out = tuple(
+            [
+                p.default
+                for p in self.parameters.values()
+                if ((p.kind == _POSITIONAL_OR_KEYWORD) & (p.default != _empty))
+            ]
+        )
         if out == ():  # empty list
             return None
         else:
             return out
+
     # /def
 
     @property
-    def defaults(self) -> Optional[tuple]:
+    def defaults(self) -> _Optional[tuple]:
         """Get defaults.
 
         Returns
@@ -344,10 +440,11 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
 
         """
         return self.__defaults__
+
     # /def
 
     @property
-    def __kwdefaults__(self) -> Optional[dict]:
+    def __kwdefaults__(self) -> _Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -370,17 +467,20 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         (3,)
 
         """
-        out = {n: p.default for n, p in self.parameters.items()
-               if ((p.kind == _KEYWORD_ONLY) &
-                   (p.default != _empty))}
+        out = {
+            n: p.default
+            for n, p in self.parameters.items()
+            if ((p.kind == _KEYWORD_ONLY) & (p.default != _empty))
+        }
         if out == {}:  # empty dict
             return None
         else:
             return out
+
     # /def
 
     @property
-    def kwdefaults(self) -> Optional[dict]:
+    def kwdefaults(self) -> _Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -404,10 +504,11 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
 
         """
         return self.__kwdefaults__
+
     # /def
 
     @property
-    def kwonlydefaults(self) -> Optional[dict]:
+    def kwonlydefaults(self) -> _Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -431,6 +532,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
 
         """
         return self.__kwdefaults__
+
     # /def
 
     @property
@@ -452,21 +554,21 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         """
         return tuple([p.kind for p in self.parameters.values()])
 
-#     (args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations).
-#     'args' is a list of the parameter names.
-#     'varargs' and 'varkw' are the names of the * and ** parameters or None.
-#     'defaults' is an n-tuple of the default values of the last n parameters.
-#     'kwonlyargs' is a list of keyword-only parameter names.
-#     'kwonlydefaults' is a dictionary mapping names from kwonlyargs to defaults.
-#     'annotations' is a dictionary mapping parameter names to annotations.
+    #     (args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations).
+    #     'args' is a list of the parameter names.
+    #     'varargs' and 'varkw' are the names of the * and ** parameters or None.
+    #     'defaults' is an n-tuple of the default values of the last n parameters.
+    #     'kwonlyargs' is a list of keyword-only parameter names.
+    #     'kwonlydefaults' is a dictionary mapping names from kwonlyargs to defaults.
+    #     'annotations' is a dictionary mapping parameter names to annotations.
 
-#     def fullargspec(self):
-#         return
+    #     def fullargspec(self):
+    #         return
 
     # ------------------------------------------
 
     @property
-    def index_positional(self) -> Union[tuple, Literal[False]]:
+    def index_positional(self) -> _Union[tuple, _Literal[False]]:
         """Index(ices) of positional arguments.
 
         This includes defaulted positional arguments.
@@ -484,10 +586,11 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
             return False
         else:
             return tuple([i for i, k in enumerate(kinds) if (k == 1)])
+
     # /def
 
     @property
-    def index_var_positional(self) -> Union[int, Literal[False]]:
+    def index_var_positional(self) -> _Union[int, _Literal[False]]:
         """Index of `*args`.
 
         Returns
@@ -503,10 +606,11 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
             return False
         else:
             return kinds.index(2)
+
     # /def
 
     @property
-    def index_keyword_only(self) -> Union[tuple, Literal[False]]:
+    def index_keyword_only(self) -> _Union[tuple, _Literal[False]]:
         """Index of `*args`.
 
         Returns
@@ -522,6 +626,7 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
             return False
         else:
             return tuple([i for i, k in enumerate(kinds) if (k == 3)])
+
     # /def
 
     @property
@@ -538,10 +643,11 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         if index is False:  # no variable kwargs
             index = len(self.kinds) + 1
         return index
+
     # /def
 
     @property
-    def index_var_keyword(self) -> Union[int, Literal[False]]:
+    def index_var_keyword(self) -> _Union[int, _Literal[False]]:
         """Index of `**kwargs`.
 
         Returns
@@ -557,19 +663,25 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
             return False
         else:
             return kinds.index(4)
+
     # /def
 
     # ------------------------------------------
 
-    def copy(self) -> inspect.Signature:
+    def copy(self) -> _Signature:
         """Copy of self."""
         return self.replace(parameters=list(self.parameters.values()))
 
     # ------------------------------------------
 
-    def replace_parameter(self, param: str, name: Optional[str]=None,
-                          kind: Any=None, default: Any=None,
-                          annotation: Any=None) -> inspect.Signature:
+    def replace_parameter(
+        self,
+        param: str,
+        name: _Optional[str] = None,
+        kind: _Any = None,
+        default: _Any = None,
+        annotation: _Any = None,
+    ) -> _Signature:
         """Replace a Parameter.
 
         Similar to `.replace,` but more convenient for modifying a single parameter
@@ -609,14 +721,15 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         annotation = _param.annotation if annotation is None else annotation
 
         # adjust parameter list
-        params[index] = _param.replace(name=name, kind=kind, default=default,
-                                       annotation=annotation)
+        params[index] = _param.replace(
+            name=name, kind=kind, default=default, annotation=annotation
+        )
 
         return self.replace(parameters=params)
+
     # /def
 
-    def replace_with_parameter(self, name: Union[int, str], param: Parameter
-                               ) -> Any:
+    def replace_with_parameter(self, name: _Union[int, str], param: Parameter) -> _Any:
         """Replace a Parameter with another Parameter.
 
         Similar to `.replace,` but more convenient for modifying a single parameter
@@ -647,10 +760,10 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         signature = signature.insert_parameter(index, param)
 
         return signature
+
     # /def
 
-    def insert_parameter(self, index: int, parameter: Parameter
-                         ) -> inspect.Signature:
+    def insert_parameter(self, index: int, parameter: Parameter) -> _Signature:
         """Insert a new Parameter.
 
         Similar to .replace, but more convenient for adding a single parameter
@@ -673,10 +786,10 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         params.insert(index, parameter)
 
         return self.replace(parameters=params)
+
     # /def
 
-    def drop_parameter(self, param: str
-                       ) -> inspect.Signature:
+    def drop_parameter(self, param: str) -> _Signature:
         """Drop a Parameter.
 
         Parameters
@@ -698,12 +811,14 @@ class Signature(inspect.Signature, metaclass=InheritDocstrings):
         del params[index]
 
         return self.replace(parameters=params)
+
     # /def
 
 
 # ----------------------------------------------------------------------------
 
-def signature(obj: Any, *, follow_wrapped: bool=True) -> Any:
+
+def signature(obj: _Any, *, follow_wrapped: bool = True) -> _Any:
     """Get a signature object for the passed callable."""
     return Signature.from_callable(obj, follow_wrapped=follow_wrapped)
 
@@ -713,9 +828,15 @@ def signature(obj: Any, *, follow_wrapped: bool=True) -> Any:
 # TODO replace as method versions from Signature, can use semi-static for this
 
 
-def replace_parameter(signature: inspect.Signature, param: str, name: str=None,
-                      kind=None, default=None, annotation=None,
-                      return_annotation=None) -> Signature:
+def replace_parameter(
+    signature: _Signature,
+    param: str,
+    name: str = None,
+    kind=None,
+    default=None,
+    annotation=None,
+    return_annotation=None,
+) -> Signature:
     """Replace a Parameter.
 
     Similar to .replace, but more convenient for modifying a single parameter
@@ -754,16 +875,21 @@ def replace_parameter(signature: inspect.Signature, param: str, name: str=None,
     annotation = _param.annotation if name is None else annotation
 
     # adjust parameter list
-    params[index] = _param.replace(name=name, kind=kind, default=default,
-                                   annotation=annotation,
-                                   return_annotation=return_annotation)
+    params[index] = _param.replace(
+        name=name,
+        kind=kind,
+        default=default,
+        annotation=annotation,
+        return_annotation=return_annotation,
+    )
 
     return signature.replace(parameters=params)
+
+
 # /def
 
 
-def insert_parameter(signature: inspect.Signature, index: int,
-                     parameter: Parameter) -> Any:
+def insert_parameter(signature: _Signature, index: int, parameter: Parameter) -> _Any:
     """Insert a new Parameter.
 
     Similar to .replace, but more convenient for adding a single parameter
@@ -786,10 +912,12 @@ def insert_parameter(signature: inspect.Signature, index: int,
     params.insert(index, parameter)
 
     return signature.replace(parameters=params)
+
+
 # /def
 
 
-def drop_parameter(signature: Signature, param: str) -> Any:
+def drop_parameter(signature: Signature, param: str) -> _Any:
     """Drop a Parameter.
 
     Parameters
@@ -813,40 +941,10 @@ def drop_parameter(signature: Signature, param: str) -> Any:
     del params[index]
 
     return signature.replace(parameters=params)
+
+
 # /def
 
 
 ##############################################################################
 # END
-
-
-# def f1():
-#     pass
-# # inspect.signature(f1).kinds
-
-# def f2(x, y):
-#     pass
-# # inspect.signature(f2).kinds
-
-# def f3(x, y, a=10, b=11):
-#     pass
-# # inspect.signature(f3).kinds
-
-# def f4(x, y, a=10, b=11, *args):
-#     pass
-# # inspect.signature(f4).kinds
-# # inspect.signature(f4).var_pos_index
-
-# def f5(x, y, a=10, b=11, *args, k='one', l='two'):
-#     pass
-# # inspect.signature(f5).kinds
-
-# def f6(x, y, a=10, b=11, *args, k='one', **kw):
-#     pass
-# inspect.signature(f6).kinds
-# inspect.signature(f6).index_positional
-# inspect.signature(f6).index_var_positional
-# inspect.signature(f6).index_keyword_only
-# inspect.signature(f6).index_var_keyword
-
-# np.array(inspect.signature(f6).kinds)[list(inspect.signature(f6).index_positional)]
