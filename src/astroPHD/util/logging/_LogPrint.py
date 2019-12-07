@@ -78,7 +78,10 @@ class LogPrint(object):
 
         """
         return cls(
-            verbose=verbose, sec_div=sec_div, header=header, show_header=show_header
+            verbose=verbose,
+            sec_div=sec_div,
+            header=header,
+            show_header=show_header,
         )
 
     # /def
@@ -100,7 +103,10 @@ class LogPrint(object):
 
         """
         return cls(
-            verbose=verbose, sec_div=sec_div, header=header, show_header=show_header
+            verbose=verbose,
+            sec_div=sec_div,
+            header=header,
+            show_header=show_header,
         )
 
     # /def
@@ -190,7 +196,9 @@ class LogPrint(object):
         full_div = div * int(79 / len(div))  # round out to full line length
 
         if print:
-            self._print_and_write(full_div, title, start="\n", sep="\n", end="\n")
+            self._print_and_write(
+                full_div, title, start="\n", sep="\n", end="\n"
+            )
         else:
             self._write(full_div, title, start="\n", sep="\n", end="\n\n")
         return

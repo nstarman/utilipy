@@ -267,7 +267,9 @@ class ObjDict(OrderedDict):
         uses .util.pickle.dump
 
         """
-        _dump(self, fname, protocol=protocol, fopt=fopt, fix_imports=fix_imports)
+        _dump(
+            self, fname, protocol=protocol, fopt=fopt, fix_imports=fix_imports
+        )
 
     # /def
 
@@ -302,7 +304,11 @@ class ObjDict(OrderedDict):
 
         """
         self = _load(
-            fname, fopt=fopt, fix_imports=fix_imports, encoding=encoding, errors=errors
+            fname,
+            fopt=fopt,
+            fix_imports=fix_imports,
+            encoding=encoding,
+            errors=errors,
         )
         return self
 

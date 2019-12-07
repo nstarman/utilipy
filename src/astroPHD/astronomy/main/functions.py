@@ -81,7 +81,9 @@ def angular_distance(lon1: DEG, lat1: DEG, lon2: DEG, lat2: DEG) -> Any:
 
     """
     latcomp = np.sin(lat1) * np.sin(lat2)  # latitude component
-    loncomp = np.cos(lat1) * np.cos(lat2) * np.cos(lon1 - lon2)  # longitude component
+    loncomp = (
+        np.cos(lat1) * np.cos(lat2) * np.cos(lon1 - lon2)
+    )  # longitude component
 
     res = np.arccos(latcomp + loncomp)
 
@@ -230,7 +232,9 @@ def distanceModulus_distance(DM: MAG, **kw) -> Any:
 # --------------------------------------------------------------------------
 
 # TODO annot2dfu = T/F?
-@quantity_io(arg=("length", MAG), A=MAG, annot2dfu=True, default_units={"A": MAG})
+@quantity_io(
+    arg=("length", MAG), A=MAG, annot2dfu=True, default_units={"A": MAG}
+)
 def distanceModulus(arg, A=0 * MAG, obs=True, **kw) -> Any:
     r"""Distance Modulus.
 

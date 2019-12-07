@@ -56,7 +56,10 @@ from IPython import get_ipython
 from ..util import functools
 from ..util.config import use_import_verbosity
 from ..util.logging import LogFile
-from ..util.paths import get_absolute_path as _gap, parent_file_directory as _pfd
+from ..util.paths import (
+    get_absolute_path as _gap,
+    parent_file_directory as _pfd,
+)
 
 from .autoreload import aimport, set_autoreload
 
@@ -132,7 +135,7 @@ def run_imports(
     # extra standard files
     astropy: bool = False,
     matplotlib: bool = False,
-    # plotly: bool=False,
+    plotly: bool = False,
     # additional, requires extra installs
     galpy: bool = False,
     amuse: bool = False,
@@ -159,6 +162,8 @@ def run_imports(
         import_astropy -> `astroPHD/imports/astropy.py`
     matplotlib: bool
         import_matplotlib -> `astroPHD/imports/matplotlib.py`
+    plotly: bool
+        import_plotly -> `astroPHD/imports/plotly.py`
     extended: bool
         import_extended -> `astroPHD/imports/extended.py`
     galpy: bool
@@ -196,32 +201,44 @@ def run_imports(
     # base
 
     if base:
-        import_base(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
+        import_base(
+            verbose_imports=verbose_imports, logger=logger, verbose=verbose
+        )
 
     if extended:
-        import_extended(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
+        import_extended(
+            verbose_imports=verbose_imports, logger=logger, verbose=verbose
+        )
 
     # ---------------------------------------------
     # basic
 
     if astropy:
-        import_astropy(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
+        import_astropy(
+            verbose_imports=verbose_imports, logger=logger, verbose=verbose
+        )
 
     if matplotlib:
         import_matplotlib(
             verbose_imports=verbose_imports, logger=logger, verbose=verbose
         )
-    # if plotly:
-    #     import_plotly(logger=logger, verbose=verbose)
+    if plotly:
+        import_plotly(
+            verbose_imports=verbose_imports, logger=logger, verbose=verbose
+        )
 
     # ---------------------------------------------
     # extras
 
     if galpy:
-        import_galpy(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
+        import_galpy(
+            verbose_imports=verbose_imports, logger=logger, verbose=verbose
+        )
 
     if amuse:
-        import_amuse(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
+        import_amuse(
+            verbose_imports=verbose_imports, logger=logger, verbose=verbose
+        )
 
     # ---------------------------------------------
 
@@ -405,15 +422,26 @@ def import_matplotlib(
 # /def
 
 
-# @_set_docstring_import_x(_join_pfd('../imports/plotly.py'))
-# def import_plotly(logger:LogFile=_LOGFILE, verbose:Optional[int]=None, logger_kw: Dict=_LOGGER_KW
-#                   ) -> None:
-#     """Import basic plotly packages."""
-#     import_from_file(_join_pfd('../imports/plotly.py'),
-#                      is_relative=False,
-#                      logger=logger, verbose=verbose, logger_kw=logger_kw)
-#     return
-# # /def
+@_set_docstring_import_x(_join_pfd("../imports/plotly.py"))
+def import_plotly(
+    verbose_imports: Optional[bool] = None,
+    logger: LogFile = _LOGFILE,
+    verbose: Optional[int] = None,
+    logger_kw: Dict = _LOGGER_KW,
+) -> None:
+    """Import basic Matplotlib packages."""
+    import_from_file(
+        _join_pfd("../imports/plotly.py"),
+        is_relative=False,
+        verbose_imports=verbose_imports,
+        logger=logger,
+        verbose=verbose,
+        logger_kw=logger_kw,
+    )
+    return
+
+
+# /def
 
 
 # ----------------------------------------------------------------------------

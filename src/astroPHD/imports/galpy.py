@@ -44,6 +44,19 @@ from astroPHD.decorators.docstring import (
 ##############################################################################
 # IMPORTS
 
+# try:
+
+#     import galpy
+
+# except Exception:
+
+#     import time
+
+#     time.sleep(.01)
+
+
+# ------------------------
+
 try:
 
     import galpy
@@ -67,6 +80,8 @@ else:
 
     # util
     from galpy.util import bovy_conversion, bovy_coords
+
+    from galpy.util import galpyWarning
 
 # /if
 

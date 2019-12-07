@@ -71,7 +71,9 @@ class scipy_residual_to_lmfit(ObjectProxy):
 
     """
 
-    def __new__(cls, func: Callable = None, var_order: Optional[list] = None) -> object:
+    def __new__(
+        cls, func: Callable = None, var_order: Optional[list] = None
+    ) -> object:
         """Create Proxy."""
         if var_order is None:
             raise ValueError("var_order cannot be None")

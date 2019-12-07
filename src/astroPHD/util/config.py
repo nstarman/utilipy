@@ -115,9 +115,9 @@ def write_config(
         for key in _DEFAULT_CONFIG[sec_key]:
             if configuration is None:
                 writeconfig.set(sec_key, key, _DEFAULT_CONFIG[sec_key][key])
-            elif not configuration.has_section(sec_key) or not configuration.has_option(
-                sec_key, key
-            ):
+            elif not configuration.has_section(
+                sec_key
+            ) or not configuration.has_option(sec_key, key):
                 writeconfig.set(sec_key, key, _DEFAULT_CONFIG[sec_key][key])
             else:
                 writeconfig.set(sec_key, key, configuration.get(sec_key, key))
@@ -143,7 +143,9 @@ def get_import_verbosity() -> bool:
 # /def
 
 
-def set_import_verbosity(verbosity: Union[bool, Literal["True", "False"]]) -> None:
+def set_import_verbosity(
+    verbosity: Union[bool, Literal["True", "False"]]
+) -> None:
     """Set whether the full import information is printed or not."""
     assert str(verbosity) in {"True", "False"}, f"{str(verbosity)}"
     __config__.set("verbosity", "verbose-imports", str(verbosity))
@@ -156,7 +158,9 @@ def set_import_verbosity(verbosity: Union[bool, Literal["True", "False"]]) -> No
 class use_import_verbosity:
     """Docstring for use_import_verbosity."""
 
-    def __init__(self, verbosity: Union[bool, Literal["True", "False"]]) -> None:
+    def __init__(
+        self, verbosity: Union[bool, Literal["True", "False"]]
+    ) -> None:
         """__init__."""
         self.original_verbosity = get_import_verbosity()
         self.verbosity = verbosity

@@ -304,14 +304,18 @@ def dtypeDecoratorMaker(dtype: Any):
                     try:  # need to figure out whether return_ is a scalar or a list
                         return_[0]
                     except IndexError:  # scalar output
-                        inds = np.arange(len(args), dtype=self._dtype)[self._outargs]
+                        inds = np.arange(len(args), dtype=self._dtype)[
+                            self._outargs
+                        ]
                         if inds == 0:
                             return self._dtype(return_)
                         else:  # inds doesn't match return_
                             raise ValueError
                     else:
                         return_ = list(return_)
-                        inds = np.arange(len(args), dtype=self._dtype)[self._outargs]
+                        inds = np.arange(len(args), dtype=self._dtype)[
+                            self._outargs
+                        ]
                         for i in inds:
                             return_[i] = self._dtype(return_[i])
 

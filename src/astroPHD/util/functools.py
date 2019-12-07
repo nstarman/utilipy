@@ -104,7 +104,9 @@ def makeFunction(
 
     # assign properties not (properly) handled by FunctionType
     function.__kwdefaults__ = signature.__kwdefaults__
-    function.__annotations__ = signature.__annotations__  # includes return_annote
+    function.__annotations__ = (
+        signature.__annotations__
+    )  # includes return_annote
     function.__signature__ = signature.__signature__  # classical signature
     function.__doc__ = docstring
 

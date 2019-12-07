@@ -43,7 +43,9 @@ from ..decorators import idxDecorator, ndarrayDecorator
 # Functions
 
 
-def _inRange(x: np.array, rng: list, lbi: bool = True, ubi: bool = False) -> np.array:
+def _inRange(
+    x: np.array, rng: list, lbi: bool = True, ubi: bool = False
+) -> np.array:
     """`inRange` helper function.
 
     Parameters
@@ -177,7 +179,9 @@ def inRange(
     if len(args) == 1:
         rng = (rng,)
 
-    rowbool = np.array([_inRange(v, lu, lbi=lbi, ubi=ubi) for v, lu in zip(args, rng)])
+    rowbool = np.array(
+        [_inRange(v, lu, lbi=lbi, ubi=ubi) for v, lu in zip(args, rng)]
+    )
 
     numtrues = len(args)
 

@@ -51,7 +51,10 @@ def_unit(
     ["km_sMPc", "kmpspMpc", "hubble"],
     represents=units.km / units.s / units.Mpc,
     doc="kilometer per second per Megaparsec composite unit",
-    format={"latex": r"\frac{km}{s Mpc}", "latex_inline": r"km\,s^{-1}\,{Mpc}^{-1}"},
+    format={
+        "latex": r"\frac{km}{s Mpc}",
+        "latex_inline": r"km\,s^{-1}\,{Mpc}^{-1}",
+    },
     namespace=_ns,
 )
 
@@ -59,7 +62,10 @@ def_unit(
     ["km_skpc", "kmpspkpc"],
     represents=units.km / units.s / units.kpc,
     doc="kilometer per second per kiloparsec composite unit",
-    format={"latex": r"\frac{km}{s kpc}", "latex_inline": r"km\,s^{-1}\,{kpc}^{-1}"},
+    format={
+        "latex": r"\frac{km}{s kpc}",
+        "latex_inline": r"km\,s^{-1}\,{kpc}^{-1}",
+    },
     namespace=_ns,
 )
 

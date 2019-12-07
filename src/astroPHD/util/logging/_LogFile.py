@@ -111,7 +111,10 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
 
         if filename is None:
             return LogPrint(
-                verbose=verbose, sec_div=sec_div, header=header, show_header=show_header
+                verbose=verbose,
+                sec_div=sec_div,
+                header=header,
+                show_header=show_header,
             )
         # else:
         self = super().__new__(cls)
@@ -482,7 +485,12 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
 
         """
         return super().report(
-            *msgs, verbose=verbose, print=print, write=write, start_at=start_at, **kw
+            *msgs,
+            verbose=verbose,
+            print=print,
+            write=write,
+            start_at=start_at,
+            **kw,
         )
 
     # /def

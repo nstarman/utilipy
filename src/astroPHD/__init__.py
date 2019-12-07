@@ -34,7 +34,7 @@ from . import (
     math,
     plot,
     units,
-    util
+    util,
 )
 
 # import commonly used functions
@@ -48,18 +48,21 @@ from .util import config
 #############################################################################
 # HELP FUNCTION
 
+
 def help() -> None:
     """`astroPHD` help function.
 
     This function is a work in progress
 
     """
-    print('This function is a work in progress')
+    print("This function is a work in progress")
 
-    print(''.join(['-'] * 79))
+    print("".join(["-"] * 79))
     ipython.help()
 
     return None
+
+
 # /def
 
 #############################################################################

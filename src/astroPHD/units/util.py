@@ -124,7 +124,10 @@ def unit_output(
         res = res.decompose()
     elif decompose:  # decompose is NOT empty list
         cls = (Unit, IrreducibleUnit)
-        bases = [Unit(x) if not issubclass(x.__class__, cls) else x for x in decompose]
+        bases = [
+            Unit(x) if not issubclass(x.__class__, cls) else x
+            for x in decompose
+        ]
         res = res.decompose(bases=bases)
 
     # Now Converting

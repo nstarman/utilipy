@@ -3,9 +3,18 @@
 """PanSTARRS 1 bands from Mega-Cam gen1 bands."""
 
 __author__ = "Nathaniel Starkman"
-__credits__ = ["http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"]
+__credits__ = [
+    "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
+]
 
-__all__ = ["U_MP9302", "G_MP9402", "R_MP9602", "I_MP9703", "Z_MP9901", "GRI_MP9605"]
+__all__ = [
+    "U_MP9302",
+    "G_MP9402",
+    "R_MP9602",
+    "I_MP9703",
+    "Z_MP9901",
+    "GRI_MP9605",
+]
 
 
 #############################################################################

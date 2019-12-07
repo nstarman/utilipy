@@ -69,7 +69,10 @@ def domainDecorator(
 
 
 def domainMapDecorator(
-    inDomains: Sequence, outDomains: Sequence, roof: bool = False, usenp: bool = True
+    inDomains: Sequence,
+    outDomains: Sequence,
+    roof: bool = False,
+    usenp: bool = True,
 ) -> Callable:
     """Decorator to ensure numbers are in the correct domain.
 
@@ -82,11 +85,15 @@ def domainMapDecorator(
 
     TODO better name
     """
-    indoms = [(i, domain_factory(*dom, roof=roof, getnp=True)) for i, *dom in inDomains]
+    indoms = [
+        (i, domain_factory(*dom, roof=roof, getnp=True))
+        for i, *dom in inDomains
+    ]
     nps = [0] * len(inDomains)  # number of periods
 
     outdoms = [
-        (i, domain_factory(*dom, roof=roof, getnp=False)) for i, *dom in outDomains
+        (i, domain_factory(*dom, roof=roof, getnp=False))
+        for i, *dom in outDomains
     ]
 
     def wrapper(func: Callable) -> Callable:
@@ -99,7 +106,9 @@ def domainMapDecorator(
             out: Any = func(*newargs, **kwargs)  # falling wrapped func
 
             if usenp:
-                for (i, f), np in zip(outdoms, nps):  # adjusting domain of out args
+                for (i, f), np in zip(
+                    outdoms, nps
+                ):  # adjusting domain of out args
                     out[:, i] = f(out[:, i], np=np)
             else:
                 for i, f in outdoms:  # adjusting domain of out args

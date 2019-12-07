@@ -43,7 +43,9 @@ from .decoratorbaseclass import DecoratorBaseClass
 # # /def
 
 
-def _set_docstring_import_file_helper(name: Optional[str], module_doc: str) -> Callable:
+def _set_docstring_import_file_helper(
+    name: Optional[str], module_doc: str
+) -> Callable:
     """Set docstring from module Returns section.
 
     takes a helper function for a module and adds the content of the modules'
@@ -122,7 +124,9 @@ set_docstring = replace_docstring
 # Format Doc
 
 
-def format_doc(docstring: Optional[str], *args: Any, **kwargs: Any) -> Callable:
+def format_doc(
+    docstring: Optional[str], *args: Any, **kwargs: Any
+) -> Callable:
     """Astropy's Format Docstring Function.
 
     .. _link: https://docs.astropy.org/en/stable/api/astropy.utils.decorators.format_doc.html

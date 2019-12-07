@@ -48,7 +48,9 @@ def configure_matplotlib(
 
     """
     if get_ipython() is None:
-        warnings.warn("not in an IPython environment," "cannot configure matplotlib")
+        warnings.warn(
+            "not in an IPython environment," "cannot configure matplotlib"
+        )
         return
 
     from IPython.terminal.pt_inputhooks import UnknownBackend
@@ -62,7 +64,9 @@ def configure_matplotlib(
 
     else:
         # set the resolution
-        get_ipython().magic("config InlineBackend.figure_format" f"='{figure_format}'")
+        get_ipython().magic(
+            "config InlineBackend.figure_format" f"='{figure_format}'"
+        )
 
     return
 

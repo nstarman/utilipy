@@ -26,7 +26,12 @@ __author__ = "Nathaniel Starkman"
 # GENERAL
 from inspect import *
 import inspect as _inspect
-from inspect import getfullargspec, FullArgSpec, Parameter, Signature as _Signature
+from inspect import (
+    getfullargspec,
+    FullArgSpec,
+    Parameter,
+    Signature as _Signature,
+)
 
 from typing import (
     Callable as _Callable,
@@ -200,7 +205,9 @@ def get_defaults_from_signature(signature: _Signature) -> tuple:
         [
             p.default
             for p in signature.parameters.values()
-            if ((p.kind == _POSITIONAL_OR_KEYWORD) & (p.default != _empty))  # the kind
+            if (
+                (p.kind == _POSITIONAL_OR_KEYWORD) & (p.default != _empty)
+            )  # the kind
         ]
     )  # only defaulted
 
@@ -729,7 +736,9 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
 
     # /def
 
-    def replace_with_parameter(self, name: _Union[int, str], param: Parameter) -> _Any:
+    def replace_with_parameter(
+        self, name: _Union[int, str], param: Parameter
+    ) -> _Any:
         """Replace a Parameter with another Parameter.
 
         Similar to `.replace,` but more convenient for modifying a single parameter
@@ -889,7 +898,9 @@ def replace_parameter(
 # /def
 
 
-def insert_parameter(signature: _Signature, index: int, parameter: Parameter) -> _Any:
+def insert_parameter(
+    signature: _Signature, index: int, parameter: Parameter
+) -> _Any:
     """Insert a new Parameter.
 
     Similar to .replace, but more convenient for adding a single parameter

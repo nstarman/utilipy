@@ -68,7 +68,9 @@ def set_autoreload(reload_type: Optional[int] = None) -> None:
 
 
 # TODO support any list
-def aimport(*modules: str, autoreload: Union[bool, list, tuple] = True) -> None:
+def aimport(
+    *modules: str, autoreload: Union[bool, list, tuple] = True
+) -> None:
     """Jupyter magic aimport.
 
     Parameters
