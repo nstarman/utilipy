@@ -42,7 +42,7 @@ from .util.logging import LogFile
 from .util.collections import ObjDict
 
 # configuration
-from .util import config
+from . import config
 
 
 #############################################################################

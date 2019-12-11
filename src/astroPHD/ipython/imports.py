@@ -54,7 +54,7 @@ from IPython import get_ipython
 
 # Project-Specific
 from ..util import functools
-from ..util.config import use_import_verbosity
+from ..config import use_import_verbosity
 from ..util.logging import LogFile
 from ..util.paths import (
     get_absolute_path as _gap,

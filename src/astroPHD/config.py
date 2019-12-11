@@ -35,6 +35,9 @@ __all__ = [
     "get_warnings_verbosity",
     "set_warnings_verbosity",
     "use_warnings_verbosity",
+    "get_frozen_constants",
+    "set_frozen_constants",
+    "use_frozen_constants",
     "cfilename",
 ]
 
@@ -55,6 +58,7 @@ import configparser
 _DEFAULT_CONFIG: Dict[str, Union[str, Dict[str, str]]] = {
     "verbosity": {"verbose-imports": "True", "warnings": "True"},
     "plot": {"seaborn-defaults": "False"},
+    "util": {"frozen-constants": "True"},
 }
 
 _DEFAULT_FILE: str = os.path.join(os.path.expanduser("~"), ".astroPHDrc")
@@ -209,18 +213,18 @@ def set_warnings_verbosity(key: Union[bool, str]) -> None:
 class use_warnings_verbosity:
     """Docstring for use_warnings_verbosity."""
 
-    def __init__(self, verbosity: bool) -> None:
+    def __init__(self, verbosity: Optional[bool] = None) -> None:
         """__init__."""
-        self.original_verbosity = get_import_verbosity()
-        self.verbosity = verbosity
+        self.original_state = get_warnings_verbosity()
+        self.state = verbosity
         return
 
     # /def
 
     def __enter__(self) -> Any:
         """Enter with statement, using specified import verbosity."""
-        if self.verbosity is not None:
-            set_warnings_verbosity(self.verbosity)
+        if self.state is not None:
+            set_warnings_verbosity(self.state)
         return self
 
     # /def
@@ -228,7 +232,56 @@ class use_warnings_verbosity:
     def __exit__(self, type, value, traceback) -> None:
         """Exit  with statement, restoring original import verbosity."""
         # Exception handling here
-        set_warnings_verbosity(self.original_verbosity)
+        set_warnings_verbosity(self.original_state)
+        return
+
+    # /def
+
+
+# ----------------------------------------------------------------------------
+
+
+def get_frozen_constants() -> None:
+    """Get warnings verbosity."""
+    return __config__.getboolean("util", "frozen-constants")
+
+
+# /def
+
+
+def set_frozen_constants(key: Union[bool, str]) -> None:
+    """Set warnings verbosity."""
+    assert str(key) in {"True", "False"}
+    __config__.set("util", "frozen-constants", str(key))
+    return
+
+
+# /def
+
+
+class use_frozen_constants:
+    """docstring for use_frozen_constants."""
+
+    def __init__(self, frozen: Optional[bool] = None) -> None:
+        """__init__."""
+        self.original_state = get_frozen_constants()
+        self.state = frozen
+        return
+
+    # /def
+
+    def __enter__(self) -> Any:
+        """Enter with statement, using specified state."""
+        if self.state is not None:
+            set_frozen_constants(self.state)
+        return self
+
+    # /def
+
+    def __exit__(self, type, value, traceback) -> None:
+        """Exit  with statement, restoring original state."""
+        # Exception handling here
+        set_frozen_constants(self.original_state)
         return
 
     # /def
