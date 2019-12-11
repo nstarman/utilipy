@@ -48,7 +48,7 @@ def_unit(
 )
 
 def_unit(
-    ["km_sMPc", "kmpspMpc", "hubble"],
+    ["km_sMpc", "kmpspMpc", "hubble", "Hubble"],
     represents=units.km / units.s / units.Mpc,
     doc="kilometer per second per Megaparsec composite unit",
     format={
