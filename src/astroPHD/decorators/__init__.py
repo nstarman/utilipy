@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python# -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
 #
@@ -8,16 +7,18 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""initialization file for util.decoraytors
-"""
+# Docstring and Metadata
+"""initialization file for util.decorators."""
 
 ##############################################################################
 ### IMPORTS
 
-## General
+# GENERAL
 
-## Project-Specific
+# PROJECT-SPECIFIC
+from ..util import functools
+from ..util.functools import wraps
+
 # data-type decorators
 from .dtype_decorator import (
     dtypeDecorator,
