@@ -26,6 +26,7 @@ __status__ = "Production"
 from . import (
     astronomy,
     community,
+    constants,
     data_utils,
     decorators,
     fitting,
