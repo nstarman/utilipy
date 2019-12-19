@@ -29,7 +29,7 @@ def test_imported():
     # imports same as __init__
     from astroPHD.util.logging import LogPrint, LogFile
     from astroPHD.util.collections import ObjDict
-    from astroPHD.util import config, collections, functools, pickle
+    from astroPHD.util import collections, functools, pickle
 
     # test equality
     assert util.LogPrint is LogPrint
