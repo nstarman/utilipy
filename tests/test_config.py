@@ -26,7 +26,7 @@ from astroPHD import config
 ##############################################################################
 # PARAMETERS
 
-localrc = os.path.join(os.path.expanduser('./tests/util/'), '.astroPHDrc')
+localrc = os.path.join(os.path.expanduser('./tests/'), '.astroPHDrc')
 
 # set config to local for testing
 config.__config__ = configparser.ConfigParser()

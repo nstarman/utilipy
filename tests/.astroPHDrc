@@ -3,5 +3,7 @@ verbose-imports = True
 warnings = True
 
 [plot]
-seaborn-defaults = True
+seaborn-defaults = False
 
+[util]
+frozen-constants = False
