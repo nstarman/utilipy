@@ -5,15 +5,12 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
+# GENERAL
 from typing import Union, Sequence
 import numpy as np
 
-
-###############################################################################
-# Parameters
-
-_AU_to_pc: float = 0.000004848137
-_pc_to_AU: float = 1.0 / _AU_to_pc
+# PROJECT - SPECIFIC
+from ...constants.values import AU_to_pc as _AU_to_pc, pc_to_AU as _pc_to_AU
 
 
 ###############################################################################
@@ -35,6 +32,7 @@ def pc_from_AU(AU: Union[np.array, float]) -> Union[np.array, float]:
 
 # /def
 
+
 # -------------------------------------------------------------------------
 
 
@@ -43,9 +41,15 @@ def AU_from_pc(pc: Union[np.array, float]) -> Union[np.array, float]:
     return pc * _pc_to_AU
 
 
+# /def
+
+
 def pc_to_AU(pc: Union[np.array, float]) -> Union[np.array, float]:
     """Convert pc to AU."""
     return pc * _pc_to_AU
+
+
+# /def
 
 
 ###############################################################################
@@ -305,4 +309,5 @@ def max_angular_separation(doff: Sequence, dto: Sequence) -> Sequence:
 # /def
 
 
-# -------------------------------------------------------------------------
+###############################################################################
+# END

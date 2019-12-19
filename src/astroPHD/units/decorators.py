@@ -44,7 +44,7 @@ _aioattrs = (
     "equivalencies",
     "decompose",
     "assumed_units",
-    "use_annotations_as_assumed_units",
+    "assume_annotation_units",
 )
 
 
@@ -220,9 +220,9 @@ class QuantityInputOutput(object):
 
         ex) if x has no units, it is assumed to be in u.km
 
-    use_annotations_as_assumed_units: bool, optional
+    assume_annotation_units: bool, optional
         whether to interpret function annotations as default units
-        (default {use_annotations_as_assumed_units})
+        (default {assume_annotation_units})
         function annotations have lower precedence than *assumed_units*
 
     Notes
@@ -271,7 +271,7 @@ class QuantityInputOutput(object):
         >>> def func(x: u.m, y: u.s) -> u.m / u.s:
         ...     pass
 
-        if use_annotations_as_assumed_units is True (default False)
+        if assume_annotation_units is True (default False)
         function annotations are interpreted as default units
         function annotations have lower precedence than *assumed_units*
 
@@ -287,7 +287,7 @@ class QuantityInputOutput(object):
         equivalencies: Sequence = [],
         decompose: Union[bool, Sequence] = False,
         assumed_units: dict = {},
-        use_annotations_as_assumed_units: bool = False,
+        assume_annotation_units: bool = False,
         **decorator_kwargs: Any
     ):
         """{doc}."""
@@ -307,7 +307,7 @@ class QuantityInputOutput(object):
             equivalencies=equivalencies,
             decompose=decompose,
             assumed_units=assumed_units,
-            use_annotations_as_assumed_units=use_annotations_as_assumed_units,
+            assume_annotation_units=assume_annotation_units,
             **decorator_kwargs
         )
 
@@ -325,7 +325,7 @@ class QuantityInputOutput(object):
         equivalencies: Sequence = [],
         decompose: Union[bool, Sequence] = False,
         assumed_units: dict = {},
-        use_annotations_as_assumed_units: bool = False,
+        assume_annotation_units: bool = False,
         **decorator_kwargs: Any
     ):
         """Initialize decorator class."""
@@ -337,8 +337,8 @@ class QuantityInputOutput(object):
         self.decompose = decompose
 
         self.assumed_units = assumed_units
-        self.use_annotations_as_assumed_units = (
-            use_annotations_as_assumed_units
+        self.assume_annotation_units = (
+            assume_annotation_units
         )
 
         self.decorator_kwargs = decorator_kwargs
@@ -396,7 +396,7 @@ class QuantityInputOutput(object):
                 #   or annotations
                 if param.name in assumed_units:
                     dfunit = assumed_units[param.name]
-                elif self.use_annotations_as_assumed_units is True:
+                elif self.assume_annotation_units is True:
                     dfunit = param.annotation
                 # elif not assumed_units:
                 #     dfunit = param.annotation

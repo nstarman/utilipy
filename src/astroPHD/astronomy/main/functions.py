@@ -1,16 +1,15 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
 #
 # TITLE   : functions
 # AUTHOR  : Nathaniel Starkman
-# PROJECT : astronat
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-r"""Astronomy functions.
+"""Astronomy functions.
 
 TODO incorporate astropy cosmology
 
@@ -42,7 +41,7 @@ from ...units import (
 
 
 @quantity_io()
-def angular_distance(lon1: DEG, lat1: DEG, lon2: DEG, lat2: DEG) -> Any:
+def angular_distance_on_sky(lon1: DEG, lat1: DEG, lon2: DEG, lat2: DEG) -> Any:
     r"""Angular distance on-sky.
 
     for longitude, \alpha, and latitude, \delta,
@@ -101,8 +100,9 @@ def angular_distance(lon1: DEG, lat1: DEG, lon2: DEG, lat2: DEG) -> Any:
 def apparent_to_absolute_magnitude(m: MAG, d_L: PC, **kw) -> Any:
     """Convert apparent to absolute magnitude.
 
-    calculate the absolute magnitude
-    M = m - 5 log10(d) + 5
+    calculate the absolute magnitude::
+
+        M = m - 5 log10(d) + 5
 
     Parameters
     ----------
@@ -155,7 +155,12 @@ def absolute_to_apparent_magnitude(M: MAG, d_L: PC, **kw) -> Any:
 # Distance Modulus
 
 
-@quantity_io(d="length", A=MAG, annot2dfu=True, default_units={"A": MAG})
+@quantity_io(
+    d="length",
+    A=MAG,
+    assume_annotation_units=True,
+    assumed_units={"A": MAG},
+)
 def distanceModulus_magnitude(d: PC, A=0 * MAG, obs=True, **kw) -> Any:
     r"""Distance Modulus distance to magnitude.
 
@@ -199,10 +204,7 @@ def distanceModulus_magnitude(d: PC, A=0 * MAG, obs=True, **kw) -> Any:
 # /def
 
 
-# --------------------------------------------------------------------------
-
-
-@quantity_io(DM=MAG, annot2dfu=True)
+@quantity_io(DM=MAG, assume_annotation_units=True)
 def distanceModulus_distance(DM: MAG, **kw) -> Any:
     r"""Distance Modulus.
 
@@ -229,11 +231,12 @@ def distanceModulus_distance(DM: MAG, **kw) -> Any:
 # /def
 
 
-# --------------------------------------------------------------------------
-
-# TODO annot2dfu = T/F?
+# TODO assume_annotation_units = T/F?
 @quantity_io(
-    arg=("length", MAG), A=MAG, annot2dfu=True, default_units={"A": MAG}
+    arg=("length", MAG),
+    A=MAG,
+    assume_annotation_units=True,
+    assumed_units={"A": MAG},
 )
 def distanceModulus(arg, A=0 * MAG, obs=True, **kw) -> Any:
     r"""Distance Modulus.

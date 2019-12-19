@@ -13,15 +13,17 @@
 
 TODO
 ----
-Implement in C
+Implement in C via mypyc
 
 """
 
 __author__ = "Nathaniel Starkman"
 
-#############################################################################
-# Imports
 
+##############################################################################
+# IMPORTS
+
+# PROJECT - SPECIFIC
 from .functions import (
     # magnitudes
     apparent_to_absolute_magnitude,
@@ -38,5 +40,5 @@ from .functions import (
     max_angular_separation,
 )
 
-#############################################################################
+##############################################################################
 # END
