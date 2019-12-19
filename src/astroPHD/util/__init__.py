@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -8,7 +7,16 @@
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""util initialization file"""
+"""Utilities.
+
+Routine Listings
+----------------
+exceptions
+functools
+inspect
+pickle
+
+"""
 
 ##############################################################################
 # IMPORTS
@@ -17,7 +25,7 @@
 from .logging import LogPrint, LogFile  # , LoggerFile
 from .collections import ObjDict
 
-from . import config, collections, functools, pickle
+from . import collections, functools, pickle
 
 
 #############################################################################
