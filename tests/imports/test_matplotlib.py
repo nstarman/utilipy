@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -8,8 +7,7 @@
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""test functions for data_utils/select
-"""
+"""Test functions for data_utils/select."""
 
 __author__ = "Nathaniel Starkman"
 

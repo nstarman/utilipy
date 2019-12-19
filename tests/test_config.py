@@ -2,12 +2,12 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE  : test util/config
+# TITLE  : test config
 #
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""tests for util/config.py."""
+"""tests for config.py."""
 
 __author__ = "Nathaniel Starkman"
 
@@ -21,7 +21,7 @@ from typing import Union, Dict
 import configparser
 
 # PROJECT-SPECIFIC
-from astroPHD.util import config
+from astroPHD import config
 
 ##############################################################################
 # PARAMETERS

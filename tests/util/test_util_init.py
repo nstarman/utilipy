@@ -35,7 +35,6 @@ def test_imported():
     assert util.LogPrint is LogPrint
     assert util.LogFile is LogFile
     assert util.ObjDict is ObjDict
-    assert util.config is config
     assert util.collections is collections
     assert util.functools is functools
     assert util.pickle is pickle
