@@ -3,11 +3,13 @@
 Welcome to 	`astroPHD`, a collection of useful python codes. This is a centralized repository for much of the non project-specific code I have written or come across. There are modules for making advanced decorators, interfacing with IPython environments, miscellaneous astronomical functions, data utilities, making fitting libraries inter-operable, improving astropy units and quantity-enabled functions, and much more. Check out the documentation here, on [readthedocs](https://readthedocs.org/projects/astrophd/badge/?version=latest), and at the [wiki](https://github.com/nstarman/astroPHD/wiki) for more detail.
 
 <div align="center">
+
 [![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
 [![Build Status](https://travis-ci.org/nstarman/astroPHD.svg?branch=master)](https://travis-ci.org/nstarman/astroPHD)
 [![Documentation Status](https://readthedocs.org/projects/astrophd/badge/?version=latest)](https://astrophd.readthedocs.io/en/latest/?badge=latest)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 </div>
 
 ## Attribution
