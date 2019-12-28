@@ -18,41 +18,7 @@ Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://ww
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3545178.svg)](https://doi.org/10.5281/zenodo.3545178)
 
-If you find this code useful in your research, please let me know. If you significantly use astroPHD in a publication, please acknowledge **10.5281/zenodo.3545178**. Please also send me a reference to the paper.
-
-
-
-##  Table of Contents
-<!-- MarkdownTOC levels="1,2,3" autolink="true" style="unordered" -->
-
-- [Module Highlights](#module-highlights)
-    - [astronomy](#astronomy)
-    - [community](#community)
-    - [data_utils](#data_utils)
-    - [decorators](#decorators)
-    - [fitting](#fitting)
-    - [imports](#imports)
-    - [ipython](#ipython)
-        - [autoreload](#autoreload)
-        - [imports](#imports-1)
-        - [notebook](#notebook)
-        - [plot](#plot)
-        - [printing](#printing)
-    - [math](#math)
-    - [plot](#plot-1)
-    - [units](#units)
-    - [util](#util)
-        - [config](#config)
-        - [Logging](#logging)
-        - [inspect](#inspect)
-        - [functools](#functools)
-        - [pickle](#pickle)
-- [Templates](#templates)
-    - [About Text](#about-text)
-    - [Python](#python)
-    - [Latex](#latex)
-
-<!-- /MarkdownTOC -->
+If you find this code useful in your research, please let me know. If you significantly use astroPHD in a publication, please acknowledge **10.5281/zenodo.3545178** and send me a reference to the paper.
 
 
 <br><br>
