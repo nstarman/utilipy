@@ -1,6 +1,13 @@
 astroPHD.community package
 ==========================
 
+Subpackages
+-----------
+
+.. toctree::
+
+   astroPHD.community.starkplot
+
 Module contents
 ---------------
 

@@ -25,7 +25,7 @@ __all__ = ["iCFHT", "rPS", "CFHTtoPanstarrs_gmr"]
 from astropy.table import Table, QTable
 
 # PROJECT-SPECIFIC
-from ..units import quantity_io, mag as MAG
+from .. import quantity_io, MAG
 from . import PS1_from_MegaCamGen1
 from . import MegaCamGen1_from_PS1
 

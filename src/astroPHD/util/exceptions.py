@@ -26,7 +26,7 @@ from typing import Any
 import warnings
 
 # PROJECT-SPECIFIC
-from .config import __config__
+from ..config import __config__
 
 
 ##############################################################################

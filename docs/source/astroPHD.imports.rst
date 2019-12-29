@@ -52,6 +52,14 @@ astroPHD.imports.matplotlib module
    :undoc-members:
    :show-inheritance:
 
+astroPHD.imports.plotly module
+------------------------------
+
+.. automodule:: astroPHD.imports.plotly
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 Module contents
 ---------------
