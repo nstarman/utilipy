@@ -4,3 +4,6 @@
 [submodule "packages/starkplot"]
 	path = packages/starkplot
 	url = https://nstarman@github.com/nstarman/starkplot.git
+[submodule "templates/template_project"]
+	path = templates/template_project
+	url = https://nstarman@github.com/nstarman/template_project.git
