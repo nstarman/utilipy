@@ -30,7 +30,7 @@ def test_import_galpy():
     """Test galpy imports when not in IPython environment"""
     if _do_galpy_import:
 
-        from astroPHD.imports import galpy as imports
+        from astroPHD.imports import galpy_imports as imports
 
         imports.galpy
         imports.potential

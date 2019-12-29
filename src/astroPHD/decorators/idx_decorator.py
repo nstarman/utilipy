@@ -33,7 +33,7 @@ def idxDecorator(
     """Control whether to return boolean array or indices.
 
     for functions which return bool arrays
-    adds *as_ind* as a kwarg to decorated function
+    adds `as_ind` as a kwarg to decorated function
 
     Parameters
     ----------
@@ -43,8 +43,8 @@ def idxDecorator(
         if None, then returns decorator to apply.
     as_ind : bool, optional
         (default False)
-        whether to return bool array or the indices (where(bool array == True))
-        sets the default behavior for the wrapped fnction *func*
+        whether to return bool array or indices (``where(bool array == True)``)
+        sets the default behavior for the wrapped function `func`
 
     Returns
     -------

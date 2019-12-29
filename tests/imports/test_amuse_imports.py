@@ -7,23 +7,36 @@
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""test functions for astropy imports."""
+"""test functions for amuse imports."""
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
+# IMPORTS
 
-def test_import_astropy():
+# GENERAL
+try:
+    import amuse
+except ImportError:
+    _do_amuse_import = False
+else:
+    _do_amuse_import = True
+
+
+##############################################################################
+
+def test_import_amuse():
     """Test _inRange."""
-    from astroPHD.imports import astropy as imports
+    if _do_amuse_import:
 
-    imports.astropy
-    imports.u
-    imports.coords
-    imports.SkyCoord
-    imports.Table, imports.QTable
-    imports.quantity_support, imports.astropy_mpl_style
+        from astroPHD.imports import amuse_imports as imports
+
+        imports.amuse
+        imports.lab
+        imports.units
+        imports.constants
+        imports.bridge
 
     return
 # /def

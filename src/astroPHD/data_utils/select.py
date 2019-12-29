@@ -11,20 +11,16 @@
 
 Routine Listings
 ----------------
-- box
-- circle
-- ellipse
-- inRange
-- ioRange
-- outRange
+`box`
+`circle`
+`ellipse`
+`inRange`
+`ioRange`
+`outRange`
 
 Examples
 --------
 do some examples here
-
-TODO
-----
-more tests for ND arrays as inputs
 
 """
 
@@ -359,10 +355,6 @@ def ellipse(
     dx: scalar or (m, 1) array
         (default = 0.)
         the radius in each dimension
-    as_ind : bool
-        (default False)
-        whether to return bool array or the indices (``where(bool array == True)``)
-        sets the default behavior for the wrapped fnction *func*
 
     Returns
     -------
@@ -401,27 +393,22 @@ def circle(
 
     Parameters
     ----------
-    x: (m x (n, 1)) arrays
+    x: array_like
+        shape (m x (n, 1))
         values along each dimension
-    x0: scalar, (m, 1) array
+    x0: array_like
         (default = 0.)
+        scalar or (m, 1) array
         the center position of each x.
         can broadcast a scalar to apply to all
     dx: scalar
         the radius
-    as_ind : bool  (default False)
-        whether to return bool array or the indices (``where(bool array == True``))
-        sets the default behavior for the wrapped function
 
     Returns
     -------
-    sel: array_like of bool
-        bool array selecting data w/in circle
+    sel : array_like of bool
+        bool array selecting data within circle
         if as_ind is True, then array_like of indices
-
-    See Also
-    --------
-    ellipse : elliptical selection
 
     """
     return ellipse(*x, x0=x0, dx=radius)

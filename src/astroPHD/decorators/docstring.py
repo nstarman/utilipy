@@ -99,14 +99,13 @@ def _import_file_docstring_helper(docstring: str) -> str:
 
 
 class replace_docstring(DecoratorBaseClass):
-    """Replace a function docstrin."""
+    """Replace a function docstring."""
 
     def _doc_func(self, docstring: str):
         return self.docstring
 
     def __call__(self, wrapped_function: Callable) -> Callable:
         """Construct a function wrapper."""
-
         @functools.wraps(wrapped_function)
         def wrapper(*func_args: Any, **func_kwargs: Any) -> Any:
             return wrapped_function(*func_args, **func_kwargs)
@@ -353,6 +352,7 @@ def format_doc(
         return obj
 
     # /def
+
     return set_docstring
 
 

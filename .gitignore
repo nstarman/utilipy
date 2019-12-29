@@ -47,12 +47,6 @@ presentations/_sample/*
 scripts/_sample/*
 src/_sample/*
 
-# docs
-!docs/source/conf.py
-!docs/source/README.md
-!docs/source/index.rst
-!docs/source/modules.rst
-
 ###############################################################################
 # Default
 

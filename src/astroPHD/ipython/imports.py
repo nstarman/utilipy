@@ -330,7 +330,7 @@ def _set_docstring_import_x(module: str) -> str:
 # TODO make these with a function
 
 
-@_set_docstring_import_x(_join_pfd("../imports/base.py"))
+@_set_docstring_import_x(_join_pfd("../imports/base_imports.py"))
 def import_base(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -339,7 +339,7 @@ def import_base(
 ) -> None:
     """Import base packages."""
     import_from_file(
-        _join_pfd("../imports/base.py"),
+        _join_pfd("../imports/base_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -352,7 +352,7 @@ def import_base(
 # /def
 
 
-@_set_docstring_import_x(_join_pfd("../imports/extended.py"))
+@_set_docstring_import_x(_join_pfd("../imports/extended_imports.py"))
 def import_extended(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -361,7 +361,7 @@ def import_extended(
 ) -> None:
     """Import extended packages."""
     import_from_file(
-        _join_pfd("../imports/extended.py"),
+        _join_pfd("../imports/extended_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -374,7 +374,7 @@ def import_extended(
 # /def
 
 
-@_set_docstring_import_x(_join_pfd("../imports/astropy.py"))
+@_set_docstring_import_x(_join_pfd("../imports/astropy_imports.py"))
 def import_astropy(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -383,7 +383,7 @@ def import_astropy(
 ) -> None:
     """Import basic astropy packages."""
     import_from_file(
-        _join_pfd("../imports/astropy.py"),
+        _join_pfd("../imports/astropy_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -400,7 +400,7 @@ def import_astropy(
 # plotting
 
 
-@_set_docstring_import_x(_join_pfd("../imports/matplotlib.py"))
+@_set_docstring_import_x(_join_pfd("../imports/matplotlib_imports.py"))
 def import_matplotlib(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -409,7 +409,7 @@ def import_matplotlib(
 ) -> None:
     """Import basic Matplotlib packages."""
     import_from_file(
-        _join_pfd("../imports/matplotlib.py"),
+        _join_pfd("../imports/matplotlib_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -422,7 +422,7 @@ def import_matplotlib(
 # /def
 
 
-@_set_docstring_import_x(_join_pfd("../imports/plotly.py"))
+@_set_docstring_import_x(_join_pfd("../imports/plotly_imports.py"))
 def import_plotly(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -431,7 +431,7 @@ def import_plotly(
 ) -> None:
     """Import basic Matplotlib packages."""
     import_from_file(
-        _join_pfd("../imports/plotly.py"),
+        _join_pfd("../imports/plotly_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -448,7 +448,7 @@ def import_plotly(
 # extras
 
 
-@_set_docstring_import_x(_join_pfd("../imports/galpy.py"))
+@_set_docstring_import_x(_join_pfd("../imports/galpy_imports.py"))
 def import_galpy(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -457,7 +457,7 @@ def import_galpy(
 ) -> None:
     """Import basic galpy packages."""
     import_from_file(
-        _join_pfd("../imports/galpy.py"),
+        _join_pfd("../imports/galpy_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -470,7 +470,7 @@ def import_galpy(
 # /def
 
 
-@_set_docstring_import_x(_join_pfd("../imports/amuse.py"))
+@_set_docstring_import_x(_join_pfd("../imports/amuse_imports.py"))
 def import_amuse(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -479,7 +479,7 @@ def import_amuse(
 ) -> None:
     """Import basic amuse packages."""
     import_from_file(
-        _join_pfd("../imports/amuse.py"),
+        _join_pfd("../imports/amuse_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,

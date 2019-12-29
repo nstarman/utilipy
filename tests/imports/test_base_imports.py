@@ -16,7 +16,7 @@ __author__ = "Nathaniel Starkman"
 
 def test_import_base():
     """Test base imports when not in ipython environment."""
-    from astroPHD.imports import base as imports
+    from astroPHD.imports import base_imports as imports
 
     imports.os
     imports.sys
@@ -43,7 +43,7 @@ def test_import_base_has_ipython():
     combines with test_import_base to test all imports.
 
     """
-    from astroPHD.imports import base as imports
+    from astroPHD.imports import base_imports as imports
 
     try:
         get_ipython()

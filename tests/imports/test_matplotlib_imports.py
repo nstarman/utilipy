@@ -16,7 +16,7 @@ __author__ = "Nathaniel Starkman"
 
 def test_import_matplotlib():
     """Test _inRange."""
-    from astroPHD.imports import matplotlib as imports
+    from astroPHD.imports import matplotlib_imports as imports
 
     imports.mpl
     imports.plt
@@ -33,7 +33,7 @@ def test_import_matplotlib_has_ipython():
     combines with test_import_matplotlib to test all imports.
 
     """
-    from astroPHD.imports import matplotlib as imports
+    from astroPHD.imports import matplotlib_imports as imports
 
     try:
         get_ipython()

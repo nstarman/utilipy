@@ -17,7 +17,7 @@ __author__ = "Nathaniel Starkman"
 
 def test_import_extended():
     """Test _inRange."""
-    from astroPHD.imports import extended as imports
+    from astroPHD.imports import extended_imports as imports
 
     imports.norm
     imports.binned_stats
