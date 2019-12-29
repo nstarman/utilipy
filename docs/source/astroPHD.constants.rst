@@ -1,13 +1,13 @@
-astroPHD.util.multi package
-===========================
+astroPHD.constants package
+==========================
 
 Submodules
 ----------
 
-astroPHD.util.multi.multi module
+astroPHD.constants.values module
 --------------------------------
 
-.. automodule:: astroPHD.util.multi.multi
+.. automodule:: astroPHD.constants.values
    :members:
    :undoc-members:
    :show-inheritance:
@@ -16,7 +16,7 @@ astroPHD.util.multi.multi module
 Module contents
 ---------------
 
-.. automodule:: astroPHD.util.multi
+.. automodule:: astroPHD.constants
    :members:
    :undoc-members:
    :show-inheritance:

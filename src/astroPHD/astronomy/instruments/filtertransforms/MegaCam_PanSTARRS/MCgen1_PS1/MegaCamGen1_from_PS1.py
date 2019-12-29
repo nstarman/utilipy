@@ -33,7 +33,7 @@ import warnings
 
 # PROJECT-SPECIFIC
 from astropy.table import Table, QTable
-from ..units import quantity_io, mag as MAG
+from .. import quantity_io, MAG
 
 
 #############################################################################

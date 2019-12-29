@@ -12,14 +12,6 @@ astroPHD.units.decorators module
    :undoc-members:
    :show-inheritance:
 
-astroPHD.units.units module
----------------------------
-
-.. automodule:: astroPHD.units.units
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 astroPHD.units.util module
 --------------------------
 

@@ -16,6 +16,67 @@ __credits__ = [
     "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
 ]
 
+# __all__ = [
+#     # MegaCamGen1_from_PS1
+#     "U_MP9301",
+#     "G_MP9401",
+#     "R_MP9601",
+#     "I_MP9701",
+#     "Z_MP9801",
+#     "umg_MC1PS1",
+#     "umr_MC1PS1",
+#     "umi_MC1PS1",
+#     "umz_MC1PS1",
+#     "gmr_MC1PS1",
+#     "gmi_MC1PS1",
+#     "gmz_MC1PS1",
+#     "rmi_MC1PS1",
+#     "rmz_MC1PS1",
+#     "imz_MC1PS1",
+#     # PS1_from_MegaCamGen1
+#     "g_PS1MC1",
+#     "r_PS1MC1",
+#     "i_PS1MC1",
+#     "z_PS1MC1",
+#     "gmr_PS1MC1",
+#     "gmi_PS1MC1",
+#     "gmz_PS1MC1",
+#     "rmi_PS1MC1",
+#     "rmz_PS1MC1",
+#     "imz_PS1MC1",
+#     # mixed
+#     "mixed as mixed_MC1PS1",
+#     "mixed as mixed_PS1MC1",
+#     # MegaCamGen2_from_PS1
+#     "I_MP9702",
+#     # PS1_from_MegaCamGen2
+#     # mixed
+#     "mixed_MC2PS1",
+#     "mixed_PS1MC2",
+#     # MegaCamGen3_from_PS1
+#     "U_MP9302",
+#     "G_MP9402",
+#     "R_MP9602",
+#     "I_MP9703",
+#     "Z_MP9901",
+#     "GRI_MP9605",
+#     # PS1_from_MegaCamGen3
+#     # mixed
+#     "mixed_MC3PS1",
+#     "mixed_PS1MC3",
+#     # General
+#     "UmG",
+#     "UmR",
+#     "UmI",
+#     "UmZ",
+#     "GmR",
+#     "GmI",
+#     "GmZ",
+#     "RmI",
+#     "RmZ",
+#     "ImZ",
+# ]
+
 
 #############################################################################
 # IMPORTS
@@ -26,8 +87,7 @@ from typing_extensions import Literal
 from astropy.table import Table, QTable
 
 # PROJECT-SPECIFIC
-from .. import units
-from ..units import quantity_io, mag as MAG
+from .. import units, quantity_io, MAG
 
 from .MCgen1_PS1 import (
     # MegaCamGen1_from_PS1

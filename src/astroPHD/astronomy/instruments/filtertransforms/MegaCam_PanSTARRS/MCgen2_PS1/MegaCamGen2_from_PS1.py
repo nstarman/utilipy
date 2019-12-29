@@ -17,7 +17,7 @@ import warnings
 from astropy.table import Table
 
 # PROJECT-SPECIFIC
-from ..units import quantity_io, mag as MAG
+from .. import quantity_io, MAG
 
 
 #############################################################################

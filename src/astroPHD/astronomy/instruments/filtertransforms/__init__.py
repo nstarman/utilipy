@@ -7,7 +7,7 @@
 # IMPORTS
 
 from .. import units
-
+from ....units import quantity_io, mag as MAG
 
 #############################################################################
 # INFO

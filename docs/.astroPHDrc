@@ -5,3 +5,6 @@ warnings = True
 [plot]
 seaborn-defaults = False
 
+[util]
+frozen-constants = True
+

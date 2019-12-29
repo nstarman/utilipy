@@ -7,31 +7,11 @@ Subpackages
 .. toctree::
 
    astroPHD.util.collections
-   astroPHD.util.debugging
-   astroPHD.util.inspect
    astroPHD.util.logging
    astroPHD.util.metaclasses
-   astroPHD.util.multi
-   astroPHD.util.strings
 
 Submodules
 ----------
-
-astroPHD.util.config module
----------------------------
-
-.. automodule:: astroPHD.util.config
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-astroPHD.util.dict\_util module
--------------------------------
-
-.. automodule:: astroPHD.util.dict_util
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 astroPHD.util.exceptions module
 -------------------------------
@@ -49,10 +29,10 @@ astroPHD.util.functools module
    :undoc-members:
    :show-inheritance:
 
-astroPHD.util.json module
--------------------------
+astroPHD.util.inspect module
+----------------------------
 
-.. automodule:: astroPHD.util.json
+.. automodule:: astroPHD.util.inspect
    :members:
    :undoc-members:
    :show-inheritance:
