@@ -22,7 +22,7 @@ from collections import OrderedDict
 
 # PROJECT-SPECIFIC
 from ..pickle import dump as _dump, load as _load
-from ...decorators.docstring import replace_docstring
+from ...decorators.docstring import format_doc
 
 
 ##############################################################################
@@ -112,7 +112,7 @@ class ObjDict(OrderedDict):
 
     # /def
 
-    @replace_docstring(docstring=__getitem__.__doc__)
+    @format_doc(__getitem__.__doc__)
     def getitem(
         self, keys: Union[str, Sequence[str]], _as_generator: bool = False
     ) -> Any:
@@ -273,7 +273,7 @@ class ObjDict(OrderedDict):
 
     # /def
 
-    @replace_docstring(docstring=dump.__doc__)
+    @format_doc(dump.__doc__)
     def save(
         self,
         fname: str,
@@ -315,6 +315,9 @@ class ObjDict(OrderedDict):
     # /def
 
     # ----------------------------------
+
+    def print(self):
+        print(self.__repr__())
 
 
 # /class

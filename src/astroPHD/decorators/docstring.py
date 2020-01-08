@@ -22,9 +22,6 @@ from typing import Any, Union, Callable, Optional
 import inspect
 import functools
 
-# PROJECT-SPECIFIC
-from .decoratorbaseclass import DecoratorBaseClass
-
 
 ##############################################################################
 # CODE
@@ -93,30 +90,6 @@ def _import_file_docstring_helper(docstring: str) -> str:
 
 
 # /def
-
-
-##############################################################################
-
-
-class replace_docstring(DecoratorBaseClass):
-    """Replace a function docstring."""
-
-    def _doc_func(self, docstring: str):
-        return self.docstring
-
-    def __call__(self, wrapped_function: Callable) -> Callable:
-        """Construct a function wrapper."""
-        @functools.wraps(wrapped_function)
-        def wrapper(*func_args: Any, **func_kwargs: Any) -> Any:
-            return wrapped_function(*func_args, **func_kwargs)
-
-        # /def
-        return super().__call__(wrapper)
-
-    # /def
-
-
-set_docstring = replace_docstring
 
 
 ##############################################################################
@@ -322,21 +295,21 @@ def format_doc(
     Using it with ``None`` as docstring allows to use the decorator twice
     on an object to first parse the new docstring and then to parse the
     original docstring or the ``args`` and ``kwargs``.
-    """
 
+    """
     def set_docstring(obj: Callable) -> Callable:
         if docstring is None:
             # None means: use the objects __doc__
-            doc = obj.__doc__
+            doc: Union[str, None] = obj.__doc__
             # Delete documentation in this case so we don't end up with
             # awkwardly self-inserted docs.
             obj.__doc__ = None
         elif isinstance(docstring, str):
             # String: use the string that was given
-            doc = docstring
+            doc: Union[str, None] = docstring
         else:
             # Something else: Use the __doc__ of this
-            doc = docstring.__doc__
+            doc: Union[str, None] = docstring.__doc__
 
         if not doc:
             # In case the docstring is empty it's probably not what was wanted.
@@ -347,12 +320,11 @@ def format_doc(
 
         # If the original has a not-empty docstring append it to the format
         # kwargs.
-        kwargs["__doc__"] = obj.__doc__ or ""
-        obj.__doc__ = doc.format(*args, **kwargs)
+        kwargs["__doc__"]: str = obj.__doc__ or ""
+        obj.__doc__: str = doc.format(*args, **kwargs)
         return obj
 
     # /def
-
     return set_docstring
 
 
