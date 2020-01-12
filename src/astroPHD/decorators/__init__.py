@@ -19,6 +19,9 @@
 from ..util import functools
 from ..util.functools import wraps
 
+# base class
+from .decoratorbaseclass import DecoratorBaseClass, classy_decorator
+
 # data-type decorators
 from .dtype_decorator import (
     dtypeDecorator,
