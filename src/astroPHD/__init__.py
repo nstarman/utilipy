@@ -41,6 +41,7 @@ from . import (
 # import commonly used functions
 from .util.logging import LogFile
 from .util.collections import ObjDict
+from .util.functools import wraps
 
 # configuration
 from . import config
