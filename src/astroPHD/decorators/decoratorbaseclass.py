@@ -17,7 +17,9 @@ from typing import Any, Union, Callable, Optional
 
 # PROJECT-SPECIFIC
 from ..util.functools import wraps, partial
+from ..util.inspect import signature
 from ..util.string import FormatTemplate
+from ..util.collections._dictionary import ReadOnlyDictionaryWrapper
 
 
 ##############################################################################
@@ -49,31 +51,37 @@ class DecoratorBaseMeta(type):
         dct : dictionary
 
         """
-        # # add function to class
-        # if "__init__" not in dct:
-
-        #     # define __init__ so always have an __init__ method
-        #     # and can overwrite the docstring from __call__
-        #     def __init__(self, *args, **kwargs):
-        #         return
-
-        #     dct["__init__"] = __init__
-
-        # # /if
-
         # store original docs
         # with None -> ''
         dct["_orig_classdoc_"] = FormatTemplate(
             copy.copy(dct.get("__doc__", None)) or ""
         )
-        # dct['_orig_initdoc_'] = copy.copy(dct['__init__'].__doc__)
-        # dct['_orig_calldoc_'] = copy.copy(dct['__call__'].__doc__)
+        # original doc
+        dct['__orig_base_kwdefaults__'] = dct["__base_kwdefaults__"]
 
-        # format class docstring
-        # have to do in __new__ so that don't get class & instance docstrings
-        if "__kwdefaults__" not in dct:
-            dct["__kwdefaults__"] = {}
-        dct["__doc__"] = dct["_orig_classdoc_"].safe_substitute(**dct["__kwdefaults__"])
+        # formatting class docstring
+        # needs to be done here for the first class declaration
+        dct["__doc__"] = dct["_orig_classdoc_"].safe_substitute(
+            **dct["__base_kwdefaults__"]
+        )
+
+        # ------------------------
+        # modify __call__signature
+        # want to make it so that the __kwdefaults__ can be passed to __call__
+        # TODO, make it so that it checks if the arguments already exist
+
+        callsig = signature(dct["__call__"])
+        # first check if have a var_positional argument
+        # promoting default-valued positional arguments to kwargs
+        callsig = callsig.add_var_positional_parameter(
+            promote_default_pos=True
+        )
+        # next add in var_keyword, if doesn't already exist
+        callsig = callsig.add_var_keyword_parameter()
+
+        dct["__call__"].__signature__ = callsig
+
+        # ------------------------
 
         # create and return object
         return type.__new__(cls, name, bases, dct)
@@ -139,16 +147,13 @@ class DecoratorBaseMeta(type):
 class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
     """A class-based implementation of simple_mod_decorator."""
 
-    # @property
-    # def __kwdefaults__(self):
-    #     """__kwdefaults__."""
-    #     return self.__base_kwdefaults__
+    __base_kwdefaults__ = {}
 
-    # @__kwdefaults__.setter
-    # def __kwdefaults__(self, value):
-    #     self.__base_kwdefaults__ =
-
-    __kwdefaults__ = {}
+    @property
+    def __kwdefaults__(self):
+        """__kwdefaults__."""
+        return ReadOnlyDictionaryWrapper(self.__base_kwdefaults__)
+    # /def
 
     def __new__(cls, function=None, **kwargs):
         """Make new decorator instance.
@@ -175,7 +180,7 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
         # --------------------
         # assign to class
 
-        attr_keys = self.__kwdefaults__.keys()  # get defaults
+        attr_keys = self.__base_kwdefaults__.keys()  # get defaults
 
         # check keys are valid
         for key in kwargs.keys():
@@ -183,15 +188,14 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
                 raise ValueError("")
 
         # update __kwdefaults__ from kwargs
-        self.__kwdefaults__.update(kwargs)
+        self.__base_kwdefaults__.update(kwargs)
 
         # --------------------
         # format docstrings
 
-        # TODO allow for partial formatting
-
-        self.__doc__ = self._orig_classdoc_.safe_substitute(**self.__kwdefaults__)
-        # self.__call__.__func__.__doc__ = self._orig_calldoc_.format(**self.__kwdefaults__)
+        self.__doc__ = self._orig_classdoc_.safe_substitute(
+            **self.__base_kwdefaults__
+        )
 
         # --------------------
 
@@ -204,13 +208,13 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 
     def __getitem__(self, name):
         """Get item from kwdefaults."""
-        return self.__kwdefaults__[name]
+        return self.__base_kwdefaults__[name]
 
     # /def
 
     def __setitem__(self, name, value):
         """Set kwdefaults item."""
-        self.__kwdefaults__[name] = value
+        self.__base_kwdefaults__[name] = value
 
     # /def
 
@@ -220,6 +224,8 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
         Parameters
         ----------
         wrapped_function : types.FunctionType
+        kwdefaults
+            update the decorator default values
 
         Returns
         -------
@@ -253,9 +259,13 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
         type
             new decorator with updated properties
 
+        TODO
+        ----
+        figure out how help(self) can correctly display __kwdefaults__
+
         """
         # get and update defaults
-        kwdefaults = self.__kwdefaults__.copy()
+        kwdefaults = self.__base_kwdefaults__.copy()
         kwdefaults.update(**kw)
         # make new class, updating defaults
         return self.__class__(**kwdefaults)
@@ -320,7 +330,9 @@ def classy_decorator(decorator_function=None):
 
     # /class
 
-    Decorator.__doc__ = FormatTemplate(decorator_function.__doc__).safe_substitute(**kwd)
+    Decorator.__doc__ = FormatTemplate(
+        decorator_function.__doc__
+    ).safe_substitute(**kwd)
 
     return Decorator()
 
