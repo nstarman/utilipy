@@ -683,7 +683,7 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
 
     def replace_parameter(
         self,
-        param: str,
+        param: _Union[str, int],
         name: _Optional[str] = None,
         kind: _Any = None,
         default: _Any = None,
@@ -696,8 +696,8 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
 
         Parameters
         ----------
-        param: str
-            the parameter name in `self.parameters`
+        param: int or str
+            the parameter index (or name) in `self.parameters`
         name: str
             new parameter name, defaults to old parameter name
             **default: None**
@@ -713,12 +713,15 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
 
         Returns
         -------
-        Signature:
+        Signature
             a new Signature object with the replaced parameter
 
         """
         # setup
-        index = list(self.parameters.keys()).index(param)
+        if isinstance(param, int):
+            index = param
+        else:
+            index = list(self.parameters.keys()).index(param)
         params = list(self.parameters.values())
         _param = params[index]
 
@@ -754,7 +757,7 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
 
         Returns
         -------
-        Signature:
+        Signature
             a new Signature object with the replaced parameter
 
         """
@@ -798,6 +801,56 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
 
     # /def
 
+    def prepend_parameter(self, parameter: Parameter) -> _Signature:
+        """Insert a new Parameter at the start.
+
+        Similar to .replace, but more convenient for adding a single parameter
+        Parameters are immutable, so will create a new Signature object
+
+        Parameters
+        ----------
+        index: int
+            index into Signature.parameters at which to insert new parameter
+        parameter: Parameter
+            parameter to insert at `index`
+
+        Returns
+        -------
+        Signature: Signature
+            a new `Signature` object with the inserted `parameter`
+
+        TODO
+        ----
+        have a `skip_self` option to skip self/cls in class methods.
+
+        """
+        return self.insert_parameter(0, parameter)
+
+    # /def
+
+    def append_parameter(self, parameter: Parameter) -> _Signature:
+        """Insert a new Parameter at the end.
+
+        Similar to .replace, but more convenient for adding a single parameter
+        Parameters are immutable, so will create a new Signature object
+
+        Parameters
+        ----------
+        index: int
+            index into Signature.parameters at which to insert new parameter
+        parameter: Parameter
+            parameter to insert at `index`
+
+        Returns
+        -------
+        Signature: Signature
+            a new `Signature` object with the inserted `parameter`
+
+        """
+        return self.insert_parameter(len(self.kinds) + 1, parameter)
+
+    # /def
+
     def drop_parameter(self, param: str) -> _Signature:
         """Drop a Parameter.
 
@@ -808,7 +861,7 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
 
         Returns
         -------
-        Signature:
+        Signature
             a new Signature object with the replaced parameter
 
         """
@@ -820,6 +873,125 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
         del params[index]
 
         return self.replace(parameters=params)
+
+    # /def
+
+    def promote_default_pos_to_kwonly(self):
+        """Promote default positional to keyword only arguments.
+
+        Returns
+        -------
+        Signature
+            a new Signature object with the promoted parameters
+
+        Raises
+        ------
+        ValueError: no positional arguments
+
+        TODO
+        ----
+        return list/info of parameters promoted
+
+        """
+        # if self.index_var_positional is False:
+        #     raise AttributeError("there is no existing var_positional (*arg)")
+        if self.index_positional is False:
+            raise ValueError("no positional arguments")
+
+        signature: Signature = self
+
+        if signature.defaults is None:  # no defaults
+            return signature
+
+        num_defaults: int = len(signature.defaults)
+        index: int = signature.index_positional[-num_defaults]
+        # promote parameters
+        i: int
+        for i in range(num_defaults):
+            signature = signature.replace_parameter(
+                index + num_defaults - i - 1, kind=_KEYWORD_ONLY
+            )
+
+        return signature
+
+    # /def
+
+    def add_var_positional_parameter(
+        self, name: str='args', promote_default_pos: bool = False
+    ):
+        """Add var positional parameter.
+
+        Does not add if one already exists. Can still promote.
+
+        Parameters
+        ----------
+        name: str
+            the var_positional argument name
+            (default 'args')
+        promote_default_pos: bool
+            whether to promote default positional to keyword only arguments
+
+        Returns
+        -------
+        Signature
+            a new Signature object with the new var_positional parameter
+            and also promoted parameters if `promote_default_pos`=True
+
+        """
+        if self.index_var_positional is not False:  # already exists
+            if promote_default_pos:
+                self.promote_default_pos_to_kwonly()
+            else:
+                pass
+
+        else:  # doesn't have ``*``
+            signature: Signature = self
+
+            if promote_default_pos:
+                # promote default-valued positional arguments to kwargs
+                if self.defaults is not None:  # has defaulted positionals
+                    index = self.index_positional[-len(self.defaults)]
+                    signature = self.promote_default_pos_to_kwonly()
+                else:  # has no defaulted positionals
+                    index = len(self.index_positional) + 1
+            else:
+                index = len(self.index_positional) + 1
+
+            signature = signature.insert_parameter(
+                index, Parameter(name, _VAR_POSITIONAL),
+            )
+
+        return signature
+
+    # /def
+
+    def add_var_keyword_parameter(self, name: str='kwargs'):
+        """Add var keyword parameter.
+
+        Does not add if one already exists.
+
+        Parameters
+        ----------
+        name: str
+            the var_keyword argument name
+            (default 'kwargs')
+
+        Returns
+        -------
+        Signature
+            a new Signature object with the new var_positional parameter
+            and also promoted parameters if `promote_default_pos`=True
+
+        """
+        if self.index_keyword_only is not False:  # already exists
+            signature = self
+
+        else:
+            signature = self.append_parameter(
+                Parameter(name, _VAR_KEYWORD),
+            )
+
+        return signature
 
     # /def
 
