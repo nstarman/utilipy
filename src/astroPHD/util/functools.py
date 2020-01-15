@@ -36,16 +36,20 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # General
-from typing import Any, Union, Callable, Sequence, Optional
+import types
 from functools import *
+
+from typing import Any, Union, Callable, Sequence, Optional
 
 # Project-Specific
 from .inspect import (
+    signature as _get_signature,
     Signature as _Signature,
     cleandoc as _cleandoc,
     _VAR_POSITIONAL,
     _KEYWORD_ONLY,
     _VAR_KEYWORD,
+    _void, _placehold
 )
 
 
@@ -90,7 +94,7 @@ def makeFunction(
     """
     if not isinstance(signature, _Signature):  # not my custom signature
         signature = _Signature(
-            parameters=signature.parameters,
+            parameters=signature.parameters.values(),
             return_annotation=signature.return_annotation,
             # docstring=docstring  # not yet implemented
         )
@@ -125,7 +129,7 @@ def copy_function(func: Callable):
         func.__code__,
         func.__globals__,
         name=func.__name__,
-        signature=inspect.signature(func),
+        signature=_get_signature(func),
         docstring=func.__doc__,
         closure=func.__closure__,
     )
@@ -221,7 +225,7 @@ def update_wrapper(
         _update_sig = False
         if not (type(signature) == _Signature):  # not my custom signature
             signature = _Signature(
-                parameters=signature.parameters,
+                parameters=signature.parameters.values(),
                 return_annotation=signature.return_annotation,
                 # docstring=docstring  # not yet implemented
             )
@@ -240,9 +244,7 @@ def update_wrapper(
         _docstring_formatter = {}
 
     # ---------------------------------------
-    # update wrapper
-
-    # same as functools.update_wrapper
+    # update wrapper (same as functools.update_wrapper)
     for attr in assigned:
         try:
             value = getattr(wrapped, attr)
@@ -275,7 +277,7 @@ def update_wrapper(
                     )
                 # can only merge key-word only
                 if param.kind == _KEYWORD_ONLY:
-                    signature.replace_parameter(
+                    signature.modify_parameter(
                         param.name,
                         name=None,
                         kind=None,  # inherit b/c matching
