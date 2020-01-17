@@ -68,7 +68,7 @@ Data slicing and selection functions.
 ## [imports](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astrophd-imports-package)
 Most of my notebooks or scripts have at leas 30 lines dedicated to just importing the various modules and functions that will be used later. It's cumbersome, a pain to copy between scripts, and means that the code doesn't start until halfway down the screen. This module provides a variety of files that can be `*`-imported to provide all the basic imports so that you can just get started coding.
 
-The provided quick imports are `base`, `extended`, `astropy`, `matplotlib`, `galpy` and `amuse`.
+The provided quick imports are `base_imports`, `extended_imports`, `astropy_imports`, `matplotlib_imports`, `galpy_imports` and `amuse_imports`.
 
 The files will print an import summary. To prevent this summary, set  `verbose-imports=False` in the `.astroPHCrc` config file in your home or local directory. For details, see [config file](#config-file). Each of the imports also provides a helper function that will print out  the import summary (for instance [base_imports_help](https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.base.base_imports_help)).
 
