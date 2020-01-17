@@ -21,6 +21,9 @@ Author: **Nathaniel Starkman** - *Graduate Student @ UofT* - [website](http://ww
 If you find this code useful in your research, please let me know. If you significantly use astroPHD in a publication, please acknowledge **10.5281/zenodo.3545178** and send me a reference to the paper.
 
 
+## Standard of Simplicity
+It is easy for a repository to become a house of cards -- code building on top of code, until the whole fragile edifice collapses with a package dependency update. To prevent this `astroPHD` intends to only provide a few common tools and have all other code, as much as possible, be stand-alone. Code for which `astroPHD` makes no promise of stability is stored in the `community` module. The common tools are: decorators, associated underlying machinary for signatures and docstrings, and Logging. The stand-alone code will use these common tools, but should minimally interact otherwise. For instance, the `ipython` module will never be imported by the `astro` module, and vice versa. The `community` packages will never be imported in any `astroPHD` module.
+
 <br><br>
 
 - - -
