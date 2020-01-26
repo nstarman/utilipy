@@ -4,33 +4,19 @@
 
 __author__ = "Nathaniel Starkman"
 
-# __all__ = [
-#     # Signature
-#     'Signature',
-#     # Signature / ArgSpec Interface
-#     'get_annotations_from_signature',
-#     'get_defaults_from_signature',
-#     'get_kwdefaults_from_signature',
-#     'get_kwonlydefaults_from_signature',
-#     # Signature Methods
-#     'replace_parameter',
-#     'insert_parameter',
-#     'drop_parameter',
-#     # FullerArgSpec,
-#     ''
-# ]
 
 ##############################################################################
 # IMPORTS
 
 # GENERAL
-from inspect import *
-import inspect as _inspect
+from inspect import *  # so can be a drop-in for `inspect`
+import inspect
 from inspect import (
     getfullargspec,
     FullArgSpec,
     Parameter,
     Signature as _Signature,
+    _void
 )
 
 from typing import (
@@ -54,7 +40,17 @@ _VAR_POSITIONAL = Parameter.VAR_POSITIONAL
 _KEYWORD_ONLY = Parameter.KEYWORD_ONLY
 _VAR_KEYWORD = Parameter.VAR_KEYWORD
 
+# placeholders
 _empty = Parameter.empty
+_void = _void
+
+
+class _placehold:
+    pass
+
+
+# types
+_typing_tuple_false = _Union[tuple, _Literal[False]]
 
 
 ##############################################################################
@@ -284,10 +280,235 @@ def get_kinds_from_signature(signature: _Signature) -> tuple:
 
 
 ##############################################################################
+# Signature Methods
+
+
+def modify_parameter(
+    sig: _Signature,
+    param: _Union[str, int],
+    name: _Union[str, _empty] = _empty,
+    kind: _Any = _empty,
+    default: _Any = _empty,
+    annotation: _Any = _empty,
+) -> _Signature:
+    """Modify a Parameter.
+
+    Similar to `.replace,` but more convenient for modifying a single parameter
+    Parameters are immutable, so will create a new `Signature` object
+
+    Parameters
+    ----------
+    sig:  Signature
+        Signature object
+    param: int or str
+        the parameter index (or name) in `self.parameters`
+    name: str
+        new parameter name, defaults to old parameter name
+        **default: None**
+    kind: type
+        new parameter kind, defaults to old parameter kind
+        **default: None**
+    default: any
+        new parameter default, defaults to old parameter default
+        **default: None**
+    annotation: any
+        new parameter annotation, defaults to old parameter annotation
+        **default: None**
+
+    Returns
+    -------
+    Signature
+        a new Signature object with the replaced parameter
+
+    """
+    # setup
+    if isinstance(param, int):
+        index = param
+    else:
+        index = list(sig.parameters.keys()).index(param)
+    params = list(sig.parameters.values())
+    _param = params[index]
+
+    name = _param.name if name is _empty else name
+    kind = _param.kind if kind is _empty else kind
+    default = _param.default if default is _empty else default
+    annotation = _param.annotation if annotation is _empty else annotation
+
+    # adjust parameter list
+    params[index] = _param.replace(
+        name=name, kind=kind, default=default, annotation=annotation
+    )
+
+    return sig.replace(parameters=params)
+
+
+# /def
+
+
+def replace_with_parameter(
+    sig: _Signature, name: _Union[int, str], param: Parameter
+) -> _Signature:
+    """Replace a Parameter with another Parameter.
+
+    Similar to `.replace,` but more convenient for modifying a single parameter
+    Parameters are immutable, so will create a new `Signature` object
+
+    Parameters
+    ----------
+    sig:  Signature
+        Signature object
+    name: int or str
+        parameter to replace
+    param: Parameter
+        new parameter kind, defaults to old parameter kind
+        **default: None**
+
+    Returns
+    -------
+    Signature
+        a new Signature object with the replaced parameter
+
+    """
+    # setup
+    if isinstance(name, int):  # convert index to name
+        index = name
+        name = list(sig.parameters.keys())[name]
+    else:
+        index = list(sig.parameters.keys()).index(name)
+
+    sig = sig.drop_parameter(name)
+    sig = sig.insert_parameter(index, param)
+
+    return sig
+
+
+# /def
+
+
+def insert_parameter(
+    sig: _Signature, index: int, param: Parameter
+) -> _Signature:
+    """Insert a new Parameter.
+
+    Similar to .replace, but more convenient for adding a single parameter
+    Parameters are immutable, so will create a new Signature object
+
+    Parameters
+    ----------
+    sig:  Signature
+        Signature object
+    index: int
+        index into Signature.parameters at which to insert new parameter
+    param: Parameter
+        param to insert at index
+
+    Returns
+    -------
+    Signature:
+        a new Signature object with the inserted parameter
+
+    """
+    parameters = list(sig.parameters.values())
+    parameters.insert(index, param)
+
+    return sig.replace(parameters=parameters)
+
+
+# /def
+
+
+def prepend_parameter(sig: _Signature, param: Parameter) -> _Signature:
+    """Insert a new Parameter at the start.
+
+    Similar to .replace, but more convenient for adding a single parameter
+    Parameters are immutable, so will create a new Signature object
+
+    Parameters
+    ----------
+    sig:  Signature
+        Signature object
+    index: int
+        index into Signature.parameters at which to insert new parameter
+    param: Parameter
+        param to insert at `index`
+
+    Returns
+    -------
+    Signature: Signature
+        a new `Signature` object with the inserted `param`
+
+    TODO
+    ----
+    have a `skip_self` option to skip self/cls in class methods.
+
+    """
+    return insert_parameter(sig, 0, param)
+
+
+# /def
+
+
+def append_parameter(sig: _Signature, param: Parameter) -> _Signature:
+    """Insert a new Parameter at the end.
+
+    Similar to .replace, but more convenient for adding a single parameter
+    Parameters are immutable, so will create a new Signature object
+
+    Parameters
+    ----------
+    sig:  Signature
+        Signature object
+    index: int
+        index into Signature.parameters at which to insert new parameter
+    param: Parameter
+        param to insert at `index`
+
+    Returns
+    -------
+    Signature: Signature
+        a new `Signature` object with the inserted `param`
+
+    """
+    return insert_parameter(sig, len(sig.kinds) + 1, param)
+
+
+# /def
+
+
+def drop_parameter(sig: _Signature, param: str) -> _Signature:
+    """Drop a Parameter.
+
+    Parameters
+    ----------
+    sig : Signature
+        Signature object
+    param: str
+        the parameter name in self.parameters
+
+    Returns
+    -------
+    Signature:
+        a new Signature object with the replaced parameter
+
+    """
+    # setup
+    index = list(sig.parameters.keys()).index(param)
+    parameters = list(sig.parameters.values())
+
+    # drop
+    del parameters[index]
+
+    return sig.replace(parameters=parameters)
+
+
+# /def
+
+
+##############################################################################
 # Signature
 
 
-class Signature(_Signature, metaclass=_InheritDocstrings):
+class FullerSignature(_Signature, metaclass=_InheritDocstrings):
     """Signature with better ArgSpec compatibility.
 
     Though `Signature` is the new object, python still largely
@@ -302,7 +523,7 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
     defaults
     kwdefaults
     kwonlydefaults
-    replace_parameter
+    modify_parameter
     insert_parameter
     drop_parameter
 
@@ -320,12 +541,16 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
     #     return
     # # /def
 
-    # @classmethod
-    # def from_callable(cls, obj, *, follow_wrapped=True):
-    #     sig = super().from_callable(obj, follow_wrapped=follow_wrapped)
-    #     # sig.docstring = obj.__doc__
-    #     return sig
-    # # /def
+    @classmethod
+    def from_callable(cls, obj, *, follow_wrapped=True):
+        sig = super().from_callable(obj, follow_wrapped=follow_wrapped)
+        sig = FullerSignature(
+            parameters=sig.parameters.values(),
+            return_annotation=sig.return_annotation,
+        )
+        return sig
+
+    # /def
 
     # ------------------------------------------
 
@@ -415,7 +640,8 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
         (2,)
 
         """
-        out = tuple(
+        p: Parameter
+        out: tuple = tuple(
             [
                 p.default
                 for p in self.parameters.values()
@@ -474,7 +700,9 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
         (3,)
 
         """
-        out = {
+        n: str
+        p: Parameter
+        out: dict = {
             n: p.default
             for n, p in self.parameters.items()
             if ((p.kind == _KEYWORD_ONLY) & (p.default != _empty))
@@ -561,6 +789,26 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
         """
         return tuple([p.kind for p in self.parameters.values()])
 
+    @property
+    def names(self) -> tuple:
+        """Get parameter kinds.
+
+        Returns
+        -------
+        names: tuple of str
+
+        Examples
+        --------
+        >>> def func(x, *args, k=3, **kw):
+        ...     pass
+        >>> Signature(func).names
+        [x, args, k, kw]
+
+        """
+        return tuple(self.parameters.keys())
+
+    # /def
+
     #     (args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations).
     #     'args' is a list of the parameter names.
     #     'varargs' and 'varkw' are the names of the * and ** parameters or None.
@@ -575,7 +823,7 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
     # ------------------------------------------
 
     @property
-    def index_positional(self) -> _Union[tuple, _Literal[False]]:
+    def index_positional(self) -> _typing_tuple_false:
         """Index(ices) of positional arguments.
 
         This includes defaulted positional arguments.
@@ -586,13 +834,63 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
             False if no positional arguments, tuple of indices otherwise
 
         """
-        kinds = self.kinds
+        kinds: tuple = self.kinds
         try:
             kinds.index(1)  # _POSITIONAL_OR_KEYWORD = 1
         except ValueError:
             return False
         else:
-            return tuple([i for i, k in enumerate(kinds) if (k == 1)])
+            return tuple(
+                [i for i, k in enumerate(kinds) if ((k == 0) | (k == 1))]
+            )
+
+    # /def
+
+    @property
+    def index_positional_only(self) -> _typing_tuple_false:
+        """Index(ices) of positional-only arguments.
+
+        Returns
+        -------
+        tuple or False
+            False if no positional arguments, tuple of indices otherwise
+
+        """
+        kinds: tuple = self.kinds
+        try:
+            kinds.index(0)  # _POSITIONAL_ONLY = 0
+        except ValueError:
+            return False
+        else:
+            return tuple([i for i, k in enumerate(kinds) if (k == 0)])
+
+    # /def
+
+    @property
+    def index_positional_defaulted(self) -> _typing_tuple_false:
+        """Index(ices) of positional arguments with default values.
+
+        Returns
+        -------
+        tuple or False
+            False if no positional arguments, tuple of indices otherwise
+
+        """
+        kinds: tuple = self.kinds
+        try:
+            kinds.index(1)  # _POSITIONAL_OR_KEYWORD = 1
+        except ValueError:
+            return False
+        else:
+            pos_only: list = self.index_positional_only or []
+
+            return tuple(
+                [
+                    i
+                    for i, k in enumerate(kinds)
+                    if ((k == 1) & (i not in pos_only))
+                ]
+            )
 
     # /def
 
@@ -617,7 +915,7 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
     # /def
 
     @property
-    def index_keyword_only(self) -> _Union[tuple, _Literal[False]]:
+    def index_keyword_only(self) -> _typing_tuple_false:
         """Index of `*args`.
 
         Returns
@@ -681,15 +979,15 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
 
     # ------------------------------------------
 
-    def replace_parameter(
+    def modify_parameter(
         self,
         param: _Union[str, int],
-        name: _Optional[str] = None,
-        kind: _Any = None,
-        default: _Any = None,
-        annotation: _Any = None,
+        name: _Union[str, _empty] = _empty,
+        kind: _Any = _empty,
+        default: _Any = _empty,
+        annotation: _Any = _empty,
     ) -> _Signature:
-        """Replace a Parameter.
+        """Modify a Parameter.
 
         Similar to `.replace,` but more convenient for modifying a single parameter
         Parameters are immutable, so will create a new `Signature` object
@@ -717,25 +1015,14 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
             a new Signature object with the replaced parameter
 
         """
-        # setup
-        if isinstance(param, int):
-            index = param
-        else:
-            index = list(self.parameters.keys()).index(param)
-        params = list(self.parameters.values())
-        _param = params[index]
-
-        name = _param.name if name is None else name
-        kind = _param.kind if kind is None else kind
-        default = _param.default if default is None else default
-        annotation = _param.annotation if annotation is None else annotation
-
-        # adjust parameter list
-        params[index] = _param.replace(
-            name=name, kind=kind, default=default, annotation=annotation
+        return modify_parameter(
+            self,
+            param=param,
+            name=name,
+            kind=kind,
+            default=default,
+            annotation=annotation,
         )
-
-        return self.replace(parameters=params)
 
     # /def
 
@@ -761,17 +1048,7 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
             a new Signature object with the replaced parameter
 
         """
-        # setup
-        if isinstance(name, int):  # convert index to name
-            index = name
-            name = list(self.parameters.keys())[name]
-        else:
-            index = list(self.parameters.keys()).index(name)
-
-        signature = self.drop_parameter(name)
-        signature = signature.insert_parameter(index, param)
-
-        return signature
+        return replace_with_parameter(self, name, param)
 
     # /def
 
@@ -794,14 +1071,11 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
             a new `Signature` object with the inserted `parameter`
 
         """
-        params = list(self.parameters.values())
-        params.insert(index, parameter)
-
-        return self.replace(parameters=params)
+        return insert_parameter(self, index, parameter)
 
     # /def
 
-    def prepend_parameter(self, parameter: Parameter) -> _Signature:
+    def prepend_parameter(self, param: Parameter) -> _Signature:
         """Insert a new Parameter at the start.
 
         Similar to .replace, but more convenient for adding a single parameter
@@ -811,24 +1085,24 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
         ----------
         index: int
             index into Signature.parameters at which to insert new parameter
-        parameter: Parameter
-            parameter to insert at `index`
+        param: Parameter
+            param to insert at `index`
 
         Returns
         -------
         Signature: Signature
-            a new `Signature` object with the inserted `parameter`
+            a new `Signature` object with the inserted `param`
 
         TODO
         ----
         have a `skip_self` option to skip self/cls in class methods.
 
         """
-        return self.insert_parameter(0, parameter)
+        return prepend_parameter(self, param)
 
     # /def
 
-    def append_parameter(self, parameter: Parameter) -> _Signature:
+    def append_parameter(self, param: Parameter) -> _Signature:
         """Insert a new Parameter at the end.
 
         Similar to .replace, but more convenient for adding a single parameter
@@ -838,16 +1112,16 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
         ----------
         index: int
             index into Signature.parameters at which to insert new parameter
-        parameter: Parameter
-            parameter to insert at `index`
+        param: Parameter
+            param to insert at `index`
 
         Returns
         -------
         Signature: Signature
-            a new `Signature` object with the inserted `parameter`
+            a new `Signature` object with the inserted `param`
 
         """
-        return self.insert_parameter(len(self.kinds) + 1, parameter)
+        return append_parameter(self, param)
 
     # /def
 
@@ -865,71 +1139,63 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
             a new Signature object with the replaced parameter
 
         """
-        # setup
-        index = list(self.parameters.keys()).index(param)
-        params = list(self.parameters.values())
-
-        # drop
-        del params[index]
-
-        return self.replace(parameters=params)
+        return drop_parameter(self, param)
 
     # /def
 
-    def promote_default_pos_to_kwonly(self):
+    def _default_pos_to_kwonly_from(self, index: int = 0):
         """Promote default positional to keyword only arguments.
+
+        Parameter
+        ---------
+        index: int, optional
+            default positional arguments after `index`
+            will be changed to keyword only arguments
+            ``None`` changes all available arguments
+
+            example, (x, y=2, z=3) with index 1 means only z is changed
+            because the defaults are (2, 3)
 
         Returns
         -------
         Signature
             a new Signature object with the promoted parameters
 
-        Raises
-        ------
-        ValueError: no positional arguments
-
         TODO
         ----
         return list/info of parameters promoted
 
         """
-        # if self.index_var_positional is False:
-        #     raise AttributeError("there is no existing var_positional (*arg)")
-        if self.index_positional is False:
-            raise ValueError("no positional arguments")
-
         signature: Signature = self
 
         if signature.defaults is None:  # no defaults
             return signature
 
-        num_defaults: int = len(signature.defaults)
-        index: int = signature.index_positional[-num_defaults]
         # promote parameters
         i: int
-        for i in range(num_defaults):
-            signature = signature.replace_parameter(
-                index + num_defaults - i - 1, kind=_KEYWORD_ONLY
-            )
+        for i in signature.index_positional_defaulted[index:][::-1]:
+            signature = signature.modify_parameter(i, kind=_KEYWORD_ONLY)
 
         return signature
 
     # /def
 
     def add_var_positional_parameter(
-        self, name: str='args', promote_default_pos: bool = False
+        self, name: str = "args", index: _Optional[int] = None
     ):
         """Add var positional parameter.
 
-        Does not add if one already exists. Can still promote.
+        Does not add if one already exists.
 
         Parameters
         ----------
         name: str
             the var_positional argument name
             (default 'args')
-        promote_default_pos: bool
-            whether to promote default positional to keyword only arguments
+        index: int, optional
+            the index at which to place the var_positional_parameter
+            default positional arguments after the var_positional parameter
+            will be changed to keyword only arguments
 
         Returns
         -------
@@ -938,24 +1204,26 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
             and also promoted parameters if `promote_default_pos`=True
 
         """
+        signature: Signature = self
+
         if self.index_var_positional is not False:  # already exists
-            if promote_default_pos:
-                self.promote_default_pos_to_kwonly()
-            else:
-                pass
+            pass
 
         else:  # doesn't have ``*``
-            signature: Signature = self
 
-            if promote_default_pos:
+            if index is not None:
                 # promote default-valued positional arguments to kwargs
-                if self.defaults is not None:  # has defaulted positionals
-                    index = self.index_positional[-len(self.defaults)]
-                    signature = self.promote_default_pos_to_kwonly()
-                else:  # has no defaulted positionals
-                    index = len(self.index_positional) + 1
-            else:
-                index = len(self.index_positional) + 1
+                if index in self.index_positional_defaulted:
+                    pos_index = self.index_positional_defaulted.index(index)
+                elif index < self.index_positional_defaulted[0]:
+                    pos_index = None
+                else:
+                    pos_index = self.index_positional_defaulted[-1] + 1
+
+                signature = self._default_pos_to_kwonly_from(index=pos_index)
+
+            else:  # has no defaulted positionals
+                index = self.index_positional[-1] + 1
 
             signature = signature.insert_parameter(
                 index, Parameter(name, _VAR_POSITIONAL),
@@ -965,7 +1233,7 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
 
     # /def
 
-    def add_var_keyword_parameter(self, name: str='kwargs'):
+    def add_var_keyword_parameter(self, name: str = "kwargs"):
         """Add var keyword parameter.
 
         Does not add if one already exists.
@@ -987,146 +1255,28 @@ class Signature(_Signature, metaclass=_InheritDocstrings):
             signature = self
 
         else:
-            signature = self.append_parameter(
-                Parameter(name, _VAR_KEYWORD),
-            )
+            signature = self.append_parameter(Parameter(name, _VAR_KEYWORD),)
 
         return signature
 
     # /def
 
 
+Signature = FullerSignature
+
+
 # ----------------------------------------------------------------------------
 
 
-def signature(obj: _Any, *, follow_wrapped: bool = True) -> _Any:
+def fuller_signature(obj: _Any, *, follow_wrapped: bool = True) -> _Any:
     """Get a signature object for the passed callable."""
-    return Signature.from_callable(obj, follow_wrapped=follow_wrapped)
-
-
-##############################################################################
-# Signature Methods
-# TODO replace as method versions from Signature, can use semi-static for this
-
-
-def replace_parameter(
-    signature: _Signature,
-    param: str,
-    name: str = None,
-    kind=None,
-    default=None,
-    annotation=None,
-    return_annotation=None,
-) -> Signature:
-    """Replace a Parameter.
-
-    Similar to .replace, but more convenient for modifying a single parameter
-    Parameters are immutable, so will create a new Signature object
-
-    Parameters
-    ----------
-    signature:  Signature
-        Signature object
-    param: str
-        the parameter name in self.parameters
-    name: str  (default None)
-        new parameter name, defaults to old parameter name
-    kind: type  (default None)
-        new parameter kind, defaults to old parameter kind
-    default: any  (default None)
-        new parameter default, defaults to old parameter default
-    annotation: any  (default None)
-        new parameter annotation, defaults to old parameter annotation
-
-    Returns
-    -------
-    Signature:
-        a new Signature object with the replaced parameter
-
-    """
-    # setup
-    index = list(signature.parameters.keys()).index(param)
-    params = list(signature.parameters.values())
-    _param = params[index]
-
-    # replace
-    name = _param.name if name is None else name
-    kind = _param.kind if kind is None else kind
-    default = _param.default if name is None else default
-    annotation = _param.annotation if name is None else annotation
-
-    # adjust parameter list
-    params[index] = _param.replace(
-        name=name,
-        kind=kind,
-        default=default,
-        annotation=annotation,
-        return_annotation=return_annotation,
-    )
-
-    return signature.replace(parameters=params)
+    return FullerSignature.from_callable(obj, follow_wrapped=follow_wrapped)
 
 
 # /def
 
 
-def insert_parameter(
-    signature: _Signature, index: int, parameter: Parameter
-) -> _Any:
-    """Insert a new Parameter.
-
-    Similar to .replace, but more convenient for adding a single parameter
-    Parameters are immutable, so will create a new Signature object
-
-    Parameters
-    ----------
-    index: int
-        index into Signature.parameters at which to insert new parameter
-    parameter: Parameter
-        parameter to insert at index
-
-    Returns
-    -------
-    Signature:
-        a new Signature object with the inserted parameter
-
-    """
-    params = list(signature.parameters.values())
-    params.insert(index, parameter)
-
-    return signature.replace(parameters=params)
-
-
-# /def
-
-
-def drop_parameter(signature: Signature, param: str) -> _Any:
-    """Drop a Parameter.
-
-    Parameters
-    ----------
-    signature : Signature
-        Signature object
-    param: str
-        the parameter name in self.parameters
-
-    Returns
-    -------
-    Signature:
-        a new Signature object with the replaced parameter
-
-    """
-    # setup
-    index = list(signature.parameters.keys()).index(param)
-    params = list(signature.parameters.values())
-
-    # drop
-    del params[index]
-
-    return signature.replace(parameters=params)
-
-
-# /def
+signature = fuller_signature
 
 
 ##############################################################################
