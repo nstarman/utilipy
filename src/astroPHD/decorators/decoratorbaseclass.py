@@ -6,20 +6,36 @@
 __author__ = "Nathaniel Starkman"
 
 
+__all__ = [
+    # decorators
+    "DecoratorBaseMeta",
+    "DecoratorBaseClass",
+    "classy_decorator",
+    # utility
+    "_placeholders",
+]
+
+
 ##############################################################################
 # IMPORTS
 
 # GENERAL
 import abc
 import copy
-import inspect
-from typing import Any, Union, Callable, Optional
+from collections import namedtuple
+from types import FunctionType
+from typing import Any, Optional
 
 # PROJECT-SPECIFIC
-from ..util.functools import wraps, partial
-from ..util.inspect import signature
+from ..util import functools
+from ..util import inspect
 from ..util.string import FormatTemplate
-from ..util.collections._dictionary import ReadOnlyDictionaryWrapper
+
+
+##############################################################################
+# Parameters
+
+_placeholders: tuple = (inspect._empty, inspect._void, inspect._placehold)
 
 
 ##############################################################################
@@ -31,14 +47,21 @@ from ..util.collections._dictionary import ReadOnlyDictionaryWrapper
 
 
 class DecoratorBaseMeta(type):
-    """MetaClass for decorators.
+    """Meta-class for decorators.
 
-    Ensures a decorator has an __init__ method,
-    with a docstring from __call__ if not set.
+    This metaclass is pretty specific for DecoratorBaseClass and should
+    probably not be used in other contexts.
+
+    This metaclass
+
+    - creates `__kwdefaults__`, copying from `__base_kwdefaults__`.
+    - makes a named-tuple class for read-only versions of `__kwdefaults__`
+    - stores the original class and call docs
+    - formats the class docstrings with the `__kwdefaults__`
 
     """
 
-    def __new__(cls, name, bases, dct):
+    def __new__(cls: type, name: str, bases: tuple, dct: dict):
         """Set properties for new decorator class.
 
         define an init method and store original docs
@@ -51,35 +74,138 @@ class DecoratorBaseMeta(type):
         dct : dictionary
 
         """
+        # ------------------------
+        # __base_kwdefaults__ -> __kwdefaults__
+
+        dct["__kwdefaults__"] = dct["__base_kwdefaults__"].copy()
+
+        dct["_kwd_namedtuple"] = namedtuple(
+            "kwdefaults", dct["__kwdefaults__"].keys()
+        )
+
+        # --------------------------------------------------
         # store original docs
         # with None -> ''
-        dct["_orig_classdoc_"] = FormatTemplate(
+        dct["_orig_classdoc_"]: FormatTemplate = FormatTemplate(
             copy.copy(dct.get("__doc__", None)) or ""
         )
-        # original doc
-        dct['__orig_base_kwdefaults__'] = dct["__base_kwdefaults__"]
+        dct["_orig_calldoc_"]: FormatTemplate = FormatTemplate(
+            copy.copy(dct["__call__"].__doc__) or ""
+        )
 
         # formatting class docstring
         # needs to be done here for the first class declaration
-        dct["__doc__"] = dct["_orig_classdoc_"].safe_substitute(
-            **dct["__base_kwdefaults__"]
+        # later edits are handled in DecoratorBaseClass by `__new__`
+        dct["__doc__"]: str = dct["_orig_classdoc_"].safe_substitute(
+            **dct["__kwdefaults__"]
         )
 
         # ------------------------
-        # modify __call__signature
-        # want to make it so that the __kwdefaults__ can be passed to __call__
-        # TODO, make it so that it checks if the arguments already exist
+        # 1) change call's signature
+        #   - add a variable positional argument (\*args)
+        #   - promote any positional arguments with defaults
+        #     (except *function*) to keyword only arguments
+        #   - substitue the values of `__kwdefaults__` as the default values
+        #     for key-word arguments with a placehold value
+        #     (_empty, _void, _placehold)
 
-        callsig = signature(dct["__call__"])
-        # first check if have a var_positional argument
+        callsig: inspect.Signature
+        callsig = inspect.fuller_signature(dct["__call__"])
+
+        # store whether has kwargs, for use in ``callwrapper``
+        has_kwargs = callsig.index_var_keyword
+
+        # next check if have a var_positional argument
         # promoting default-valued positional arguments to kwargs
-        callsig = callsig.add_var_positional_parameter(
-            promote_default_pos=True
-        )
-        # next add in var_keyword, if doesn't already exist
-        callsig = callsig.add_var_keyword_parameter()
+        callsig = callsig.add_var_positional_parameter(index=2)
+        callsig = callsig.add_var_keyword_parameter(name='kwargs')
 
-        dct["__call__"].__signature__ = callsig
+        # replacing defaults if in __base_kwdefaults__
+        i: int
+        name: str
+        param: inspect.Parameter
+        for i, (name, param) in enumerate(callsig.parameters.items()):
+            # only key-word only args (most since added var_positional)
+            if (
+                (name in dct["__kwdefaults__"])  # yup
+                and (param.kind == inspect._KEYWORD_ONLY)  # key-word
+            ):
+                callsig = callsig.modify_parameter(
+                    i, default=dct["__kwdefaults__"][name]
+                )
+
+        # updating __call__ from callsig
+        attr: str
+        for attr in functools.SIGNATURE_ASSIGNMENTS:
+            try:
+                value = getattr(callsig, attr)
+            except AttributeError:
+                pass
+            else:
+                setattr(dct["__call__"], attr, value)
+
+        # ------------------------
+        # 2) Wrap __call__ so can use without parenthesis
+        #   - store __call__
+        #   - change function default to None
+
+        # store original call function   # TODO fix copy_function
+        dct["__orig_call__"]: FunctionType = functools.copy_function(
+            dct["__call__"]
+        )
+        dct["__orig_call__"].__kwdefaults__: dict = dct[
+            "__call__"
+        ].__kwdefaults__
+        # dct["__orig_call__"].__signature__ = callsig.signature
+
+        # change function default to None
+        # not doing it before to preserve __orig_call__
+        try:
+            callsig = callsig.modify_parameter(
+                1, default=None, kind=inspect._POSITIONAL_OR_KEYWORD
+            )
+        except ValueError:  # already has a default
+            pass
+
+        dct["_callsig"]: inspect.Signature = callsig
+
+        # make wrapper
+        def callwrapper(
+            self,
+            function: FunctionType = None,
+            *args: Any,
+            **kwargs: Any
+        ):
+            self = self.new(**kwargs)  # TODO extract __kwdefaults__ dict from this
+
+            # update kwargs to carry over to __orig_call__
+            if has_kwargs is False:  # no kwargs, can only use existing
+                nkw: dict = (self._callsig.__kwdefaults__ or {}).copy()
+            else:  # can pass everything along
+                nkw: dict = (self.__kwdefaults__ or {}).copy()
+            nkw.update(kwargs)
+
+            # allow calling without parenthesis
+            if function is None:
+                return functools.partial(self.__orig_call__, **nkw)
+            else:
+                return self.__orig_call__(function, *args, **nkw)
+        # /def
+
+        callwrapper.__kwdefaults__: dict = dct["__kwdefaults__"].copy()
+        # /def
+
+        # overwrite __call__ with wrapped function
+        # TODO fix update_wrapper
+        dct["__call__"]: FunctionType = functools.update_wrapper(
+            callwrapper,
+            dct["__orig_call__"],
+            signature=callsig,
+            docstring=dct["_orig_calldoc_"].safe_substitute(
+                **dct["__kwdefaults__"]
+            ),
+        )
+        dct["__call__"].__kwdefaults__: dict = dct["__kwdefaults__"].copy()
 
         # ------------------------
 
@@ -88,7 +214,7 @@ class DecoratorBaseMeta(type):
 
     # /def
 
-    def __init__(cls, name, bases, dct):
+    def __init__(cls: type, name: str, bases: tuple, dct: dict):
         """__init__ method for MetaClass.
 
         Sets up docstring inheritance.
@@ -98,12 +224,16 @@ class DecoratorBaseMeta(type):
         The docstring inheritance method is modified from
         astropy's InheritDocstrings metaclass
 
+        TODO
+        ----
+        replace with better doc_inheritance from custom_inherit
+
         """
         # ---------------------
         # docstring inheritance
 
         # find public methods
-        def is_public_member(key):
+        def is_public_member(key: str):
             return (
                 key.startswith("__") and key.endswith("__") and len(key) > 4
             ) or not key.startswith("_")
@@ -111,6 +241,8 @@ class DecoratorBaseMeta(type):
         # /def
 
         # add docstring to methods
+        key: str
+        val: Any
         for key, val in dct.items():
             # check is public function without a docstring
             if (
@@ -147,15 +279,18 @@ class DecoratorBaseMeta(type):
 class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
     """A class-based implementation of simple_mod_decorator."""
 
-    __base_kwdefaults__ = {}
+    __base_kwdefaults__: dict = {}
 
     @property
-    def __kwdefaults__(self):
-        """__kwdefaults__."""
-        return ReadOnlyDictionaryWrapper(self.__base_kwdefaults__)
+    def kwdefaults(self: type):
+        """__kwdefaults__ named tuple."""
+        return self._kwd_namedtuple(**self.__kwdefaults__)
+
     # /def
 
-    def __new__(cls, function=None, **kwargs):
+    def __new__(
+        cls: type, function: Optional[FunctionType] = None, **kwargs: Any
+    ):
         """Make new decorator instance.
 
         Parameters
@@ -180,22 +315,54 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
         # --------------------
         # assign to class
 
-        attr_keys = self.__base_kwdefaults__.keys()  # get defaults
+        attr_keys = self.__kwdefaults__.keys()  # get defaults
 
         # check keys are valid
+        key: str
         for key in kwargs.keys():
             if key not in attr_keys:
                 raise ValueError("")
 
         # update __kwdefaults__ from kwargs
-        self.__base_kwdefaults__.update(kwargs)
+        self.__kwdefaults__ = self.__base_kwdefaults__.copy()
+        self.__kwdefaults__.update(kwargs)
 
         # --------------------
         # format docstrings
+        # done here for all the non-first class creation (see metaclass)
 
-        self.__doc__ = self._orig_classdoc_.safe_substitute(
-            **self.__base_kwdefaults__
+        self.__doc__: str = self._orig_classdoc_.safe_substitute(
+            **self.__kwdefaults__
         )
+
+        self.__call__.__func__.__doc__: str
+        self.__call__.__func__.__doc__ = self._orig_calldoc_.safe_substitute(
+            **self.__kwdefaults__
+        )
+
+        # --------------------
+        # format __call__ signature
+
+        # replacing defaults if in __kwdefaults__
+        for i, (name, param) in enumerate(self._callsig.parameters.items()):
+            # only key-word only args (most since added var_positional)
+            if (
+                (name in self.__kwdefaults__)  # yup
+                and (param.kind == inspect._KEYWORD_ONLY)  # key-word
+                # and (param.default in _placeholders)  # no default!
+            ):
+                self._callsig = self._callsig.modify_parameter(
+                    i, default=self.__kwdefaults__[name]
+                )
+        # /for
+
+        # set signature and defaults
+        self.__call__.__func__.__signature__ = self._callsig.signature
+        self.__call__.__func__.__kwdefaults__ = self.__kwdefaults__
+
+        # print(self._callsig.parameters.values())
+        # print(self.__call__.__func__.__signature__)
+        # print(self.__call__.__func__.__kwdefaults__)
 
         # --------------------
 
@@ -206,19 +373,23 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 
     # /def
 
-    def __getitem__(self, name):
+    def __getitem__(self: type, name: str):
         """Get item from kwdefaults."""
-        return self.__base_kwdefaults__[name]
+        return self.__kwdefaults__[name]
 
     # /def
 
-    def __setitem__(self, name, value):
+    def __setitem__(self: type, name: str, value: Any):
         """Set kwdefaults item."""
-        self.__base_kwdefaults__[name] = value
+        self.__kwdefaults__[name] = value
 
     # /def
 
-    def as_decorator(self, wrapped_function=None, **kwdefaults):
+    def as_decorator(
+        self: type,
+        wrapped_function: Optional[FunctionType] = None,
+        **kwdefaults: Any
+    ):
         """Make decorator.
 
         Parameters
@@ -234,7 +405,7 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
             type if no function provided, i.e. pie syntax
 
         """
-        decorator = self.new(**kwdefaults)
+        decorator: type = self.new(**kwdefaults)
 
         if wrapped_function is not None:  # return a wrapped function
             return decorator(wrapped_function)
@@ -243,7 +414,7 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 
     # /def
 
-    def new(self, **kw):
+    def new(self: type, **kw):
         """Make a new decorator from current decorator.
 
         Inherits properties from current decorator.
@@ -265,24 +436,19 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 
         """
         # get and update defaults
-        kwdefaults = self.__base_kwdefaults__.copy()
+        kwdefaults: dict = self.__kwdefaults__.copy()
         kwdefaults.update(**kw)
         # make new class, updating defaults
-        return self.__class__(**kwdefaults)
+        # TODO use new so override class docstring and recall metaclass
+        return self.__class__(function=None, **kwdefaults)
 
     # /def
 
     @abc.abstractmethod
-    def __call__(self, wrapped_function):
-        """Construct a function wrapper.
-
-        This function must be overwritten.
-
-        """
-        @wraps(wrapped_function)
-        def wrapper(*func_args, **func_kwargs):
-            return_ = wrapped_function(*func_args, **func_kwargs)
-            return return_
+    def __call__(self: type, function: FunctionType):
+        @functools.wraps(function)
+        def wrapper(*func_args: Any, **func_kwargs: Any):
+            return function(*func_args, **func_kwargs)
 
         # /def
 
@@ -298,7 +464,7 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 # Turn a Function into a Decorator
 
 
-def classy_decorator(decorator_function=None):
+def classy_decorator(decorator_function: FunctionType = None):
     """Convert decorated functions to classes.
 
     Parameters
@@ -313,119 +479,51 @@ def classy_decorator(decorator_function=None):
 
     """
     if decorator_function is None:  # allowing for optional arguments
-        return partial(classy_decorator)
+        return functools.partial(classy_decorator)
 
+    signature: inspect.Signature
+    signature = inspect.fuller_signature(decorator_function)
+    signature = signature.prepend_parameter(  # add in self
+        inspect.Parameter("self", inspect._POSITIONAL_ONLY)
+    )
     # key-word defaults from function
-    kwd = inspect.getfullargspec(decorator_function).kwonlydefaults
+    kwd: dict = inspect.getfullerargspec(decorator_function).kwonlydefaults
+
+    def mycall(
+        self: type, wrapped_function: FunctionType, *args: Any, **kwargs: Any
+    ):
+        return decorator_function(wrapped_function, *args, **kwargs)
+
+    # /def
 
     # TODO rename decorator as function name
     class Decorator(DecoratorBaseClass):
 
-        __kwdefaults__ = kwd
-
-        def __call__(self, wrapped_function):
-            return decorator_function(wrapped_function)
+        __base_kwdefaults__: dict = kwd
 
         # /def
+        __call__: FunctionType = functools.makeFunction(
+            mycall.__code__,
+            mycall.__globals__,
+            name="__call__",
+            signature=signature,
+            docstring=decorator_function.__doc__,
+            closure=mycall.__closure__,
+        )
 
     # /class
 
-    Decorator.__doc__ = FormatTemplate(
-        decorator_function.__doc__
+    # set docstring
+    Decorator.__doc__: str = FormatTemplate(
+        (decorator_function.__doc__ or "")
     ).safe_substitute(**kwd)
+    Decorator.__name__ = decorator_function.__name__
 
     return Decorator()
 
 
 # /def
 
-
-# ----------------------------------------------------------------------------
-# DEPRECATED
-
-# class DecoratorBaseClass:
-#     """DecoratorBaseClass."""
-
-#     @staticmethod
-#     def _doc_func(docstring: str) -> str:
-#         return docstring
-
-#     def __new__(cls, func: Optional[Callable] = None, **kwargs: Any) -> object:
-#         """__new__.
-
-#         this is a quick and dirty method for class-based decorator creation
-#         it is generically better to do this with a classmethod like
-
-#         @classmethod
-#         as_decorator(cls, func=None, ...):
-#             all the same code as here
-
-#         """
-#         # make instance
-#         self = super().__new__(cls)
-
-#         # wrapper control:
-#         if func is not None:  # this will return a wrapped function
-#             # pass all arguments and kwargs to init
-#             # since __init__ is will not be called
-#             self.__init__(func, **kwargs)
-#             return self(func)
-#         else:  # this will return a function wrapper
-#             # for when using as a @decorator
-#             # __init__ will be automatically called after this
-#             return self
-
-#     # /def
-
-#     def __init__(self, func: Optional[Callable] = None, **kwargs: Any) -> None:
-#         """__init__.
-
-#         these are stored to be used inside of __call__
-#         they are not normally passed to the wrapped_function
-
-#         """
-#         super().__init__()
-
-#         # store all values passed to __init__
-#         for k, v in kwargs.items():
-#             setattr(self, k, v)
-
-#         # call __post_init__
-#         self.__post_init__()
-
-#         return
-
-#     # /def
-
-#     def __post_init__(self) -> None:
-#         """__post_init__."""
-#         pass
-
-#     # /def
-
-#     def _edit_docstring(self, wrapper: Callable) -> Callable:
-#         """Edit docstring."""
-
-#         # docstring
-#         # if wrapper.__doc__ is not None:
-#         #     wrapper.__doc__ = self._doc_func(wrapper.__doc__)
-#         wrapper.__doc__ = self._doc_func(wrapper.__doc__)
-
-#         # storing extra info
-#         # wrapper._doc_func = self._doc_func
-
-#         return wrapper
-
-#     # /def
-
-#     def __call__(self, wrapper: Callable) -> Callable:
-#         """__call__."""
-#         return self._edit_docstring(wrapper)
-
-#     # /def
-
-
-# # /class
 
 ##############################################################################
 # END
