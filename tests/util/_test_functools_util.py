@@ -669,7 +669,7 @@ def func_a_args(a=2, *args):
     args: tuple
 
     """
-    return None, None, a, None, None, None, None, kwargs
+    return None, None, a, None, args, None, None, None
 
 
 # /def
@@ -1217,8 +1217,10 @@ def func_xy_args_pq(x, y, *args, p="p", q="q"):
 # /def
 
 
-def func_xy_args_pq_annotate(x: "0", y, *args: "2", p: "3" = "p", q="q"):
-    """func. -> "return annote"
+def func_xy_args_pq_annotate(
+    x: "0", y, *args: "2", p: "3" = "p", q="q"
+) -> "return annote":
+    """func.
 
     Parameters
     ----------
@@ -1287,8 +1289,10 @@ def func_xy_args_kwargs(x, y, *args, **kwargs):
 # /def
 
 
-def func_xy_args_kwargs_annotate(x: "0", y, *args: "2", **kwargs: "4"):
-    """func. -> "return annote"
+def func_xy_args_kwargs_annotate(
+    x: "0", y, *args: "2", **kwargs: "4"
+) -> "return annote":
+    """func.
 
     Parameters
     ----------
@@ -1357,8 +1361,10 @@ def func_ab_args_pq(a=2, b=3, *args, p="p", q="q"):
 # /def
 
 
-def func_ab_args_pq_annotate(a: "1" = 2, b=3, *args: "2", p: "3" = "p", q="q"):
-    """func. -> "return annote"
+def func_ab_args_pq_annotate(
+    a: "1" = 2, b=3, *args: "2", p: "3" = "p", q="q"
+) -> "return annote":
+    """func.
 
     Parameters
     ----------
@@ -1427,8 +1433,10 @@ def func_ab_args_kwargs(a=2, b=3, *args, **kwargs):
 # /def
 
 
-def func_ab_args_kwargs_annotate(a: "1" = 2, b=3, *args: "2", **kwargs: "4"):
-    """func. -> "return annote"
+def func_ab_args_kwargs_annotate(
+    a: "1" = 2, b=3, *args: "2", **kwargs: "4"
+) -> "return annote":
+    """func.
 
     Parameters
     ----------
@@ -1848,7 +1856,7 @@ def func_a_args_p_kwargs(a=2, *args, p="p", **kwargs):
     kwargs: dict
 
     Returns
-    ------
+    -------
     a: int
     args: tuple
     p: str
