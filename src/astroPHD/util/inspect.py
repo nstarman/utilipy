@@ -32,7 +32,7 @@ from collections import namedtuple as _namedtuple
 from .metaclasses import InheritDocstrings as _InheritDocstrings
 
 ##############################################################################
-# Parameters
+# PARAMETERS
 
 _POSITIONAL_ONLY = Parameter.POSITIONAL_ONLY
 _POSITIONAL_OR_KEYWORD = Parameter.POSITIONAL_OR_KEYWORD
@@ -53,9 +53,6 @@ class _placehold:
 _typing_tuple_false = _Union[tuple, _Literal[False]]
 
 
-##############################################################################
-# Types
-
 FullerArgSpec: _namedtuple = _namedtuple(
     "FullerArgSpec",
     [
@@ -73,6 +70,75 @@ FullerArgSpec: _namedtuple = _namedtuple(
 
 
 ##############################################################################
+# CODE
+##############################################################################
+
+
+##########################################################################
+# safe placeholder comparison
+# some 3rd party packages have quantities which cannot be directly compared to
+# via ``==`` or ``!=`` and will throw an exception. These methods implement
+# safe testing against ``_empty``, ``_void``, ``_placehold``
+# and the combination.
+
+
+def _is_empty(value):
+    """Test whether `value`==`_empty`."""
+    try:
+        value == _empty
+    except Exception:
+        # if it throws an exception, it clearly isn't `_empty`
+        return False
+    else:
+        return value == _empty
+
+
+# /def
+
+
+def _is_void(value):
+    """Test whether `value`==`_void`."""
+    try:
+        value == _void
+    except Exception:
+        # if it throws an exception, it clearly isn't `_void`
+        return False
+    else:
+        return value == _void
+
+
+# /def
+
+
+def _is_placehold(value):
+    """Test whether `value`==`_placehold`."""
+    try:
+        value == _placehold
+    except Exception:
+        # if it throws an exception, it clearly isn't `_placehold`
+        return False
+    else:
+        return value == _placehold
+
+
+# /def
+
+
+def _is_placeholder(value):
+    """Test whether `value`==`_placeholder`."""
+    try:
+        value == _empty
+    except Exception:
+        # if it throws an exception, it clearly isn't `_placeholder`
+        return False
+    else:
+        return (value == _empty) | (value == _void) | (value == _placehold)
+
+
+# /def
+
+
+###########################################################################
 # getfullerargspec
 
 
@@ -131,7 +197,7 @@ def getfullerargspec(func: _Callable) -> FullerArgSpec:
 # /def
 
 
-##############################################################################
+###########################################################################
 # Signature / ArgSpec Interface
 
 
@@ -202,7 +268,7 @@ def get_defaults_from_signature(signature: _Signature) -> tuple:
             p.default
             for p in signature.parameters.values()
             if (
-                (p.kind == _POSITIONAL_OR_KEYWORD) & (p.default != _empty)
+                (p.kind == _POSITIONAL_OR_KEYWORD) & _is_empty(p.default)
             )  # the kind
         ]
     )  # only defaulted
@@ -242,7 +308,7 @@ def get_kwdefaults_from_signature(signature: _Signature) -> dict:
     return {
         n: p.default
         for n, p in signature.parameters.items()
-        if ((p.kind == _KEYWORD_ONLY) & (p.default != _empty))
+        if ((p.kind == _KEYWORD_ONLY) & _is_empty(p.default))
     }
 
 
@@ -279,7 +345,7 @@ def get_kinds_from_signature(signature: _Signature) -> tuple:
 # /def
 
 
-##############################################################################
+###########################################################################
 # Signature Methods
 
 
@@ -504,7 +570,7 @@ def drop_parameter(sig: _Signature, param: str) -> _Signature:
 # /def
 
 
-##############################################################################
+###########################################################################
 # Signature
 
 
@@ -645,7 +711,7 @@ class FullerSignature(_Signature, metaclass=_InheritDocstrings):
             [
                 p.default
                 for p in self.parameters.values()
-                if ((p.kind == _POSITIONAL_OR_KEYWORD) & (p.default != _empty))
+                if ((p.kind == _POSITIONAL_OR_KEYWORD) & _is_empty(p.default))
             ]
         )
         if out == ():  # empty list
@@ -705,7 +771,7 @@ class FullerSignature(_Signature, metaclass=_InheritDocstrings):
         out: dict = {
             n: p.default
             for n, p in self.parameters.items()
-            if ((p.kind == _KEYWORD_ONLY) & (p.default != _empty))
+            if ((p.kind == _KEYWORD_ONLY) & _is_empty(p.default))
         }
         if out == {}:  # empty dict
             return None
