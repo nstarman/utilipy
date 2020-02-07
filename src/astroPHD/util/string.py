@@ -54,6 +54,8 @@ class FormatTemplate(string.Template):
     >>> re.sub('$a ${b} {c}', r'${', s)
     '$a ${b} ${c}'
 
+    
+
     """
 
     def __new__(cls, s):
@@ -67,6 +69,22 @@ class FormatTemplate(string.Template):
         """
         s = re.sub(r'(?<!\$)({)', r'${', s)  # replace '{' with '${'
         return string.Template(s)
+
+    # /def
+
+    def format(self, *args, **kw):
+        """Format str.
+
+        proxy for safe_substitute.
+
+        """
+        return self.safe_substitute(*args, **kw)
+
+    # /def
+
+    def __str__(self):
+        """Return a string with str()."""
+        return self.safe_substitute()
 
     # /def
 
