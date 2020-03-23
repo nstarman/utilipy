@@ -14,7 +14,6 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{main}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                 PACKAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -27,7 +26,6 @@
 % ex \providecommand{\mystyleloc}{.}
 
 \usepackage{\mystyleloc/base}
-\usepackage{\mystyleloc/astronomy}  % (imports maths as well)
 
 
 % -----------------------------------------------------------------------------
@@ -129,7 +127,7 @@
 %% Sections formatting
 
 \titleformat{\section}{
-  \vspace{-15pt}\scshape\raggedright\large
+  \newpage\vspace{-15pt}\scshape\raggedright\large
 }{}{0em}{}[\color{black}\titlerule \vspace{-4pt}]
 
 \titleformat{\subsection}{

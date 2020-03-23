@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
-% astronomy.sty
-% astronomy style sheet
+% base.sty
+% base style sheet
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -12,7 +12,7 @@
 \def\@releasedate{2019/09/01}
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{astronomy}
+\ProvidesPackage{base}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20,17 +20,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Importing Packages
 
-% -----------------------------------------------------------------------------
-%% Packages
+\usepackage[english]{babel}
 
 % Page Setup
 \usepackage{geometry}
-\usepackage{subfiles}
-
-\usepackage{fancyhdr}  % TODO SORT
-\usepackage{lastpage}  % TODO SORT
-\usepackage{color}  % TODO SORT
-\usepackage{titlesec}  % TODO SORT
 
 % Expanding commands
 \usepackage{xparse}
@@ -59,7 +52,7 @@
 % Lists
 \usepackage{enumitem}
 
-% PDF page embedding
+% PDF pages
 \usepackage{pdfpages}
 
 % Citations
@@ -86,8 +79,7 @@
 }
 
 % listings
-\lstset{
-	frame=tb,
+\lstset{frame=tb,
 	language=SQL,
 	aboveskip=3mm,
 	belowskip=3mm,
@@ -106,11 +98,11 @@
 	emph={dec}
 }
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                   MATH
+%                                 COMMANDS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Defining Commands
+
 
 % -----------------------------------------------------------------------------
 %% Shortcuts
@@ -121,11 +113,13 @@
 
 \newcommand{\lessim}{\lesssim}  % allow a 2-l version of lesssim
 
+
 % -----------------------------------------------------------------------------
 %% Code
 
 % Useful for algorithms
 \newcommand{\alg}[1]{\textsc{\bfseries \footnotesize {#1}}}
+
 
 % -----------------------------------------------------------------------------
 %% Derivatives
@@ -143,40 +137,71 @@
 }
 
 % derivative
-\NewDocumentCommand \deriv {s O{x} o m} {
+\NewDocumentCommand \deriv {s O{x} d<> m} {
 	% #1: star, optional change dydx to d/dx (y)
-	% #2: with respect to, optional default to x  # TODO split {thing, power}
+	% #2: with rspect to, optional default to x
 	% #3: power of the derivative, optional
 	% #4: the thing being differentiated
 	\IfBooleanTF{#1}
-		{% 
-		 \IfNoValueTF{#3}
-		 { \frac{\mathrm{d}}{\dif{#2}}({#4}) }
-		 { \frac{\mathrm{d}^{#3}}{\dif{#2}^{#3}}({#4}) }
-		}
-		{%
-		 \IfNoValueTF{#3}
-		 { \frac{\mathrm{d}{#4}}{\dif{#2}} }
-		 { \frac{\dif[{#3}]{#4}}{\dif{#2}^{#3}} }
-		}
+	{% 
+	 \IfNoValueTF{#3}
+	 { \frac{\mathrm{d}}{\dif{#2}}({#4}) }
+	 { \frac{\mathrm{d}^{#3}}{\dif{#2}^{#3}}({#4}) }
+	}
+	{%
+	 \IfNoValueTF{#3}
+	 { \frac{\mathrm{d}{#4}}{\dif{#2}} }
+	 { \frac{\dif[{#3}]{#4}}{\dif{#2}^{#3}} }
+	}
 }
 
-\NewDocumentCommand \pderiv {s O{x} o m} {
+\NewDocumentCommand \pderiv {s O{x} d<> m} {
 	% #1: star, optional change dydx to d/dx (y)
-	% #2: with respect to, optional default to x  # TODO split {thing, power}
+	% #2: with rspect to, optional default to x
 	% #3: power of the derivative, optional
 	% #4: the thing being differentiated
 	\IfBooleanTF{#1}
-		{% 
-		 \IfNoValueTF{#3}
-		 { \frac{\partial}{\pdif{#2}}({#4}) }
-		 { \frac{\partial^{#3}}{\pdif{#2}^{#3}}({#4}) }
-		}
-		{%
-		 \IfNoValueTF{#3}
-		 { \frac{\partial{#4}}{\pdif{#2}} }
-		 { \frac{\pdif[{#3}]{#4}}{\pdif{#2}^{#3}} }
-		}
+	{% 
+	 \IfNoValueTF{#3}
+	 { \frac{\partial}{\pdif{#2}}({#4}) }
+	 { \frac{\partial^{#3}}{\pdif{#2}^{#3}}({#4}) }
+	}
+	{%
+	 \IfNoValueTF{#3}
+	 { \frac{\partial{#4}}{\pdif{#2}} }
+	 { \frac{\pdif[{#3}]{#4}}{\pdif{#2}^{#3}} }
+	}
+}
+
+
+\NewDocumentCommand \dSymbol {s m D[]{x} d<>} {
+	% #1: star, optional change to always use Leibniz notation
+    % #1: the symbol
+    % #2 the derivand
+    % #3 the power of the derivative
+    \IfBooleanTF{#1}
+    {\left(\rm{d}_{#3}^{#4}{#2}\right)}
+    {
+     \IfNoValueTF{#4}
+     {#2}
+     {%
+      \ifthenelse{#4=0}
+      {#2}
+      {%
+       \ifthenelse{#4=1}
+       {\dot{#2}}
+       {%
+        \ifthenelse{#4=2}
+        {\ddot{#2}}
+        {%
+         \ifthenelse{#4=3}
+         {\dddot{#2}}
+         {\left(\rm{d}_{#3}^{#4}{#2}\right)}
+        }
+       }
+      }
+     }
+    }
 }
 
 
@@ -186,13 +211,20 @@
 \newcommand{\dx}{\mathrm{d}x}  % dx
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                 ASTRONOMY
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -----------------------------------------------------------------------------
+%% Orthogonal Expansions
+
+\NewDocumentCommand \order {o m} {
+    % #1: the order, optional default to all
+    % #2: the symbol
+    \IfNoValueTF{#1}
+    {{#2}}
+    {{#2}_{(#1)}}
+}
 
 
 % -----------------------------------------------------------------------------
-%% Astrophysics Symbols
+%% Astronomy and Astrophysics Symbols
 
 % Planets
 \newcommand{\sun}{\hbox{$\odot$}}
@@ -203,6 +235,28 @@
 \newcommand{\arcmin}{\hbox{$^\prime$}}
 \newcommand{\arcsec}{\hbox{$^{\prime\prime}$}}
 
+
+% Cosmology
+\NewDocumentCommand \Vb {D[]{x} d<> o} {  % baryon velocity
+	% #1: the derivand
+    % #2: the derivative, defaults to no value
+    % #3: the order
+    \order[#3]{\dSymbol{V_b}[#1]<#2>}
+}
+
+\NewDocumentCommand \PHI {D[]{x} d<> o} {  % gravity term
+	% #1: the derivand
+    % #2: the derivative, defaults to no value
+    % #3: the order
+    \order[#3]{\dSymbol{\Phi}[#1]<#2>}
+}
+
+\NewDocumentCommand \PSI {D[]{x} d<> o} {  % gravity term
+    % #1: the derivand
+    % #2: the derivative, defaults to no value
+    % #3: the order
+    \order[#3]{\dSymbol{\Psi}[#1]<#2>}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                JOURNALS
@@ -287,8 +341,10 @@
 %  *              Change log              *
 %  ****************************************
 
+%   merged with to base.sty and maths.sty to give a full basic standard suite 
 
 %   File started from MNRAS class on Sep 1, 2019
 %   see their Change Log for full attributions
-% 
-%   Jan 18, 2020, merged in my maths commands
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
