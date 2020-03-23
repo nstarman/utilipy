@@ -1,12 +1,10 @@
-# TITLE   :
+# TITLE
 
 
-DESCRIPTION:
------------
+## Description
 Add description of folder contents here
 
 
-FILES:
-------
+## Files
 / [folder](folder location "description")
 . [file](file location "description")

@@ -20,6 +20,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Importing Packages
 
+\usepackage[english]{babel}
+
 % Page Setup
 \usepackage{geometry}
 
@@ -100,6 +102,249 @@
 %                                 COMMANDS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Defining Commands
+
+
+% -----------------------------------------------------------------------------
+%% Shortcuts
+
+\newcommand{\rmn}[1]{{\mathrm{#1}}}  % mathrm
+\newcommand{\itl}[1]{{\mathit{#1}}}  % mathit
+\newcommand{\bld}[1]{{\mathbf{#1}}}  % mathbf
+
+\newcommand{\lessim}{\lesssim}  % allow a 2-l version of lesssim
+
+
+% -----------------------------------------------------------------------------
+%% Code
+
+% Useful for algorithms
+\newcommand{\alg}[1]{\textsc{\bfseries \footnotesize {#1}}}
+
+
+% -----------------------------------------------------------------------------
+%% Derivatives
+
+% differentials
+\NewDocumentCommand \dif {o m} {
+	\IfNoValueTF{#1}
+		{ \mathrm{d}{#2} }
+		{ \mathrm{d}^{#1}{#2} }
+}
+\NewDocumentCommand \pdif {o m} {
+	\IfNoValueTF{#1}
+		{ \partial{#2} }
+		{ \partial^{#1}{#2} }
+}
+
+% derivative
+\NewDocumentCommand \deriv {s O{x} d<> m} {
+	% #1: star, optional change dydx to d/dx (y)
+	% #2: with rspect to, optional default to x
+	% #3: power of the derivative, optional
+	% #4: the thing being differentiated
+	\IfBooleanTF{#1}
+	{% 
+	 \IfNoValueTF{#3}
+	 { \frac{\mathrm{d}}{\dif{#2}}({#4}) }
+	 { \frac{\mathrm{d}^{#3}}{\dif{#2}^{#3}}({#4}) }
+	}
+	{%
+	 \IfNoValueTF{#3}
+	 { \frac{\mathrm{d}{#4}}{\dif{#2}} }
+	 { \frac{\dif[{#3}]{#4}}{\dif{#2}^{#3}} }
+	}
+}
+
+\NewDocumentCommand \pderiv {s O{x} d<> m} {
+	% #1: star, optional change dydx to d/dx (y)
+	% #2: with rspect to, optional default to x
+	% #3: power of the derivative, optional
+	% #4: the thing being differentiated
+	\IfBooleanTF{#1}
+	{% 
+	 \IfNoValueTF{#3}
+	 { \frac{\partial}{\pdif{#2}}({#4}) }
+	 { \frac{\partial^{#3}}{\pdif{#2}^{#3}}({#4}) }
+	}
+	{%
+	 \IfNoValueTF{#3}
+	 { \frac{\partial{#4}}{\pdif{#2}} }
+	 { \frac{\pdif[{#3}]{#4}}{\pdif{#2}^{#3}} }
+	}
+}
+
+
+\NewDocumentCommand \dSymbol {s m D[]{x} d<>} {
+	% #1: star, optional change to always use Leibniz notation
+    % #1: the symbol
+    % #2 the derivand
+    % #3 the power of the derivative
+    \IfBooleanTF{#1}
+    {\left(\rm{d}_{#3}^{#4}{#2}\right)}
+    {
+     \IfNoValueTF{#4}
+     {#2}
+     {%
+      \ifthenelse{#4=0}
+      {#2}
+      {%
+       \ifthenelse{#4=1}
+       {\dot{#2}}
+       {%
+        \ifthenelse{#4=2}
+        {\ddot{#2}}
+        {%
+         \ifthenelse{#4=3}
+         {\dddot{#2}}
+         {\left(\rm{d}_{#3}^{#4}{#2}\right)}
+        }
+       }
+      }
+     }
+    }
+}
+
+
+% -----------------------------------------------------------------------------
+%% Integrals
+
+\newcommand{\dx}{\mathrm{d}x}  % dx
+
+
+% -----------------------------------------------------------------------------
+%% Orthogonal Expansions
+
+\NewDocumentCommand \order {o m} {
+    % #1: the order, optional default to all
+    % #2: the symbol
+    \IfNoValueTF{#1}
+    {{#2}}
+    {{#2}_{(#1)}}
+}
+
+
+% -----------------------------------------------------------------------------
+%% Astronomy and Astrophysics Symbols
+
+% Planets
+\newcommand{\sun}{\hbox{$\odot$}}
+\newcommand{\earth}{\hbox{$\oplus$}}
+
+% Angles
+\newcommand{\degr}{\hbox{$^\circ$}}
+\newcommand{\arcmin}{\hbox{$^\prime$}}
+\newcommand{\arcsec}{\hbox{$^{\prime\prime}$}}
+
+
+% Cosmology
+\NewDocumentCommand \Vb {D[]{x} d<> o} {  % baryon velocity
+	% #1: the derivand
+    % #2: the derivative, defaults to no value
+    % #3: the order
+    \order[#3]{\dSymbol{V_b}[#1]<#2>}
+}
+
+\NewDocumentCommand \PHI {D[]{x} d<> o} {  % gravity term
+	% #1: the derivand
+    % #2: the derivative, defaults to no value
+    % #3: the order
+    \order[#3]{\dSymbol{\Phi}[#1]<#2>}
+}
+
+\NewDocumentCommand \PSI {D[]{x} d<> o} {  % gravity term
+    % #1: the derivand
+    % #2: the derivative, defaults to no value
+    % #3: the order
+    \order[#3]{\dSymbol{\Psi}[#1]<#2>}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                JOURNALS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Standard journal abbreviations
+% Mostly as used by ADS, with a few additions for journals where MNRAS does not
+% follow normal IAU style.
+
+\newcommand\aap{A\&A}                % Astronomy and Astrophysics
+\let\astap=\aap                          % alternative shortcut
+\newcommand\aapr{A\&ARv}             % Astronomy and Astrophysics Review (the)
+\newcommand\aaps{A\&AS}              % Astronomy and Astrophysics Supplement Series
+\newcommand\actaa{Acta Astron.}      % Acta Astronomica
+\newcommand\afz{Afz}                 % Astrofizika
+\newcommand\aj{AJ}                   % Astronomical Journal (the)
+\newcommand\ao{Appl. Opt.}           % Applied Optics
+\let\applopt=\ao                         % alternative shortcut
+\newcommand\aplett{Astrophys.~Lett.} % Astrophysics Letters
+\newcommand\apj{ApJ}                 % Astrophysical Journal
+\newcommand\apjl{ApJ}                % Astrophysical Journal, Letters
+\let\apjlett=\apjl                       % alternative shortcut
+\newcommand\apjs{ApJS}               % Astrophysical Journal, Supplement
+\let\apjsupp=\apjs                       % alternative shortcut
+% The following journal does not appear to exist! Disabled.
+%\newcommand\apspr{Astrophys.~Space~Phys.~Res.} % Astrophysics Space Physics Research
+\newcommand\apss{Ap\&SS}             % Astrophysics and Space Science
+\newcommand\araa{ARA\&A}             % Annual Review of Astronomy and Astrophysics
+\newcommand\arep{Astron. Rep.}       % Astronomy Reports
+\newcommand\aspc{ASP Conf. Ser.}     % ASP Conference Series
+\newcommand\azh{Azh}                 % Astronomicheskii Zhurnal
+\newcommand\baas{BAAS}               % Bulletin of the American Astronomical Society
+\newcommand\bac{Bull. Astron. Inst. Czechoslovakia} % Bulletin of the Astronomical Institutes of Czechoslovakia 
+\newcommand\bain{Bull. Astron. Inst. Netherlands} % Bulletin Astronomical Institute of the Netherlands
+\newcommand\caa{Chinese Astron. Astrophys.} % Chinese Astronomy and Astrophysics
+\newcommand\cjaa{Chinese J.~Astron. Astrophys.} % Chinese Journal of Astronomy and Astrophysics
+\newcommand\fcp{Fundamentals Cosmic Phys.}  % Fundamentals of Cosmic Physics
+\newcommand\gca{Geochimica Cosmochimica Acta}   % Geochimica Cosmochimica Acta
+\newcommand\grl{Geophys. Res. Lett.} % Geophysics Research Letters
+\newcommand\iaucirc{IAU~Circ.}       % IAU Cirulars
+\newcommand\icarus{Icarus}           % Icarus
+\newcommand\japa{J.~Astrophys. Astron.} % Journal of Astrophysics and Astronomy
+\newcommand\jcap{J.~Cosmology Astropart. Phys.} % Journal of Cosmology and Astroparticle Physics
+\newcommand\jcp{J.~Chem.~Phys.}      % Journal of Chemical Physics
+\newcommand\jgr{J.~Geophys.~Res.}    % Journal of Geophysics Research
+\newcommand\jqsrt{J.~Quant. Spectrosc. Radiative Transfer} % Journal of Quantitiative Spectroscopy and Radiative Transfer
+\newcommand\jrasc{J.~R.~Astron. Soc. Canada} % Journal of the RAS of Canada
+\newcommand\memras{Mem.~RAS}         % Memoirs of the RAS
+\newcommand\memsai{Mem. Soc. Astron. Italiana} % Memoire della Societa Astronomica Italiana
+\newcommand\mnassa{MNASSA}           % Monthly Notes of the Astronomical Society of Southern Africa
+\newcommand\mnras{MNRAS}             % Monthly Notices of the Royal Astronomical Society
+\newcommand\na{New~Astron.}          % New Astronomy
+\newcommand\nar{New~Astron.~Rev.}    % New Astronomy Review
+\newcommand\nat{Nature}              % Nature
+\newcommand\nphysa{Nuclear Phys.~A}  % Nuclear Physics A
+\newcommand\pra{Phys. Rev.~A}        % Physical Review A: General Physics
+\newcommand\prb{Phys. Rev.~B}        % Physical Review B: Solid State
+\newcommand\prc{Phys. Rev.~C}        % Physical Review C
+\newcommand\prd{Phys. Rev.~D}        % Physical Review D
+\newcommand\pre{Phys. Rev.~E}        % Physical Review E
+\newcommand\prl{Phys. Rev.~Lett.}    % Physical Review Letters
+\newcommand\pasa{Publ. Astron. Soc. Australia}  % Publications of the Astronomical Society of Australia
+\newcommand\pasp{PASP}               % Publications of the Astronomical Society of the Pacific
+\newcommand\pasj{PASJ}               % Publications of the Astronomical Society of Japan
+\newcommand\physrep{Phys.~Rep.}      % Physics Reports
+\newcommand\physscr{Phys.~Scr.}      % Physica Scripta
+\newcommand\planss{Planet. Space~Sci.} % Planetary Space Science
+\newcommand\procspie{Proc.~SPIE}     % Proceedings of the Society of Photo-Optical Instrumentation Engineers
+\newcommand\rmxaa{Rev. Mex. Astron. Astrofis.} % Revista Mexicana de Astronomia y Astrofisica
+\newcommand\qjras{QJRAS}             % Quarterly Journal of the RAS
+\newcommand\sci{Science}             % Science
+\newcommand\skytel{Sky \& Telesc.}   % Sky and Telescope
+\newcommand\solphys{Sol.~Phys.}      % Solar Physics
+\newcommand\sovast{Soviet~Ast.}      % Soviet Astronomy (aka Astronomy Reports)
+\newcommand\ssr{Space Sci. Rev.}     % Space Science Reviews
+\newcommand\zap{Z.~Astrophys.}       % Zeitschrift fuer Astrophysik
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  ****************************************
+%  *              Change log              *
+%  ****************************************
+
+%   merged with to base.sty and maths.sty to give a full basic standard suite 
+
+%   File started from MNRAS class on Sep 1, 2019
+%   see their Change Log for full attributions
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
