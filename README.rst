@@ -1,10 +1,6 @@
 AstroPHD
 ========
 
-.. image:: http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat
-    :target: http://www.astropy.org
-    :alt: Powered by Astropy Badge
-
 Welcome to ``astroPHD``, a collection of useful python codes. This is a
 centralized repository for much of the non project-specific code I have
 written or come across. There are modules for making advanced
