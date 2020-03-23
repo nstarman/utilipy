@@ -1,6 +1,11 @@
 AstroPHD
 ========
 
+.. container::
+
+   |astropy| |Build Status| |Documentation Status| |License| |Code
+   style: black|
+
 Welcome to ``astroPHD``, a collection of useful python codes. This is a
 centralized repository for much of the non project-specific code I have
 written or come across. There are modules for making advanced
@@ -12,10 +17,6 @@ and much more. Check out the documentation here, on
 and at the `wiki <https://github.com/nstarman/astroPHD/wiki>`__ for more
 detail.
 
-.. container::
-
-   |astropy| |Build Status| |Documentation Status| |License| |Code
-   style: black|
 
 License & Attribution
 ---------------------
