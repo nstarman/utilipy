@@ -4,6 +4,6 @@
 [submodule "packages/starkplot"]
 	path = packages/starkplot
 	url = https://nstarman@github.com/nstarman/starkplot.git
-[submodule "templates/template_project"]
-	path = templates/template_project
-	url = https://nstarman@github.com/nstarman/template_project.git
+[submodule "docs/wiki"]
+	path = docs/wiki
+	url = https://nstarman@github.com/nstarman/astroPHD.wiki.git
