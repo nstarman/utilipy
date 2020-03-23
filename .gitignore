@@ -4,26 +4,14 @@
 ###############################################################################
 # Project-Specific
 
-# Large Data Files
-# ex: data/
-
-## Papers
+## Papers and Presentations
 # ignores all contents except the figures & ABOUT.txt
-/papers/*/*
-!/papers/**/ABOUT.txt
-!/papers/**/figures/
-!/papers/**/figures/*
+/papers_and_presentations/*/*
+!/papers_and_presentations/**/ABOUT.txt
+!/papers_and_presentations/**/figures/
+!/papers_and_presentations/**/figures/*
 # to not ignore a paper, add the path
 # ex: !/papers/_sample/
-
-## Presentations
-# ignores all contents except the figures & ABOUT.txt
-/presentations/*/*
-!/presentations/**/ABOUT.txt
-!/presentations/**/figures/
-!/presentations/**/figures/*
-# to not ignore a presentation, add the path
-# ex: !/presentations/_sample/
 
 # scratch folder
 scratch/
@@ -31,141 +19,92 @@ scratch/
 # _old
 **/_old
 
-# scripts
-scripts/**/output
+# WIKI
+# it does its own thing
+wiki/*
 
-# Environments
-envs/*
-
-# comment when done with public projects
-notebooks/**/*.png
-
-# un-comment these for projects before committing
-notebooks/_sample/*
-!papers/_sample/*
-presentations/_sample/*
-scripts/_sample/*
-src/_sample/*
 
 ###############################################################################
 # Default
 
-# Byte-compiled / optimized / DLL files
-__pycache__/
+# Compiled files
 *.py[cod]
-*$py.class
-
-# C extensions
+*.a
+*.o
 *.so
+__pycache__
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+# Ignore .c files by default to avoid including generated code. If you want to
+# add a non-generated .c extension, use `git add -f filename.c`.
+*.c
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
+# Other generated files
+*/version.py
+*/cython_version.py
+htmlcov
 .coverage
-.coverage.*
+MANIFEST
+.ipynb_checkpoints
+
+# Sphinx
+docs/api
+docs/_build
+
+# Eclipse editor project files
+.project
+.pydevproject
+.settings
+
+# Pycharm editor project files
+.idea
+
+# Floobits project files
+.floo
+.flooignore
+
+# Packages/installer info
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+distribute-*.tar.gz
+
+# Other
 .cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
+.tox
+.*.sw[op]
+*~
+.project
+.pydevproject
+.settings
+pip-wheel-metadata/
 
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-local_settings.py
-db.sqlite3
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-**.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-
-# DS_Store
-*.DS_Store
-
-# FTP
-sftp-config\.json
-*.ftp*
+# Mac OSX
+.DS_Store
 
 # Latex Files
 *.aux
-*.bbl
 *.blg
 *.gz
 *.out
 *.fls
 *.fdb_latexmk
+
+# Jupyter Notebook
+**.ipynb_checkpoints
+
+# Sublime Stuff
+*.sublime-workspace
+*.sublime-project
+/sftp-config-alt.json
+/sftp-config.json
+
+.eggs
+/.mypy_cache
