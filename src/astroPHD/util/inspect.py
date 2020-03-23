@@ -308,7 +308,7 @@ def get_kwdefaults_from_signature(signature: _Signature) -> dict:
     return {
         n: p.default
         for n, p in signature.parameters.items()
-        if ((p.kind == _KEYWORD_ONLY) & _is_empty(p.default))
+        if ((p.kind == _KEYWORD_ONLY) and not _is_empty(p.default))
     }
 
 
@@ -771,7 +771,7 @@ class FullerSignature(_Signature, metaclass=_InheritDocstrings):
         out: dict = {
             n: p.default
             for n, p in self.parameters.items()
-            if ((p.kind == _KEYWORD_ONLY) & _is_empty(p.default))
+            if ((p.kind == _KEYWORD_ONLY) and not _is_empty(p.default))
         }
         if out == {}:  # empty dict
             return None

@@ -391,6 +391,8 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
             for s in string[:-1]:  # all strings with sep
                 self.file.write(str(s) + sep)
             self.file.write(str(string[-1]) + end)  # last string
+
+        self.file.flush()  # force write to file
         return
 
     # /def

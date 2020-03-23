@@ -17,7 +17,7 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 import numpy as np
-from astropy.units.core import UnitBase, def_unit
+from astropy.units.core import def_unit
 from astropy import units, constants
 from astropy.units.utils import generate_unit_summary as _gen_summary
 
@@ -25,7 +25,7 @@ from astropy.units.utils import generate_unit_summary as _gen_summary
 ##############################################################################
 # PARAMETERS
 
-_ns = globals()
+_us = {}  # unit namespace. will be added to globals
 
 
 ##############################################################################
@@ -36,7 +36,7 @@ def_unit(
     represents=units.m / units.s,
     doc="meter per second composite unit",
     format={"latex": r"\frac{m}{s}", "latex_inline": r"m\,s^{-1}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -44,7 +44,7 @@ def_unit(
     represents=units.km / units.s,
     doc="kilometer per second composite unit",
     format={"latex": r"\frac{km}{s}", "latex_inline": r"km\,s^{-1}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -55,7 +55,7 @@ def_unit(
         "latex": r"\frac{km}{s Mpc}",
         "latex_inline": r"km\,s^{-1}\,{Mpc}^{-1}",
     },
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -66,7 +66,7 @@ def_unit(
         "latex": r"\frac{km}{s kpc}",
         "latex_inline": r"km\,s^{-1}\,{kpc}^{-1}",
     },
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -74,7 +74,7 @@ def_unit(
     represents=units.mas / units.yr,
     doc="milli-arcseconds / year composite unit",
     format={"latex": r"\frac{mas}{yr}", "latex_inline": r"mas\,yr^{-1}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 
@@ -95,7 +95,7 @@ def_unit(
     represents=units.K,
     doc="kelvin, AMUSE compatibility",
     format={"latex": r"K", "latex_inline": r"K"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 # TODO SI prefixes
@@ -136,7 +136,7 @@ def_unit(
     represents=365.25 * units.day,
     doc="julian year, AMUSE compatibility",
     format={"latex": r"365.25{\cdot}d", "latex_inline": r"365.25{\cdot}d"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 # CANNOT DO ms B/C MEANS millisecond in astropy
@@ -146,7 +146,7 @@ def_unit(
     represents=units.km / units.s,
     doc="kilometer per second composite unit, AMUSE compatibility",
     format={"latex": r"\frac{km}{s}", "latex_inline": r"\rm{km}\,\rm{s}^{-1}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 # # units based on measured quantities
@@ -163,21 +163,21 @@ def_unit(
     represents=constants.e,
     doc="electron charge, AMUSE compatibility",
     format={"latex": r"|\rm{e}^{-1}|", "latex_inline": r"|\rm{e}^{-1}|"},
-    namespace=_ns,
+    namespace=_us,
 )
 def_unit(
     ["E_h", "Hartree_energy"],
     represents=2 * units.Ry,
     doc="Hartree energy, AMUSE compatibility",
     format={"latex": r"2\rm{Ryd}", "latex_inline": r"2\rm{Ryd}"},
-    namespace=_ns,
+    namespace=_us,
 )
 def_unit(
     ["amu"],
     represents=units.u,
     doc="atomic mass unit, AMUSE compatibility",
     format={"latex": r"\rm{amu}", "latex_inline": r"\rm{amu}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 # # astronomical units
@@ -209,7 +209,7 @@ def_unit(
     represents=149597870691.0 * units.m / units.day,
     doc="AU per day, AMUSE compatibility",
     format={"latex": r"\rm{AUd}", "latex_inline": r"\rm{AUd}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -217,7 +217,7 @@ def_unit(
     represents=units.lyr,
     doc="light year, AMUSE compatibility",
     format={"latex": r"\rm{lyr}", "latex_inline": r"\rm{lyr}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -225,7 +225,7 @@ def_unit(
     represents=units.solLum,
     doc="solar luminosity, AMUSE compatibility",
     format={"latex": r"\rm{L}_{\odot}", "latex_inline": r"\rm{L}_{\odot}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -233,7 +233,7 @@ def_unit(
     represents=units.M_sun,
     doc="solar mass, AMUSE compatibility",
     format={"latex": r"\rm{M}_{\odot}", "latex_inline": r"\rm{M}_{\odot}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -241,7 +241,7 @@ def_unit(
     represents=units.M_jup,
     doc="Jupiter mass, AMUSE compatibility",
     format={"latex": r"\rm{M}_{\rm{J}}", "latex_inline": r"\rm{M}_{\rm{J}}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -249,7 +249,7 @@ def_unit(
     represents=units.M_earth,
     doc="Jupiter mass, AMUSE compatibility",
     format={"latex": r"\rm{M}_{\oplus}", "latex_inline": r"\rm{M}_{\oplus}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -257,7 +257,7 @@ def_unit(
     represents=units.R_sun,
     doc="solar radius, AMUSE compatibility",
     format={"latex": r"\rm{R}_{\odot}", "latex_inline": r"\rm{R}_{\odot}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -265,7 +265,7 @@ def_unit(
     represents=units.R_jup,
     doc="Jupiter radius, AMUSE compatibility",
     format={"latex": r"\rm{R}_{\rm{J}}", "latex_inline": r"\rm{R}_{\rm{J}}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 def_unit(
@@ -273,7 +273,7 @@ def_unit(
     represents=units.R_earth,
     doc="Jupiter radius, AMUSE compatibility",
     format={"latex": r"\rm{R}_{\oplus}", "latex_inline": r"\rm{R}_{\oplus}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 # CANNOT DO myr B/C MEANS milliyear in astropy
@@ -283,7 +283,7 @@ def_unit(
     represents=units.Gyr,
     doc="giga year, AMUSE compatibility",
     format={"latex": r"\rm{Gyr}", "latex_inline": r"\rm{Gyr}"},
-    namespace=_ns,
+    namespace=_us,
 )
 
 # # cgs units
@@ -306,19 +306,28 @@ def_unit(
     represents=np.pi * units.rad,
     doc="pi radians, AMUSE compatibility",
     format={"latex": r"\pi\rm{rad}", "latex_inline": r"\pi\rm{rad}"},
-    namespace=_ns,
+    namespace=_us,
 )
+
+
+##############################################################################
+# ADD ENABLED UNITS
+
+for k in _us.keys():
+    units.add_enabled_units([_us[k]])
+
+
+_ns = globals()
+_ns.update(_us)
 
 
 ##############################################################################
 # CLEANUP
 
 del np
-del UnitBase
 del def_unit
 del units
 del constants
-# del Fraction
 
 
 ##############################################################################
@@ -327,7 +336,7 @@ del constants
 # This generates a docstring for this module that describes all of the
 # standard units defined here.
 if __doc__ is not None:
-    __doc__ += _gen_summary(globals())
+    __doc__ += _gen_summary(_ns)
 
 
 ##############################################################################

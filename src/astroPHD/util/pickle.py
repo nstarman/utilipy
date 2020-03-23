@@ -21,19 +21,31 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # GENERAL
-from typing import Any, Union, Optional
 import pickle
+
+try:
+    import dill
+except ImportError:
+    import warnings
+
+    warnings.warn("can't import dill. Will only use pickle")
+    _HAS_DILL = False
+else:
+    _HAS_DILL = True
+
+# typing
+from typing import Optional, Tuple, Any
 
 # import tempfile
 
 # PROJECT-SPECIFIC
 from ..decorators.docstring import format_doc
-from . import LogPrint
+from . import LogFile
 
 #############################################################################
 # PARAMETERS
 
-_LOGFILE = LogPrint(header=False)
+_LOGFILE = LogFile(header=False)
 
 
 #############################################################################
@@ -48,8 +60,9 @@ def dump(
     *,
     fopt: str = "b",
     fix_imports: bool = True,
+    use_dill=False,
     # logger
-    logger: LogPrint = _LOGFILE,
+    logger: LogFile = _LOGFILE,
     verbose: Optional[int] = None,
 ) -> None:
     """Wrap pickle.dump.
@@ -64,6 +77,9 @@ def dump(
         {odoc}
 
     """
+    if use_dill and not _HAS_DILL:
+        raise ValueError("dill is not installed. cannot use dill.")
+
     logger.report(
         f"dumping obj at {fname}",
         (
@@ -74,7 +90,10 @@ def dump(
     )
 
     with open(fname, "w" + fopt) as file:
-        pickle.dump(obj, file, protocol=protocol, fix_imports=fix_imports)
+        if use_dill:
+            dill.dump(obj, file, protocol=protocol, fix_imports=fix_imports)
+        else:
+            pickle.dump(obj, file, protocol=protocol, fix_imports=fix_imports)
 
     return
 
@@ -88,16 +107,63 @@ save = dump
 # --------------------------------------------------------------------------
 
 
+def dump_many(
+    *objs: Tuple[Any, str],
+    protocol: Any = None,
+    fopt: str = "b",
+    fix_imports: bool = True,
+    use_dill=False,
+    # logger
+    logger: LogFile = _LOGFILE,
+    verbose: Optional[int] = None,
+) -> None:
+    """Wrap pickle.dump.
+
+    Parameters
+    ----------
+    *objs: Tuple[Any, str]
+    protocol: Any
+        (default None)
+    fopt: str
+        (default "b")
+    fix_imports: bool
+        (default True)
+    logger: LogFile
+    verbose: int or None, optional
+
+    """
+    for (obj, fname) in objs:
+        dump(
+            obj=obj,
+            fname=fname,
+            protocol=protocol,
+            fopt=fopt,
+            fix_imports=fix_imports,
+            use_dill=use_dill,
+            # logger
+            logger=logger,
+            verbose=verbose,
+        )
+
+    return
+
+
+# /def
+
+
+# --------------------------------------------------------------------------
+
+
 @format_doc(None, odoc="\n\t".join(pickle.load.__doc__.split("\n")))
 def load(
-    fname: str,
-    *,
+    *fnames: str,
     fopt: str = "b",
     fix_imports: bool = True,
     encoding: str = "ASCII",
     errors: str = "strict",
+    use_dill=False,
     # logger
-    logger: LogPrint = _LOGFILE,
+    logger: LogFile = _LOGFILE,
     verbose: Optional[int] = None,
 ):
     """Wrap pickle.load.
@@ -112,24 +178,47 @@ def load(
         {odoc}
 
     """
-    logger.report(
-        f"loading obj at {fname}",
-        (
-            f"loading obj at {fname} with fopt='{'r' + fopt}, "
-            f"fix_imports={fix_imports}', encoding={encoding}, "
-            f"errors={errors}"
-        ),
-        verbose=verbose,
-    )
+    if use_dill and not _HAS_DILL:
+        raise ValueError("dill is not installed. cannot use dill.")
 
-    with open(fname, "r" + fopt) as file:
-        res = pickle.load(
-            file, fix_imports=fix_imports, encoding=encoding, errors=errors
+    res = [None] * len(fnames)
+    for i, fname in enumerate(fnames):
+
+        logger.report(
+            f"loading obj at {fname}",
+            (
+                f"loading obj at {fname} with fopt='{'r' + fopt}, "
+                f"fix_imports={fix_imports}', encoding={encoding}, "
+                f"errors={errors}"
+            ),
+            verbose=verbose,
         )
+
+        with open(fname, "r" + fopt) as file:
+            if use_dill:
+                res[i] = dill.load(
+                    file,
+                    fix_imports=fix_imports,
+                    encoding=encoding,
+                    errors=errors,
+                )
+            else:
+                res[i] = pickle.load(
+                    file,
+                    fix_imports=fix_imports,
+                    encoding=encoding,
+                    errors=errors,
+                )
+
+    if len(fnames) == 1:
+        return res[0]
     return res
 
 
 # /def
+
+load_many = load
+
 
 # --------------------------------------------------------------------------
 
