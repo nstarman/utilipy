@@ -36,22 +36,21 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # General
-import types
 from functools import *  # so can be a drop-in for `functools`
-import functools
-
+# import functools
+from inspect import signature as _get_signature
+from types import FunctionType
 from typing import Any, Union, Callable, Sequence, Optional
 
 # Project-Specific
 from .string import FormatTemplate
 from .inspect import (
-    signature as _get_signature,
     FullerSignature as _FullerSignature,
     cleandoc as _cleandoc,
     getdoc as _getdoc,
-    _VAR_POSITIONAL,
-    _KEYWORD_ONLY,
-    _VAR_KEYWORD,
+    VAR_POSITIONAL,
+    KEYWORD_ONLY,
+    VAR_KEYWORD,
 )
 from .doc_parse_tools import store as _store
 
@@ -89,7 +88,7 @@ def make_function(
 
     Returns
     -------
-    function: types.FunctionType
+    function: Callable
         the created function
 
     TODO
@@ -108,7 +107,7 @@ def make_function(
         pass
 
     # make function
-    function = types.FunctionType(
+    function = FunctionType(
         code, globals_, name=name, argdefs=signature.defaults, closure=closure
     )
 
@@ -188,7 +187,7 @@ def update_wrapper(
     updated: Sequence[str] = WRAPPER_UPDATES,
     # docstring options
     _doc_fmt: Optional[dict] = None,  # not in functools
-    _doc_style: Union[str, types.FunctionType, None] = None,
+    _doc_style: Union[str, Callable, None] = None,
 ):
     """Update a wrapper function to look like the wrapped function.
 
@@ -216,14 +215,14 @@ def update_wrapper(
        function (defaults to ``functools.WRAPPER_UPDATES``)
     _doc_fmt : dict, optional
         dictionary to format wrapper docstring
-    _doc_style: str or FunctionType, optional
+    _doc_style: str or Callable, optional
         the style of the docstring
         if None (default), appends `wrapper` docstring
-        if str or FunctionType, merges the docstring
+        if str or Callable, merges the docstring
 
     Returns
     -------
-    wrapper : FunctionType
+    wrapper : Callable
         `wrapper` function updated by the `wrapped` function's attributes and
         also the provided `signature` and `docstring`.
 
@@ -285,8 +284,8 @@ def update_wrapper(
 
         # go through parameters in wrapper_sig, merging into signature
         for param in wrapper_sig.parameters.values():
-            # skip _VAR_POSITIONAL and _VAR_KEYWORD
-            if param.kind in {_VAR_POSITIONAL, _VAR_KEYWORD}:
+            # skip VAR_POSITIONAL and VAR_KEYWORD
+            if param.kind in {VAR_POSITIONAL, VAR_KEYWORD}:
                 pass
             # already exists -> replace
             elif param.name in signature.parameters:
@@ -296,7 +295,7 @@ def update_wrapper(
                         f"{param.name} must match kind in function signature"
                     )
                 # can only merge key-word only
-                if param.kind == _KEYWORD_ONLY:
+                if param.kind == KEYWORD_ONLY:
                     signature.modify_parameter(
                         param.name,
                         name=None,
@@ -311,7 +310,7 @@ def update_wrapper(
             # add to signature
             else:
                 # can only merge key-word only
-                if param.kind == _KEYWORD_ONLY:
+                if param.kind == KEYWORD_ONLY:
                     signature = signature.insert_parameter(
                         signature.index_end_keyword_only, param
                     )
@@ -334,7 +333,7 @@ def update_wrapper(
         # for docstring
         for param in wrapper_sig.parameters.values():
             # can only merge key-word only
-            if param.kind == _KEYWORD_ONLY:
+            if param.kind == KEYWORD_ONLY:
                 _doc_fmt[param.name] = param.default
 
         wrapper.__signature__ = signature.signature
@@ -379,13 +378,12 @@ def update_wrapper(
 
 def wraps(
     wrapped: Callable,
-    signature: Union[_FullerSignature, None, bool] = True,  # not in functools
-    docstring: Union[str, None, bool] = None,  # ibid
+    signature: Union[_FullerSignature, None, bool] = True,
+    docstring: Union[str, None, bool] = None,
     assigned: Sequence[str] = WRAPPER_ASSIGNMENTS,
     updated: Sequence[str] = WRAPPER_UPDATES,
-    # docstring options
-    _doc_fmt: Optional[dict] = None,  # ibid
-    _doc_style: Union[str, types.FunctionType, None] = None,  # ibid
+    _doc_fmt: Optional[dict] = None,
+    _doc_style: Union[str, Callable, None] = None,
 ):
     """Decorator factory to apply ``update_wrapper()`` to a wrapper function.
 
@@ -404,7 +402,7 @@ def wraps(
     updated: Sequence[str]
         WRAPPER_UPDATES,
     _doc_fmt: dict or None, optional
-    _doc_style: Union[str, types.FunctionType, None], optional
+    _doc_style: Union[str, Callable, None], optional
 
     Returns
     -------

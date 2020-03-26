@@ -38,17 +38,17 @@ __all__ = [
 # GENERAL
 from typing import Any, Union, Callable, Optional
 import numpy as np
-import types
 
 # PROJECT-SPECIFIC
 from ..util import functools
+
 
 #############################################################################
 # MAKING DECORATORS
 
 
 class dtypeDecorator:
-    """ensure arguments are type *dtype*
+    """Ensure arguments are type *dtype*.
 
     Parameters
     ----------
@@ -78,7 +78,7 @@ class dtypeDecorator:
         # correcting if forgot to specify in_dtype= and did not provide a function
         # in this case, *in_dtype* is stored in *func*
         # need to do func->None, inarags<-func, and out_dtype<-in_dtype
-        if not isinstance(func, types.FunctionType):
+        if not isinstance(func, Callable):
             # moving arguments 'forward'
             out_dtype = in_dtype
             in_dtype = func
@@ -232,7 +232,7 @@ def dtypeDecoratorMaker(dtype: Any):
             # correcting if forgot to specify inargs= and did not provide a func
             # in this case, *inargs* is stored in *func*
             # need to do func->None, inarags<-func, and outargs<-inargs
-            if not isinstance(func, types.FunctionType):
+            if not isinstance(func, Callable):
                 # moving arguments 'forward'
                 outargs = inargs
                 inargs = func

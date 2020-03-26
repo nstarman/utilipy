@@ -29,11 +29,20 @@ __all__ = [
 # IMPORTS
 
 # GENERAL
+
 import warnings
+from astropy.table import Table, QTable
 
 # PROJECT-SPECIFIC
-from astropy.table import Table, QTable
+
 from .. import quantity_io, MAG
+from ..data import read_MegaCamGen1_from_PS1
+
+
+#############################################################################
+# PARAMETERS
+
+data = read_MegaCamGen1_from_PS1()
 
 
 #############################################################################
@@ -81,22 +90,26 @@ def U_MP9301(ps, **kw) -> MAG:
     g, i = kw.get("g", "g"), kw.get("i", "i")
     gmi = kw.get("gmi", "g-i")
 
+    c = data.loc["U_MP9301"]
+
     if gmi in ps.colnames:
         gmi = ps[gmi]
     else:
         gmi = ps[g] - ps[i]
 
-    ind = (0.3 * MAG < gmi) & (gmi < 1.5 * MAG)
+    ind = (c["lb"] < gmi) & (gmi < c["ub"])
     if not all(ind):
         warnings.warn("MCg1.U: not all .3 mag < (g-i)_ps < 1.5 mag")
 
-    c0 = 0.523 * MAG
-    c1 = -0.343
-    c2 = 2.44 / MAG
-    c3 = -0.998 / MAG ** 2
     g_ps = ps[g]
 
-    u_cfht = g_ps + c0 + (c1 * gmi) + (c2 * gmi ** 2) + (c3 * gmi ** 3)
+    u_cfht = (
+        g_ps
+        + c["c0"]
+        + (c["c1"] * gmi)
+        + (c["c2"] * gmi ** 2)
+        + (c["c3"] * gmi ** 3)
+    )
 
     return u_cfht
 

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -9,19 +8,20 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""initialization file for metaclasses
-"""
+"""Metaclasses."""
 
 __author__ = "Nathaniel Starkman"
+
+__all__ = [
+    "InheritDocstrings"
+]
+
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
-
-
 # PROJECT-SPECIFIC
+
 from .inherit_docstrings import InheritDocstrings
 
 

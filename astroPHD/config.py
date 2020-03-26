@@ -49,7 +49,7 @@ from typing import Union, Any, Optional, Dict
 from typing_extensions import Literal
 import os
 from os import path
-import configparser
+from configparser import ConfigParser
 
 ##############################################################################
 # DEFAULT CONFIGURATION
@@ -65,14 +65,20 @@ _DEFAULT_FILE: str = os.path.join(os.path.expanduser("~"), ".astroPHDrc")
 
 
 ##############################################################################
+# PARAMETERS
+
+__config__ = ConfigParser()
 
 
-def check_config(configuration: configparser.ConfigParser) -> bool:
+##############################################################################
+
+
+def check_config(configuration: ConfigParser) -> bool:
     """Check that the configuration is a valid astroPHD configuration.
 
     Parameters
     ----------
-    configuration: configparser.ConfigParser
+    configuration: ConfigParser
         the configuration file
 
     Returns
@@ -98,22 +104,23 @@ def check_config(configuration: configparser.ConfigParser) -> bool:
 
 
 def write_config(
-    filename: str, configuration: Optional[configparser.ConfigParser] = None
+    filename: str, configuration: Optional[ConfigParser] = None
 ) -> None:
     """Write configuration.
 
     Parameters
     ----------
     filename: str
-    configuration: None or configparser.ConfigParser
+    configuration: None or ConfigParser
         configuration to draw from
         defaults to `_DEFAULT_CONFIG` if not in `configuration`
 
     """
     # Writes default if configuration is None
-    writeconfig = configparser.ConfigParser()
+    writeconfig = ConfigParser()
 
     # Write different sections
+    sec_key: str
     for sec_key in _DEFAULT_CONFIG.keys():
         writeconfig.add_section(sec_key)
         for key in _DEFAULT_CONFIG[sec_key]:
@@ -172,7 +179,7 @@ class use_import_verbosity:
 
     # /def
 
-    def __enter__(self) -> type:
+    def __enter__(self):
         """Enter with statement, using specified import verbosity."""
         if self.verbosity is not None:
             set_import_verbosity(self.verbosity)
@@ -192,7 +199,7 @@ class use_import_verbosity:
 # ----------------------------------------------------------------------------
 
 
-def get_warnings_verbosity() -> None:
+def get_warnings_verbosity() -> bool:
     """Get warnings verbosity."""
     return __config__.getboolean("verbosity", "warnings")
 
@@ -241,7 +248,7 @@ class use_warnings_verbosity:
 # ----------------------------------------------------------------------------
 
 
-def get_frozen_constants() -> None:
+def get_frozen_constants() -> bool:
     """Get warnings verbosity."""
     return __config__.getboolean("util", "frozen-constants")
 
@@ -289,8 +296,6 @@ class use_frozen_constants:
 
 ##############################################################################
 # RUNNING
-
-__config__ = configparser.ConfigParser()
 
 # Read the local configuration file
 cfilename = __config__.read(".astroPHDrc")

@@ -104,6 +104,7 @@ def unit_output_decorator(
             tries wrapping in ``Unit()``. This would normally return an error, but now
             allows for conversions such as:
 
+            >>> import astropy.units as u
             >>> x = 10 * u.km * u.s
             >>> bases = [2 * u.km, u.s]
             >>> x.decompose(bases=basesConversionFunction(bases))
@@ -116,20 +117,23 @@ def unit_output_decorator(
 
     Examples
     --------
-    >>> @unit_decorator
-    ... def func(x, y, **kw):
-    ...     return x + y
+    .. code-block:: python
+
+        @unit_decorator
+        def func(x, y, **kw):
+            return x + y
 
     is equivalent to
 
-    >>> def func(x, y, unit=None, to_value=False, equivalencies=[],
-    ...          decompose=False, **kw):
-    ...     result = x + y
-    ...     return unit_output(result, unit, to_value, equivalencies,
-    ...                        decompose)
+    .. code-block:: python
+
+        def func(x, y, unit=None, to_value=False, equivalencies=[],
+                 decompose=False, **kw):
+            result = x + y
+            return unit_output(result, unit, to_value, equivalencies,
+                               decompose)
 
     """
-
     def wrapper(func: Callable):
         @wraps(func)
         def wrapped(

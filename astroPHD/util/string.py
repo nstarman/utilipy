@@ -2,43 +2,46 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   :
-# AUTHOR  :
-# PROJECT :
+# TITLE   : String
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-# Docstring
-"""**DOCSTRING**.
+"""String Utilities.
 
-description
+Routine Listings
+----------------
+FormatTemplate
 
 """
 
 __author__ = "Nathaniel Starkman"
-# __copyright__ = "Copyright 2019, "
-# __credits__ = [""]
-# __license__ = "MIT"
-# __version__ = "0.0.0"
-# __maintainer__ = ""
-# __email__ = ""
-# __status__ = "Production"
 
-# __all__ = [
-#     ""
-# ]
+__all__ = [
+    "FormatTemplate"
+]
 
 
 ###############################################################################
 # IMPORTS
 
 # GENERAL
-import string
+
 import re
+import string
+from string import *
 
 # CUSTOM
 
 # PROJECT-SPECIFIC
+
+###############################################################################
+# __ALL__
+
+if hasattr(string, '__all__'):
+    __all__ += string.__all__
+else:
+    __all__ += list(dir(string))
 
 
 ###############################################################################
@@ -54,11 +57,13 @@ class FormatTemplate(string.Template):
     >>> re.sub('$a ${b} {c}', r'${', s)
     '$a ${b} ${c}'
 
-    
+    >>> s = FormatTemplate('$a ${b} {c}')
+    >>> s.formate(a=1, b=2, c=3)
+    "1 2 3"
 
     """
 
-    def __new__(cls, s):
+    def __init__(self, s):
         """Make Template with string in Template, not `.format`, syntax.
 
         Examples
@@ -68,7 +73,7 @@ class FormatTemplate(string.Template):
 
         """
         s = re.sub(r'(?<!\$)({)', r'${', s)  # replace '{' with '${'
-        return string.Template(s)
+        super().__init__(s)
 
     # /def
 

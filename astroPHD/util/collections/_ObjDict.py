@@ -3,7 +3,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : ObjDict
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
@@ -13,14 +12,18 @@
 
 __author__ = "Nathaniel Starkman"
 
+
 ##############################################################################
 # IMPORTS
 
 # GENERAL
-from typing import Any, Union, Sequence, Tuple, Callable, Optional
+
 from collections import OrderedDict
+from typing import Any, Union, Sequence, Tuple, Callable, Optional
+
 
 # PROJECT-SPECIFIC
+
 from ..pickle import dump as _dump, load as _load
 from ...decorators.docstring import format_doc
 
@@ -65,6 +68,8 @@ class ObjDict(OrderedDict):
 
         for key, value in kw.items():
             self[key] = value
+
+        return
 
     # /def
 
@@ -317,6 +322,7 @@ class ObjDict(OrderedDict):
     # ----------------------------------
 
     def print(self):
+        """Print."""
         print(self.__repr__())
 
 

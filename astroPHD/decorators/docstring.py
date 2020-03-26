@@ -3,12 +3,10 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : docstring
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
 """Docstring decorators."""
 
 __author__ = "Nathaniel Starkman"

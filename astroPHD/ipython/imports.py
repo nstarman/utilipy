@@ -51,15 +51,12 @@ __all__ = [
 from typing import Any, Union, Optional, Dict
 import ast
 from IPython import get_ipython
+from pathlib import Path
 
 # Project-Specific
 from ..util import functools
 from ..config import use_import_verbosity
 from ..util.logging import LogFile
-from ..util.paths import (
-    get_absolute_path as _gap,
-    parent_file_directory as _pfd,
-)
 
 from .autoreload import aimport, set_autoreload
 
@@ -109,7 +106,7 @@ def import_from_file(
         # Importing
         for file, relative in zip(files, relatives):
             if relative:
-                file = _gap(file)
+                file = str(Path(file).resolve())
             # get_ipython inbuilt to jupyter
             get_ipython().magic(f"run {file}")
 
@@ -280,7 +277,7 @@ def run_imports(
 
 def _join_pfd(path: str) -> str:
     # TODO better way to get this file directory & join path file
-    return _pfd(__file__).joinpath(path)
+    return str(Path(__file__).parent.joinpath(path))
 
 
 # /def

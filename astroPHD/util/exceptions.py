@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : PBH_in_galaxy
-# AUTHOR  : Nathaniel Starkman
-# PROJECT : Eridanus_PBH
-#
-# ----------------------------------------------------------------------------
-
-# Docstring
 """Warnings and Exceptions.
 
-code modified from galpy.
+Routine Listings
+----------------
+astroPHDWarning
+astroPHDWarningVerbose
+_warning
 
 """
 
@@ -22,10 +17,13 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # GENERAL
+
 from typing import Any
 import warnings
 
+
 # PROJECT-SPECIFIC
+
 from ..config import __config__
 
 
@@ -33,6 +31,7 @@ from ..config import __config__
 # PARAMETERS
 
 _SHOW_WARNINGS: bool = __config__.getboolean("verbosity", "warnings")
+
 
 ###############################################################################
 # CODE
@@ -76,6 +75,9 @@ def _warning(
             print("astroPHDWarning: " + str(message))
     else:
         print(warnings.formatwarning(message, category, filename, lineno))
+
+
+warnings.showwarning = _warning  # TODO check how this is used
 
 
 ##############################################################################

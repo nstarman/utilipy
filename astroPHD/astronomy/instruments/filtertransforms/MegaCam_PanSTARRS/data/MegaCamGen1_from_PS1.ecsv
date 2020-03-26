@@ -1,0 +1,43 @@
+# %ECSV 0.9
+# ---
+# datatype:
+# - {name: name, datatype: string}
+# - {name: c0, unit: mag, datatype: float64}
+# - {name: c1, datatype: float64}
+# - {name: c2, unit: 1 / mag, datatype: float64}
+# - {name: c3, unit: 1 / mag2, datatype: float64}
+# - {name: lb, unit: mag, datatype: float64}
+# - {name: ub, unit: mag, datatype: float64}
+# meta: !!omap
+# - __serialized_columns__:
+#     c0:
+#       __class__: astropy.units.quantity.Quantity
+#       unit: &id001 !astropy.units.Unit {unit: mag}
+#       value: !astropy.table.SerializedColumn {name: c0}
+#     c1:
+#       __class__: astropy.units.quantity.Quantity
+#       unit: !astropy.units.Unit {unit: ''}
+#       value: !astropy.table.SerializedColumn {name: c1}
+#     c2:
+#       __class__: astropy.units.quantity.Quantity
+#       unit: !astropy.units.Unit {unit: 1 / mag}
+#       value: !astropy.table.SerializedColumn {name: c2}
+#     c3:
+#       __class__: astropy.units.quantity.Quantity
+#       unit: !astropy.units.Unit {unit: 1 / mag2}
+#       value: !astropy.table.SerializedColumn {name: c3}
+#     lb:
+#       __class__: astropy.units.quantity.Quantity
+#       unit: *id001
+#       value: !astropy.table.SerializedColumn {name: lb}
+#     ub:
+#       __class__: astropy.units.quantity.Quantity
+#       unit: *id001
+#       value: !astropy.table.SerializedColumn {name: ub}
+# schema: astropy-2.0
+name c0 c1 c2 c3 lb ub
+U_MP9301 0.523 -0.343 2.44 -0.998 0.3 1.5
+G_MP9401 -0.001 -0.004 -0.0056 0.00292 -1.0 4.0
+R_MP9601 0.002 -0.017 0.00554 -0.000692 -1.0 4.0
+I_MP9701 0.001 -0.021 0.00398 -0.00369 -1.0 4.0
+Z_MP9801 -0.009 -0.029 0.012 -0.00367 -1.0 4.0

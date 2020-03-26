@@ -6,13 +6,38 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""data_util initialization file."""
+"""Data Utilities.
+
+
+
+"""
+
+__author__ = "Nathaniel Starkman"
+
+
+__all__ = [
+    "idxDecorator",
+
+]
+
 
 ##############################################################################
 # IMPORTS
 
-from .select import inRange
+from .decorators import idxDecorator
+from .select import *
+
+# import top=level directories
+from . import (
+    decorators,
+    select
+)
+
+
+##############################################################################
+# __ALL__
+
+__all__ += select.__all__
 
 
 ##############################################################################

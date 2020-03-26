@@ -13,24 +13,10 @@ __all__ = []
 
 # Packages may add whatever they like to this file, but
 # should keep this content at the top.
-from ._astropy_init import *   # noqa
+from ._astropy_init import *  # noqa
+
 
 # PROJECT-SPECIFIC
-# import top level packages
-from . import (
-    astronomy,
-    constants,
-    data_utils,
-    decorators,
-    extern,
-    fitting,
-    imports,
-    ipython,
-    math,
-    plot,
-    units,
-    util,
-)
 
 # import commonly used functions
 from .util.logging import LogFile
@@ -39,6 +25,25 @@ from .util.functools import wraps
 
 # configuration
 from . import config
+
+# import top level packages
+from . import (
+    astro,
+    astronomy,
+    constants,
+    # data,
+    data_utils,
+    decorators,
+    extern,
+    fitting,
+    imports,
+    ipython,
+    math,
+    plot,
+    scripts,
+    units,
+    util,
+)
 
 
 #############################################################################
@@ -60,6 +65,33 @@ def help() -> None:
 
 
 # /def
+
+
+#############################################################################
+# __ALL__
+
+__all_top_imports__ = (
+    "astro",
+    "astronomy",
+    "constants",
+    # "data",
+    "data_utils",
+    "decorators",
+    "extern",
+    "fitting",
+    "imports",
+    "ipython",
+    "math",
+    "plot",
+    "scripts",
+    "units",
+    "util",
+)
+
+__all__ += list(__all_top_imports__)
+
+__all__ += ["LogFile", "ObjDict", "wraps", "config"]
+
 
 #############################################################################
 # END

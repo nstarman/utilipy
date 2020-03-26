@@ -3,38 +3,43 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : typing
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-# Docstring
-"""typing library utilities."""
+"""Typing library utilities."""
 
 __author__ = "Nathaniel Starkman"
 __credits__ = ["typing"]
+
+
+__all__ = [
+    "array_like",
+]
 
 
 ###############################################################################
 # IMPORTS
 
 # GENERAL
-from typing import *
-from typing import Union
 
-import numpy as np
+import typing
+from typing import *
+
 
 ###############################################################################
 # PARAMETERS
 
-array_like = Union[list, tuple, np.ndarray]
+array_like = typing.Sequence
 
 
 ###############################################################################
-# CODE
-###############################################################################
+# __ALL__
 
-# --------------------------------------------------------------------------
+if hasattr(typing, "__all__"):
+    __all__ += typing.__all__
+else:
+    __all__ += list(dir(typing))
 
 
 ###############################################################################

@@ -2,22 +2,26 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   :
-# AUTHOR  : Nathaniel Starkman
-# PROJECT :
+# TITLE   : SemiStaticMethod
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
 """SemiStaticMethod."""
 
 __author__ = "Nathaniel Starkman"
+
+
+__all__ = [
+    "SemiStaticMethod"
+]
 
 
 ##############################################################################
 # IMPORTS
 
 # GENERAL
+
 from typing import Any, Union, Callable, Optional
 
 # PROJECT-SPECIFIC

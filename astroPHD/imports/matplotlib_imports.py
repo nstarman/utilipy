@@ -3,7 +3,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : matplotlib_imports
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
@@ -36,6 +35,17 @@ Matplotlib reference [1]_.
 __author__ = "Nathaniel Starkman"
 
 
+__all__ = [
+    "mpl",
+    "plt",
+    "cm",
+    "colors",
+    "Axes3D",
+    "configure_matplotlib",
+    "matplotlib_imports_help",
+]
+
+
 ##############################################################################
 # HELPER FUNCTIONS
 
@@ -53,7 +63,7 @@ from astroPHD.decorators.docstring import (
 # Plotting
 
 import matplotlib as mpl
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 from matplotlib import cm, colors
 
 from mpl_toolkits.mplot3d import Axes3D  # 3D plotting

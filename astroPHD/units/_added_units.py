@@ -25,7 +25,7 @@ from astropy.units.utils import generate_unit_summary as _gen_summary
 ##############################################################################
 # PARAMETERS
 
-_us = {}  # unit namespace. will be added to globals
+_us: dict = {}  # unit namespace. will be added to globals
 
 
 ##############################################################################

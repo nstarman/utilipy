@@ -1,27 +1,30 @@
-#!/usr/bin/env python# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : decorator initialization file
+# TITLE   : Decorators
 # PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""initialization file for util.decorators."""
+"""Decorators."""
 
 ##############################################################################
 # IMPORTS
 
 # GENERAL
 
+from typing import Callable, Dict, Any
+
+
 # PROJECT-SPECIFIC
+
 from ..util import functools
 from ..util.functools import wraps
 from ..util import inspect
 
 # base class
-from .decoratorbaseclass import DecoratorBaseClass, classy_decorator
+from .baseclass import DecoratorBaseClass, classy_decorator
 
 # data-type decorators
 from .dtype_decorator import (
@@ -38,18 +41,18 @@ from .dtype_decorator import (
 )
 
 # bool array to index decorator
-from .idx_decorator import idxDecorator
+# from .idx_decorator import idxDecorator
 
 
 ##############################################################################
 
 
 def store_function_input(
-    function=None,
+    function: Callable=None,
     *,
     store_inputs: bool = True,
-    _doc_style="numpy",
-    _doc_fmt={}
+    _doc_style: str="numpy",
+    _doc_fmt: Dict[str, Any]={}
 ):
     """Store Function Inputs.
 
@@ -57,7 +60,7 @@ def store_function_input(
 
     Parameters
     ----------
-    function : types.FunctionType or None, optional
+    function : Callable or None, optional
         the function to be decoratored
         if None, then returns decorator to apply.
     store_inputs : bool, optional
@@ -65,7 +68,7 @@ def store_function_input(
 
     Returns
     -------
-    wrapper : types.FunctionType
+    wrapper : Callable
         wrapper for function
         does a few things
         includes the original function in a method `.__wrapped__`
@@ -88,7 +91,7 @@ def store_function_input(
             _doc_fmt=_doc_fmt,
         )
 
-    sig = inspect.signature(function)
+    sig = inspect.fuller_signature(function)
     _doc_fmt["wrapped_function"] = function.__name__
 
     @wraps(function, _doc_style=_doc_style, _doc_fmt=_doc_fmt)
@@ -126,6 +129,9 @@ def store_function_input(
 # /def
 
 
+# ------------------------------------------------------------------------
+
+
 def add_folder_backslash(
     function=None, *, arguments=[], _doc_style="numpy", _doc_fmt={}
 ):
@@ -135,7 +141,7 @@ def add_folder_backslash(
 
     Parameters
     ----------
-    function : types.FunctionType or None, optional
+    function : Callable or None, optional
         the function to be decoratored
         if None, then returns decorator to apply.
     arguments : list of strings, optional
@@ -144,7 +150,7 @@ def add_folder_backslash(
 
     Returns
     -------
-    wrapper : types.FunctionType
+    wrapper : Callable
         wrapper for function
         does a few things
         includes the original function in a method `.__wrapped__`

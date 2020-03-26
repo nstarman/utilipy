@@ -51,8 +51,11 @@ class LogPrint(object):
         if header is not False:
             if header in {None, True}:
                 header = ""
-            elif header[-1] != " ":  # making sure ends in space
-                header += " "
+            elif isinstance(header, str):
+                if header[-1] != " ":  # making sure ends in space
+                    header += " "
+            else:
+                raise TypeError
 
             self.write(f"{header}Log:", endsection="=", print=show_header)
         return

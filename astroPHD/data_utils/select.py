@@ -3,20 +3,19 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : select
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
 """Selection Functions.
 
 Routine Listings
 ----------------
-`box`
-`circle`
-`ellipse`
-`inRange`
-`ioRange`
-`outRange`
+inRange
+outRange
+ioRange
+ellipse
+circle
 
 Examples
 --------
@@ -24,18 +23,30 @@ do some examples here
 
 """
 
+__author__ = "Nathaniel Starkman"
+
+
+__all__ = [
+    "inRange",
+    "outRange",
+    "ioRange",
+    "ellipse",
+    "circle",
+]
+
+
 #############################################################################
 # IMPORTS
 
 # GENERAL
 
-from typing import Any, Union, Callable, Sequence, Optional
+from typing import Union, Sequence, Optional
 import numpy as np
 
 
 # PROJECT-SPECIFIC
 
-from ..decorators import idxDecorator, ndarrayDecorator
+from .decorators import idxDecorator
 
 
 #############################################################################
@@ -105,7 +116,7 @@ def _inRange(
 # -----------------------------------------------------------------------------
 
 
-@idxDecorator(_doc_style='numpy')
+@idxDecorator(_doc_style="numpy")
 def inRange(
     *args: Union[np.array, Sequence],
     rng: Union[list, type(Ellipsis)] = Ellipsis,
@@ -196,14 +207,10 @@ def inRange(
 # /def
 
 
-# box as proxy to inRange
-# inBox = inRange
-
-
 # -----------------------------------------------------------------------------
 
 
-@idxDecorator(_doc_style='numpy')
+@idxDecorator(_doc_style="numpy")
 def outRange(
     *args: Union[np.array, Sequence],
     rng: Optional[Sequence] = None,
@@ -260,7 +267,7 @@ def outRange(
 # -----------------------------------------------------------------------------
 
 
-@idxDecorator(_doc_style='numpy')
+@idxDecorator(_doc_style="numpy")
 def ioRange(
     incl: Union[np.array, Sequence] = None,
     excl: Union[np.array, Sequence] = None,
@@ -335,7 +342,7 @@ def ioRange(
 # -----------------------------------------------------------------------------
 
 
-@idxDecorator(_doc_style='numpy')
+@idxDecorator(_doc_style="numpy")
 def ellipse(
     *x: Union[np.array, Sequence],
     x0: Union[float, Sequence] = 0.0,
@@ -382,7 +389,7 @@ def ellipse(
 # -----------------------------------------------------------------------------
 
 
-@idxDecorator(_doc_style='numpy')
+@idxDecorator(_doc_style="numpy")
 def circle(
     *x: Union[np.array, Sequence],
     x0: Union[float, Sequence] = 0.0,

@@ -17,9 +17,6 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# GENERAL
-
-# PROJECT-SPECIFIC
 from .lmfit_decorator import scipy_residual_to_lmfit
 
 

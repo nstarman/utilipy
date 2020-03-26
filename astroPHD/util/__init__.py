@@ -2,11 +2,11 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : util initialization file
+# TITLE   : util
+# PROJECT : astroPHD
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
 """Utilities.
 
 Routine Listings
@@ -18,15 +18,49 @@ pickle
 
 """
 
+__author__ = "Nathaniel Starkman"
+
+
+__all__ = []
+
+
 ##############################################################################
 # IMPORTS
 
-# Project-Specific
-from .logging import LogPrint, LogFile  # , LoggerFile
+# PROJECT-SPECIFIC
+
+from .logging import LogPrint, LogFile
 from .collections import ObjDict
 
-from . import collections, functools, pickle
+from . import functools, pickle
 
+# import top level packages
+from . import (
+    collections,
+    doc_parse_tools,
+    logging,
+    metaclasses,
+)
+
+
+##############################################################################
+# __ALL__
+
+__all_top_imports__ = (
+    "collections",
+    "doc_parse_tools",
+    "logging",
+    "metaclasses",
+)
+
+__all__ += list(__all_top_imports__)
+__all__ += [
+    "LogPrint",
+    "LogFile",
+    "ObjDict",
+    "functools",
+    "pickle",
+]
 
 #############################################################################
 # END

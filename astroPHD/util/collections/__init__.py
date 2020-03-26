@@ -1,25 +1,29 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : ipython initialization file
+# TITLE   : collections
 # AUTHOR  : Nathaniel Starkman
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""initialization file for collections
-"""
+"""Initialization file for collections."""
 
 __author__ = "Nathaniel Starkman"
 
 
-##############################################################################
-### IMPORTS
+__all__ = [
+    "ObjDict"
+]
 
-## Project-Specific
+
+##############################################################################
+# IMPORTS
+
+# PROJECT-SPECIFIC
+
 from ._ObjDict import ObjDict
 
+
 ##############################################################################
-### CODE
+# END

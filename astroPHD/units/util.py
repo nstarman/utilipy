@@ -121,7 +121,9 @@ def unit_output(
         return res
 
     # First decomposing
-    if decompose is True:
+    if decompose is False:
+        pass
+    elif decompose is True:
         res = res.decompose()
     elif decompose:  # decompose is NOT empty list
         cls = (Unit, IrreducibleUnit)

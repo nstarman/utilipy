@@ -8,7 +8,6 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
 """constants.
 
 Astropy constants, with frozen version for reproducibility
@@ -28,15 +27,46 @@ References [#]_.
 
 __author__ = "Nathaniel Starkman"
 
+__all__ = [
+    "frozen",
+    "FrozenConstants",
+    "default_values",
+    "ConstantsValues",
+]
+
+
 ##############################################################################
 # IMPORTS
 
 # GENERAL
+
+from astropy import constants
 from astropy.constants import *
 
+
 # PROJECT-SPECIFIC
-from . import values
-from .values import ConstantsValues, default_values
+
+from ._frozen import FrozenConstants, frozen
+from .values import ConstantsValues, values as default_values
+
+# import top level packages
+from . import (
+    values,
+    _frozen,
+)
+
+
+##############################################################################
+# __ALL__
+
+__all_top_imports__ = ("values", "_frozen")
+
+__all__ += list(__all_top_imports__)
+__all__ += (
+    constants.__all__
+    if hasattr(constants, "__all__")
+    else list(dir(constants))
+)
 
 
 #############################################################################

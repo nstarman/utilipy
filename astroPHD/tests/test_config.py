@@ -6,8 +6,7 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""tests for config.py."""
+"""Tests for config.py."""
 
 __author__ = "Nathaniel Starkman"
 
@@ -21,12 +20,15 @@ from typing import Union, Dict
 import configparser
 
 # PROJECT-SPECIFIC
-from astroPHD import config
+from astroPHD import config  # TODO relative import
 
 ##############################################################################
 # PARAMETERS
 
-localrc = os.path.join(os.path.expanduser('./tests/'), '.astroPHDrc')
+localrc = os.path.join(
+    os.path.split(os.path.abspath(__file__))[0],  # absolute directory
+    ".astroPHDrc"  # RC file
+)
 
 # set config to local for testing
 config.__config__ = configparser.ConfigParser()
@@ -34,7 +36,8 @@ config.__config__.read(localrc)
 
 
 ##############################################################################
-# Test Functions
+# TEST FUNCTIONS
+##############################################################################
 
 def test_unchanged_DEFAULT_CONFIG():
     """Test _DEFAULT_CONFIG.
@@ -93,7 +96,7 @@ def test_get_import_verbosity():
     All options set to true.
 
     """
-    assert config.get_import_verbosity()
+    assert ~config.get_import_verbosity()
     return
 # /def
 
@@ -168,6 +171,50 @@ def test_use_warnings_verbosity():
 
     # test changed back
     assert config.get_warnings_verbosity() == verbose
+
+    return
+# /def
+
+
+# --------------------------------------------------------------------------
+
+def test_get_frozen_constants():
+    """Test get_frozen_constants.
+
+    All set to false
+
+    """
+    assert ~config.get_frozen_constants()
+    return
+# /def
+
+
+def test_set_frozen_constants():
+    """Test set_frozen_constants.
+
+    Change to true
+
+    """
+    config.set_frozen_constants(True)
+    assert config.get_frozen_constants()
+    return
+# /def
+
+
+def test_use_frozen_constants():
+    """Test use_frozen_constants.
+
+    Change to true
+
+    """
+    frozen = config.get_frozen_constants()
+
+    with config.use_frozen_constants(bool(~frozen)):
+        # test changed
+        assert config.get_frozen_constants() == bool(~frozen)
+
+    # test changed back
+    assert config.get_frozen_constants() == frozen
 
     return
 # /def

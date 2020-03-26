@@ -6,8 +6,7 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""functions for making basic pickling easier.
+"""Functions for making basic pickling easier.
 
 Notes
 -----
@@ -17,30 +16,36 @@ TODO:
 
 __author__ = "Nathaniel Starkman"
 
+
+__all__ = [
+    "dump",
+    "dump_many",
+    "load", "load_many",
+]
+
 #############################################################################
 # IMPORTS
 
 # GENERAL
+
 import pickle
+import warnings
+from typing import Optional, Tuple, Any
 
 try:
     import dill
 except ImportError:
-    import warnings
-
-    warnings.warn("can't import dill. Will only use pickle")
+    warnings.warn("can't import dill. Will only use pickle.")
     _HAS_DILL = False
 else:
     _HAS_DILL = True
 
-# typing
-from typing import Optional, Tuple, Any
-
-# import tempfile
 
 # PROJECT-SPECIFIC
+
 from ..decorators.docstring import format_doc
 from . import LogFile
+
 
 #############################################################################
 # PARAMETERS
