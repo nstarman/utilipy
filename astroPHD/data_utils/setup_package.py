@@ -2,6 +2,6 @@
 from __future__ import absolute_import
 
 
-def get_package_data():
-    """Get Package Data for astroPHD.data_utils"""
-    return {'astroPHD.data_utils': ['data/*']}
+# def get_package_data():
+#     """Get Package Data for astroPHD.data_utils"""
+#     return {'astroPHD.data_utils': ['data/*']}

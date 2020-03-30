@@ -9,6 +9,9 @@
 from .. import units
 from ....units import quantity_io, mag as MAG
 
+# Import top-level modules
+from . import MegaCam_PanSTARRS
+
 #############################################################################
 # INFO
 

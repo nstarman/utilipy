@@ -1,29 +1,43 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# see LICENSE.rst
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : initialization file
+# TITLE   :
 # AUTHOR  :
 # PROJECT :
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""initialization file for instruments."""
+"""Initialization file.
 
-__author__ = "Nathaniel Starkman"
+Routine Listings
+----------------
+
+"""
+
+__author__ = ""
+# __copyright__ = "Copyright 2018, "
+# __credits__ = [""]
+# __license__ = ""
+# __version__ = "0.0.0"
+# __maintainer__ = ""
+# __email__ = ""
+# __status__ = "Production"
+
+# __all__ = [
+#     ""
+# ]
 
 
 ##############################################################################
 # IMPORTS
 
+# GENERAL
+
+# CUSTOM
+
 # PROJECT-SPECIFIC
-
-from .. import units
-
-# import top-level modules
-from . import filtertransforms
 
 
 ##############################################################################

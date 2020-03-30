@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -7,8 +6,7 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""decorators
+"""DataType Decorators.
 
 TODO
 ----
@@ -16,6 +14,7 @@ support argument 'all' in [(index, dtype),] as the IndexError
 supoort single argumens so that (index, dtype) works w/out [(), ]
 full support of numpy.dtype
 add in_dtype and out_dtype kwargs to wrapped functions which override defaults
+
 """
 
 __all__ = [
@@ -36,7 +35,8 @@ __all__ = [
 # IMPORTS
 
 # GENERAL
-from typing import Any, Union, Callable, Optional
+
+from typing import Any, Callable, Optional
 import numpy as np
 
 # PROJECT-SPECIFIC
@@ -343,6 +343,7 @@ boolDecorator = dtypeDecoratorMaker(bool)
 
 ndarrayDecorator = dtypeDecoratorMaker(np.ndarray)
 ndfloat64Decorator = dtypeDecoratorMaker(np.float64)
+
 
 #############################################################################
 # END
