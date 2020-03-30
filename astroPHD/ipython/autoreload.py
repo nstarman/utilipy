@@ -18,7 +18,7 @@ from typing import Any, Union, Optional
 from IPython import get_ipython
 
 # Project-Specific
-from ..util.logging import LogPrint
+from ..utils.logging import LogPrint
 
 ##############################################################################
 # PARAMETERS

@@ -19,9 +19,9 @@ from ._astropy_init import *  # noqa
 # PROJECT-SPECIFIC
 
 # import commonly used functions
-from .util.logging import LogFile
-from .util.collections import ObjDict
-from .util.functools import wraps
+from .utils.logging import LogFile
+from .utils.collections import ObjDict
+from .utils.functools import wraps
 
 # configuration
 from . import config
@@ -42,7 +42,7 @@ from . import (
     plot,
     scripts,
     units,
-    util,
+    utils,
 )
 
 
@@ -85,7 +85,7 @@ __all_top_imports__ = (
     "plot",
     "scripts",
     "units",
-    "util",
+    "utils",
 )
 
 __all__ += list(__all_top_imports__)

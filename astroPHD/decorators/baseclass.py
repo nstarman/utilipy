@@ -29,11 +29,11 @@ from typing import Any, Optional, Callable
 
 # PROJECT-SPECIFIC
 
-from ..util import (
+from ..utils import (
     functools,
     inspect,
 )
-from ..util.string import FormatTemplate
+from ..utils.string import FormatTemplate
 
 
 ##############################################################################

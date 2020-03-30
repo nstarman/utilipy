@@ -33,7 +33,7 @@ from astropy.utils.misc import isiterable
 # PROJECT-SPECIFIC
 from .util import unit_output
 from ..decorators.docstring import format_doc
-from ..util.functools import wraps
+from ..utils.functools import wraps
 
 ###############################################################################
 # PARAMETERS

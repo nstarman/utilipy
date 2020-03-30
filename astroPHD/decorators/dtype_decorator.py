@@ -40,7 +40,7 @@ from typing import Any, Union, Callable, Optional
 import numpy as np
 
 # PROJECT-SPECIFIC
-from ..util import functools
+from ..utils import functools
 
 
 #############################################################################

@@ -103,9 +103,11 @@ import scipy  # scientific python
 import tqdm as TQDM
 from tqdm import tqdm as tqdm, tqdm_notebook as tqdmn
 
-# Custom
-from astroPHD.util import ObjDict  # custom dictionary-like object
-from astroPHD.util.logging import LogFile  # LoggerFile  # custom logging
+
+# CUSTOM
+
+from astroPHD.utils import ObjDict  # custom dictionary-like object
+from astroPHD.utils.logging import LogFile  # LoggerFile  # custom logging
 
 
 # +--------------------------------------------------------------------------+

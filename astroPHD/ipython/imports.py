@@ -56,7 +56,7 @@ from pathlib import Path
 # Project-Specific
 from ..util import functools
 from ..config import use_import_verbosity
-from ..util.logging import LogFile
+from ..utils.logging import LogFile
 
 from .autoreload import aimport, set_autoreload
 

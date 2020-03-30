@@ -186,8 +186,8 @@ def load(
     if use_dill and not _HAS_DILL:
         raise ValueError("dill is not installed. cannot use dill.")
 
-    res = [None] * len(fnames)
-    for i, fname in enumerate(fnames):
+    res: list = [None] * len(fnames)  # preload results list
+    for i, fname in enumerate(fnames):  # iterate through files
 
         logger.report(
             f"loading obj at {fname}",

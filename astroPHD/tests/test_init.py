@@ -61,9 +61,9 @@ def test_top_level_imports():
 def test_specific_imports():
     """Test specific imports."""
     # imports same as __init__
-    from astroPHD.util.logging import LogFile
-    from astroPHD.util.collections import ObjDict
-    from astroPHD.util.functools import wraps
+    from astroPHD.utils.logging import LogFile
+    from astroPHD.utils.collections import ObjDict
+    from astroPHD.utils.functools import wraps
 
     # test equality
     assert astroPHD.LogFile is LogFile

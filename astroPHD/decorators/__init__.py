@@ -16,12 +16,14 @@
 
 from typing import Callable, Dict, Any
 
+from astropy.utils.decorators import sharedmethod  # replaces semistaticmethod
+
 
 # PROJECT-SPECIFIC
 
-from ..util import functools
-from ..util.functools import wraps
-from ..util import inspect
+from ..utils import functools
+from ..utils.functools import wraps
+from ..utils import inspect
 
 # base class
 from .baseclass import DecoratorBaseClass, classy_decorator

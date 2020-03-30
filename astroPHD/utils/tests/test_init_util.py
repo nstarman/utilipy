@@ -21,7 +21,7 @@ import os
 
 # PROJECT-SPECIFIC
 
-from ... import util
+from ... import utils
 
 
 ##############################################################################
@@ -33,17 +33,17 @@ def test_top_level_imports():
     """Test Top-Level Imports."""
     # First test they exist
     subpkg: str
-    for subpkg in util.__all_top_imports__:
-        assert hasattr(util, subpkg)
+    for subpkg in utils.__all_top_imports__:
+        assert hasattr(utils, subpkg)
 
     # Next test that top-levels are all the possible top-levels
-    drct: str = os.path.split(util.__file__)[0]  # directory
+    drct: str = os.path.split(utils.__file__)[0]  # directory
     donottest = ("tests", "__pycache__")  # stuff not to test
 
     for file in os.listdir(drct):  # iterate through directory
         # test?
         if os.path.isdir(drct + "/" + file) and file not in donottest:
-            assert file in util.__all_top_imports__
+            assert file in utils.__all_top_imports__
         else:  # nope, chuck testa.
             pass
 
@@ -59,16 +59,16 @@ def test_top_level_imports():
 def test_specific_imports():
     """Test specific imports."""
     # imports same as __init__
-    from astroPHD.util.logging import LogPrint, LogFile
-    from astroPHD.util.collections import ObjDict
-    from astroPHD.util import functools, pickle
+    from astroPHD.utils.logging import LogPrint, LogFile
+    from astroPHD.utils.collections import ObjDict
+    from astroPHD.utils import functools, pickle
 
     # test equality
-    assert util.LogPrint is LogPrint
-    assert util.LogFile is LogFile
-    assert util.ObjDict is ObjDict
-    assert util.functools is functools
-    assert util.pickle is pickle
+    assert utils.LogPrint is LogPrint
+    assert utils.LogFile is LogFile
+    assert utils.ObjDict is ObjDict
+    assert utils.functools is functools
+    assert utils.pickle is pickle
 
     return
 

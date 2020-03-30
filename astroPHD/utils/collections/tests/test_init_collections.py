@@ -30,7 +30,7 @@ from ... import collections
 def test_imported():
     """test standard use of idxDecorator
     """
-    from astroPHD.util.collections._ObjDict import ObjDict
+    from astroPHD.utils.collections._ObjDict import ObjDict
 
     # using added kwarg
     assert collections.ObjDict is ObjDict

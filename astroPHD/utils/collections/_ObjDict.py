@@ -269,7 +269,7 @@ class ObjDict(OrderedDict):
 
         Info
         ----
-        uses .util.pickle.dump
+        uses .utils.pickle.dump
 
         """
         _dump(
@@ -305,7 +305,7 @@ class ObjDict(OrderedDict):
 
         Info
         ----
-        uses .util.pickle.load
+        uses .utils.pickle.load
 
         """
         self = _load(

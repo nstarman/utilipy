@@ -43,7 +43,7 @@ astroPHD: modules and functions
         - .plot.configure_matplotlib
         - .printing.printmd, printMD, printltx, printLaTeX
 
-    - util.logging.LogPrint, LogFile
+    - utils.logging.LogPrint, LogFile
 
 Notes
 -----
@@ -95,7 +95,7 @@ else:
     )
 
     # Project-Specific
-    from ..util.logging import LogPrint, LogFile
+    from ..utils.logging import LogPrint, LogFile
 
     from .autoreload import set_autoreload, aimport
     from .imports import run_imports, import_from_file

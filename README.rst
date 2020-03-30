@@ -252,23 +252,23 @@ connects to ``astroPHD.community.starkplot``
 > Import using ``from  astroPHD import units``
 
 ##
-`util <https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astrophd-imports-package>`__
-> Import using ``from  astroPHD import util``
+`utils <https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astrophd-imports-package>`__
+> Import using ``from  astroPHD import utils``
 
 ###
-`config <https://astrophd.readthedocs.io/en/latest/astroPHD.util.html#module-astroPHD.util.config>`__
+`config <https://astrophd.readthedocs.io/en/latest/astroPHD.utils.html#module-astroPHD.utils.config>`__
 
 ###
-`Logging <https://astrophd.readthedocs.io/en/latest/astroPHD.util.logging.html#astrophd-util-logging-package>`__
+`Logging <https://astrophd.readthedocs.io/en/latest/astroPHD.utils.logging.html#astrophd-utils-logging-package>`__
 
 ###
-`inspect <https://astrophd.readthedocs.io/en/latest/astroPHD.util.inspect.html#astrophd-util-inspect-package>`__
+`inspect <https://astrophd.readthedocs.io/en/latest/astroPHD.utils.inspect.html#astrophd-utils-inspect-package>`__
 
 ###
-`functools <https://astrophd.readthedocs.io/en/latest/astroPHD.util.html#module-astroPHD.util.functools>`__
+`functools <https://astrophd.readthedocs.io/en/latest/astroPHD.utils.html#module-astroPHD.utils.functools>`__
 
 ###
-`pickle <https://astrophd.readthedocs.io/en/latest/astroPHD.util.html#module-astroPHD.util.pickle>`__
+`pickle <https://astrophd.readthedocs.io/en/latest/astroPHD.utils.html#module-astroPHD.utils.pickle>`__
 
 --------------
 
