@@ -66,6 +66,9 @@ class ObjDict(OrderedDict):
 
         object.__setattr__(self, "name", name)
 
+        # TODO better fix for inspect._is_wrapper
+        object.__setattr__(self, "__wrapped__", None)
+
         for key, value in kw.items():
             self[key] = value
 

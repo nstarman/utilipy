@@ -105,9 +105,9 @@ def unit_output_decorator(
             allows for conversions such as:
 
             >>> import astropy.units as u
-            >>> x = 10 * u.km * u.s
-            >>> bases = [2 * u.km, u.s]
-            >>> x.decompose(bases=basesConversionFunction(bases))
+            ... x = 10 * u.km * u.s
+            ... bases = [2 * u.km, u.s]
+            ... x.decompose(bases=basesConversionFunction(bases))
             5  (2 km s)
 
     Returns
@@ -214,8 +214,8 @@ class QuantityInputOutput(object):
             allows for conversions such as:
 
             >>> x = 10 * u.km * u.s
-            >>> bases = [2 * u.km, u.s]
-            >>> x.decompose(bases=basesConversionFunction(bases))
+            ... bases = [2 * u.km, u.s]
+            ... x.decompose(bases=basesConversionFunction(bases))
             5  (2 km s)
 
     assumed_units: dict, optional
@@ -565,9 +565,10 @@ decompose : bool or list
         for things which are not (u.Unit, u.core.IrreducibleUnit), tries wrapping in Unit()
         this allows things such as::
 
-            >>> x = 10 * u.km * u.s
-            >>> bases = [2 * u.km, u.s]
-            >>> x.decompose(bases=basesConversionFunction(bases))
+            >>> import astropy.units as u
+            ... x = 10 * u.km * u.s
+            ... bases = [2 * u.km, u.s]
+            ... x.decompose(bases=basesConversionFunction(bases))
             5  (2 km s)
 
         (this would normally return an error)
@@ -576,11 +577,12 @@ assumed_units: dict
     dictionary of default units
     (default {})
 
-    >>> dfu = {x: u.km}
-    >>> x = 10
-    >>> y = 20*u.km
-    >>> def add(x, y): return x + y
-    >>> add(x, y)
+    >>> import astropy.units as u
+    ... dfu = {x: u.km}
+    ... x = 10
+    ... y = 20*u.km
+    ... def add(x, y): return x + y
+    ... add(x, y)
     20 u.km
 """
 

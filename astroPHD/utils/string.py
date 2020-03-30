@@ -58,7 +58,7 @@ class FormatTemplate(string.Template):
     '$a ${b} ${c}'
 
     >>> s = FormatTemplate('$a ${b} {c}')
-    >>> s.formate(a=1, b=2, c=3)
+    ... s.formate(a=1, b=2, c=3)
     "1 2 3"
 
     """

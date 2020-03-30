@@ -41,14 +41,14 @@ class InheritDocstrings(type):
 
     For example::
         >>> from astropy.utils.misc import InheritDocstrings
-        >>> class A(metaclass=InheritDocstrings):
+        ... class A(metaclass=InheritDocstrings):
         ...     def wiggle(self):
         ...         "Wiggle the thingamajig"
         ...         pass
-        >>> class B(A):
+        ... class B(A):
         ...     def wiggle(self):
         ...         pass
-        >>> B.wiggle.__doc__
+        ... B.wiggle.__doc__
         u'Wiggle the thingamajig'
 
     taken from astropy

@@ -10,20 +10,38 @@
 # Docstring and Metadata
 """test functions for extended imports."""
 
-__author__ = "Nathaniel Starkman"
+
+##############################################################################
+# IMPORTS
+
+# GENERAL
+
+import warnings
+
+warnings.simplefilter("ignore", RuntimeWarning)
+
+
+# PROJECT-SPECIFIC
+
+from .. import extended_imports as imports
 
 
 ##############################################################################
 
+
 def test_import_extended():
-    """Test _inRange."""
-    from astroPHD.imports import extended_imports as imports
+    """Test Extended Imports."""
 
     imports.norm
     imports.binned_stats
 
     return
+
+
 # /def
+
+
+# ------------------------------------------------------------------------
 
 
 ##############################################################################

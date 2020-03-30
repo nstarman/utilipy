@@ -54,7 +54,7 @@ from IPython import get_ipython
 from pathlib import Path
 
 # Project-Specific
-from ..util import functools
+from ..utils import functools
 from ..config import use_import_verbosity
 from ..utils.logging import LogFile
 

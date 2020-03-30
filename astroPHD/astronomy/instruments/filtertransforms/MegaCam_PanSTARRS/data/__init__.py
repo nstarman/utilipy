@@ -18,6 +18,11 @@ This module provides functions to read the contained data.
 
 Routine Listings
 ----------------
+read_MegaCamGen1_from_PS1
+
+Todo
+----
+figure out how to use get_pkg_data_fileobj
 
 """
 
@@ -34,15 +39,14 @@ __author__ = "Nathaniel Starkman"
 
 # GENERAL
 
-import os
 from astropy.table import QTable
+from astropy.utils.data import get_pkg_data_filename
 
 
 ###############################################################################
 # PARAMETERS
 
-DATA_PATH: str = os.path.dirname(os.path.realpath(__file__))
-# DATA_PATH = DATA_PATH + '/' if not DATA_PATH.endswith('/') else DATA_PATH
+_PACKAGE = 'astroPHD.astronomy.instruments.filtertransforms.MegaCam_PanSTARRS.data'
 
 ###############################################################################
 # CODE
@@ -50,14 +54,9 @@ DATA_PATH: str = os.path.dirname(os.path.realpath(__file__))
 
 
 def read_MegaCamGen1_from_PS1():
-
-    data = QTable(QTable.read(
-        os.path.join(DATA_PATH, "MegaCamGen1_from_PS1.ecsv"),
-        format="ascii.ecsv",
-    ))
-    data.add_index("name")
-
-    return data
+    """Read MegaCamGen1_from_PS1 data."""
+    fpath = get_pkg_data_filename("MegaCamGen1_from_PS1.ecsv", package=_PACKAGE)
+    return QTable.read(fpath, format='ascii.ecsv')
 
 
 # /def
