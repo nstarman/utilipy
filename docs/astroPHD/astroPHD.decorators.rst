@@ -36,15 +36,6 @@ astroPHD.decorators.idx\_decorator module
    :undoc-members:
    :show-inheritance:
 
-astroPHD.decorators.semistaticmethod module
--------------------------------------------
-
-.. automodule:: astroPHD.decorators.semistaticmethod
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
 Module contents
 ---------------
 
