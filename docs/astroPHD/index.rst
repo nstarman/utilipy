@@ -16,7 +16,6 @@ Subpackages
 
    astroPHD.astronomy
    astroPHD.constants
-   astroPHD.data
    astroPHD.data_utils
    astroPHD.decorators
    astroPHD.fitting

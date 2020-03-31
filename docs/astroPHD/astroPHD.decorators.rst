@@ -4,10 +4,10 @@ astroPHD.decorators package
 Submodules
 ----------
 
-astroPHD.decorators.decoratorbaseclass module
+astroPHD.decorators.baseclass module
 ---------------------------------------------
 
-.. automodule:: astroPHD.decorators.decoratorbaseclass
+.. automodule:: astroPHD.decorators.baseclass
    :members:
    :undoc-members:
    :show-inheritance:
@@ -24,14 +24,6 @@ astroPHD.decorators.dtype\_decorator module
 -------------------------------------------
 
 .. automodule:: astroPHD.decorators.dtype_decorator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-astroPHD.decorators.idx\_decorator module
------------------------------------------
-
-.. automodule:: astroPHD.decorators.idx_decorator
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,13 +1,6 @@
 astroPHD.fitting package
 ========================
 
-Subpackages
------------
-
-.. toctree::
-
-   astroPHD.fitting.lmfit
-
 Submodules
 ----------
 
