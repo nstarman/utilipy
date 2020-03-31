@@ -222,6 +222,8 @@ values = ConstantsValues()
 for attr in values._names:
     locals()[attr] = getattr(values, attr)
 
+__all__ += values._names
+
 
 ###############################################################################
 # END

@@ -34,7 +34,6 @@ astroPHD: imports
 
 References
 ----------
-References [#]_.
 SciPy references are (1) and (2).
 NumPy references are (3) and (4).
 IPython reference is (5).

@@ -15,6 +15,7 @@
 
 # GENERAL
 
+import sys
 from typing import Any, Union, Callable, Optional
 from typing_extensions import Literal
 import numpy as np
@@ -26,7 +27,17 @@ from ..utils import functools
 
 
 ##############################################################################
+# PARAMETERS
+
+# Windows prints numpy differently. Numpy outputs need to be ignored.
+# TODO, a better platform-specific fix for numpy.
+if sys.platform.startswith("win"):
+    __doctest_skip__ = ["idxDecorator"]
+
+
+##############################################################################
 # CODE
+##############################################################################
 
 
 def idxDecorator(
@@ -49,10 +60,11 @@ def idxDecorator(
         if None, then returns decorator to apply.
     as_ind : bool of "flatten", optional
         (default False)
-        whether to return bool array or indices (``where(bool array == True)``)
+        whether to return bool array or indices
+        (``where(bool array == np.True_)``)
         if "flatten", flattens a nested list with only 1 element
         ie ([0], ) -> [0]
-        sets the default behavior for the wrapped function `func`            
+        sets the default behavior for the wrapped function `func`
 
     Returns
     -------
@@ -82,11 +94,17 @@ def idxDecorator(
     >>> @idxDecorator
     ... def func1(x):
     ...     return x < 1
-    >>> func1(x)  # calling normally
+
+    calling normally
+    >>> func1(x)
     array([ True, False])
-    >>> func1(x, as_ind=True)  # using added kwarg
+
+    using added kwarg
+    >>> func1(x, as_ind=True)
     (array([0]),)
-    >>> func1(x, as_ind="flatten")  # and flattening
+
+    and flattening
+    >>> func1(x, as_ind="flatten")
     array([0])
 
     Set a Different Default:
@@ -95,9 +113,10 @@ def idxDecorator(
     ... def func2(x):
     ...     return x < 1
 
-    >>> func2(x)  # calling normally
+    >>> func2(x)
     (array([0]),)
-    >>> func2(x, as_ind=False)  # using added kwarg
+
+    >>> func2(x, as_ind=False)
     array([ True, False])
 
     Making a New Decorator:
@@ -106,7 +125,7 @@ def idxDecorator(
     >>> @trueidxdec
     ... def func3(x):
     ...     return x < 1
-    >>> func3(x)  # calling normally
+    >>> func3(x)
     array([0])
     >>> func3(x, as_ind=False)
     array([ True, False])
@@ -142,7 +161,7 @@ def idxDecorator(
         if as_ind:  # works for bool or full str
 
             # get the indices
-            return_ = np.where(np.asarray(return_) == True)
+            return_ = np.where(np.asarray(return_) == np.True_)
 
             # determine whether to return as-is, or flatten
             if as_ind == "flatten":

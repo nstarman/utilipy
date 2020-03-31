@@ -48,7 +48,7 @@ def test_unchanged_DEFAULT_CONFIG():
     """
     _DEFAULT_CONFIG: Dict[str, Union[str, Dict[str, str]]] = {
         "verbosity": {"verbose-imports": "True", "warnings": "True"},
-        "plot": {"seaborn-defaults": "False",},
+        "plot": {"seaborn-defaults": "False"},
     }
 
     sec_key: str

@@ -38,7 +38,7 @@ from IPython.display import HTML
 def add_raw_code_toggle() -> HTML:
     """Add a toggle for code cells when Notebook is exported to HTML.
 
-    HTML & Javascript button, placed directly below function execution cell.
+    HTML and Javascript button, placed directly below function execution cell.
 
     References
     ----------

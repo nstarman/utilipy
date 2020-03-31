@@ -32,9 +32,8 @@ from .utils.functools import wraps
 from . import config
 
 # import top level packages
-from . import (
+from . import (  # noqa
     astro,
-    astronomy,
     constants,
     # data,
     data_utils,
@@ -49,6 +48,7 @@ from . import (
     units,
     utils,
 )
+from . import astro  # noqa, separated b/c alias
 
 
 #############################################################################
@@ -77,7 +77,7 @@ def help() -> None:
 
 __all_top_imports__ = (
     "astro",
-    "astronomy",
+    "astro",
     "constants",
     # "data",
     "data_utils",

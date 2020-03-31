@@ -1,5 +1,6 @@
-Documentation
-=============
+######################
+astroPHD Documentation
+######################
 
 .. image:: https://zenodo.org/badge/192425953.svg
    :target: https://zenodo.org/badge/latestdoi/192425953
@@ -8,12 +9,23 @@ Documentation
     :target: https://travis-ci.org/nstarman/astroPHD
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :glob:
 
-   README.rst
+   astroPHD/index
 
-   astroPHD/index.rst
+   astroPHD/astro/index
+   astroPHD/constants/index
+   astroPHD/data_utils/index
+   astroPHD/decorators/index
+   astroPHD/fitting/index
+   astroPHD/imports/index
+   astroPHD/ipython/index
+   astroPHD/math/index
+   astroPHD/plot/index
+   astroPHD/scripts/index
+
+   README
 
 ..   :caption: Contents:
 

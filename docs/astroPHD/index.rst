@@ -1,6 +1,6 @@
-**********************
-astroPHD Documentation
-**********************
+***********************
+astroPHD Initialization
+***********************
 
 This is the documentation for astroPHD.
 
@@ -9,30 +9,26 @@ Reference/API
 
 .. automodapi:: astroPHD
 
+
 Subpackages
------------
+===========
 
 .. toctree::
+   :maxdepth: 1
 
-   astroPHD.astronomy
-   astroPHD.constants
-   astroPHD.data_utils
-   astroPHD.decorators
-   astroPHD.fitting
-   astroPHD.imports
-   astroPHD.ipython
-   astroPHD.math
-   astroPHD.plot
-   astroPHD.scripts
+   astro/index
+   constants/index
+   data_utils/index
+   decorators/index
+   fitting/index
+   imports/index
+   ipython/index
+   math/index
+   plot/index
+   scripts/index
+
 
 Submodules
-----------
+==========
 
-astroPHD.config module
-----------------------
-
-.. automodule:: astroPHD.config
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
+.. automodapi:: astroPHD.config

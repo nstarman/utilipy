@@ -47,18 +47,23 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-# General
-from typing import Any, Union, Optional, Dict
-import ast
-from IPython import get_ipython
-from pathlib import Path
+# GENERAL
 
-# Project-Specific
+import ast
+import os.path
+from pathlib import Path
+from IPython import get_ipython
+from typing import Optional, Dict
+
+
+# PROJECT-SPECIFIC
+
 from ..utils import functools
 from ..config import use_import_verbosity
 from ..utils.logging import LogFile
 
 from .autoreload import aimport, set_autoreload
+
 
 ##############################################################################
 # SETUP
@@ -146,7 +151,7 @@ def run_imports(
 ) -> None:
     """Import file using ipython magic.
 
-    if `astropy` & `matplotlib`, sets matplotlib style to astropy_mpl_style
+    if `astropy` and `matplotlib`, sets matplotlib style to astropy_mpl_style
 
     Parameters
     ----------
@@ -260,15 +265,7 @@ def run_imports(
 # UTILITIES TODO BETTER
 
 
-def _join_pfd(path: str) -> str:
-    # TODO better way to get this file directory & join path file
-    return str(Path(__file__).parent.joinpath(path))
-
-
-# /def
-
-
-def _set_docstring_import_x(module: str) -> str:
+def _set_docstring_import_x(path: tuple) -> str:
     """Set docstring Returns section.
 
     takes a helper function for a module and adds the content of the modules'
@@ -276,18 +273,20 @@ def _set_docstring_import_x(module: str) -> str:
 
     Parameters
     ----------
-    module_doc: str
-        docstring of import module
+    path: str
+        path of import module
 
     """
+    module = str(Path(__file__).parent.joinpath(os.path.join(*path)))
+
     # read docstring out of file
-    with open(module) as fd:
+    with open(module, "r") as fd:
         module_doc = ast.get_docstring(ast.parse(fd.read()))
 
     # process docstring
     ind = module_doc.find("Returns")
     len_title = 2 * len("Returns")
-    end_ind = ind + module_doc[ind + len_title :].find("---") + 2
+    end_ind = ind + module_doc[ind + len_title :].find("---") + 2  # noqa
 
     doc = module_doc[ind:end_ind]  # get section (+ next header)
 
@@ -312,7 +311,7 @@ def _set_docstring_import_x(module: str) -> str:
 # TODO make these with a function
 
 
-@_set_docstring_import_x(_join_pfd("../imports/base_imports.py"))
+@_set_docstring_import_x(("..", "imports", "base_imports.py"))
 def import_base(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -321,7 +320,7 @@ def import_base(
 ) -> None:
     """Import base packages."""
     import_from_file(
-        _join_pfd("../imports/base_imports.py"),
+        ("..", "imports", "base_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -334,7 +333,7 @@ def import_base(
 # /def
 
 
-@_set_docstring_import_x(_join_pfd("../imports/extended_imports.py"))
+@_set_docstring_import_x(("..", "imports", "extended_imports.py"))
 def import_extended(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -343,7 +342,7 @@ def import_extended(
 ) -> None:
     """Import extended packages."""
     import_from_file(
-        _join_pfd("../imports/extended_imports.py"),
+        ("..", "imports", "extended_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -356,7 +355,7 @@ def import_extended(
 # /def
 
 
-@_set_docstring_import_x(_join_pfd("../imports/astropy_imports.py"))
+@_set_docstring_import_x(("..", "imports", "astropy_imports.py"))
 def import_astropy(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -365,7 +364,7 @@ def import_astropy(
 ) -> None:
     """Import basic astropy packages."""
     import_from_file(
-        _join_pfd("../imports/astropy_imports.py"),
+        ("..", "imports", "astropy_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -382,7 +381,7 @@ def import_astropy(
 # plotting
 
 
-@_set_docstring_import_x(_join_pfd("../imports/matplotlib_imports.py"))
+@_set_docstring_import_x(("..", "imports", "matplotlib_imports.py"))
 def import_matplotlib(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -391,7 +390,7 @@ def import_matplotlib(
 ) -> None:
     """Import basic Matplotlib packages."""
     import_from_file(
-        _join_pfd("../imports/matplotlib_imports.py"),
+        ("..", "imports", "matplotlib_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -404,7 +403,7 @@ def import_matplotlib(
 # /def
 
 
-@_set_docstring_import_x(_join_pfd("../imports/plotly_imports.py"))
+@_set_docstring_import_x(("..", "imports", "plotly_imports.py"))
 def import_plotly(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -413,7 +412,7 @@ def import_plotly(
 ) -> None:
     """Import basic Matplotlib packages."""
     import_from_file(
-        _join_pfd("../imports/plotly_imports.py"),
+        ("..", "imports", "plotly_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -430,7 +429,7 @@ def import_plotly(
 # extras
 
 
-@_set_docstring_import_x(_join_pfd("../imports/galpy_imports.py"))
+@_set_docstring_import_x(("..", "imports", "galpy_imports.py"))
 def import_galpy(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -439,7 +438,7 @@ def import_galpy(
 ) -> None:
     """Import basic galpy packages."""
     import_from_file(
-        _join_pfd("../imports/galpy_imports.py"),
+        ("..", "imports", "galpy_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -452,7 +451,7 @@ def import_galpy(
 # /def
 
 
-@_set_docstring_import_x(_join_pfd("../imports/amuse_imports.py"))
+@_set_docstring_import_x(("..", "imports", "amuse_imports.py"))
 def import_amuse(
     verbose_imports: Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -461,7 +460,7 @@ def import_amuse(
 ) -> None:
     """Import basic amuse packages."""
     import_from_file(
-        _join_pfd("../imports/amuse_imports.py"),
+        ("..", "imports", "amuse_imports.py"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,

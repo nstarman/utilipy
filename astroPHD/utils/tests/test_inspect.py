@@ -17,7 +17,6 @@ __author__ = "Nathaniel Starkman"
 # GENERAL
 
 import inspect as nspct
-from collections import namedtuple
 
 
 # PROJECT-SPECIFIC
@@ -37,6 +36,7 @@ class NameSpace:
         x: int, y, a: int = 1, b=2, *args: str, j: str = "a", k="b", **kw: dict
     ) -> bool:
         """Docstring."""
+        x, y, a, b, args, j, k, kw  # pragma: no cover
         return True
 
     # /def

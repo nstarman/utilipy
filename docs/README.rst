@@ -17,8 +17,8 @@ decorators, interfacing with IPython environments, miscellaneous
 astronomical functions, data utilities, making fitting libraries
 inter-operable, improving astropy units and quantity-enabled functions,
 and much more. Check out the documentation here, on
-`readthedocs <https://readthedocs.org/projects/astroPHD/badge/?version=latest>`__,
-and at the `wiki <https://github.com/nstarman/astroPHD/wiki>`__ for more
+`readthedocs <https://readthedocs.org/projects/astroPHD/badge/?version=latest>`_,
+and at the `wiki <https://github.com/nstarman/astroPHD/wiki>`_ for more
 detail.
 
 |image0| |image1| |image2|
@@ -27,8 +27,8 @@ Attribution
 -----------
 
 Author: **Nathaniel Starkman** - *Graduate Student @ UofT* -
-`website <http://www.astro.utoronto.ca/~starkman/>`__ –
-`github <https://github.com/nstarman>`__
+`website <http://www.astro.utoronto.ca/~starkman/>`_ –
+`github <https://github.com/nstarman>`_
 
 |image3|
 
@@ -45,12 +45,12 @@ Module Highlights
 Most of the modules have too much to reasonably
 document here. These are some of the most useful highlights. Detailed
 descriptions of everything in ``astroPHD`` and more can be found at
-`readthedocs <https://readthedocs.org/projects/astroPHD/badge/?version=latest>`__
-and at the `wiki <https://github.com/nstarman/astroPHD/wiki>`__.
+`readthedocs <https://readthedocs.org/projects/astroPHD/badge/?version=latest>`_
+and at the `wiki <https://github.com/nstarman/astroPHD/wiki>`_.
 
-astronomy
+astro
 ---------
-> Import using ``from  astroPHD import astronomy``
+> Import using ``from  astroPHD import astro``
 
 This module is very much a work in progress.
 
@@ -86,7 +86,7 @@ all the basic imports so that you can just get started coding.
 The files will print an import summary. To prevent this summary, set
 ``verbose-imports=False`` in the ``.astroPHCrc`` config file in your
 home or local directory. For details on this config file, see `config
-file <#config-file>`__.
+file <#config-file>`_.
 
 ### base
 > Import using ``from  astroPHD.imports.base import *``
@@ -114,11 +114,9 @@ Imports
        - LogFile
        - ObjDict
 
-Also provides
-`base_imports_help <https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.base.base_imports_help>`__
-function.
+Also provides `base_imports_help` function.
 
-### extended > Import using ``from  astroPHD.imports.extended import *``
+### extended > Import using ``from  astroPHD.imports import *``
 
 Imports
 
@@ -132,9 +130,7 @@ Imports
 
        - stats.binned_statistic->binned_stats
 
-Also provides
-`extend_imports_help <https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.extended.extend_imports_help>`__
-function.
+Also provides `extend_imports_help` function.
 
 ### matplotlib > Import using
 ``from  astroPHD.imports.matplotlib import *``
@@ -153,9 +149,7 @@ Imports
 
        - ipython.plot.configure_matplotlib
 
-Also provides
-`matplotlib_imports_help <https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.matplotlib.matplotlib_imports_help>`__
-function.
+Also provides `matplotlib_imports_help` function.
 
 ### astropy > Import using ``from  astroPHD.imports.astropy import *``
 
@@ -170,9 +164,7 @@ Imports
        - table.Table, QTable
        - visualization.quantity_support, astropy_mpl_style
 
-Also provides
-`astropy_imports_help <https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.astropy.astropy_imports_help>`__
-function.
+Also provides `astropy_imports_help` function.
 
 ### extras
 
@@ -188,9 +180,7 @@ Imports
        - galpy.orbit.Orbit
        - galpy.util: bovy_conversion, bovy_coords
 
-Also provides
-`galpy_imports_help <https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.galpy.galpy_imports_help>`__
-function.
+Also provides `galpy_imports_help` function.
 
 |  #### AMUSE
 | > Import using ``from  astroPHD.imports.amuse import *``
@@ -206,9 +196,7 @@ Imports
        - amuse.units.units, constants
        - amuse.couple.bridge
 
-Also provides
-`amuse_imports_help <https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.amuse.amuse_imports_help>`__
-function.
+Also provides `amuse_imports_help` function.
 
 ipython
 -------
@@ -296,24 +284,24 @@ Templates are useful. Here are some.
 
 About Text
 ----------
-`About.txt <templates/ABOUT/ABOUT.txt>`__ : an about
-text in basic ``.txt`` format . `About.md <templates/ABOUT/ABOUT.md>`__
+`About.txt <templates/ABOUT/ABOUT.txt>`_ : an about
+text in basic ``.txt`` format . `About.md <templates/ABOUT/ABOUT.md>`_
 : an about text in Markdown
 
 Python
 ------
 
-. `\__init_\_ <templates/python/__init__.py>`__ .
-`python.py <templates/python/python.py>`__ .
-`notebook.ipynb <templates/python/notebook.ipynb>`__
+. `\__init_\_ <templates/python/__init__.py>`_ .
+`python.py <templates/python/python.py>`_ .
+`notebook.ipynb <templates/python/notebook.ipynb>`_
 
 Latex
 ------
 
-. `tex file <templates/latex/main.tex>`__ . `bibtex
-file <templates/latex/main.bib>`__
+. `tex file <templates/latex/main.tex>`_ . `bibtex
+file <templates/latex/main.bib>`_
 
-**Stylesheets:** . `main stylesheet <templates/latex/util/main.cls>`__ .
-`astronomy stylesheet <templates/latex/util/astronomy.cls>`__ . `maths
-stylesheet <templates/latex/util/maths.cls>`__ . `base
-stylesheet <templates/latex/util/base.cls>`__
+**Stylesheets:** . `main stylesheet <templates/latex/util/main.cls>`_ .
+`astro stylesheet <templates/latex/util/astro.cls>`_ . `maths
+stylesheet <templates/latex/util/maths.cls>`_ . `base
+stylesheet <templates/latex/util/base.cls>`_

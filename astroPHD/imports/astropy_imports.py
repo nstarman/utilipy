@@ -25,8 +25,6 @@ Astropy: imports
 
 References
 ----------
-References [#]_.
-
 .. [#] Astropy Collaboration et al., 2018, AJ, 156, 123.
 
 """

@@ -79,7 +79,6 @@ def unit_output(
             tries wrapping in ``Unit()``. This would normally return an error, but now
             allows for conversions such as:
 
-            >>> import astropy.units as u
             >>> x = 10 * u.km * u.s
             >>> bases = [u.Unit(2 * u.km), u.s]
             >>> x.decompose(bases=bases)
@@ -101,7 +100,6 @@ def unit_output(
     --------
     How to apply in a function directly
 
-    >>> from astropy import units as u
     >>> def example_function(x, **kw):
     ...     return unit_output(x, unit=kw.get('unit', None),
     ...                        to_value=kw.get('to_value', False),
@@ -126,9 +124,9 @@ def unit_output(
     elif decompose is True:
         res = res.decompose()
     elif decompose:  # decompose is NOT empty list
-        cls = (Unit, IrreducibleUnit)
+        clss = (Unit, IrreducibleUnit)
         bases = [
-            Unit(x) if not issubclass(x.__class__, cls) else x
+            Unit(x) if not issubclass(x.__class__, clss) else x
             for x in decompose
         ]
         res = res.decompose(bases=bases)

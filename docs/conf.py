@@ -67,6 +67,13 @@ exclude_patterns.append("_templates")
 rst_epilog += """
 """
 
+# modindex formatting
+modindex_common_prefix = ['astroPHD.']
+
+# extensions
+extensions += ["sphinx.ext.todo"]
+
+
 # -- Project information ------------------------------------------------------
 
 # This does not *have* to match the package name, but typically does
@@ -124,7 +131,7 @@ html_theme_options = {
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-# html_favicon = ''
+html_favicon = '_static/favicon.ico'
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.

@@ -63,8 +63,8 @@ descriptions of everything in ``astroPHD`` and more can be found at
 and at the `wiki <https://github.com/nstarman/astroPHD/wiki>`__.
 
 ##
-`astronomy <https://astrophd.readthedocs.io/en/latest/astroPHD.astronomy.html#astrophd-astronomy-package>`__
-> Import using ``from  astroPHD import astronomy``
+`astro <https://astrophd.readthedocs.io/en/latest/astroPHD.astro.html#astrophd-astro-package>`__
+> Import using ``from  astroPHD import astro``
 
 This module is very much a work in progress.
 
@@ -292,7 +292,7 @@ text in basic ``.txt`` format . `About.md <templates/ABOUT/ABOUT.md>`__
 file <templates/latex/main.bib>`__
 
 **Stylesheets:** . `main stylesheet <templates/latex/util/main.cls>`__ .
-`astronomy stylesheet <templates/latex/util/astronomy.cls>`__ . `maths
+`astro stylesheet <templates/latex/util/astro.cls>`__ . `maths
 stylesheet <templates/latex/util/maths.cls>`__ . `base
 stylesheet <templates/latex/util/base.cls>`__
 

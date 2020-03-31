@@ -106,7 +106,6 @@ def unit_output_decorator(
             tries wrapping in ``Unit()``. This would normally return an error, but now
             allows for conversions such as:
 
-            >>> import astropy.units as u
             >>> x = 10 * u.km * u.s
             >>> bases = [u.Unit(2 * u.km), u.s]
             >>> x.decompose(bases=bases)
@@ -216,7 +215,6 @@ class QuantityInputOutput(object):
             tries wrapping in ``Unit()``.
             allows for conversions such as:
 
-            >>> import astropy.units as u
             >>> x = 10 * u.km * u.s
             >>> bases = [u.Unit(2 * u.km), u.s]
             >>> x.decompose(bases=bases)
@@ -536,21 +534,21 @@ unit : astropy Unit or Quantity or str
     must be astropy-compatible unit specification.
     equivalent to ``func(*args, **kw).to(unit)``
     if None, skips unit conversion.
-    function arguments override decorator & function annotation arguments
+    function arguments override decorator and function annotation arguments
 to_value : bool
     whether to return ``.to_value(unit)``
     (default False)
     see ``astropy.units.Quantity.to_value``
-    function arguments override decorator & function annotation arguments
+    function arguments override decorator and function annotation arguments
 equivalencies : list
     equivalencies for any units provided
     (default [])
     used by ``.to()`` and ``.to_value()``
-    function arguments override decorator & function annotation arguments
+    function arguments override decorator and function annotation arguments
 decompose : bool or list
     Decompose the unit into base units, can provide base as list.
     (default [])
-    function arguments override decorator & function annotation arguments
+    function arguments override decorator and function annotation arguments
     if bool, then do/don't decompose
     if list, bases for ``.decompose(bases=[])``
     will first decompose, then apply unit, to_value, equivalencies
@@ -561,7 +559,7 @@ decompose : bool or list
 
         unit=None, to_value=True, equivalencies=[], decompose=[bases]
 
-    since this will decompose to desired bases then return the value in those bases.
+    since this will decompose to desired bases then return the value
 
     .. note::
 
@@ -569,7 +567,6 @@ decompose : bool or list
         tries wrapping in Unit()
         this allows things such as::
 
-            >>> import astropy.units as u
             >>> x = 10 * u.km * u.s
             >>> bases = [u.Unit(2 * u.km), u.s]
             >>> x.decompose(bases=bases)
@@ -581,7 +578,6 @@ assumed_units: dict
     dictionary of default units
     (default {})
 
-    >>> import astropy.units as u
     >>> from astroPHD.units.decorators import QuantityInputOutput
     >>> dfu = {'x': u.km}
     >>> x = 10

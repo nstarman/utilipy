@@ -292,8 +292,9 @@ def test_WRAPPER_UPDATES():
 
     #     # /def
 
-    for name in _test_functools_util.__all__:
-        func = getattr(_test_functools_util, name)
+
+#     for name in _test_functools_util.__all__:
+#         func = getattr(_test_functools_util, name)
 
 
 #         f_sig = inspect.signature(func)

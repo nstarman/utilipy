@@ -27,7 +27,7 @@ References
 Matplotlib reference [#]_.
 
 .. [#] John D. Hunter. Matplotlib: A 2D Graphics Environment, Computing in
-    Science & Engineering, 9, 90-95 (2007), DOI:10.1109/MCSE.2007.55
+    Science and Engineering, 9, 90-95 (2007), DOI:10.1109/MCSE.2007.55
     http://scitation.aip.org/content/aip/journal/cise/9/3/10.1109/MCSE.2007.55
 
 """

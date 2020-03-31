@@ -25,8 +25,8 @@ from astroPHD.data_utils.select import (
     inRange,
     outRange,
     ioRange,
-    ellipse,
-    circle,
+    # ellipse,
+    # circle,
 )
 
 

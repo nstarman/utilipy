@@ -102,7 +102,7 @@ matrix:
           stage: Cron tests
           env: TOXENV=py38-test-devdeps
 
-        # Try on Windows.
+        # Try on Windows. Hard to debug.
         - os: windows
           language: c
           name: Python 3.8 with required dependencies
@@ -120,21 +120,40 @@ matrix:
           stage: Comprehensive tests
           env: TOXENV=py37-test-astropy30-numpy117
 
-        # Do a code style check
+        # Do a PEP8 test with flake8
         - os: linux
           python: 3.8
-          name: Code style checks
+          name: Code style check (PEP8 via flake8)
           stage: Initial tests
           env: TOXENV=codestyle
 
     allow_failures:
         # Do a PEP8 test with flake8
         # (do allow to fail unless your code completely compliant)
-        # - os: linux
-        #   python: 3.8
-        #   name: Code style checks
-        #   stage: Initial tests
-        #   env: TOXENV=codestyle
+
+        - os: linux
+          python: 3.8
+          name: Black style check
+          stage: Initial tests
+          env: TOXENV=black
+
+        - os: linux
+          python: 3.8
+          name: mypy check
+          stage: Comprehensive tests
+          env: TOXENV=mypy
+
+        - os: linux
+          python: 3.8
+          name: unused code check
+          stage: Comprehensive tests
+          env: TOXENV=unused_code
+
+        - os: linux
+          python: 3.8
+          name: RST link check
+          stage: Comprehensive tests
+          env: TOXENV=linkcheck
 
 before_install:
  # skip travis build if [skip travis] or [travis skip] in commit message

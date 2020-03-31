@@ -24,15 +24,15 @@ import numpy as np
 
 from astroPHD.decorators.dtype_decorator import (
     dtypeDecorator,
-    dtypeDecoratorMaker,
-    # standard types
-    intDecorator,
-    floatDecorator,
-    strDecorator,
-    boolDecorator,
-    # numpy
-    ndarrayDecorator,
-    ndfloat64Decorator,
+    # dtypeDecoratorMaker,
+    # # standard types
+    # intDecorator,
+    # floatDecorator,
+    # strDecorator,
+    # boolDecorator,
+    # # numpy
+    # ndarrayDecorator,
+    # ndfloat64Decorator,
 )
 
 
@@ -46,13 +46,13 @@ u, uu = "5", "5.5"
 v = False
 w = np.array([7, 8.8])
 
+
 ##############################################################################
 # dtypeDecorator
 
 
 def test_dtypeDecorator_blank():
-    """test no-conversion mode of dtypeDecorator
-    """
+    """Test no-conversion mode of dtypeDecorator."""
     # defining function
     @dtypeDecorator()
     def func(x):
@@ -75,8 +75,7 @@ def test_dtypeDecorator_blank():
 
 
 def test_dtypeDecorator_python_scalars():
-    """test standard use of dtypeDecorator
-    """
+    """Test standard use of dtypeDecorator."""
     # defining function
     @dtypeDecorator(in_dtype=[(0, int)], out_dtype=[(0, float)])
     def func(x):

@@ -11,17 +11,13 @@
 # Docstring and Metadata
 """Configuration settings for astroPHD.
 
-References
-----------
-Code modified from galpy ([#]_).
-
-.. [#] galpy: A Python Library for Galactic Dynamics, Jo Bovy (2015),
-    Astrophys. J. Supp., 216, 29 (arXiv/1412.3451).
+TODO
+----
+adopt astropy affiliate package configuration style.
 
 """
 
 __author__ = "Nathaniel Starkman"
-__credit__ = "Jo Bovy"
 
 __all__ = [
     "__config__",
@@ -110,7 +106,7 @@ def write_config(
     Parameters
     ----------
     filename: str
-    configuration: None or ConfigParser
+    configuration: ConfigParser, optional
         configuration to draw from
         defaults to `_DEFAULT_CONFIG` if not in `configuration`
 
@@ -189,6 +185,7 @@ class use_import_verbosity:
     def __exit__(self, type: Any, value: Any, traceback: Any) -> None:
         """Exit  with statement, restoring original import verbosity."""
         # Exception handling here
+        traceback  # pragma: no cover
         set_import_verbosity(self.original_verbosity)
         return
 

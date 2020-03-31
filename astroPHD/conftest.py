@@ -4,6 +4,11 @@
 # packagename.test
 
 import os
+import pytest
+
+# import numpy
+# import matplotlib.pyplot
+import astropy.units
 
 from astropy.version import version as astropy_version
 
@@ -40,6 +45,20 @@ def pytest_configure(config):
 
         packagename = os.path.basename(os.path.dirname(__file__))
         TESTED_VERSIONS[packagename] = __version__
+
+
+# ------------------------------------------------------
+# Added by @nstarman
+
+
+@pytest.fixture(autouse=True)
+def add_np(doctest_namespace):
+    # doctest_namespace["np"] = numpy
+    # doctest_namespace["plt"] = matplotlib.pyplot
+    doctest_namespace["u"] = astropy.units
+
+
+# ------------------------------------------------------
 
 
 # Uncomment the last two lines in this block to treat all DeprecationWarnings as
