@@ -239,6 +239,7 @@ def add_style(style_name, style_func):
     """
     store[style_name] = style_func
 
+
 # /def
 
 
@@ -253,6 +254,7 @@ def remove_style(style):
     """
     if style in store:
         store.pop(style)
+
 
 # /def
 

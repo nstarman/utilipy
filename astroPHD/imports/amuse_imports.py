@@ -54,6 +54,9 @@ References [#]_.
 __author__ = "Nathaniel Starkman"
 
 
+__all__ = []
+
+
 ##############################################################################
 # HELPER FUNCTIONS
 
@@ -79,7 +82,7 @@ except ImportError:
 
 else:
 
-    __all__ = [
+    __all__ += [
         "amuse",
         "lab",
         "units",
@@ -87,8 +90,6 @@ else:
         "bridge",
         "amuse_imports_help",
     ]
-
-    import amuse
 
     # lab
     from amuse import lab

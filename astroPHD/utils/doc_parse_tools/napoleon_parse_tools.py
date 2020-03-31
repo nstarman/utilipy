@@ -188,9 +188,9 @@ def merge_section(
 
     if method == "replace":
         body = prnt_sec if child_sec is None else child_sec
-    elif (
-        method == "merge"
-    ):  # TODO more intelligent merge strategy, respecting arg vs kwarg order, overriding repeated args, etc.
+    elif method == "merge":
+        # TODO more intelligent merge strategy,
+        # respecting arg vs kwarg order, overriding repeated args, etc.
         body = prnt_sec if child_sec is None else prnt_sec + "\n" + child_sec
 
     return header + body

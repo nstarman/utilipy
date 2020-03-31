@@ -24,9 +24,9 @@ astroPHD: imports
 
 References
 ----------
-Matplotlib reference [1]_.
+Matplotlib reference [#]_.
 
-.. [1] John D. Hunter. Matplotlib: A 2D Graphics Environment, Computing in
+.. [#] John D. Hunter. Matplotlib: A 2D Graphics Environment, Computing in
     Science & Engineering, 9, 90-95 (2007), DOI:10.1109/MCSE.2007.55
     http://scitation.aip.org/content/aip/journal/cise/9/3/10.1109/MCSE.2007.55
 
@@ -40,8 +40,7 @@ __all__ = [
     "plt",
     "cm",
     "colors",
-    "Axes3D",
-    "configure_matplotlib",
+    # "Axes3D",
     "matplotlib_imports_help",
 ]
 
@@ -66,7 +65,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib import cm, colors
 
-from mpl_toolkits.mplot3d import Axes3D  # 3D plotting
+# from mpl_toolkits.mplot3d import Axes3D
 
 # +--------------------------------------------------------------------------+
 # IPython Magic
@@ -89,6 +88,10 @@ else:
     _HAS_IPYTHON = True
 
     from astroPHD.ipython.plot import configure_matplotlib
+
+    __all__ += [
+        "configure_matplotlib",
+    ]  # TODO add when no IPython
 
 
 ##############################################################################

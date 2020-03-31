@@ -255,7 +255,8 @@ def get_annotations_from_signature(signature: Signature) -> Dict[str, Any]:
     --------
     >>> def func(x: 'x annotation') -> 'return annotation':
     ...   pass
-    ... Signature(func).annotations
+    >>> sig = Signature.from_callable(func)
+    >>> get_annotations_from_signature(sig)
     {'x': 'x annotation', 'return': 'return annotation'}
 
     """
@@ -288,14 +289,14 @@ def get_defaults_from_signature(signature: Signature) -> tuple:
     --------
     >>> def func(x=2,):
     ...     pass
-    >>> Signature(func).defaults
+    >>> FullerSignature.from_callable(func).defaults
     (2,)
 
     this does not get the keyword only defaults
 
     >>> def func(x=2,*,k=3):
     ...     pass
-    ... Signature(func).defaults
+    >>> FullerSignature.from_callable(func).defaults
     (2,)
 
     """
@@ -328,17 +329,10 @@ def get_kwdefaults_from_signature(signature: Signature) -> dict:
 
     Examples
     --------
-    >>> def func(*, k=3):
-    ...     pass
-    >>> Signature(func).kwdefaults
-    (3,)
-
-    this does not get the positional arguments with defaults
-
     >>> def func(x=2,*,k=3):
     ...     pass
-    ... Signature(func).kwdefaults
-    (3,)
+    >>> FullerSignature.from_callable(func).kwdefaults
+    {'k': 3}
 
     """
     return {
@@ -371,8 +365,15 @@ def get_kinds_from_signature(signature: Signature) -> tuple:
     --------
     >>> def func(x, *args, k=3, **kw):
     ...     pass
-    ... Signature(func).kinds
-    [POSITIONAL_OR_KEYWORD, VAR_POSITIONAL, KEYWORD_ONLY]
+    >>> kinds = FullerSignature.from_callable(func).kinds
+    >>> kinds[0]
+    <_ParameterKind.POSITIONAL_OR_KEYWORD: 1>
+    >>> kinds[1]
+    <_ParameterKind.VAR_POSITIONAL: 2>
+    >>> kinds[2]
+    <_ParameterKind.KEYWORD_ONLY: 3>
+    >>> kinds[3]
+    <_ParameterKind.VAR_KEYWORD: 4>
 
     """
     return tuple([p.kind for p in signature.parameters.values()])
@@ -702,7 +703,7 @@ class FullerSignature(Signature):
         --------
         >>> def func(x: 'x annotation') -> 'return annotation':
         ...   pass
-        ... Signature(func).annotations
+        >>> FullerSignature.from_callable(func).annotations
         {'x': 'x annotation', 'return': 'return annotation'}
 
         """
@@ -731,7 +732,7 @@ class FullerSignature(Signature):
         --------
         >>> def func(x: 'x annotation') -> 'return annotation':
         ...   pass
-        ... Signature(func).annotations
+        >>> FullerSignature.from_callable(func).annotations
         {'x': 'x annotation', 'return': 'return annotation'}
 
         """
@@ -752,7 +753,7 @@ class FullerSignature(Signature):
         --------
         >>> def func(x=2,):
         ...     pass
-        ... Signature(func).defaults
+        >>> FullerSignature.from_callable(func).defaults
         (2,)
 
         """
@@ -785,7 +786,7 @@ class FullerSignature(Signature):
         --------
         >>> def func(x=2,):
         ...     pass
-        ... Signature(func).defaults
+        >>> FullerSignature.from_callable(func).defaults
         (2,)
 
         """
@@ -800,21 +801,14 @@ class FullerSignature(Signature):
         Returns
         -------
         defaults: dict
-            argument {name: default}
+            argument {name: default value}
 
         Examples
         --------
-        >>> def func(*, x=2):
-        ...     pass
-        ... Signature(func).kwdefaults
-        (2,)
-
-        this does not get the positional arguments with defaults
-
         >>> def func(x=2,*,k=3):
         ...     pass
-        ... Signature(func).kwdefaults
-        (3,)
+        >>> FullerSignature.from_callable(func).kwdefaults
+        {'k': 3}
 
         """
         # n: str
@@ -843,17 +837,10 @@ class FullerSignature(Signature):
 
         Examples
         --------
-        >>> def func(*, x=2):
-        ...     pass
-        ... Signature(func).kwdefaults
-        (2,)
-
-        this does not get the positional arguments with defaults
-
         >>> def func(x=2,*,k=3):
         ...     pass
-        ... Signature(func).kwdefaults
-        (3,)
+        >>> FullerSignature.from_callable(func).kwdefaults
+        {'k': 3}
 
         """
         return self.__kwdefaults__
@@ -871,17 +858,10 @@ class FullerSignature(Signature):
 
         Examples
         --------
-        >>> def func(*, x=3):
-        ...     pass
-        ... Signature(func).kwdefaults
-        (3,)
-
-        this does not get the positional arguments with defaults
-
         >>> def func(x=2,*,k=3):
         ...     pass
-        ... Signature(func).kwdefaults
-        (3,)
+        >>> FullerSignature.from_callable(func).kwdefaults
+        {'k': 3}
 
         """
         return self.__kwdefaults__
@@ -901,8 +881,15 @@ class FullerSignature(Signature):
         --------
         >>> def func(x, *args, k=3, **kw):
         ...     pass
-        ... Signature(func).kinds
-        [POSITIONAL_OR_KEYWORD, VAR_POSITIONAL, KEYWORD_ONLY]
+        >>> kinds = FullerSignature.from_callable(func).kinds
+        >>> kinds[0]
+        <_ParameterKind.POSITIONAL_OR_KEYWORD: 1>
+        >>> kinds[1]
+        <_ParameterKind.VAR_POSITIONAL: 2>
+        >>> kinds[2]
+        <_ParameterKind.KEYWORD_ONLY: 3>
+        >>> kinds[3]
+        <_ParameterKind.VAR_KEYWORD: 4>
 
         """
         # return tuple([p.kind for p in self.parameters.values()])
@@ -920,8 +907,8 @@ class FullerSignature(Signature):
         --------
         >>> def func(x, *args, k=3, **kw):
         ...     pass
-        ... Signature(func).names
-        [x, args, k, kw]
+        >>> FullerSignature.from_callable(func).names
+        ('x', 'args', 'k', 'kw')
 
         """
         return tuple(self.parameters.keys())

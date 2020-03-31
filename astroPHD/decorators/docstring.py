@@ -295,6 +295,7 @@ def format_doc(
     original docstring or the ``args`` and ``kwargs``.
 
     """
+
     def set_docstring(obj: Callable) -> Callable:
         if docstring is None:
             # None means: use the objects __doc__

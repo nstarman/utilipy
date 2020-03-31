@@ -39,8 +39,10 @@ def set_autoreload(reload_type: Optional[int] = None) -> None:
         (default None)
 
         - **0**) Disable automatic reloading.
-        - **1**) Reload all modules imported with %aimport before executing the Python code typed.
-        - **2**) Reload all modules (except those excluded by %aimport) before executing the Python code typed.
+        - **1**) Reload all modules imported with %aimport
+                 before executing the Python code typed.
+        - **2**) Reload all modules (except those excluded by %aimport)
+                 before executing the Python code typed.
         - **None**) null. do not change current setting.
 
     See Also

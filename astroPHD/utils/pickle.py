@@ -20,7 +20,8 @@ __author__ = "Nathaniel Starkman"
 __all__ = [
     "dump",
     "dump_many",
-    "load", "load_many",
+    "load",
+    "load_many",
 ]
 
 #############################################################################
@@ -234,7 +235,9 @@ load_many = load
 #     PURPOSE:
 #        relatively safely save things to a pickle
 #     INPUT:
-#        savefilename - name of the file to save to; actual save operation will be performed on a temporary file and then that file will be shell mv'ed to savefilename
+#        savefilename - name of the file to save to; actual save operation
+#                       will be performed on a temporary file and then that
+#                       file will be shell mv'ed to savefilename
 #        +things to pickle (as many as you want!)
 #     OUTPUT:
 #        none

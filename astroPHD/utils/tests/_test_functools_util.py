@@ -179,7 +179,7 @@ def func_xy(x, y):
 
 
 @typing.no_type_check
-def func_xy_annotate(x: "0", y) -> "return annote":
+def func_xy_annotate(x: "0", y) -> typing.Tuple:
     """func.
 
     Parameters
@@ -243,7 +243,7 @@ def func_ab(a=2, b=3):
 
 
 @typing.no_type_check
-def func_ab_annotate(a: "1" = 2, b=3) -> "return annote":
+def func_ab_annotate(a: "1" = 2, b=3) -> typing.Tuple:
     """func.
 
     Parameters
@@ -288,7 +288,7 @@ def func_args(*args):
 
 
 @typing.no_type_check
-def func_args_annotate(*args: "2") -> "return annote":
+def func_args_annotate(*args: "2") -> typing.Tuple:
     """func.
 
     Parameters
@@ -349,7 +349,7 @@ def func_pq(*, p="p", q="q"):
 
 
 @typing.no_type_check
-def func_pq_annotate(*, p: "3" = "p", q="q") -> "return annote":
+def func_pq_annotate(*, p: "3" = "p", q="q") -> typing.Tuple:
     """func.
 
     Parameters
@@ -390,7 +390,7 @@ def func_kwargs(**kwargs):
 
 
 @typing.no_type_check
-def func_kwargs_annotate(**kwargs: "4") -> "return annote":
+def func_kwargs_annotate(**kwargs: "4") -> typing.Tuple:
     """func.
 
     Parameters
@@ -453,7 +453,7 @@ def func_xy_ab(x, y, a=2, b=3):
 
 
 @typing.no_type_check
-def func_xy_ab_annotate(x: "0", y, a: "1" = 2, b=3) -> "return annote":
+def func_xy_ab_annotate(x: "0", y, a: "1" = 2, b=3) -> typing.Tuple:
     """func.
 
     Parameters
@@ -518,7 +518,7 @@ def func_xy_args(x, y, *args):
 
 
 @typing.no_type_check
-def func_xy_args_annotate(x: "0", y, *args: "2") -> "return annote":
+def func_xy_args_annotate(x: "0", y, *args: "2") -> typing.Tuple:
     """func.
 
     Parameters
@@ -583,7 +583,7 @@ def func_xy_pq(x, y, *, p="p", q="q"):
 
 
 @typing.no_type_check
-def func_xy_pq_annotate(x: "0", y, *, p: "3" = "p", q="q") -> "return annote":
+def func_xy_pq_annotate(x: "0", y, *, p: "3" = "p", q="q") -> typing.Tuple:
     """func.
 
     Parameters
@@ -648,7 +648,7 @@ def func_xy_kwargs(x, y, **kwargs):
 
 
 @typing.no_type_check
-def func_xy_kwargs_annotate(x: "0", y, **kwargs: "4") -> "return annote":
+def func_xy_kwargs_annotate(x: "0", y, **kwargs: "4") -> typing.Tuple:
     """func.
 
     Parameters
@@ -713,7 +713,7 @@ def func_ab_args(a=2, b=3, *args):
 
 
 @typing.no_type_check
-def func_ab_args_annotate(a: "1" = 2, b=3, *args: "2") -> "return annote":
+def func_ab_args_annotate(a: "1" = 2, b=3, *args: "2") -> typing.Tuple:
     """func.
 
     Parameters
@@ -780,7 +780,7 @@ def func_ab_pq(a=2, b=3, *, p="p", q="q"):
 @typing.no_type_check
 def func_ab_pq_annotate(
     a: "1" = 2, b=3, *, p: "3" = "p", q="q"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -845,7 +845,7 @@ def func_ab_kwargs(a=2, b=3, **kwargs):
 
 
 @typing.no_type_check
-def func_ab_kwargs_annotate(a: "1" = 2, b=3, **kwargs: "4") -> "return annote":
+def func_ab_kwargs_annotate(a: "1" = 2, b=3, **kwargs: "4") -> typing.Tuple:
     """func.
 
     Parameters
@@ -910,7 +910,7 @@ def func_args_pq(*args, p="p", q="q"):
 
 
 @typing.no_type_check
-def func_args_pq_annotate(*args: "2", p: "3" = "p", q="q") -> "return annote":
+def func_args_pq_annotate(*args: "2", p: "3" = "p", q="q") -> typing.Tuple:
     """func.
 
     Parameters
@@ -955,7 +955,7 @@ def func_args_kwargs(*args, **kwargs):
 
 
 @typing.no_type_check
-def func_args_kwargs_annotate(*args: "2", **kwargs: "4") -> "return annote":
+def func_args_kwargs_annotate(*args: "2", **kwargs: "4") -> typing.Tuple:
     """func.
 
     Parameters
@@ -1026,7 +1026,7 @@ def func_xy_ab_args(x, y, a=2, b=3, *args):
 @typing.no_type_check
 def func_xy_ab_args_annotate(
     x: "0", y, a: "1" = 2, b=3, *args: "2"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1098,8 +1098,8 @@ def func_xy_ab_pq(x, y, a=2, b=3, *, p="p", q="q"):
 
 @typing.no_type_check
 def func_xy_ab_pq_annotate(
-    x: "0", y, a: "def arg" = 2, b=3, *, p: "3" = "p", q="q"
-) -> "return annote":
+    x: "0", y, a: int = 2, b=3, *, p: "3" = "p", q="q"
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1171,8 +1171,8 @@ def func_xy_ab_kwargs(x, y, a=2, b=3, **kwargs):
 
 @typing.no_type_check
 def func_xy_ab_kwargs_annotate(
-    x: "0", y, a: "def arg" = 2, b=3, **kwargs: "4"
-) -> "return annote":
+    x: "0", y, a: int = 2, b=3, **kwargs: "4"
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1245,7 +1245,7 @@ def func_xy_args_pq(x, y, *args, p="p", q="q"):
 @typing.no_type_check
 def func_xy_args_pq_annotate(
     x: "0", y, *args: "2", p: "3" = "p", q="q"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1318,7 +1318,7 @@ def func_xy_args_kwargs(x, y, *args, **kwargs):
 @typing.no_type_check
 def func_xy_args_kwargs_annotate(
     x: "0", y, *args: "2", **kwargs: "4"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1391,7 +1391,7 @@ def func_ab_args_pq(a=2, b=3, *args, p="p", q="q"):
 @typing.no_type_check
 def func_ab_args_pq_annotate(
     a: "1" = 2, b=3, *args: "2", p: "3" = "p", q="q"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1464,7 +1464,7 @@ def func_ab_args_kwargs(a=2, b=3, *args, **kwargs):
 @typing.no_type_check
 def func_ab_args_kwargs_annotate(
     a: "1" = 2, b=3, *args: "2", **kwargs: "4"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1537,7 +1537,7 @@ def func_args_pq_kwargs(*args, p="p", q="q", **kwargs):
 @typing.no_type_check
 def func_args_pq_kwargs_annotate(
     *args: "2", p: "3" = "p", q="q", **kwargs: "4"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1614,7 +1614,7 @@ def func_xy_ab_args_pq(x, y, a=2, b=3, *args, p="p", q="q"):
 @typing.no_type_check
 def func_xy_ab_args_pq_annotate(
     x: "0", y, a: "1" = 2, b=3, *args: "2", p: "3" = "p", q="q"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1693,7 +1693,7 @@ def func_xy_ab_args_kwargs(x, y, a=2, b=3, *args, **kwargs):
 @typing.no_type_check
 def func_xy_ab_args_kwargs_annotate(
     x: "0", y, a: "1" = 2, b=3, *args: "2", **kwargs: "4"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1772,7 +1772,7 @@ def func_xy_ab_pq_kwargs(x, y, a=2, b=3, *, p="p", q="q", **kwargs):
 @typing.no_type_check
 def func_xy_ab_pq_kwargs_annotate(
     x: "0", y, a: "1" = 2, b=3, *, p: "3" = "p", q="q", **kwargs: "4"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1851,7 +1851,7 @@ def func_xy_args_pq_kwargs(x, y, *args, p="p", q="q", **kwargs):
 @typing.no_type_check
 def func_xy_args_pq_kwargs_annotate(
     x: "0", y, *args, p: "3" = "p", q="q", **kwargs: "4"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -1930,7 +1930,7 @@ def func_ab_args_pq_kwargs(a=2, b=3, *args, p="p", q="q", **kwargs):
 @typing.no_type_check
 def func_ab_args_pq_kwargs_annotate(
     a: "1" = 2, b=3, *args: "2", p: "3" = "p", q="q", **kwargs: "4"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters
@@ -2013,7 +2013,7 @@ def func_xy_ab_args_pq_kwargs(x, y, a=2, b=3, *args, p="p", q="q", **kwargs):
 @typing.no_type_check
 def func_xy_ab_args_pq_kwargs_annotate(
     x, y, a: "1" = 2, b=3, *args: "2", p: "3" = "p", q="q", **kwargs: "4"
-) -> "return annote":
+) -> typing.Tuple:
     """func.
 
     Parameters

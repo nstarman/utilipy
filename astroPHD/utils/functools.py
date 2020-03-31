@@ -26,6 +26,7 @@ Todo
 ----
 improve `makeFunction` call signature
 test `makeFunction`-made function speeds
+todo make partial respect signature
 
 """
 
@@ -35,14 +36,19 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# General
+# GENERAL
+
 from functools import *  # so can be a drop-in for `functools`
+from functools import partial
+
 # import functools
 from inspect import signature as _get_signature
 from types import FunctionType
 from typing import Any, Union, Callable, Sequence, Optional
 
-# Project-Specific
+
+# PROJECT-SPECIFIC
+
 from .string import FormatTemplate
 from .inspect import (
     FullerSignature as _FullerSignature,
@@ -357,9 +363,7 @@ def update_wrapper(
 
         else:  # TODO implement the full set of options
             wrapper.__doc__ = _store[_doc_style](
-                wrapped_doc,
-                wrapper_doc,
-                method="merge",
+                wrapped_doc, wrapper_doc, method="merge",
             )
     # /if
 

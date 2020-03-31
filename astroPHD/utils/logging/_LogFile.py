@@ -9,11 +9,7 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""functions for logging
-
-TODO:
-"""
+"""Functions for logging."""
 
 __author__ = "Nathaniel Starkman"
 
@@ -22,9 +18,12 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # GENERAL
+
 from typing import Any, Union, Optional
 
+
 # PROJECT-SPECIFIC
+
 from ._LogPrint import LogPrint
 from ..metaclasses import InheritDocstrings
 
@@ -36,52 +35,39 @@ from ..metaclasses import InheritDocstrings
 class LogFile(LogPrint, metaclass=InheritDocstrings):
     """Class for basic logger that can both print and record to a file.
 
-    this class uses `open', not a more extensive logger, like `logging'
+    this class uses `open`, not a more extensive logger, like `logging`
 
-    The arguments filename - opener are all for `open`
+    The arguments `mode` to `opener` are all for ``open``
     their descriptions are in
-    https://docs.python.org/3/library/functions.html#open
+    `<https://docs.python.org/3/library/functions.html#open>`_
 
     Parameters
     ----------
     filename : str, optional
         the file name / path at which to save this log
-        If no filename, makes a LogPrint() instead
-    verbose : int
-        the verbosity level to use in .report / .verbort
-    mode : str  (default 'w')
+        If no filename, makes a ``LogPrint`` instead
+    verbose : int, optional
+        the verbosity level to use in ``.report``
+    mode : str, optional
         recommend either 'w' or 'a'
-    sec_div : str
-        the section divider used in `newsection'
-    header : None, str  (default None)
+    sec_div : str, optional
+        the section divider used in `newsection`
+    header : None or str, optional
         the header for the file
-        None -> filename
-    show_header : bool  (default True)
+        None goes to filename
+    show_header : bool, optional
         whether to print the header
 
     Notes
     -----
-    mode options:
-
-        'r' open for reading
-        'w' open for writing, truncating the file first
-        'x' open for exclusive creation, failing if the file already exists
-        'a' open for writing, appending to the end of the file if it exists
-        'b' binary mode
-        't' text mode
-         NOT ALLOWED '+' open a disk file for updating (reading and writing)
-
-    Methods
-    -------
-    .print
-    .newsection
-    .write  (reimplemented for docstring)
-    .record  (reimplemented for docstring)
-    .verbort  (reimplemented for docstring)
-    ._write: writes to file
-        overwritten
-    ._print_and_write: prints and writes
-        overwritten
+    mode options
+        * 'r' open for reading
+        * 'w' open for writing, truncating the file first
+        * 'x' open for exclusive creation, failing if the file already exists
+        * 'a' open for writing, appending to the end of the file if it exists
+        * 'b' binary mode
+        * 't' text mode
+        * NOT ALLOWED '+' open a disk file for updating (reading and writing)
 
     """
 
@@ -209,35 +195,34 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
     ) -> Any:
         """Make basic logger that can both print and record to a file.
 
-        this class uses `open', not a more extensive logger, like `logging'
+        this class uses `open`, not a more extensive logger, like `logging`
 
-        The arguments filename - opener are all for `open`
+        The arguments `mode` to `opener` are all for ``open``
         their descriptions are in
-            https://docs.python.org/3/library/functions.html#open
+        `<https://docs.python.org/3/library/functions.html#open>`_
 
         Parameters
         ----------
         filename: str
             the file name / path at which to save this log
-        mode: str  (default 'w')
+        mode: str
             recommend either 'w' or 'a'
         sec_div: str
-            the section divider used in `newsection'
-        header : None, str  (default None)
+            the section divider used in `newsection`
+        header : None or str
             the header for the file
             None -> filename
-        ...
 
         Notes
         -----
-        mode options:
-            'r' open for reading
-            'w' open for writing, truncating the file first
-            'x' open for exclusive creation, failing if file already exists
-            'a' open for writing, appending to the end of file if it exists
-            'b' binary mode
-            't' text mode
-            '+' open a disk file for updating (reading and writing)
+        mode options
+            * 'r' open for reading
+            * 'w' open for writing, truncating the file first
+            * 'x' open for exclusive creation, failing if file already exists
+            * 'a' open for writing, appending to the end of file if it exists
+            * 'b' binary mode
+            * 't' text mode
+            * '+' open a disk file for updating (reading and writing)
 
         """
         return cls(
@@ -276,35 +261,35 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
     ) -> Any:
         """Make basic logger that can both print and record to a file.
 
-        this class uses `open', not a more extensive logger, like `logging'
+        this class uses `open`, not a more extensive logger, like `logging`
 
-        The arguments filename - opener are all for `open`
+        The arguments `mode` to `opener` are all for ``open``
         their descriptions are in
-            https://docs.python.org/3/library/functions.html#open
+        `<https://docs.python.org/3/library/functions.html#open>`_
 
         Parameters
         ----------
         filename: str
             the file name / path at which to save this log
-        mode: str  (default 'w')
+        mode: str
             recommend either 'w' or 'a'
             cannot be 'r'
         sec_div: str
-            the section divider used in `newsection'
-        header : None, str  (default None)
+            the section divider used in `newsection`
+        header : None or str, optional
             the header for the file
             None -> filename
         ...
 
         Notes
         -----
-        mode options:
-            'w' open for writing, truncating the file first
-            'x' open for exclusive creation, failing if file already exists
-            'a' open for writing, appending to the end of file if it exists
-            'b' binary mode
-            't' text mode
-            '+' open a disk file for updating (reading and writing)
+        mode options
+            * 'w' open for writing, truncating the file first
+            * 'x' open for exclusive creation, failing if file already exists
+            * 'a' open for writing, appending to the end of file if it exists
+            * 'b' binary mode
+            * 't' text mode
+            * '+' open a disk file for updating (reading and writing)
 
         """
         if mode == "r":
@@ -341,11 +326,11 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
     ) -> Any:
         """Make basic logger that can both print and record to a file.
 
-        this class uses `open', not a more extensive logger, like `logging'
+        this class uses `open`, not a more extensive logger, like `logging`
 
-        The arguments filename - opener are all for `open`
+        The arguments `buffering` to `opener` are all for ``open``
         their descriptions are in
-            https://docs.python.org/3/library/functions.html#open
+        `<https://docs.python.org/3/library/functions.html#open>`_
 
         Parameters
         ----------
@@ -413,15 +398,15 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         ----------
         text: str
             the text to write & print
-        start: str  (default '')
+        start: str
             start to print
-        sep: str  (default ' ')
+        sep: str
             the separater for print
-        end: str  (default '\n')
+        end: str
             the end for print
-        startsection: bool  (default False)
+        startsection: bool
             whether to start a new section before writing
-        endsection:  bool  (default False)
+        endsection:  bool
 
         """
         return super().write(
@@ -470,7 +455,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
 
         Parameters
         ----------
-        *msgs : str(s)
+        msgs : str(s)
             the verbosity-ordered messages
             blank messages can be <None>, not only ''
         verbose : int, optional
@@ -481,7 +466,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         write : bool
             whether to write to logger file
         start_at : int
-            what level of verbosity is the first *msg*
+            what level of verbosity is the first `msgs`
             ex: verbort('test', start_at=3) means 'test' is at verbose=3
         kw: kwargs for self.write or self.print
 

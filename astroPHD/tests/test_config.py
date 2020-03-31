@@ -27,7 +27,7 @@ from astroPHD import config  # TODO relative import
 
 localrc = os.path.join(
     os.path.split(os.path.abspath(__file__))[0],  # absolute directory
-    ".astroPHDrc"  # RC file
+    ".astroPHDrc",  # RC file
 )
 
 # set config to local for testing
@@ -39,6 +39,7 @@ config.__config__.read(localrc)
 # TEST FUNCTIONS
 ##############################################################################
 
+
 def test_unchanged_DEFAULT_CONFIG():
     """Test _DEFAULT_CONFIG.
 
@@ -46,9 +47,8 @@ def test_unchanged_DEFAULT_CONFIG():
 
     """
     _DEFAULT_CONFIG: Dict[str, Union[str, Dict[str, str]]] = {
-        'verbosity': {'verbose-imports': 'True',
-                      'warnings': 'True'},
-        'plot': {'seaborn-defaults': 'False', }
+        "verbosity": {"verbose-imports": "True", "warnings": "True"},
+        "plot": {"seaborn-defaults": "False",},
     }
 
     sec_key: str
@@ -58,10 +58,14 @@ def test_unchanged_DEFAULT_CONFIG():
         assert config._DEFAULT_CONFIG.get(sec_key)
         # check if options within section exist
         for key in _DEFAULT_CONFIG[sec_key]:
-            assert (config._DEFAULT_CONFIG[sec_key][key] ==
-                    _DEFAULT_CONFIG[sec_key][key])
+            assert (
+                config._DEFAULT_CONFIG[sec_key][key]
+                == _DEFAULT_CONFIG[sec_key][key]
+            )
 
     return
+
+
 # /def
 
 
@@ -71,10 +75,12 @@ def test_has_DEFAULT_FILE():
     .astroPHDrc in home folder
 
     """
-    file = os.path.join(os.path.expanduser('~'), '.astroPHDrc')
+    file = os.path.join(os.path.expanduser("~"), ".astroPHDrc")
     assert os.path.exists(file), "~/.astroPHDrc doesn't exist"
 
     return
+
+
 # /def
 
 
@@ -90,6 +96,7 @@ def test_has_DEFAULT_FILE():
 
 # --------------------------------------------------------------------------
 
+
 def test_get_import_verbosity():
     """Test get_import_verbosity.
 
@@ -98,6 +105,8 @@ def test_get_import_verbosity():
     """
     assert ~config.get_import_verbosity()
     return
+
+
 # /def
 
 
@@ -110,6 +119,8 @@ def test_set_import_verbosity():
     config.set_import_verbosity(False)
     assert not config.get_import_verbosity()
     return
+
+
 # /def
 
 
@@ -129,10 +140,13 @@ def test_use_import_verbosity():
     assert config.get_import_verbosity() == verbose
 
     return
+
+
 # /def
 
 
 # --------------------------------------------------------------------------
+
 
 def test_get_warnings_verbosity():
     """Test get_warnings_verbosity.
@@ -142,6 +156,8 @@ def test_get_warnings_verbosity():
     """
     assert config.get_warnings_verbosity()
     return
+
+
 # /def
 
 
@@ -154,6 +170,8 @@ def test_set_warnings_verbosity():
     config.set_warnings_verbosity(False)
     assert not config.get_warnings_verbosity()
     return
+
+
 # /def
 
 
@@ -173,10 +191,13 @@ def test_use_warnings_verbosity():
     assert config.get_warnings_verbosity() == verbose
 
     return
+
+
 # /def
 
 
 # --------------------------------------------------------------------------
+
 
 def test_get_frozen_constants():
     """Test get_frozen_constants.
@@ -186,6 +207,8 @@ def test_get_frozen_constants():
     """
     assert ~config.get_frozen_constants()
     return
+
+
 # /def
 
 
@@ -198,6 +221,8 @@ def test_set_frozen_constants():
     config.set_frozen_constants(True)
     assert config.get_frozen_constants()
     return
+
+
 # /def
 
 
@@ -217,11 +242,14 @@ def test_use_frozen_constants():
     assert config.get_frozen_constants() == frozen
 
     return
+
+
 # /def
 
 
 ##############################################################################
 # Test Files
+
 
 def test_valid_configurations():
     """Test check_config."""
@@ -239,6 +267,8 @@ def test_valid_configurations():
     assert config.check_config(configuration), "config not valid"
 
     return
+
+
 # /def
 
 

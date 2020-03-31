@@ -152,9 +152,9 @@ def merge_section(
 
     if method == "replace":
         body = prnt_sec if child_sec is None else child_sec
-    elif (
-        method == "merge"
-    ):  # TODO more intelligent merge strategy, respecting arg vs kwarg order, overriding repeated args, etc.
+    elif method == "merge":
+        # TODO more intelligent merge strategy,
+        # respecting arg vs kwarg order, overriding repeated args, etc.
         if prnt_sec is None:
             body = child_sec or ""
         elif child_sec is None:
@@ -213,7 +213,7 @@ def merge_all_sections(
 def merge_numpy_docs(
     prnt_doc: Union[str, None] = None,
     child_doc: Union[str, None] = None,
-    method: Union[Literal["merge"], Literal["replace"]] = "replace"
+    method: Union[Literal["merge"], Literal["replace"]] = "replace",
 ) -> Union[str, None]:
     """Merge two numpy-style docstrings into a single docstring.
 

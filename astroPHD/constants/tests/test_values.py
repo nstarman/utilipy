@@ -40,12 +40,7 @@ def test_ConstantsValues():
     assert f.from_frozen is True
 
     _names = set(data.__all_constants__)
-    _names.update({
-        "c_ms",
-        "c_kms",
-        "AU_to_pc",
-        "pc_to_AU",
-    })
+    _names.update({"c_ms", "c_kms", "AU_to_pc", "pc_to_AU"})
     assert f._names == _names
 
     # standard constants
@@ -78,12 +73,7 @@ def test_values():
     assert f.from_frozen is True
 
     _names = set(data.__all_constants__)
-    _names.update({
-        "c_ms",
-        "c_kms",
-        "AU_to_pc",
-        "pc_to_AU",
-    })
+    _names.update({"c_ms", "c_kms", "AU_to_pc", "pc_to_AU"})
     assert f._names == _names
 
     # standard constants

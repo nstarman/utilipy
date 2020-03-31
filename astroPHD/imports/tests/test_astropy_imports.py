@@ -14,6 +14,7 @@ __author__ = "Nathaniel Starkman"
 
 ##############################################################################
 
+
 def test_import_astropy():
     """Test _inRange."""
     from astroPHD.imports import astropy_imports as imports
@@ -26,6 +27,8 @@ def test_import_astropy():
     imports.quantity_support, imports.astropy_mpl_style
 
     return
+
+
 # /def
 
 

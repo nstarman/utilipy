@@ -46,7 +46,9 @@ from astropy.utils.data import get_pkg_data_filename
 ###############################################################################
 # PARAMETERS
 
-_PACKAGE = 'astroPHD.astronomy.instruments.filtertransforms.MegaCam_PanSTARRS.data'
+_PACKAGE = (
+    "astroPHD.astronomy.instruments.filtertransforms.MegaCam_PanSTARRS.data"
+)
 
 ###############################################################################
 # CODE
@@ -55,8 +57,10 @@ _PACKAGE = 'astroPHD.astronomy.instruments.filtertransforms.MegaCam_PanSTARRS.da
 
 def read_MegaCamGen1_from_PS1():
     """Read MegaCamGen1_from_PS1 data."""
-    fpath = get_pkg_data_filename("MegaCamGen1_from_PS1.ecsv", package=_PACKAGE)
-    return QTable.read(fpath, format='ascii.ecsv')
+    fpath = get_pkg_data_filename(
+        "MegaCamGen1_from_PS1.ecsv", package=_PACKAGE
+    )
+    return QTable.read(fpath, format="ascii.ecsv")
 
 
 # /def

@@ -23,8 +23,8 @@ __credits__ = ["astropy"]
 
 
 __all__ = [
-    "frozenconstants",
     "FrozenConstants",
+    "frozen",
 ]
 
 

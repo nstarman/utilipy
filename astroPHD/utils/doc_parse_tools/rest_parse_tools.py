@@ -34,11 +34,11 @@ __all__ = ["merge_rest_docs"]
 # IMPORTS
 
 # GENERAL
+
 from collections import OrderedDict
 from inspect import cleandoc
 from string import punctuation
 
-import typing
 from typing import Optional, Union, Dict
 from typing_extensions import Literal
 
@@ -48,7 +48,7 @@ from typing_extensions import Literal
 ###############################################################################
 
 
-def is_delimiter(lin: str) -> bool:
+def is_delimiter(line: str) -> bool:
     """True if a line consists only of a single punctuation character."""
     return (
         bool(line)
@@ -133,7 +133,7 @@ def parse_rest_doc(doc: Union[str, None]) -> Dict[str, Section]:
 def merge_rest_docs(
     prnt_doc: Optional[str] = None,
     child_doc: Optional[str] = None,
-    method: Union[Literal["merge"], Literal["replace"]] = "replace"
+    method: Union[Literal["merge"], Literal["replace"]] = "replace",
 ) -> str:
     """See custom_inherit.style_store.reST for details."""
     prnt_sections = parse_rest_doc(prnt_doc)

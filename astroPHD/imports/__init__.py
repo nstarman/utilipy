@@ -9,7 +9,7 @@ same set of imports between scripts, and scrolling through all the imports
 to reach the start of the code is aggravating.
 
 This module provides a variety of files that can be ``*``-imported to provide
-basic set of imports so that you can just get started coding. 
+basic set of imports so that you can just get started coding.
 
 
 The provided quick imports are ``base_imports``, ``extended_imports``,
@@ -20,8 +20,7 @@ The files will print an import summary. To prevent this summary, set
 ``verbose-imports=False`` in the ``.astroPHCrc`` config file in your
 home or local directory. For details, see `config
 file <#config-file>`__. Each of the imports also provides a helper
-function that will print out the import summary (for instance
-`base_imports_help <https://astrophd.readthedocs.io/en/latest/astroPHD.imports.html#astroPHD.imports.base.base_imports_help>`__).
+function that will print out the import summary.
 
 
 Package-Specific Import Sets

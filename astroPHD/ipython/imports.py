@@ -180,62 +180,47 @@ def run_imports(
 
     Examples
     --------
-    >>> run_imports(base=True, astropy=True)
+    ``run_imports(base=True, astropy=True)``
     imports from `astroPHD/imports/base.py` and `astroPHD/imports/astropy.py`,
     printing an import summary
 
-    >>> run_imports(base=True, verbose_imports=False)
+    ``run_imports(base=True, verbose_imports=False)``
     imports from `astroPHD/imports/base.py`, without an import summary
 
-
-    >>> import astroPHD
-    >>> astroPHD.config.set_import_verbosity(False)
-    >>> astroPHD.ipython.run_imports(base=True, verbose_imports=None)
+    ``astroPHD.config.set_import_verbosity(False)``
+    ``astroPHD.ipython.imports.run_imports(base=True, verbose_imports=None)``
     imports from `astroPHD/imports/base.py` with default import-verbosity state
 
     """
+    kw = dict(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
     # ---------------------------------------------
     # base
 
     if base:
-        import_base(
-            verbose_imports=verbose_imports, logger=logger, verbose=verbose
-        )
+        import_base(**kw)
 
     if extended:
-        import_extended(
-            verbose_imports=verbose_imports, logger=logger, verbose=verbose
-        )
+        import_extended(**kw)
 
     # ---------------------------------------------
     # basic
 
     if astropy:
-        import_astropy(
-            verbose_imports=verbose_imports, logger=logger, verbose=verbose
-        )
+        import_astropy(**kw)
 
     if matplotlib:
-        import_matplotlib(
-            verbose_imports=verbose_imports, logger=logger, verbose=verbose
-        )
+        import_matplotlib(**kw)
     if plotly:
-        import_plotly(
-            verbose_imports=verbose_imports, logger=logger, verbose=verbose
-        )
+        import_plotly(**kw)
 
     # ---------------------------------------------
     # extras
 
     if galpy:
-        import_galpy(
-            verbose_imports=verbose_imports, logger=logger, verbose=verbose
-        )
+        import_galpy(**kw)
 
     if amuse:
-        import_amuse(
-            verbose_imports=verbose_imports, logger=logger, verbose=verbose
-        )
+        import_amuse(**kw)
 
     # ---------------------------------------------
 

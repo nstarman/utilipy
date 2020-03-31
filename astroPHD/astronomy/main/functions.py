@@ -156,10 +156,7 @@ def absolute_to_apparent_magnitude(M: MAG, d_L: PC, **kw) -> Any:
 
 
 @quantity_io(
-    d="length",
-    A=MAG,
-    assume_annotation_units=True,
-    assumed_units={"A": MAG},
+    d="length", A=MAG, assume_annotation_units=True, assumed_units={"A": MAG},
 )
 def distanceModulus_magnitude(d: PC, A=0 * MAG, obs=True, **kw) -> Any:
     r"""Distance Modulus distance to magnitude.

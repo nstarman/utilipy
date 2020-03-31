@@ -162,8 +162,8 @@ class ConstantsValues:
             whether to use frozen constants
 
         """
-        super().__setattr__('from_frozen', frozen)
-        super().__setattr__('_names', set())
+        super().__setattr__("from_frozen", frozen)
+        super().__setattr__("_names", set())
 
         # C = FrozenUnitSet()
         C = frozenconstants

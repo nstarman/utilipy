@@ -9,7 +9,6 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
 r"""extending the standard import file.
 
 Routine Listings
@@ -68,13 +67,12 @@ from astroPHD.decorators.docstring import (
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
-# numpy
+# GENERAL
+
 from numpy.linalg import norm
 
-# scipy
 from scipy.stats import binned_statistic as binned_stats
 
 
@@ -94,6 +92,7 @@ def extend_imports_help():
 
 if __config__.getboolean("verbosity", "verbose-imports"):
     extend_imports_help()
+
 
 ##############################################################################
 # END

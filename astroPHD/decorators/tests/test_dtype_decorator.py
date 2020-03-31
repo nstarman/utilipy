@@ -7,42 +7,48 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
-"""test functions for dtype_decorator
-"""
+"""Test functions for dtype_decorator."""
 
 __author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
-### IMPORTS
+# IMPORTS
 
-## General
+# GENERAL
+
 import numpy as np
 
-## Project-Specific
+
+# PROJECT-SPECIFIC
+
 from astroPHD.decorators.dtype_decorator import (
     dtypeDecorator,
     dtypeDecoratorMaker,
     # standard types
-    intDecorator, floatDecorator, strDecorator, boolDecorator,
+    intDecorator,
+    floatDecorator,
+    strDecorator,
+    boolDecorator,
     # numpy
-    ndarrayDecorator, ndfloat64Decorator
+    ndarrayDecorator,
+    ndfloat64Decorator,
 )
 
 
 ##############################################################################
-### PARAMETERS
+# PARAMETERS
 
 x = 1
 y = 2.2
 z = [3, 4.4]
-u, uu = '5', '5.5'
+u, uu = "5", "5.5"
 v = False
 w = np.array([7, 8.8])
 
 ##############################################################################
-### dtypeDecorator
+# dtypeDecorator
+
 
 def test_dtypeDecorator_blank():
     """test no-conversion mode of dtypeDecorator
@@ -51,6 +57,7 @@ def test_dtypeDecorator_blank():
     @dtypeDecorator()
     def func(x):
         return x
+
     # /def
 
     assert func(x) == x
@@ -62,6 +69,8 @@ def test_dtypeDecorator_blank():
     assert (func(w) == w).all()
 
     return
+
+
 # /def
 
 
@@ -69,10 +78,11 @@ def test_dtypeDecorator_python_scalars():
     """test standard use of dtypeDecorator
     """
     # defining function
-    @dtypeDecorator(in_dtype=[(0, int),], out_dtype=[(0, float)])
+    @dtypeDecorator(in_dtype=[(0, int)], out_dtype=[(0, float)])
     def func(x):
         assert isinstance(x, int)
         return x
+
     # /def
 
     assert isinstance(func(x), float)
@@ -84,7 +94,7 @@ def test_dtypeDecorator_python_scalars():
     except TypeError:
         pass
     else:
-        raise AssertionError('func([3, 4.4]) should have failed')
+        raise AssertionError("func([3, 4.4]) should have failed")
 
     assert isinstance(func(u), float)
 
@@ -103,6 +113,8 @@ def test_dtypeDecorator_python_scalars():
         pass
     else:
         raise AssertionError("func(np.array([7, 8.8])) should have failed")
+
+
 # /def
 
 
@@ -169,4 +181,4 @@ def test_dtypeDecorator_python_scalars():
 
 
 ##############################################################################
-### END
+# END

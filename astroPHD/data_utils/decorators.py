@@ -16,6 +16,7 @@
 # GENERAL
 
 from typing import Any, Union, Callable, Optional
+from typing_extensions import Literal
 import numpy as np
 
 
@@ -29,7 +30,9 @@ from ..utils import functools
 
 
 def idxDecorator(
-    function: Optional[Callable] = None, *, as_ind: bool = False,
+    function: Optional[Callable] = None,
+    *,
+    as_ind: Union[bool, Literal["flatten"]] = False,
     _doc_fmt: Optional[dict] = None,  # ibid
     _doc_style: Union[str, Callable, None] = None,  # ibid
 ) -> Callable:
@@ -44,10 +47,12 @@ def idxDecorator(
         (default None)
         the function to be decoratored
         if None, then returns decorator to apply.
-    as_ind : bool, optional
+    as_ind : bool of "flatten", optional
         (default False)
         whether to return bool array or indices (``where(bool array == True)``)
-        sets the default behavior for the wrapped function `func`
+        if "flatten", flattens a nested list with only 1 element
+        ie ([0], ) -> [0]
+        sets the default behavior for the wrapped function `func`            
 
     Returns
     -------
@@ -55,54 +60,66 @@ def idxDecorator(
         wrapper for function
         includes the original function in a method `.__wrapped__`
 
+    Other Parameters
+    ----------------
+    _doc_fmt : dict, optional
+        docstring formatter
+        argument into astroPHD.functools.wraps
+    _doc_style : str or Callable, optional
+        docstring style
+        argument into astroPHD.functools.wraps
+
     Notes
     -----
-    Add `as_ind` to the function signature and docstring.
+    Adds `as_ind`, `_flatten` and other parameters to the function
+    signature and docstring.
 
     Examples
     --------
     Use the Standard Decorator:
 
+    >>> x = np.array([0, 2])
     >>> @idxDecorator
-    >>> def func1(x):
+    ... def func1(x):
     ...     return x < 1
-
     >>> func1(x)  # calling normally
-    [True, False]
-    >>> func1(as_ind=True)  # using added kwarg
+    array([ True, False])
+    >>> func1(x, as_ind=True)  # using added kwarg
+    (array([0]),)
+    >>> func1(x, as_ind="flatten")  # and flattening
     array([0])
 
     Set a Different Default:
 
     >>> @idxDecorator(as_ind=True)
-    >>> def func2(x):
+    ... def func2(x):
     ...     return x < 1
 
     >>> func2(x)  # calling normally
-    array([0])
-    >>> func2(as_ind=False)  # using added kwarg
-    array([True, False])
+    (array([0]),)
+    >>> func2(x, as_ind=False)  # using added kwarg
+    array([ True, False])
 
     Making a New Decorator:
 
-    >>> trueidxdec = idxDecorator(as_ind=True)
+    >>> trueidxdec = idxDecorator(as_ind="flatten")
     >>> @trueidxdec
-    >>> def func3(x):
-            return x < 1
+    ... def func3(x):
+    ...     return x < 1
     >>> func3(x)  # calling normally
     array([0])
-    >>> func3(as_ind=False)  # using added kwarg
-    array([True, False])
+    >>> func3(x, as_ind=False)
+    array([ True, False])
 
     Wrapping Existing Functions
 
     >>> def func(x):
-            return x < 1
+    ...     return x < 1
     >>> newfunc = idxDecorator(func, as_ind=True)
     >>> newfunc(x)
-        array([0])
-    >>> newfunc(x)
-        array([True, False])
+    (array([0]),)
+    >>> newfunc(x, as_ind=False)
+    array([ True, False])
 
     """
     if function is None:  # allowing for optional arguments
@@ -114,15 +131,30 @@ def idxDecorator(
 
         Other Parameters
         ----------------
-        as_ind: bool
+        as_ind : bool or "flatten", optional
             (default {as_ind})
             whether to return a boolean array, or array of indices.
 
         """
         return_ = function(*args, **kwargs)
 
-        if as_ind:  # return indices
-            return np.where(np.asarray(return_) == True)
+        # determine whether to return indices or bool array
+        if as_ind:  # works for bool or full str
+
+            # get the indices
+            return_ = np.where(np.asarray(return_) == True)
+
+            # determine whether to return as-is, or flatten
+            if as_ind == "flatten":
+                if len(return_) == 1:  # nested list with only 1 element
+                    return return_[0]
+                else:  # not a valid option
+                    raise ValueError
+            # do not flatten
+            else:
+                return return_
+
+        # return a bool array
         else:
             return return_
 

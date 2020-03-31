@@ -50,11 +50,11 @@ from .dtype_decorator import (
 
 
 def store_function_input(
-    function: Callable=None,
+    function: Callable = None,
     *,
     store_inputs: bool = True,
-    _doc_style: str="numpy",
-    _doc_fmt: Dict[str, Any]={}
+    _doc_style: str = "numpy",
+    _doc_fmt: Dict[str, Any] = {}
 ):
     """Store Function Inputs.
 

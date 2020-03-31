@@ -239,8 +239,6 @@ class ObjDict(OrderedDict):
     def __reduce__(self) -> Tuple[Callable, str, odict_items]:
         """Reduction method for serialization.
 
-        Info
-        ----
         structured as:
         1. the class
         2. (ObjDict name, )
@@ -270,8 +268,6 @@ class ObjDict(OrderedDict):
     ):
         """Dump to pickle file.
 
-        Info
-        ----
         uses .utils.pickle.dump
 
         """
@@ -306,8 +302,6 @@ class ObjDict(OrderedDict):
     ):
         """Load from pickle file.
 
-        Info
-        ----
         uses .utils.pickle.load
 
         """

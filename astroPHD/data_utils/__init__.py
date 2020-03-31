@@ -17,7 +17,6 @@ __author__ = "Nathaniel Starkman"
 
 __all__ = [
     "idxDecorator",
-
 ]
 
 
@@ -28,10 +27,7 @@ from .decorators import idxDecorator
 from .select import *
 
 # import top=level directories
-from . import (
-    decorators,
-    select
-)
+from . import decorators, select
 
 
 ##############################################################################

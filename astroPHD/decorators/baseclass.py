@@ -291,9 +291,7 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 
     # /def
 
-    def __new__(
-        cls: type, function: Optional[Callable] = None, **kwargs: Any
-    ):
+    def __new__(cls: type, function: Optional[Callable] = None, **kwargs: Any):
         """Make new decorator instance.
 
         Parameters

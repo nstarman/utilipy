@@ -82,11 +82,12 @@ def _inRange(
 
     Examples
     --------
-    >>> x = array([[ 0,  1],
-    ...            [10, 11]])
+    >>> x = np.array([[ 0,  1],
+    ...               [10, 11]])
     >>> rng = [[0, 3], [9, 11]]
     >>> _inRange(x, rng)
-    array([[True, True], [True, False]])
+    array([[ True,  True],
+           [ True, False]])
 
     """
     if len(x.shape) == 1:  # 1D
@@ -172,10 +173,11 @@ def inRange(
 
     multidimensional arg:
 
-    >>> x = array([[ 0,  1], [10, 11]])
+    >>> x = np.array([[ 0,  1], [10, 11]])
     >>> rng = [[0, 3], [9, 11]]
     >>> inRange(x, rng=rng)
-    array([[True, True ], [True, False]])
+    array([[ True,  True],
+           [ True, False]])
 
     TODO
     ----

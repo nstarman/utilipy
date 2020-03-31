@@ -34,25 +34,39 @@ class NameSpace:
 
     @staticmethod
     def test_func(
-        x: "X", y, a: int = 1, b=2, *args: str, j: "A" = "a", k="b", **kw: dict
-    ) -> "return":
+        x: int, y, a: int = 1, b=2, *args: str, j: str = "a", k="b", **kw: dict
+    ) -> bool:
         """Docstring."""
-        pass
+        return True
+
+    # /def
 
     def appendable_func(x, y):
         """Docstring."""
         pass
 
+    # /def
+
     def no_arg_func():
         """Docstring."""
         pass
+
+    # /def
 
     class ExceptEquality(object):
         """Docstring for ExceptEquality."""
 
         def __eq__(self, other):
+            """No Equality."""
+            other
             raise Exception
 
+        # /def
+
+    # /class
+
+
+# /class
 
 NameSpace.NEQ = NameSpace.ExceptEquality()
 
@@ -222,12 +236,12 @@ def test_get_annotations_from_signature():
     annotations = inspect.get_annotations_from_signature(signature)
 
     assert annotations == {
-        "x": "X",
+        "x": int,
         "a": int,
         "args": str,
-        "j": "A",
+        "j": str,
         "kw": dict,
-        "return": "return",
+        "return": bool,
     }
 
 
@@ -297,7 +311,7 @@ def test_modify_parameter():
     assert parameters[1].annotation == "YY"
 
     # not changed
-    assert parameters[0].annotation == "X"
+    assert parameters[0].annotation == int
     assert parameters[1].name == "y"
 
     return
@@ -521,7 +535,7 @@ def test_FullerSignature():
     assert parameters[1].annotation == "YY"
 
     # not changed
-    assert parameters[0].annotation == "X"
+    assert parameters[0].annotation == int
     assert parameters[1].name == "y"
 
     # ------------------

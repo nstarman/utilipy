@@ -14,7 +14,9 @@
 __author__ = "Nathaniel Starkman"
 __credit__ = "astropy"
 
+
 __all__ = ["unit_output_decorator", "QuantityInputOutput", "quantity_io"]
+
 
 ##############################################################################
 # IMPORTS
@@ -105,10 +107,10 @@ def unit_output_decorator(
             allows for conversions such as:
 
             >>> import astropy.units as u
-            ... x = 10 * u.km * u.s
-            ... bases = [2 * u.km, u.s]
-            ... x.decompose(bases=basesConversionFunction(bases))
-            5  (2 km s)
+            >>> x = 10 * u.km * u.s
+            >>> bases = [u.Unit(2 * u.km), u.s]
+            >>> x.decompose(bases=bases)
+            <Quantity 5. 2 km s>
 
     Returns
     -------
@@ -134,6 +136,7 @@ def unit_output_decorator(
                                decompose)
 
     """
+
     def wrapper(func: Callable):
         @wraps(func)
         def wrapped(
@@ -213,10 +216,11 @@ class QuantityInputOutput(object):
             tries wrapping in ``Unit()``.
             allows for conversions such as:
 
+            >>> import astropy.units as u
             >>> x = 10 * u.km * u.s
-            ... bases = [2 * u.km, u.s]
-            ... x.decompose(bases=basesConversionFunction(bases))
-            5  (2 km s)
+            >>> bases = [u.Unit(2 * u.km), u.s]
+            >>> x.decompose(bases=bases)
+            <Quantity 5. 2 km s>
 
     assumed_units: dict, optional
         dictionary of default units
@@ -341,9 +345,7 @@ class QuantityInputOutput(object):
         self.decompose = decompose
 
         self.assumed_units = assumed_units
-        self.assume_annotation_units = (
-            assume_annotation_units
-        )
+        self.assume_annotation_units = assume_annotation_units
 
         self.decorator_kwargs = decorator_kwargs
 
@@ -562,14 +564,16 @@ decompose : bool or list
     since this will decompose to desired bases then return the value in those bases.
 
     .. note::
-        for things which are not (u.Unit, u.core.IrreducibleUnit), tries wrapping in Unit()
+
+        for things which are not (u.Unit, u.core.IrreducibleUnit),
+        tries wrapping in Unit()
         this allows things such as::
 
             >>> import astropy.units as u
-            ... x = 10 * u.km * u.s
-            ... bases = [2 * u.km, u.s]
-            ... x.decompose(bases=basesConversionFunction(bases))
-            5  (2 km s)
+            >>> x = 10 * u.km * u.s
+            >>> bases = [u.Unit(2 * u.km), u.s]
+            >>> x.decompose(bases=bases)
+            <Quantity 5. 2 km s>
 
         (this would normally return an error)
 
@@ -578,16 +582,20 @@ assumed_units: dict
     (default {})
 
     >>> import astropy.units as u
-    ... dfu = {x: u.km}
-    ... x = 10
-    ... y = 20*u.km
-    ... def add(x, y): return x + y
-    ... add(x, y)
-    20 u.km
+    >>> from astroPHD.units.decorators import QuantityInputOutput
+    >>> dfu = {'x': u.km}
+    >>> x = 10
+    >>> y = 20*u.km
+    >>> @QuantityInputOutput.as_decorator(assumed_units=dfu)
+    ... def add(x, y):
+    ...     return x + y
+    >>> add(x, y)
+    <Quantity 30. km>
 """
 
 
 ###############################################################################
+
 
 quantity_io = QuantityInputOutput.as_decorator
 

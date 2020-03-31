@@ -14,16 +14,19 @@ __author__ = "Nathaniel Starkman"
 
 ##############################################################################
 
+
 def test_import_matplotlib():
-    """Test _inRange."""
+    """Test import matplotlib."""
     from astroPHD.imports import matplotlib_imports as imports
 
     imports.mpl
     imports.plt
     imports.cm, imports.colors
-    imports.Axes3D
+    # imports.Axes3D
 
     return
+
+
 # /def
 
 
@@ -48,6 +51,8 @@ def test_import_matplotlib_has_ipython():
         imports.configure_matplotlib
 
     return
+
+
 # /def
 
 ##############################################################################

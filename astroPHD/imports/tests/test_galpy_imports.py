@@ -26,6 +26,7 @@ else:
 
 ##############################################################################
 
+
 def test_import_galpy():
     """Test galpy imports when not in IPython environment"""
     if _do_galpy_import:
@@ -39,6 +40,8 @@ def test_import_galpy():
         imports.bovy_conversion, imports.bovy_coords
 
     return
+
+
 # /def
 
 

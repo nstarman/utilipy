@@ -7,8 +7,7 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""test functions for extended imports."""
+"""Test functions for extended imports."""
 
 
 ##############################################################################
@@ -16,9 +15,9 @@
 
 # GENERAL
 
-import warnings
-
-warnings.simplefilter("ignore", RuntimeWarning)
+# fmt: off
+import warnings; warnings.simplefilter("ignore", RuntimeWarning)
+# fmt: on
 
 
 # PROJECT-SPECIFIC
@@ -31,7 +30,6 @@ from .. import extended_imports as imports
 
 def test_import_extended():
     """Test Extended Imports."""
-
     imports.norm
     imports.binned_stats
 

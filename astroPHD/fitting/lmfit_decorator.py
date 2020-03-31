@@ -22,11 +22,9 @@ from typing import Any, Union, Callable, Optional
 from wrapt import ObjectProxy
 
 try:
-    import lmfit
+    from lmfit import Parameters
 except ImportError:
     Parameters = Any
-else:
-    from lmfit import Parameters
 
 # PROJECT-SPECIFIC
 
@@ -58,13 +56,13 @@ class scipy_residual_to_lmfit(ObjectProxy):
     add a .lmfit function for use in lmfit minimizations
     see https://lmfit.github.io/lmfit-py/fitting.html
 
-    >>> @scipy_residual_to_lmfit(['amp', 'phase', 'freq', 'decay'])
+    >>> @scipy_residual_to_lmfit(var_order=['amp', 'phase', 'freq', 'decay'])
     ... def residual(vars, x, data, eps_data):
     ...     amp, phase, freq, decay = vars
     ...     # calculate residual here
     ...     return res
 
-    TODO
+    Todo
     ----
     since using ObjectProxy, make it compatible with bound functions
     see https://wrapt.readthedocs.io/en/latest/wrappers.html#function-wrappers

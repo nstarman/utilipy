@@ -5,7 +5,12 @@
 
 __author__ = "Nathaniel Starkman"
 
-__all__ = []
+__all__ = [
+    "LogFile",
+    "ObjDict",
+    "wraps",
+    "config",
+]
 
 
 ##############################################################################
@@ -89,8 +94,6 @@ __all_top_imports__ = (
 )
 
 __all__ += list(__all_top_imports__)
-
-__all__ += ["LogFile", "ObjDict", "wraps", "config"]
 
 
 #############################################################################

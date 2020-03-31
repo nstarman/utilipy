@@ -33,9 +33,10 @@ To implement your own inheritance file, simply write a function to this template
         return final_docstring
 
 
-and log this using `custom_inherit.add_style(your_style)`. To permanently save your function,
-define your function within custom_inherit/_style_store.py, and log it in custom_inherit.style_store.__all__.
-Your style will then be available as 'your_style' (i.e. whatever you named the function).
+and log this using `custom_inherit.add_style(your_style)`. To permanently save
+your function, define your function within custom_inherit/_style_store.py, and
+log it in custom_inherit.style_store.__all__. Your style will then be
+available as 'your_style' (i.e. whatever you named the function).
 
 Routine Listings
 ----------------

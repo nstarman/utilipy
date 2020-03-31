@@ -36,7 +36,8 @@ __all__ = [
 
 # GENERAL
 
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Union, Iterable
+from typing_extensions import Literal
 import numpy as np
 
 # PROJECT-SPECIFIC
@@ -72,10 +73,10 @@ class dtypeDecorator:
         in_dtype: Any = None,
         out_dtype: Any = None,
     ):
-        """__new__."""
+        """New dtypeDecorator."""
         self = super().__new__(cls)  # making instance of self
 
-        # correcting if forgot to specify in_dtype= and did not provide a function
+        # correcting if forgot to specify in_dtype and no function
         # in this case, *in_dtype* is stored in *func*
         # need to do func->None, inarags<-func, and out_dtype<-in_dtype
         if not isinstance(func, Callable):
@@ -94,6 +95,7 @@ class dtypeDecorator:
     # /def
 
     def __init__(self, in_dtype: Any = None, out_dtype: Any = None) -> None:
+        """Initialize dtypeDecorator."""
         super().__init__()
 
         # in_dtype
@@ -109,7 +111,14 @@ class dtypeDecorator:
     # /def
 
     def __call__(self, wrapped_func: Callable) -> Callable:
-        # print(self._in_dtype)
+        """Make Decorator.
+
+        Parameters
+        ----------
+        wrapped_func: Callable
+            function to be wrapped
+
+        """
 
         @functools.wraps(wrapped_func)
         def wrapper(*args: Any, **kw: Any) -> Any:
@@ -157,7 +166,7 @@ class dtypeDecorator:
 
 
 def dtypeDecoratorMaker(dtype: Any):
-    """function to make a dtype decorator
+    """Function to make a dtype decorator.
 
     Parameters
     ----------
@@ -173,31 +182,29 @@ def dtypeDecoratorMaker(dtype: Any):
     Examples
     --------
     >>> intDecorator = dtypeDecoratorMaker(int)
-    >>> @intDecorator(inargs=[(0, int), (1, float)], outargs=[(2, int),])
+    >>> @intDecorator(inargs=[0, 1], outargs=2)
     ... def func(x, y, z):
-    ...     print(x, y, z)
-    ...     return x, y, z
-    >>> x, y, z = func(1.1, 2.2, 3.3)
-    1, 2.2, 3.3  # x -> int, y, z remain float within the function
-    >>> print(z, y, z)  # z->int before returned
-    1, 2.2, 3
-    """
+    ...     return x, y, z, (x, y, z)
+    >>> x, y, z, orig = func(1.1, 2.2, 3.3)
+    >>> print(x, y, z, orig)  # z->int before returned
+    1 2 3 (1, 2, 3.3)
 
+    """
+    # define class
     class dtypeDecorator:
-        """ensure arguments are type *dtype*
+        """Ensure arguments are type `dtype`.
 
         Parameters
         ----------
         func : function, optional
             function to decorate
-        inargs : 'all', iterable, or slice, optional
+        inargs : 'all' or iterable or slice or tuple, optional
             - None (default), does nothing
             - 'all': converts all arguments to dtype
             - iterable: convert arguments at index speficied in iterable
                 ex: [0, 2] converts arguments 0 & 2
             - slice: convert all arguments specified by slicer
-
-        outargs : 'all', iterable, or slice
+        outargs : 'all' or iterable or tuple or slice
             - None (default), does nothing
             - 'all': converts all arguments to dtype
             - iterable: convert arguments at index speficied in iterable
@@ -210,26 +217,27 @@ def dtypeDecoratorMaker(dtype: Any):
 
         Examples
         --------
-        intDecorator = dtypeDecoratorMaker(int)
-        @intDecorator(inargs=[0, 1], outargs=[2,])
-        def func(x, y, z):
-            print(x, y, z)
-            return x, y, z
-        # /def
+        >>> intDecorator = dtypeDecoratorMaker(int)
+        >>> @intDecorator(inargs=[0, 1], outargs=2)
+        ... def func(x, y, z):
+        ...     return x, y, z, (x, y, z)
+        ... # /def
+        >>> x, y, z, orig = func(1.1, 2.2, 3.3)
+        >>> print(x, y, z, orig)
+        1 2 3 (1, 2, 3.3)
 
-        x, y, z = func(1.1, 2.2, 3.3)
-        >>> 1, 2, 3.3  # x,y -> int, z remains float within the function
-        print(z, y, z)  # z->int before returned
-        >>> 1, 2, 3
         """
 
         def __new__(
-            cls, func: Callable = None, inargs: Any = None, outargs: Any = None
+            cls,
+            func: Callable = None,
+            inargs: Union[Literal["all"], slice, Iterable] = None,
+            outargs: Union[Literal["all"], slice, Iterable] = None,
         ):
             """__new__."""
             self = super().__new__(cls)  # making instance of self
 
-            # correcting if forgot to specify inargs= and did not provide a func
+            # correcting if forgot to specify inargs and did not provide a func
             # in this case, *inargs* is stored in *func*
             # need to do func->None, inarags<-func, and outargs<-inargs
             if not isinstance(func, Callable):
@@ -247,7 +255,11 @@ def dtypeDecoratorMaker(dtype: Any):
 
         # /def
 
-        def __init__(self, inargs: Any = None, outargs: Any = None) -> None:
+        def __init__(
+            self,
+            inargs: Union[Literal["all"], slice, Iterable] = None,
+            outargs: Union[Literal["all"], slice, Iterable] = None,
+        ) -> None:
             super().__init__()
 
             # data type
@@ -256,16 +268,18 @@ def dtypeDecoratorMaker(dtype: Any):
                 self.dtype = lambda x: x
 
             # inargs
-            self._inargs = inargs
             if inargs == "all":
                 self._inargs = slice(None)
+            else:
+                self._inargs = inargs
 
             # outargs
-            self._outargs = outargs
             if outargs == "all":
                 self._outargs = slice(None)
-            if np.isscalar(self._outargs):
-                self._outargs = [self._outargs]
+            elif np.isscalar(outargs):
+                self._outargs = [outargs]
+            else:
+                self._outargs = outargs
 
         # /def
 
@@ -301,7 +315,7 @@ def dtypeDecoratorMaker(dtype: Any):
                 if self._outargs is None:  # no conversion needed
                     return return_
                 else:
-                    try:  # need to figure out whether return_ is a scalar or a list
+                    try:  # figure out whether return_ is a scalar or list
                         return_[0]
                     except IndexError:  # scalar output
                         inds = np.arange(len(args), dtype=self._dtype)[

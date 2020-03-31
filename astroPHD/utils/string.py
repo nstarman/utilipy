@@ -17,9 +17,7 @@ FormatTemplate
 
 __author__ = "Nathaniel Starkman"
 
-__all__ = [
-    "FormatTemplate"
-]
+__all__ = ["FormatTemplate"]
 
 
 ###############################################################################
@@ -38,7 +36,7 @@ from string import *
 ###############################################################################
 # __ALL__
 
-if hasattr(string, '__all__'):
+if hasattr(string, "__all__"):
     __all__ += string.__all__
 else:
     __all__ += list(dir(string))
@@ -54,25 +52,22 @@ class FormatTemplate(string.Template):
 
     Examples
     --------
-    >>> re.sub('$a ${b} {c}', r'${', s)
-    '$a ${b} ${c}'
-
     >>> s = FormatTemplate('$a ${b} {c}')
-    ... s.formate(a=1, b=2, c=3)
-    "1 2 3"
+    >>> s.format(a=1, b=2, c=3)
+    '1 2 3'
 
     """
 
     def __init__(self, s):
-        """Make Template with string in Template, not `.format`, syntax.
+        r"""Make Template with string in Template, not `.format`, syntax.
 
         Examples
         --------
-        >>> re.sub('$a ${b} {c}', r'${', s)
+        >>> re.sub(r"(?<!\$)({)", r"${", '$a ${b} {c}')
         '$a ${b} ${c}'
 
         """
-        s = re.sub(r'(?<!\$)({)', r'${', s)  # replace '{' with '${'
+        s = re.sub(r"(?<!\$)({)", r"${", s)  # replace '{' with '${'
         super().__init__(s)
 
     # /def
@@ -92,6 +87,7 @@ class FormatTemplate(string.Template):
         return self.safe_substitute()
 
     # /def
+
 
 # /class
 

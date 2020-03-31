@@ -12,9 +12,7 @@
 
 __author__ = "Nathaniel Starkman"
 
-__all__ = [
-    "InheritDocstrings"
-]
+__all__ = ["InheritDocstrings"]
 
 
 ##############################################################################

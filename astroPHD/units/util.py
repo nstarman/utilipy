@@ -9,9 +9,7 @@
 #
 # ----------------------------------------------------------------------------
 
-### Dotring and Metadata
-"""**DOCSTRING**
-"""
+"""Units Util."""
 
 __author__ = "Nathaniel Starkman"
 
@@ -63,7 +61,7 @@ def unit_output(
         * bool: True, False for decomposing.
         * list: bases for ``.decompose(bases=[])``
 
-            will first decompose, then apply ``unit``, ``to_value``, ``equivalencies``
+            will first decompose, then apply `unit`, `to_value`, `equivalencies`
 
         Decomposing then converting wastes time, since
         ``.to(unit, equivalencies)`` internally does conversions.
@@ -82,10 +80,10 @@ def unit_output(
             allows for conversions such as:
 
             >>> import astropy.units as u
-            ... x = 10 * u.km * u.s
-            ... bases = [2 * u.km, u.s]
-            ... x.decompose(bases=basesConversionFunction(bases))
-            5  (2 km s)
+            >>> x = 10 * u.km * u.s
+            >>> bases = [u.Unit(2 * u.km), u.s]
+            >>> x.decompose(bases=bases)
+            <Quantity 5. 2 km s>
 
     Returns
     -------
@@ -104,12 +102,13 @@ def unit_output(
     How to apply in a function directly
 
     >>> from astropy import units as u
-    ... def example_function(x, **kw):
+    >>> def example_function(x, **kw):
     ...     return unit_output(x, unit=kw.get('unit', None),
     ...                        to_value=kw.get('to_value', False),
     ...                        equivalencies=kw.get('equivalencies', []),
     ...                        decompose=kw.get('decompose', []))
-    ... example_function(10*u.kpc, unit=u.m, to_value=True)
+    >>> example_function(10*u.km, unit=u.m, to_value=True)
+    10000.0
 
     """
     # fast check to do nothing

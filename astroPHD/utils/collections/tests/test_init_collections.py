@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -7,7 +6,6 @@
 #
 # ----------------------------------------------------------------------------
 
-### Docstring and Metadata
 """tests for util/collections/__init__
 """
 
@@ -17,15 +15,19 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# General
-import numpy as np
+# GENERAL
 
-# Project-Specific
+# import numpy as np
+
+
+# PROJECT-SPECIFIC
+
 from ... import collections
 
 
 ##############################################################################
 # Tests
+
 
 def test_imported():
     """test standard use of idxDecorator
@@ -36,6 +38,8 @@ def test_imported():
     assert collections.ObjDict is ObjDict
 
     return
+
+
 # /def
 
 

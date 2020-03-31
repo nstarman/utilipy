@@ -17,13 +17,11 @@ ReadOnlyDictionaryWrapper
 """
 
 __author__ = "Nathaniel Starkman"
-__credit__ = '''
+__credit__ = """
     ReadOnlyDictionaryWrapper: https://stackoverflow.com/a/28452633
-'''
+"""
 
-__all__ = [
-    "ReadOnlyDictionaryWrapper"
-]
+__all__ = ["ReadOnlyDictionaryWrapper"]
 
 
 ###############################################################################
@@ -52,22 +50,27 @@ class ReadOnlyDictionaryWrapper(Mapping):
     def __init__(self, data):
         """__init__."""
         self._data = data
+
     # /def
 
     def __getitem__(self, key):
         """__getitem__."""
         return self._data[key]
+
     # /def
 
     def __len__(self):
         """__len__."""
         return len(self._data)
+
     # /def
 
     def __iter__(self):
         """__iter__."""
         return iter(self._data)
+
     # /def
+
 
 # /class
 

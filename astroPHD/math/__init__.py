@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
@@ -8,19 +7,18 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""initialization file for math."""
+"""Initialization file for math."""
 
 __author__ = "Nathaniel Starkman"
 
 ##############################################################################
 # IMPORTS
 
-#  GENERAL
-from numpy import *
 
 # PROJECT-SPECIFIC
+
 from .math import quadrature, logsumexp
+
 
 ##############################################################################
 # DONE

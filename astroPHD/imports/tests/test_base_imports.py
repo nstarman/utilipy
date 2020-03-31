@@ -14,6 +14,7 @@ __author__ = "Nathaniel Starkman"
 
 ##############################################################################
 
+
 def test_import_base():
     """Test base imports when not in ipython environment."""
     from astroPHD.imports import base_imports as imports
@@ -34,6 +35,8 @@ def test_import_base():
     imports.LogFile
 
     return
+
+
 # /def
 
 
@@ -67,6 +70,8 @@ def test_import_base_has_ipython():
         imports.add_raw_code_toggle
 
     return
+
+
 # /def
 
 

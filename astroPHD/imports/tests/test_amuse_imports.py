@@ -29,6 +29,7 @@ else:
 
 ##############################################################################
 
+
 def test_import_amuse():
     """Test _inRange."""
     if _do_amuse_import:
@@ -43,6 +44,8 @@ def test_import_amuse():
         imports.bridge
 
     return
+
+
 # /def
 
 

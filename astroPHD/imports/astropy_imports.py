@@ -8,7 +8,6 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
 """Base set of imports for the astropy code.
 
 Notes

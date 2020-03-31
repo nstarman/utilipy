@@ -47,8 +47,7 @@ __all__ = [
 
 from typing import Union, Any, Optional, Dict
 from typing_extensions import Literal
-import os
-from os import path
+import os.path
 from configparser import ConfigParser
 
 ##############################################################################

@@ -13,6 +13,10 @@
 
 __author__ = "Nathaniel Starkman"
 
+
+__all__ = []
+
+
 ##############################################################################
 # IMPORTS
 
@@ -156,7 +160,13 @@ def_unit(
 # GeV=named('giga electron volt','GeV', 1e9*eV)
 # E_h = named('hartree energy', 'E_h', constants.Hartree_energy.as_unit())
 # amu = named('atomic mass unit', 'amu', constants.u.as_unit())
-# Ry = named('rydberg unit', 'Ry', (constants.Rydberg_constant * constants.h * constants.c).as_quantity_in(eV).as_unit())
+# Ry = named(
+#     "rydberg unit",
+#     "Ry",
+#     (constants.Rydberg_constant * constants.h * constants.c)
+#     .as_quantity_in(eV)
+#     .as_unit(),
+# )
 
 def_unit(
     ["e"],
