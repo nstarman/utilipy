@@ -15,10 +15,8 @@ scratch/
 wiki/*
 
 # # just to make sure
-# !source/conf.py
-# !source/README.md
-# !source/index.rst
-# !source/modules.rst
+api
+_build
 
 ###############################################################################
 # Default

@@ -6,4 +6,4 @@
 	url = https://nstarman@github.com/nstarman/starkplot.git
 [submodule "wiki"]
 	path = wiki
-	url = https://nstarman@github.com/nstarman/astroPHD.wiki.git
+	url = https://nstarman@github.com/nstarman/utilipy.wiki.git

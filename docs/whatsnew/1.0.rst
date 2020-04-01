@@ -1,0 +1,10 @@
+.. _whatsnew-1.0:
+
+***************************
+What's New in utilipy v1.0?
+***************************
+
+Overview
+========
+
+adopted the Astropy-affiliate template

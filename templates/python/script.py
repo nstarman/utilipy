@@ -42,7 +42,7 @@ from typing import Optional
 
 # CUSTOM
 
-from astroPHD import LogFile
+from utilipy import LogFile
 
 # PROJECT-SPECIFIC
 
@@ -51,13 +51,13 @@ from astroPHD import LogFile
 # PARAMETERS
 
 # General
-_PLOT = True                                # Plot the output
+_PLOT = True  # Plot the output
 
 # Log file
 _VERBOSE = 0  # Degree of verbosity
-_LOGFILE = LogFile.open(f'./{__file__}.log',  # File
-                        header='script',  # script header
-                        verbose=_VERBOSE)  # setting as default
+_LOGFILE = LogFile.open(
+    f"./{__file__}.log", header="script", verbose=_VERBOSE  # File  # script header
+)  # setting as default
 
 
 ##############################################################################
@@ -110,19 +110,19 @@ def make_parser(inheritable=False):
     parser = argparse.ArgumentParser(
         description="",
         add_help=~inheritable,
-        conflict_handler="resolve" if ~inheritable else 'error'
+        conflict_handler="resolve" if ~inheritable else "error",
     )
 
     return parser
+
 
 # /def
 
 
 # ------------------------------------------------------------------------
 
-def main(
-    args: Optional[list] = None, opts: Optional[argparse.Namespace] = None
-):
+
+def main(args: Optional[list] = None, opts: Optional[argparse.Namespace] = None):
     """Script Function.
 
     Parameters
@@ -139,11 +139,12 @@ def main(
         pass
     else:
         if opts is not None:
-            warnings.warn('Not using `opts` because `args` are given')
+            warnings.warn("Not using `opts` because `args` are given")
         parser = make_parser()
         opts = parser.parse_args(args)
 
     return
+
 
 # /def
 

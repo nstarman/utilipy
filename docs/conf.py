@@ -68,10 +68,12 @@ rst_epilog += """
 """
 
 # modindex formatting
-modindex_common_prefix = ['astroPHD.']
+modindex_common_prefix = ['utilipy.']
 
 # extensions
-extensions += ["sphinx.ext.todo"]
+extensions += ["sphinx.ext.todo", "nbsphinx"]
+# not sure if this is needed or if astropy already does this, but
+extensions += ['sphinx_automodapi.smart_resolver']
 
 
 # -- Project information ------------------------------------------------------
@@ -115,7 +117,7 @@ release = package.__version__
 
 
 html_theme_options = {
-    "logotext1": "astroPHD",  # white,  semi-bold
+    "logotext1": "utilipy",  # white,  semi-bold
     "logotext2": "",  # orange, light
     "logotext3": ":docs",  # white,  light
 }
