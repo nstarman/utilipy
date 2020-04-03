@@ -30,7 +30,12 @@ from ..config import __config__
 ##############################################################################
 # PARAMETERS
 
-_SHOW_WARNINGS: bool = __config__.getboolean("verbosity", "warnings")
+try:
+    __config__.getboolean("verbosity", "warnings")
+except Exception:
+    _SHOW_WARNINGS: bool = True
+else:
+    _SHOW_WARNINGS: bool = __config__.getboolean("verbosity", "warnings")
 
 
 ###############################################################################

@@ -6,4 +6,5 @@ warnings = True
 seaborn-defaults = False
 
 [util]
-frozen-constants = False
+frozen-constants = True
+

@@ -1,6 +1,6 @@
-*****************
-utilipy on import
-*****************
+*******************
+`utilipy` on import
+*******************
 
 This is the documentation for the top-level of ``utilipy``, ie, what happens on import.
 
@@ -21,7 +21,6 @@ Subpackages
    constants/index
    data_utils/index
    decorators/index
-   fitting/index
    imports/index
    ipython/index
    math/index

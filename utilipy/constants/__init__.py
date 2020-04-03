@@ -3,18 +3,17 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : constants
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
 
-"""constants.
+"""Astropy Constants.
 
-Astropy constants, with frozen version for reproducibility
+Astropy constants, with a frozen version for reproducibility.
 
 float versions of the constants accessible through `values` module
 this includes frozen version for reproducibility
-to access frozen verion, set `frozen-constants=True` in astropy config
+to access frozen version, set `frozen-constants=True` in utilipy config
 
 
 References

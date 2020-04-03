@@ -85,7 +85,7 @@ def _inRange(
     >>> x = np.array([[ 0,  1],
     ...               [10, 11]])
     >>> rng = [[0, 3], [9, 11]]
-    >>> _inRange(x, rng)
+    >>> _inRange(x, rng) # doctest: +SKIP
     array([[ True,  True],
            [ True, False]])
 
@@ -168,14 +168,14 @@ def inRange(
 
     >>> x = np.arange(5)
     >>> y = np.arange(5) + 10
-    >>> inRange(x, y, rng=[[0, 3], [10, 15]])
+    >>> inRange(x, y, rng=[[0, 3], [10, 15]]) # doctest: +SKIP
     array([ True,  True,  True, False, False])
 
     multidimensional arg:
 
     >>> x = np.array([[ 0,  1], [10, 11]])
     >>> rng = [[0, 3], [9, 11]]
-    >>> inRange(x, rng=rng)
+    >>> inRange(x, rng=rng) # doctest: +SKIP
     array([[ True,  True],
            [ True, False]])
 

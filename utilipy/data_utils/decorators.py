@@ -96,8 +96,8 @@ def idxDecorator(
     ...     return x < 1
 
     calling normally
-    >>> func1(x)
-    array([ True, False])
+    >>> func1(x) # doctest: +SKIP
+    array([ True, False], dtype=bool))
 
     using added kwarg
     >>> func1(x, as_ind=True)
@@ -116,7 +116,7 @@ def idxDecorator(
     >>> func2(x)
     (array([0]),)
 
-    >>> func2(x, as_ind=False)
+    >>> func2(x, as_ind=False) # doctest: +SKIP
     array([ True, False])
 
     Making a New Decorator:
@@ -127,7 +127,7 @@ def idxDecorator(
     ...     return x < 1
     >>> func3(x)
     array([0])
-    >>> func3(x, as_ind=False)
+    >>> func3(x, as_ind=False) # doctest: +SKIP
     array([ True, False])
 
     Wrapping Existing Functions
@@ -137,7 +137,7 @@ def idxDecorator(
     >>> newfunc = idxDecorator(func, as_ind=True)
     >>> newfunc(x)
     (array([0]),)
-    >>> newfunc(x, as_ind=False)
+    >>> newfunc(x, as_ind=False) # doctest: +SKIP
     array([ True, False])
 
     """

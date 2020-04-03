@@ -3,7 +3,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : plotly imports
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
@@ -37,6 +36,7 @@ Plotly reference [#]_.
 
 __author__ = "Nathaniel Starkman"
 
+__all__ = ["plotly_imports_help"]
 
 ##############################################################################
 # HELPER FUNCTIONS
@@ -69,6 +69,7 @@ else:
     from plotly.subplots import make_subplots
 
 # /if
+
 
 ##############################################################################
 # Printing Information

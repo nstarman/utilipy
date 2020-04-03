@@ -4,7 +4,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : unit decorators
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
@@ -81,8 +80,8 @@ def unit_output(
 
             >>> x = 10 * u.km * u.s
             >>> bases = [u.Unit(2 * u.km), u.s]
-            >>> x.decompose(bases=bases)
-            <Quantity 5. 2 km s>
+            >>> x.decompose(bases=bases) # doctest: +SKIP
+            <Quantity 5.0 2 km s>
 
     Returns
     -------

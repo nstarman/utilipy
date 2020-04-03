@@ -29,7 +29,7 @@ __all__ = [
 
 # GENERAL
 
-import pickle
+import pickle as _pickle
 import warnings
 from typing import Optional, Tuple, Any
 
@@ -58,7 +58,7 @@ _LOGFILE = LogFile(header=False)
 # CODE
 
 
-@format_doc(None, odoc="\n\t".join(pickle.dump.__doc__.split("\n")))
+@format_doc(None, odoc="\n\t".join(_pickle.dump.__doc__.split("\n")))
 def dump(
     obj: Any,
     fname: str,
@@ -73,12 +73,10 @@ def dump(
 ) -> None:
     """Wrap pickle.dump.
 
-    *fname* replaces *file* and is a string for the filename
+    `fname` replaces *file* and is a string for the filename
     this file is auto opened and closed
 
     pickle.dump docstring:
-
-    ::
 
         {odoc}
 
@@ -99,7 +97,7 @@ def dump(
         if use_dill:
             dill.dump(obj, file, protocol=protocol, fix_imports=fix_imports)
         else:
-            pickle.dump(obj, file, protocol=protocol, fix_imports=fix_imports)
+            _pickle.dump(obj, file, protocol=protocol, fix_imports=fix_imports)
 
     return
 
@@ -160,7 +158,7 @@ def dump_many(
 # --------------------------------------------------------------------------
 
 
-@format_doc(None, odoc="\n\t".join(pickle.load.__doc__.split("\n")))
+@format_doc(None, odoc="\n\t".join(_pickle.load.__doc__.split("\n")))
 def load(
     *fnames: str,
     fopt: str = "b",
@@ -178,8 +176,6 @@ def load(
     this file is auto opened and closed
 
     pickle.load docstring:
-
-    ::
 
         {odoc}
 
@@ -209,7 +205,7 @@ def load(
                     errors=errors,
                 )
             else:
-                res[i] = pickle.load(
+                res[i] = _pickle.load(
                     file,
                     fix_imports=fix_imports,
                     encoding=encoding,

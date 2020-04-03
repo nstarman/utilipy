@@ -3,7 +3,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : ipython.plot
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
@@ -16,19 +15,30 @@ Routine Listings
 configure_matplotlib
     configure matplotlib Jupyter magic setting.
 
+References
+----------
+Ipython [1]_
+
+.. [1] Fernando Pérez, Brian E. Granger, IPython: A System for Interactive
+    Scientific Computing, Computing in Science and Engineering, vol. 9,
+    no. 3, pp. 21-29, May/June 2007, doi:10.1109/MCSE.2007.53.
+    URL: https://ipython.org
+
 """
 
 __author__ = "Nathaniel Starkman"
 
 
+__all__ = [
+    "configure_matplotlib",
+]
+
+
 ##############################################################################
 # IMPORTS
 
-# GENERAL
 from IPython import get_ipython
 import warnings
-
-# PROJECT-SPECIFIC
 
 
 ##############################################################################

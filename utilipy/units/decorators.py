@@ -3,7 +3,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : unit decorators
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
@@ -108,8 +107,8 @@ def unit_output_decorator(
 
             >>> x = 10 * u.km * u.s
             >>> bases = [u.Unit(2 * u.km), u.s]
-            >>> x.decompose(bases=bases)
-            <Quantity 5. 2 km s>
+            >>> x.decompose(bases=bases) # doctest: +SKIP
+            <Quantity 5.0 2 km s>
 
     Returns
     -------
@@ -217,7 +216,7 @@ class QuantityInputOutput(object):
 
             >>> x = 10 * u.km * u.s
             >>> bases = [u.Unit(2 * u.km), u.s]
-            >>> x.decompose(bases=bases)
+            >>> x.decompose(bases=bases) # doctest: +SKIP
             <Quantity 5. 2 km s>
 
     assumed_units: dict, optional
@@ -569,7 +568,7 @@ decompose : bool or list
 
             >>> x = 10 * u.km * u.s
             >>> bases = [u.Unit(2 * u.km), u.s]
-            >>> x.decompose(bases=bases)
+            >>> x.decompose(bases=bases) # doctest: +SKIP
             <Quantity 5. 2 km s>
 
         (this would normally return an error)
@@ -585,8 +584,8 @@ assumed_units: dict
     >>> @QuantityInputOutput.as_decorator(assumed_units=dfu)
     ... def add(x, y):
     ...     return x + y
-    >>> add(x, y)
-    <Quantity 30. km>
+    >>> add(x, y) # doctest: +SKIP
+    <Quantity 30.0 km>
 """
 
 

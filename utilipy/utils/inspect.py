@@ -8,6 +8,7 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # GENERAL
+
 from inspect import *  # so can be a drop-in for `inspect`
 import inspect
 from inspect import (
@@ -38,15 +39,15 @@ __all__ = [
     "VAR_POSITIONAL",
     "KEYWORD_ONLY",
     "VAR_KEYWORD",
-    "_void",
-    "_empty",
+    # "_void",
+    # "_empty",
     "_placehold",
-    "FullerArgSpec",
     "_is_empty",
     "_is_void",
     "_is_placehold",
     "_is_placeholder",
-    "getfullargspec",
+    "FullerArgSpec",
+    "getfullerargspec",
     "get_annotations_from_signature",
     "get_defaults_from_signature",
     "get_kwdefaults_from_signature",
@@ -62,9 +63,9 @@ __all__ = [
     "fuller_signature",
 ]
 
-__all__ += (
-    inspect.__all__ if hasattr(inspect, "__all__") else list(dir(inspect))
-)
+# __all__ += (
+#     inspect.__all__ if hasattr(inspect, "__all__") else list(dir(inspect))
+# )
 
 
 ##############################################################################
@@ -77,8 +78,8 @@ KEYWORD_ONLY = Parameter.KEYWORD_ONLY
 VAR_KEYWORD = Parameter.VAR_KEYWORD
 
 # placeholders
-_empty = Parameter.empty
-_void = _void
+_empty = Parameter.empty  # TODO: add to RTD
+_void = _void  # TODO: add to RTD
 
 
 class _placehold:
@@ -633,33 +634,22 @@ class FullerSignature(Signature):
     This serves as a bridge, providing methods that return
     the same output as ``getfullargspec``
 
-    Methods
-    -------
-    signature
-    annotations
-    defaults
-    kwdefaults
-    kwonlydefaults
-    modify_parameter
-    insert_parameter
-    drop_parameter
-
     """
-
-    # ------------------------------------------
-
-    # def __init__(self, parameters=None, *, return_annotation,
-    #              # docstring=None,
-    #              __validate_parameters__=True):
-    #     super().__init__(parameters=parameters,
-    #                      return_annotation=return_annotation,
-    #                      __validate_parameters__=__validate_parameters__)
-    #     # self.docstring = docstring
-    #     return
-    # # /def
 
     @classmethod
     def from_callable(cls, obj, *, follow_wrapped=True):
+        """From callable.
+
+        Parameters
+        ----------
+        obj : Callable
+        follow_wrapped : bool
+
+        Returns
+        -------
+        FullerSignature
+
+        """
         sig = super().from_callable(obj, follow_wrapped=follow_wrapped)
         sig = FullerSignature(
             parameters=sig.parameters.values(),

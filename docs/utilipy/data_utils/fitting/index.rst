@@ -4,11 +4,11 @@
 Fitting (`utilipy.fitting`)
 ***************************
 
-.. currentmodule:: utilipy.fitting
+.. currentmodule:: utilipy.data_utils.fitting
 
 
 
 Reference/API
 =============
 
-.. automodapi:: utilipy.fitting
+.. automodapi:: utilipy.data_utils.fitting

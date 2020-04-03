@@ -3,14 +3,11 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : util initialization file
+# PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
 
-"""Data Utilities.
-
-
-
-"""
+"""Data Utilities."""
 
 __author__ = "Nathaniel Starkman"
 
@@ -27,7 +24,11 @@ from .decorators import idxDecorator
 from .select import *
 
 # import top=level directories
-from . import decorators, select
+from . import (
+    decorators,
+    select,
+    fitting,
+)
 
 
 ##############################################################################

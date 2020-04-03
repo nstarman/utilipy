@@ -22,7 +22,7 @@ import numpy as np
 
 # PROJECT-SPECIFIC
 
-from utilipy.decorators.dtype_decorator import (
+from utilipy.decorators.func_io import (
     dtypeDecorator,
     # dtypeDecoratorMaker,
     # # standard types

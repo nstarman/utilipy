@@ -11,3 +11,12 @@ Reference/API
 =============
 
 .. automodapi:: utilipy.data_utils
+
+
+Submodules
+----------
+
+.. toctree::
+	:maxdepth: 1
+
+	fitting/index

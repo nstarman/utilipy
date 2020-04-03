@@ -3,7 +3,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : astropy_imports
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
@@ -25,11 +24,26 @@ Astropy: imports
 
 References
 ----------
+Astropy [#]_
+
 .. [#] Astropy Collaboration et al., 2018, AJ, 156, 123.
 
 """
 
 __author__ = "Nathaniel Starkman"
+
+
+__all__ = [
+    "astropy_imports_help",
+    # "quantity_support",
+    "astropy",
+    "u",
+    "coords",
+    "SkyCoord",
+    "Table",
+    "QTable",
+    "astropy_mpl_style",
+]
 
 
 ##############################################################################
@@ -45,7 +59,6 @@ from utilipy.decorators.docstring import (
 ##############################################################################
 # IMPORTS
 
-# Astropy
 import astropy
 
 from astropy import units as u  # units TODO replace with mine
@@ -54,7 +67,6 @@ from astropy import coordinates as coords  # coordinates
 from astropy.coordinates import SkyCoord
 from astropy.table import Table, QTable  # table data structure
 
-# Allowing quantities in matplotlib
 from astropy.visualization import quantity_support, astropy_mpl_style
 
 
@@ -81,6 +93,7 @@ def astropy_imports_help():
 
 if __config__.getboolean("verbosity", "verbose-imports"):
     astropy_imports_help()
+
 
 ##############################################################################
 # END

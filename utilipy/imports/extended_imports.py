@@ -4,7 +4,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : Extending the Standard Import File
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
@@ -23,10 +22,10 @@ Scipy: imports
 
 References
 ----------
-SciPy references are (1) and (2).
-NumPy references are (3) and (4).
-IPython reference is (5).
-Matplotlib reference is (6).
+SciPy references are [#]_ and [#]_.
+NumPy references are [#]_ and [#]_.
+IPython reference is [#]_.
+Matplotlib reference is [#]_.
 
 .. [#] Travis E. Oliphant. Python for Scientific Computing, Computing in
     Science and Engineering, 9, 10-20 (2007), DOI:10.1109/MCSE.2007.58
@@ -60,6 +59,11 @@ Matplotlib reference is (6).
 __author__ = "Nathaniel Starkman"
 
 
+__all__ = [
+    "extended_imports_help",
+]
+
+
 ##############################################################################
 # HELPER FUNCTIONS
 
@@ -73,8 +77,6 @@ from utilipy.decorators.docstring import (
 ##############################################################################
 # IMPORTS
 
-# GENERAL
-
 from numpy.linalg import norm
 
 from scipy.stats import binned_statistic as binned_stats
@@ -85,9 +87,9 @@ from scipy.stats import binned_statistic as binned_stats
 
 
 @_set_docstring_import_file_helper("extend", __doc__)  # doc from __doc__
-def extend_imports_help():
+def extended_imports_help():
     """Help for extended base imports."""
-    doc = _import_file_docstring_helper(extend_imports_help.__doc__)
+    doc = _import_file_docstring_helper(extended_imports_help.__doc__)
     print(doc)
 
 
@@ -95,7 +97,7 @@ def extend_imports_help():
 
 
 if __config__.getboolean("verbosity", "verbose-imports"):
-    extend_imports_help()
+    extended_imports_help()
 
 
 ##############################################################################

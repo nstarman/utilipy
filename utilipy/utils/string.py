@@ -36,10 +36,10 @@ from string import *
 ###############################################################################
 # __ALL__
 
-if hasattr(string, "__all__"):
-    __all__ += string.__all__
-else:
-    __all__ += list(dir(string))
+# if hasattr(string, "__all__"):
+#     __all__ += string.__all__
+# else:
+#     __all__ += list(dir(string))
 
 
 ###############################################################################

@@ -3,12 +3,13 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : frozen unit set
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
 
 """Frozen Constants, sourced from Astropy.
+
+
 
 References
 ----------

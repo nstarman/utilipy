@@ -3,17 +3,16 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : config
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""Configuration settings for utilipy.
+"""Configuration settings for `utilipy`.
 
 TODO
 ----
-adopt astropy affiliate package configuration style.
+Adopt astropy affiliate package configuration style.
 
 """
 
@@ -45,6 +44,7 @@ from typing import Union, Any, Optional, Dict
 from typing_extensions import Literal
 import os.path
 from configparser import ConfigParser
+
 
 ##############################################################################
 # DEFAULT CONFIGURATION

@@ -1,10 +1,538 @@
 .. _whatsnew-1.0:
 
-***************************
-What's New in utilipy v1.0?
-***************************
+*****************************
+What's New in `utilipy` v1.0?
+*****************************
 
 Overview
 ========
 
-adopted the Astropy-affiliate template
+Adopted the Astropy-affiliate template.
+
+In particular, this release includes:
+
+* :ref:`whatsnew-1.0-framework`
+* :ref:`whatsnew-1.0-config`
+* :ref:`whatsnew-1.0-constants`
+* :ref:`whatsnew-1.0-data_utils`
+* :ref:`whatsnew-1.0-decorators`
+* :ref:`whatsnew-1.0-imports`
+* :ref:`whatsnew-1.0-ipython`
+* :ref:`whatsnew-1.0-math`
+* :ref:`whatsnew-1.0-plot`
+* :ref:`whatsnew-1.0-scripts`
+* :ref:`whatsnew-1.0-utils`
+
+.. _whatsnew-1.0-framework:  
+
+Framework
+=========
+
+Many of these do not have a lot of functions implemented, but the framework is in place as utilities are added.
+
+- `config` for configuration
+- `constants` for astropy-style constants with frozen values
+- `data_utils` for data utility functions, like converting scipy.optimize functions to lmfit.
+- `decorators` a repository of useful decorators
+- `import` for \*-style imports
+- `ipython` for IPython conveniences, like Markdown printing.
+- `math` for math function
+- `plot` for plot-related functions
+- `scripts` for scripts
+
+.. _whatsnew-1.0-config:
+
+Config
+======
+
+Configuration functions: `check_config`, `write_config`, `get_import_verbosity`, `set_import_verbosity`, `get_warnings_verbosity`, `set_warnings_verbosity`, `get_frozen_constants`, `set_frozen_constants`.
+
+All the configurations can be get / set during run-time.
+
+There is a `with` version of all the configurations, for running code with a temporarily changed configurations.
+
+.. _whatsnew-1.0-constants:
+
+Constants
+=========
+
+Astropy constants, with a frozen version for reproducibility.
+
+float versions of the constants accessible through values module this includes frozen version for reproducibility to access frozen version, set frozen-constants=True in `utilipy` config.
+
+- `FrozenConstants` for frozen constants
+- `ConstantsValues` for the values of constants.
+
+.. _whatsnew-1.0-data_utils:
+
+data\_utils
+===========
+
+Data utilities.
+
+- `idxDecorator` to control whether a fnction returns boolean arrays or indices.
+- `inRange`: multidimensional box selection.
+- `outRange`: multidimensional box exclusion.
+- `ioRange`: multidimensional box selection and exclusion.
+- `ellipse`: elliptical selection of data in many dimensions.
+-  `circle`: circular selection of data in many dimensions.
+
+.. _whatsnew-1.0-data_utils-fitting:
+
+fitting
+^^^^^^^
+- `scipy_residual_to_lmfit` decorator to make scipy residual functions compatible with `lmfit <https://lmfit.github.io/lmfit-py/index.html>`_.
+
+.. _whatsnew-1.0-decorators:
+
+Decorators
+==========
+
+Decorators are a powerful way to augment functions, and even classes. With a decorator we can alter the input or output of a function, and even edit the properties of a function. This discussion presupposes some familiarity with the use and construction of decorators.
+
+The ultimate goal is a decorator that can edit the input and output of a function, will inherit the signature, annotations, and docstring of the decorated function, and can modify said docstring and signature.
+
+These decorator can do:
+
+    - anything to the function input and output
+    - make a function that looks exactly like the input function
+    - for quality introspection.
+    - work when created with parenthesis
+    - accept (kw)arguments on application
+    - add any extra (kw)arguments to control the wrapper
+    - also make the defaults be dynamically set on function creation.
+    - document what the wrapper is doing.
+    - In a way that is introspectable, by modifying both the signature and docstring.
+
+.. code-block:: python
+    :linenos:
+
+    >>> from utilipy.utils import functools
+    >>> def template_decorator(function=None, *, kw1=None, kw2=None):
+    ...     '''Docstring for decorator.
+    ...
+    ...     Description of this decorator
+    ...
+    ...     Parameters
+    ...     ----------
+    ...     function : types.FunctionType or None, optional
+    ...         the function to be decoratored
+    ...         if None, then returns decorator to apply.
+    ...     kw1, kw2 : any, optional
+    ...         key-word only arguments
+    ...         sets the wrappeer's default values.
+    ... 
+    ...     Returns
+    ...     -------
+    ...     wrapper : types.FunctionType
+    ...         wrapper for function
+    ...         does a few things
+    ...         includes the original function in a method `.__wrapped__`
+    ... 
+    ...     '''
+    ...     if function is None: # allowing for optional arguments
+    ...         return functools.partial(template_decorator, kw1=k1, kw2=kw2)
+    ...     
+    ...     @functools.wraps(function)
+    ...     def wrapper(*args, kw1=kw1, kw2=kw2, kw3='not in decorator factory', **kw):
+    ...         """wrapper docstring.
+    ... 
+    ...         Decorator
+    ...         ---------
+    ...         prints information about function
+    ...         kw1, kw2: defaults {kw1}, {kw2}
+    ... 
+    ...         """
+    ...         # do stuff here
+    ...         return_ = function(*args, **kw)
+    ...         # and here
+    ...         return return_
+    ...     # /def
+    ... 
+    ...     return wrapper
+    ... # /def
+
+    >>> @template_decorator
+    ... def function(x: '1st arg', y: '2nd arg',                    # arguments
+    ...              a: '1st defarg'=10, b=11,                      # defaulted arguments
+    ...              *args: 'args',                                 # variable arguments
+    ...              k: '1st kwonly'='one', l: '2nd kwonly'='two',  # keyword-only arguments
+    ...              **kw: 'kwargs'                                 # variable keyword arguments
+    ...             ) -> tuple:
+    ...     '''Function for testing decoration.
+    ...
+    ...     This function has all 5 different types of arguments:
+    ...         1) arguments, 2) defaulted arguments, 3) variable arguments,
+    ...         4) keyword-only arguments, 5) variable keyword arguments
+    ...
+    ...     '''
+    ...     return x, y, a, b, args, k, l, kw
+    ... # /def
+ 
+    >>> help(function) # doctest: +SKIP
+
+    Help on function function in module __main__:
+    
+    function(x: '1st arg', y: '2nd arg', a: '1st defarg' = 10, b=11, *args: 'args', k: '1st kwonly' = 'one', l: '2nd kwonly' = 'two', kw1=None, kw2=None, kw3='not in decorator factory', **kw: 'kwargs') -> tuple
+        function for testing decoration
+        This function has all 5 different types of arguments:
+            1) arguments, 2) defaulted arguments, 3) variable arguments,
+            4) keyword-only arguments, 5) variable keyword arguments
+            
+        Decorator
+        ---------
+        prints information about function
+        kw1, kw2: defaults None, None
+
+.. _whatsnew-1.0-imports-baseclass:
+
+utilipy.decorators.baseclass
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A set of baseclasses to make improved decorators. This module requires further testing.
+
+.. _whatsnew-1.0-imports-docstrings:
+
+utilipy.decorators.docstrings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- astropy's "format_doc"
+
+.. _whatsnew-1.0-imports-funcio:
+
+utilipy.decorators.func\_io
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Function input / output.
+
+- function `store_function_input` to store all the input to a function as a BoundArgument
+- function `add_folder_backslash` to add a backslash to directory path inputs.
+- `dtypeDecoratorMaker` function to make a dtype decorator.
+- `dtypeDecorator` function to ensure arguments are type dtype.
+- `boolDecorator`, `intDecorator`, `floatDecorator`, `strDecorator`, `ndarrayDecorator`, `ndfloat64Decorator`, which enforce their respective dtypes.
+
+.. _whatsnew-1.0-imports:
+
+Imports
+=======
+
+This module provides a variety of files that can be \*-imported to provide basic set of imports.
+
+The quick imports are `base_imports`, `extended_imports`, `astropy_imports`, `matplotlib_imports`, `galpy_imports` and `amuse_imports`.
+
+.. _whatsnew-1.0-imports-base:
+
+utilipy.imports.base
+^^^^^^^^^^^^^^^^^^^^
+
+helper function `base_imports_help`
+
+Base imports
+
+    - os, sys, time, pdb, warnings,
+    - numpy -> np, scipy,
+    - tqdm -> TQDM, tqdm, .tqdm_notebook -> tqdmn
+
+IPython imports
+
+    - display, Latex, Markdown, set_trace,
+    - printmd, printMD, printltx, printLaTeX,
+    - set_autoreload, aimport,
+    - run_imports, import_from_file,
+    - add_raw_code_toggle
+
+utilipy imports
+
+    - LogFile
+    - ObjDict
+      
+.. _whatsnew-1.0-imports-extended:
+
+utilipy.imports.extended
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+helper function `extended_imports_help`
+
+Numpy imports
+
+    - linalg.norm
+
+Scipy imports
+
+    - stats.binned_statistic->binned_stats
+
+.. _whatsnew-1.0-imports-matplotlib:
+
+utilipy.imports.matplotlib
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+helper function `matplotlib_imports_help`
+
+Matplotlib imports
+
+    - pyplot->plt
+    - matplotlib->mpl, .cm, .colors
+    - mpl_toolkits.mplot3d.Axes3D
+
+utilipy imports
+
+    - ipython.plot.configure_matplotlib
+
+.. _whatsnew-1.0-imports-plotly:
+
+utilipy.imports.plotly
+^^^^^^^^^^^^^^^^^^^^^^
+
+helper function `plotly_imports_help`
+
+plotly imports
+
+    - plotly
+    - express -> px
+    - graph_objs -> go
+    - io -> pio
+    - subplots -> make_subplots
+
+.. _whatsnew-1.0-imports-astropy:
+
+utilipy.imports.astropy
+^^^^^^^^^^^^^^^^^^^^^^^
+
+helper function `astropy_imports_help`
+
+Astropy imports
+
+    - units->u,
+    - coordinates->coords, SkyCoord,
+    - table.Table, QTable
+    - visualization.quantity_support, astropy_mpl_style
+
+.. _whatsnew-1.0-imports-galpy:
+
+utilipy.imports.galpy
+^^^^^^^^^^^^^^^^^^^^^
+
+helper function `galpy_imports_help`
+
+Galpy imports
+
+    - potential, .MWPotential2014
+    - galpy.orbit.Orbit
+    - galpy.util: bovy_conversion, bovy_coords
+
+.. _whatsnew-1.0-imports-amuse:
+
+utilipy.imports.amuse
+^^^^^^^^^^^^^^^^^^^^^
+
+helper function `amuse_imports_help`
+
+- imports `amuse`, `amuse.lab`, `amuse.units.units`, `amuse.units.constants`, `amuse.couple.bridge`
+- provides a help function, `amuse_imports_help`
+  
+.. _whatsnew-1.0-ipython:
+
+IPython
+=======
+
+Functions for interacting with the IPython environment. If in the IPython, sets the `ast_node_interactivity` to "all" and configures matplotlib, via `configure_matplotlib`, to an inline backend and retina resolution.
+
+loads into the top-level namespace:
+
+- help function
+- modules: `autoreload` , `imports`, `notebook`, `plot`, `printing`
+- functions: `set_autoreload`, `aimport`, `run_imports`, `import_from_file`, `add_raw_code_toggle`, `configure_matplotlib`, `printMD`, `printLTX`
+
+.. _whatsnew-1.0-ipython-autoreload:
+
+utilipy.ipython.autoreload
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If in an IPython environment, sets the autoreload state to 1 (autoreload anything imported by `aimport`).
+
+- `set_autoreload` function to change the global imports setting.
+- `aimport` for autoreloading individual modules
+
+.. _whatsnew-1.0-ipython-imports:
+
+utilipy.ipython.imports
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Module for running `utilipy.imports` in an IPython environment.
+
+- `import_from_file` function to run any import file, from `utilipy` or a custom file.
+- `run_imports` function to import a file using IPython magic. Uses `import_from_file` on custom files. Has built-in options for a set of basic imports (by keyword `base`), extended imports (by keyword `extended`), astropy, matplotlib, plotly, galpy, and amuse import sets by the respective keywords.
+
+.. _whatsnew-1.0-ipython-notebook:
+
+utilipy.ipython.notebook
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Functions for Jupyter notebook / lab / hub.
+
+- `add_raw_code_toggle` function to show/hide code cells when Notebook is exported to HTML
+
+.. _whatsnew-1.0-ipython-plot:
+
+utilipy.ipython.plot
+^^^^^^^^^^^^^^^^^^^^
+
+- `configure_matplotlib` function to control plotting in an IPython environment.
+
+.. _whatsnew-1.0-ipython-printing:
+
+utilipy.ipython.printing
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+- `printMD` function to print in Markdown.
+- `printLTX` function to print in Latex.
+
+.. _whatsnew-1.0-math:
+
+Math
+====
+
+A place for math functions. Currently only `quadrature`.
+
+.. _whatsnew-1.0-plot:
+
+Plot
+====
+
+nothing implemented yet. See :ref:`whatsnew-planned`.
+  
+.. _whatsnew-1.0-scripts:
+
+Scripts
+=======
+
+nothing implemented yet. See :ref:`whatsnew-planned`.
+
+.. _whatsnew-1.0-utils:
+
+Utils
+=====
+
+Utilities. The following are imported on instantiation.
+
+.. code-block:: python
+    :linenos:
+
+    from .logging import LogPrint, LogFile
+    from .collections import ObjDict
+
+    from . import functools, pickle
+
+    # import top level packages
+    from . import (
+        collections,
+        doc_parse_tools,
+        logging,
+        metaclasses,
+    )
+
+
+utilipy.utils.exceptions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+- `utilipyWarning`
+- `utilipyWarningVerbose`
+
+utilipy.utils.functools
+^^^^^^^^^^^^^^^^^^^^^^^
+
+- `makeFunction`: make a function from an existing code object.
+- `copy_function`: Copy a function.
+- `update_wrapper`: this overrides the default ``functools`` `update_wrapper` and adds signature and docstring overriding
+
+- `wraps`: overrides the default ``functools`` `update_wrapper` and adds signature and docstring overriding
+
+utilipy.utils.inspect
+^^^^^^^^^^^^^^^^^^^^^
+
+added FullerArgSpec which better separates parts of a signature, like arguments with and without defaults. Also a FullerSignature object which has much finer control over signatures and itself appears to have the signature of the function to which it is a signature.
+
+- `POSITIONAL_ONLY`
+- `POSITIONAL_OR_KEYWORD`
+- `VAR_POSITIONAL`
+- `KEYWORD_ONLY`
+- `VAR_KEYWORD`
+- `_void`
+- `_empty`
+- `_placehold`
+- `_is_empty`
+- `_is_void`
+- `_is_placehold`
+- `_is_placeholder`
+- `FullerArgSpec`
+- `getfullerargspec`
+- `get_annotations_from_signature`
+- `get_defaults_from_signature`
+- `get_kwdefaults_from_signature`
+- `get_kwonlydefaults_from_signature`
+- `get_kinds_from_signature`
+- `modify_parameter`
+- `replace_with_parameter`
+- `insert_parameter`
+- `prepend_parameter`
+- `append_parameter`
+- `drop_parameter`
+- `FullerSignature`
+- `fuller_signature`
+  
+utilipy.utils.pickle
+^^^^^^^^^^^^^^^^^^^^
+
+dump and load many objects
+
+utilipy.utils.string
+^^^^^^^^^^^^^^^^^^^^
+
+- `FormatTemplate` with string supporting `.format`, syntax.
+  
+utilipy.utils.typing
+^^^^^^^^^^^^^^^^^^^^
+
+- `array_like`: typing.Sequence
+  
+utilipy.utils.logging
+^^^^^^^^^^^^^^^^^^^^^
+
+Basic loggers that can both print and/or record to a file.
+
+- LogPrint: print logger 
+- LogFile: This class uses `open`
+  
+utilipy.utils.doc_parse_tools
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Docstring inheritance-style implementations. Supports numpy and google docstrings. 
+
+To implement your own inheritance file, simply write a function that fits the template
+
+.. code-block:: python
+
+    def your_style(prnt_doc, child_doc):
+        ''' Merges parent and child docstrings
+
+            Parameters
+            ----------
+            prnt_cls_doc: Optional[str]
+            child_doc: Optional[str]
+
+            Returns
+            ------
+            Optional[str]
+                The merged docstring that will be utilized.'''
+        return final_docstring
+
+and log this using `custom_inherit.add_style(your_style)`.
+To permanently save your function
+
+1. define your function within `custom_inherit/_style_store.py`
+2. log it in `custom_inherit.style_store.__all__`.
+   
+utilipy.utils.collections
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- `ObjDict`: Dictionary-like object intended to store information. Instantiated with a name (str)

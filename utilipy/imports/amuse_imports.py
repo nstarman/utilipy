@@ -3,7 +3,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : AMUSE imports
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
@@ -32,6 +31,8 @@ and the version of AMUSE you were using
 
 References
 ----------
+AMUSE citations [#]_, [#]_, [#]_, [#]_
+
 .. [#] Portegies Zwart, S. and McMillan, S.L.W., 2018, “Astrophysical Recipes:
    the art of AMUSE", AAS IOP Astronomy publishing (411 pages).
 
@@ -51,7 +52,9 @@ References
 __author__ = "Nathaniel Starkman"
 
 
-__all__ = []
+__all__ = [
+    "amuse_imports_help",
+]
 
 
 ##############################################################################
@@ -79,19 +82,17 @@ except ImportError:
 
 else:
 
+    from amuse import lab
+    from amuse.units import units, constants
+    from amuse.couple import bridge
+
     __all__ += [
         "amuse",
         "lab",
         "units",
         "constants",
         "bridge",
-        "amuse_imports_help",
     ]
-
-    # lab
-    from amuse import lab
-    from amuse.units import units, constants
-    from amuse.couple import bridge
 
 # /if
 

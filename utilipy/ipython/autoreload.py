@@ -1,36 +1,72 @@
 # -*- coding: utf-8 -*-
 
-"""functions for working with autoreload extension.
+"""Functions for working with autoreload extension.
 
-set_autoreload
-aimport
+Routine Listings
+----------------
+`aimport`
+    Jupyter magic aimport.
+
+`set_autoreload`
+    Global imports setting.
+
+References
+----------
+IPython [1]_
+
+
+.. [1] Fernando Pérez, Brian E. Granger, IPython: A System for Interactive
+    Scientific Computing, Computing in Science and Engineering, vol. 9,
+    no. 3, pp. 21-29, May/June 2007, doi:10.1109/MCSE.2007.53.
+    URL: https://ipython.org
 
 """
 
 __author__ = "Nathaniel Starkman"
 
 
+__all__ = [
+    "set_autoreload",
+    "aimport",
+]
+
+
 ##############################################################################
 # IMPORTS
 
-# General
-from typing import Any, Union, Optional
+# GENERAL
+
+from typing import Union, Optional
+
 from IPython import get_ipython
 
-# Project-Specific
+
+# PROJECT-SPECIFIC
+
 from ..utils.logging import LogPrint
+
 
 ##############################################################################
 # PARAMETERS
 
 _LOGFILE = LogPrint(header=False, verbose=0)
 
+try:
+    get_ipython()
+    if get_ipython() is None:  # double checking
+        raise NameError
+except NameError:
+    _HAS_IPY: bool = False
+else:
+    _HAS_IPY: bool = True
+
 
 ##############################################################################
 # CODE
+##############################################################################
 
 
-def set_autoreload(reload_type: Optional[int] = None) -> None:
+def set_autoreload(reload_type: Optional[int] = None):
     """Global imports setting.
 
     Parameters
@@ -68,10 +104,7 @@ def set_autoreload(reload_type: Optional[int] = None) -> None:
 ##############################################################################
 
 
-# TODO support any list
-def aimport(
-    *modules: str, autoreload: Union[bool, list, tuple] = True
-) -> None:
+def aimport(*modules: str, autoreload: Union[bool, list, tuple] = True):
     """Jupyter magic aimport.
 
     Parameters
@@ -112,9 +145,10 @@ def aimport(
 ##############################################################################
 # SETTING STATE
 
-if get_ipython() is not None:
-    get_ipython().magic("load_ext autoreload")  # autoreload extensions
-    set_autoreload(1)
+if _HAS_IPY is True:
+    if get_ipython() is not None:
+        get_ipython().magic("load_ext autoreload")  # autoreload extensions
+        set_autoreload(1)
 
 
 ##############################################################################

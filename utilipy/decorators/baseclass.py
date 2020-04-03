@@ -284,7 +284,26 @@ class DecoratorBaseMeta(type):
 
 
 class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
-    """A class-based implementation of simple_mod_decorator."""
+    """Base Class for Decorators.
+
+    Parameters
+    ----------
+    function : Callable, optional
+    kwargs : dict, optional
+        attributes
+
+    Returns
+    -------
+    type
+        function if called with the function (Decorator(function))
+        type if no function provided, i.e. pie syntax
+
+    Raises
+    ------
+    ValueError
+        if a kwarg not supported, i.e. not in __kwdefaults__
+
+    """
 
     __base_kwdefaults__: dict = {}
 
@@ -296,7 +315,7 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
     # /def
 
     def __new__(cls: type, function: Optional[Callable] = None, **kwargs: Any):
-        """Make new decorator instance.
+        """Make new DecoratorBaseClass.
 
         Parameters
         ----------

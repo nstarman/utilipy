@@ -26,6 +26,15 @@ import_galpy
 import_amuse
     ipython magic run `utilipy/imports/amuse.py`
 
+References
+----------
+IPython [#]_
+
+.. [#] Fernando Pérez, Brian E. Granger, IPython: A System for Interactive
+    Scientific Computing, Computing in Science and Engineering, vol. 9,
+    no. 3, pp. 21-29, May/June 2007, doi:10.1109/MCSE.2007.53.
+    URL: https://ipython.org
+
 """
 
 __author__ = "Nathaniel Starkman"
@@ -33,8 +42,6 @@ __author__ = "Nathaniel Starkman"
 __all__ = [
     "import_from_file",
     "run_imports",
-    "aimport",
-    "set_autoreload",
     # specific importers
     "import_base",
     "import_extended",
@@ -43,6 +50,7 @@ __all__ = [
     "import_galpy",
     "import_amuse",
 ]
+
 
 ##############################################################################
 # IMPORTS
@@ -149,7 +157,7 @@ def run_imports(
     verbose: Optional[int] = 0,
     logger_kw: Dict = {},
 ) -> None:
-    """Import file using ipython magic.
+    """Import file using IPython magic.
 
     if `astropy` and `matplotlib`, sets matplotlib style to astropy_mpl_style
 
@@ -159,6 +167,7 @@ def run_imports(
         strings for files to import
         need to include file suffix
     base: bool
+        a broad set of basic imports
         import_base -> `utilipy/imports/base.py`
     astropy: bool
         import_astropy -> `utilipy/imports/astropy.py`

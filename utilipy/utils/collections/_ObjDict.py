@@ -54,9 +54,9 @@ class ObjDict(OrderedDict):
 
     Examples
     --------
-    obj = ObjDict('NAME', a=1, b=2)
-    print(obj.name, obj.a, obj['b'])
-    >> NAME, 1, 2
+    >>> obj = ObjDict('NAME', a=1, b=2)
+    >>> print(obj.name, obj.a, obj['b'])
+    NAME 1 2
 
     """
 

@@ -3,7 +3,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : logfile_print
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
@@ -118,17 +117,9 @@ class LogPrint(object):
     def open_to_read(cls) -> Any:
         """Open a logfile to read.
 
-        this class uses `open', not a more extensive logger, like `logging'
+        this class uses ``open``, not a more extensive logger, like ``logging``
 
-        The arguments filename - opener are all for `open`
-        their descriptions are in
-            https://docs.python.org/3/library/functions.html#open
-
-        Parameters
-        ----------
-        filename: str
-            the file name / path at which to save this log
-        ...
+        The arguments filename - opener are all for ``open``
 
         """
         return cls()

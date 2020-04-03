@@ -4,18 +4,18 @@
 
 Routine Listings
 ----------------
-makeFunction
+`makeFunction`
     make a function from an existing code object.
 
-copy_function
+`copy_function`
     Copy a function.
 
-update_wrapper
+`update_wrapper`
     this overrides the default ``functools`` `update_wrapper`
     and adds signature and docstring overriding
 
-wraps
-    this overrides the default ``functools`` `update_wrapper`
+`wraps`
+    overrides the default ``functools`` `update_wrapper`
     and adds signature and docstring overriding
 
 References
@@ -31,6 +31,14 @@ todo make partial respect signature
 """
 
 __author__ = "Nathaniel Starkman"
+
+
+__all__ = [  # TODO use :allowed-package-names: `functools`
+    "make_function",
+    "copy_function",
+    "update_wrapper",
+    "wraps",
+]
 
 
 ##############################################################################
@@ -389,7 +397,9 @@ def wraps(
     _doc_fmt: Optional[dict] = None,
     _doc_style: Union[str, Callable, None] = None,
 ):
-    """Decorator factory to apply ``update_wrapper()`` to a wrapper function.
+    """Improved implementation of ``functools.wraps``.
+
+    Decorator factory to apply ``update_wrapper()`` to a wrapper function.
 
     This is a convenience function to simplify applying ``partial()`` to
     ``update_wrapper()``.

@@ -3,7 +3,6 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : IPython printing
-# AUTHOR  : Nathaniel Starkman
 #
 # ----------------------------------------------------------------------------
 
@@ -12,23 +11,37 @@
 
 Routine Listings
 ----------------
-printmd, printMD
+printMD
     Print in Markdown.
-printltx / printLaTeX
+printLTX, printLaTeX
     Print in LaTeX.
+
+References
+----------
+Ipython [1]_
+
+.. [1] Fernando Pérez, Brian E. Granger, IPython: A System for Interactive
+    Scientific Computing, Computing in Science and Engineering, vol. 9,
+    no. 3, pp. 21-29, May/June 2007, doi:10.1109/MCSE.2007.53.
+    URL: https://ipython.org
 
 """
 
 __author__ = "Nathaniel Starkman"
 
 
+__all__ = [
+    "printMD",
+    "printLTX",
+]
+
+
 ##############################################################################
 # IMPORTS
 
-# GENERAL
-from typing import Any, Union, Optional
+from typing import Union, Optional
 from IPython.display import display  # display is a better print
-from IPython.display import Latex, Markdown, HTML
+from IPython.display import Latex, Markdown  # , HTML
 
 
 ##############################################################################
@@ -36,7 +49,7 @@ from IPython.display import Latex, Markdown, HTML
 ##############################################################################
 
 
-def printmd(
+def printMD(
     s: str,
     color: Optional[str] = None,
     size: Optional[float] = None,
@@ -45,7 +58,7 @@ def printmd(
     fontweight: Optional[float] = None,
     fontstyle: Optional[str] = None,
     highlight: Optional[str] = None,
-) -> None:
+):
     """Print in Markdown.
 
     uses <span>
@@ -115,22 +128,20 @@ def printmd(
 # /def
 
 
-printMD = printmd
-
 # printHTML = printmd
 
 
 # ----------------------------------------------------------------------------
 
 
-def printltx(
+def printLTX(
     s: str,
     math: Union[str, bool] = False,
     equation: Union[str, bool] = False,
     matrix: Union[str, bool] = False,
     label: str = "",
-) -> None:
-    r"""Print in latex.
+):
+    r"""Print in LaTeX.
 
     Parameters
     ----------
@@ -174,11 +185,11 @@ def printltx(
 
     display(Latex(s))
 
+    return
+
 
 # /def
 
-
-printLaTeX = printltx
 
 ##############################################################################
 # END

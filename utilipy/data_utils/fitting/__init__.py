@@ -3,12 +3,10 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : initialization file
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
 """initialization file for fitting module."""
 
 __author__ = "Nathaniel Starkman"

@@ -1,5 +1,11 @@
-astro.instruments submodule
-===========================
+.. _utilipy-instruments:
+
+*****************************************
+Instruments (`utilipy.astro.instruments`)
+*****************************************
+
+.. currentmodule:: utilipy.astro.instruments
+
 
 Reference/API
 =============

@@ -3,13 +3,12 @@ utilipy
 ########
 
 Welcome to ``utilipy``, a collection of useful python codes. This is a
-centralized repository for much of the non project-specific code I have
-written or come across. There are modules for making advanced
-decorators, interfacing with IPython environments, miscellaneous
+centralized repository for non project-specific code. There are modules for making advanced decorators, interfacing with IPython environments, miscellaneous
 astronomical functions, data utilities, making fitting libraries
 inter-operable, improving astropy units and quantity-enabled functions,
 and much more.
 
+The package is being actively developed in a `public repository on GitHub <https://github.com/nstarman/utilipy>`_ so if you have any trouble, `open an issue <https://github.com/nstarman/utilipy/issues>`_ there.
 
 .. image:: https://zenodo.org/badge/192425953.svg
    :target: https://zenodo.org/badge/latestdoi/192425953
@@ -43,12 +42,12 @@ Subpackages
    utilipy/constants/index
    utilipy/data_utils/index
    utilipy/decorators/index
-   utilipy/fitting/index
    utilipy/imports/index
    utilipy/ipython/index
    utilipy/math/index
    utilipy/plot/index
    utilipy/scripts/index
+   utilipy/utils/index
 
 
 *********
@@ -78,7 +77,7 @@ Attribution
 
 |DOI|
 
-If you make use of this code, please consider citing the Zenodo DOI |DOI| as a software citation::
+If you make use of this code, please consider citing the Zenodo DOI as a software citation::
 
    @software{utilipy:zenodo,
      author       = {nstarman},

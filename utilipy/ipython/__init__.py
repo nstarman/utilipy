@@ -52,67 +52,85 @@ and set the matplotlib backend to inline with retina resolution
 `InteractiveShell.ast_node_interactivity = "all"`
 `configure_matplotlib(backend='inline', figure_format='retina')`
 
+References
+----------
+IPython [#]_
+
+.. [#] Fernando Pérez, Brian E. Granger, IPython: A System for Interactive
+    Scientific Computing, Computing in Science and Engineering, vol. 9,
+    no. 3, pp. 21-29, May/June 2007, doi:10.1109/MCSE.2007.53.
+    URL: https://ipython.org
+
 """
 
 __author__ = "Nathaniel Starkman"
 
-##############################################################################
-# PARAMETERS
 
-# from ..decorators.docstring import set_docstring
-from ..config import __config__
-from ..decorators.docstring import _set_docstring_import_file_helper
+__all__ = [
+    "help",
+    # "get_ipython",
+    # "InteractiveShell",
+    # "set_trace",
+    # "display",
+    # "Latex",
+    # "Markdown",
+    # "HTML",
+    "set_autoreload",
+    "aimport",
+    "run_imports",
+    "import_from_file",
+    "add_raw_code_toggle",
+    "printMD",
+    "printLTX",
+]
 
-_HAS_IPYTHON: bool = False
 
 ##############################################################################
 # IMPORTS
 
-# General
-try:
+# GENERAL
 
-    get_ipython()
+from IPython import get_ipython
+from IPython.core.interactiveshell import InteractiveShell
+from IPython.core.debugger import set_trace
+from IPython.display import (
+    display,  # display is a better print
+    Latex,  # for printing LaTeX
+    Markdown,
+    HTML,  # for printing Markdown & HTML
+)
 
-    if get_ipython() is None:  # double checking
-        raise NameError
 
-except NameError:
+# PROJECT-SPECIFIC
 
-    pass
+from ..utils.logging import LogPrint, LogFile
+from ..config import __config__
+from ..decorators.docstring import _set_docstring_import_file_helper
 
-else:
-
-    _HAS_IPYTHON = True
-
-    from IPython import get_ipython
-    from IPython.core.interactiveshell import InteractiveShell
-    from IPython.core.debugger import set_trace
-    from IPython.display import (
-        display,  # display is a better print
-        Latex,  # for printing LaTeX
-        Markdown,
-        HTML,  # for printing Markdown & HTML
-    )
-
-    # Project-Specific
-    from ..utils.logging import LogPrint, LogFile
-
-    from .autoreload import set_autoreload, aimport
-    from .imports import run_imports, import_from_file
-    from .notebook import add_raw_code_toggle
-    from .plot import configure_matplotlib
-    from .printing import (
-        printmd,
-        printMD,  # markdown printing
-        printltx,
-        printLaTeX,  # LaTeX printing
-    )
+from .autoreload import set_autoreload, aimport
+from .imports import run_imports, import_from_file
+from .notebook import add_raw_code_toggle
+from .plot import configure_matplotlib
+from .printing import (
+    printMD,  # Markdown printing
+    printLTX,  # LaTeX printing
+)
 
 
 ##############################################################################
-# SETUP
+# PARAMETERS
 
-if _HAS_IPYTHON:
+try:
+    get_ipython()
+    if get_ipython() is None:  # double checking
+        raise NameError
+except NameError:
+    _HAS_IPY: bool = False
+else:
+    _HAS_IPY: bool = True
+
+
+if _HAS_IPY:
 
     # Running Imported Functions
     InteractiveShell.ast_node_interactivity = "all"

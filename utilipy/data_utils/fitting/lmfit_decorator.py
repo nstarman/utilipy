@@ -2,14 +2,12 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : lmfit
-# AUTHOR  : Nathaniel Starkman
+# TITLE   : lmfitsss
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""decorators for converting scipy residual functions to lmfit functions."""
+"""Decorators for converting scipy residual functions to lmfit functions."""
 
 __author__ = "Nathaniel Starkman"
 
@@ -18,15 +16,14 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # GENERAL
-from typing import Any, Union, Callable, Optional
+
+from typing import Any, Callable, Optional
 from wrapt import ObjectProxy
 
 try:
     from lmfit import Parameters
 except ImportError:
     Parameters = Any
-
-# PROJECT-SPECIFIC
 
 
 ##############################################################################

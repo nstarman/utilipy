@@ -3,18 +3,26 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : ipython.notebook
-# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""functions for Jupyter notebook / lab / hub.
+"""Functions for Jupyter notebook / lab / hub.
 
 Routine Listings
 ----------------
-add_raw_code_toggle
+`add_raw_code_toggle`
     Add a toggle to show/hide code cells when Notebook is exported to HTML
+
+References
+----------
+IPython [#]_, Jupyter Notebook [#]_
+
+.. [#] Fernando Pérez, Brian E. Granger, IPython: A System for Interactive
+    Scientific Computing, Computing in Science and Engineering, vol. 9,
+    no. 3, pp. 21-29, May/June 2007, doi:10.1109/MCSE.2007.53.
+    URL: https://ipython.org
+.. [#] Jupyter Notebook
 
 """
 
@@ -26,9 +34,8 @@ __credits__ = ["Jo Bovy"]
 # IMPORTS
 
 # GENERAL
-from IPython.display import HTML
 
-# PROJECT-SPECIFIC
+from IPython.display import HTML
 
 
 ##############################################################################
@@ -39,6 +46,10 @@ def add_raw_code_toggle() -> HTML:
     """Add a toggle for code cells when Notebook is exported to HTML.
 
     HTML and Javascript button, placed directly below function execution cell.
+
+    Returns
+    -------
+    HTML
 
     References
     ----------
