@@ -40,12 +40,10 @@ If you make use of this code, please consider citing the Zenodo DOI |DOI| as a s
 
    @software{utilipy:zenodo,
      author       = {nstarman},
-     title        = {utilipy v1.0},
-     month        = mar,
-     year         = 2020,
+     title        = {utilipy},
      publisher    = {Zenodo},
-     doi          = {10.5281/zenodo.3724822},
-     url          = {https://doi.org/10.5281/zenodo.3724822}
+     doi          = {10.5281/zenodo.192425953},
+     url          = {https://doi.org/10.5281/zenodo.192425953}
    }
 
 License
@@ -67,8 +65,8 @@ Copyright 2018- Nathaniel Starkman and contributors.
    :target: https://github.com/psf/black
 .. |Documentation Status| image:: https://readthedocs.org/projects/utilipy/badge/?version=latest
    :target: https://utilipy.readthedocs.io/en/latest/?badge=latest
-.. |DOI| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3545178.svg
-   :target: https://doi.org/10.5281/zenodo.3545178
+.. |DOI| image:: https://zenodo.org/badge/192425953.svg
+   :target: https://zenodo.org/badge/latestdoi/192425953
 .. |License| image:: https://img.shields.io/badge/License-BSD%203--Clause-blue.svg
    :target: https://opensource.org/licenses/BSD-3-Clause
 .. |PyPI| image:: https://badge.fury.io/py/utilipy.svg
