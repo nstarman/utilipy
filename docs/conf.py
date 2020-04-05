@@ -71,9 +71,15 @@ rst_epilog += """
 modindex_common_prefix = ['utilipy.']
 
 # extensions
-extensions += ["sphinx.ext.todo", "nbsphinx"]
-# not sure if this is needed or if astropy already does this, but
-extensions += ['sphinx_automodapi.smart_resolver']
+extensions += [
+    "sphinx.ext.todo",
+    "nbsphinx",
+    'IPython.sphinxext.ipython_console_highlighting',
+    'sphinx_automodapi.smart_resolver'
+]
+
+# Show / hide TODO blocks
+todo_include_todos = True
 
 
 # -- Project information ------------------------------------------------------

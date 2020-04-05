@@ -1,14 +1,14 @@
-# This file is used to configure the behavior of pytest when using the Astropy
-# test infrastructure. It needs to live inside the package in order for it to
-# get picked up when running the tests inside an interpreter using
-# packagename.test
+"""Configure Test Suite.
+
+This file is used to configure the behavior of pytest when using the Astropy
+test infrastructure. It needs to live inside the package in order for it to
+get picked up when running the tests inside an interpreter using
+packagename.test
+
+"""
 
 import os
 import pytest
-
-# import numpy
-# import matplotlib.pyplot
-import astropy.units
 
 from astropy.version import version as astropy_version
 
@@ -31,13 +31,20 @@ else:
 
 
 def pytest_configure(config):
+    """Configure Pytest with Astropy.
 
+    Parameters
+    ----------
+    config : pytest configuration
+
+    """
     if ASTROPY_HEADER:
 
         config.option.astropy_header = True
 
         # Customize the following lines to add/remove entries from the list of
-        # packages for which version numbers are displayed when running the tests.
+        # packages for which version numbers are displayed when running the
+        # tests.
         PYTEST_HEADER_MODULES.pop("Pandas", None)
         PYTEST_HEADER_MODULES["scikit-image"] = "skimage"
 
@@ -50,12 +57,24 @@ def pytest_configure(config):
 # ------------------------------------------------------
 # Added by @nstarman
 
-
 @pytest.fixture(autouse=True)
-def add_np(doctest_namespace):
-    # doctest_namespace["np"] = numpy
-    # doctest_namespace["plt"] = matplotlib.pyplot
+def add_units(doctest_namespace):
+    """Add Imports to Pytest.
+
+    Parameters
+    ----------
+    doctest_namespace : namespace
+
+    """
+    # import
+    import astropy.units
+    # add to namespace
     doctest_namespace["u"] = astropy.units
+
+    return
+
+
+# def
 
 
 # ------------------------------------------------------

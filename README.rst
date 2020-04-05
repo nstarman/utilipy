@@ -24,7 +24,7 @@ Installation and Dependencies
 |PyPI|
 
 
-The easiest way to get Gala is to install with pip. To install with pip::
+The easiest way to get *utilipy* is to install with pip. To install with pip::
 
     pip install utilipy
 

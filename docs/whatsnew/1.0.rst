@@ -1,8 +1,10 @@
 .. _whatsnew-1.0:
 
-*****************************
-What's New in `utilipy` v1.0?
-*****************************
+*******************************
+What's New in `utilipy` v1.0.X?
+*******************************
+
+Bug fixes (in X releases) are annotated with `@X`
 
 Overview
 ========
@@ -210,6 +212,8 @@ Function input / output.
 - `dtypeDecoratorMaker` function to make a dtype decorator.
 - `dtypeDecorator` function to ensure arguments are type dtype.
 - `boolDecorator`, `intDecorator`, `floatDecorator`, `strDecorator`, `ndarrayDecorator`, `ndfloat64Decorator`, which enforce their respective dtypes.
+
+corrected import ``inspect`` to utilipy's inspect (@v1.0.1)
 
 .. _whatsnew-1.0-imports:
 

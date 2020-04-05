@@ -40,8 +40,6 @@ __all__ = [
 
 # GENERAL
 
-import inspect
-
 from typing import Any, Callable, Optional, Union, Iterable, Dict
 from typing_extensions import Literal
 
@@ -50,7 +48,7 @@ import numpy as np
 
 # PROJECT-SPECIFIC
 
-from ..utils import functools
+from ..utils import functools, inspect
 
 
 ##############################################################################
