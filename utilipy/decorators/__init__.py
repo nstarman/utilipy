@@ -15,6 +15,7 @@ __all__ = [
     "baseclass",
     "docstring",
     "func_io",
+    "code_dev",
     # defined here
     "store_function_input",
     "add_folder_backslash",
@@ -67,7 +68,7 @@ from .func_io import (
 )
 
 # top-level
-from . import baseclass, docstring, func_io
+from . import baseclass, docstring, func_io, code_dev
 
 
 ##############################################################################
