@@ -7,8 +7,7 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-r"""Base set of imports for matplotlib.
+"""Base set of imports for matplotlib.
 
 Routine Listings
 ----------------
@@ -48,7 +47,7 @@ __all__ = [
 ##############################################################################
 # HELPER FUNCTIONS
 
-from utilipy.config import __config__
+from utilipy.imports import conf
 from utilipy.decorators.docstring import (
     _set_docstring_import_file_helper,
     _import_file_docstring_helper,
@@ -116,7 +115,7 @@ def matplotlib_imports_help():
 # /def
 
 
-if __config__.getboolean("verbosity", "verbose-imports"):
+if conf.verbose_imports:
     matplotlib_imports_help()
 
 

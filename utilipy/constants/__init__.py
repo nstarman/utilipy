@@ -1,19 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : constants
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-"""Astropy Constants.
+"""Astropy Constants. Extended.
 
 Astropy constants, with a frozen version for reproducibility.
 
 float versions of the constants accessible through `values` module
 this includes frozen version for reproducibility
-to access frozen version, set `frozen-constants=True` in utilipy config
+to access frozen version, set ``frozen_constants=True`` in utilipy config
 
 
 References
@@ -31,6 +24,7 @@ __all__ = [
     "FrozenConstants",
     "default_values",
     "ConstantsValues",
+    "conf",
 ]
 
 
@@ -42,8 +36,9 @@ __all__ = [
 from astropy import constants
 from astropy.constants import *
 
-
 # PROJECT-SPECIFIC
+
+from .setup_package import conf
 
 from ._frozen import FrozenConstants, frozen
 from .values import ConstantsValues, values as default_values

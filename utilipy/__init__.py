@@ -67,9 +67,9 @@ __all__ = [
     "LogFile",
     "ObjDict",
     "wraps",
-    "config",
     "help",
     "online_help",
+    "reload_config",
 ]
 
 
@@ -82,18 +82,18 @@ __all__ = [
 from ._astropy_init import *  # noqa
 from ._astropy_init import __version__  # noqa
 
-
 # GENERAL
 
 from typing import Optional
 
 
+# THIRD PARTY
+
+import astropy.config as config
+
+
 # PROJECT-SPECIFIC
 
-# configuration
-from . import config
-
-# import commonly used functions
 from .utils.logging import LogFile
 from .utils.collections import ObjDict
 from .utils.functools import wraps
@@ -113,7 +113,24 @@ from . import (  # noqa
     units,
     utils,
 )
-from . import astro  # noqa, separated b/c alias
+
+
+#############################################################################
+# CONFIG FUNCTIONS
+
+
+def reload_config():
+    """Reload utilipy configuration.
+
+    See Also
+    --------
+    :mod:`~astropy.config`
+
+    """
+    config.reload_config("utilipy")
+
+
+# /def
 
 
 #############################################################################

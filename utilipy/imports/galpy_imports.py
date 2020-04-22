@@ -33,7 +33,7 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # HELPER FUNCTIONS
 
-from utilipy.config import __config__
+from utilipy.imports import conf
 from utilipy.decorators.docstring import (
     _set_docstring_import_file_helper,
     _import_file_docstring_helper,
@@ -91,7 +91,7 @@ def galpy_imports_help():
 # /def
 
 
-if __config__.getboolean("verbosity", "verbose-imports"):
+if conf.verbose_imports:
     galpy_imports_help()
 
 ##############################################################################

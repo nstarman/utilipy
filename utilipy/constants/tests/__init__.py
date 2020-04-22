@@ -1,35 +1,23 @@
 # -*- coding: utf-8 -*-
 # see LICENSE.rst
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : test constants data
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-"""tests.
-
-Routine Listings
-----------------
-
-"""
+"""Test :mod:`~utilipy.constants`."""
 
 __author__ = "Nathaniel Starkman"
 
-# __all__ = [
-#     ""
-# ]
+
+__all__ = [
+    "test_frozen",
+    "test_values",
+]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
-
-# CUSTOM
-
 # PROJECT-SPECIFIC
+
+from . import test_frozen, test_values
 
 
 ##############################################################################

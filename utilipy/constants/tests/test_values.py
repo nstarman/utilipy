@@ -1,27 +1,22 @@
 # -*- coding: utf-8 -*-
 # see LICENSE.rst
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : test constants frozen
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-"""Tests."""
+"""Test constant's :mod:`~utilipy.constants.values`."""
 
 __author__ = "Nathaniel Starkman"
 
-# __all__ = [
-#     ""
-# ]
+
+__all__ = [
+    "test_ConstantsValues",
+    "test_values",
+]
 
 
 ##############################################################################
 # IMPORTS
 
-from .._frozen import frozen as frozenconstants
 from .. import values, data
+from .._frozen import frozen as frozenconstants
 
 
 ##############################################################################
@@ -30,7 +25,7 @@ from .. import values, data
 
 
 def test_ConstantsValues():
-    """Test ConstantsValues class."""
+    """Test :mod:`~utilipy.constants.values.ConstantsValues`."""
     # ----------------------------
     # Frozen
 
@@ -66,7 +61,7 @@ def test_ConstantsValues():
 
 
 def test_values():
-    """Test `values`."""
+    """Test `~utilipy.constants.values.values`."""
     f = values.values
 
     assert f.from_frozen is True

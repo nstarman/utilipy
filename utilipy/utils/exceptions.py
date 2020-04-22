@@ -1,14 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Warnings and Exceptions.
-
-Routine Listings
-----------------
-utilipyWarning
-utilipyWarningVerbose
-_warning
-
-"""
+"""Warnings and Exceptions."""
 
 __author__ = "Nathaniel Starkman"
 
@@ -16,26 +8,32 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 from typing import Any
 import warnings
 
 
-# PROJECT-SPECIFIC
+# THIRD PARTY
 
-from ..config import __config__
+from astropy import config as _config
 
 
-##############################################################################
-# PARAMETERS
+#############################################################################
+# CONFIGURATION
 
-try:
-    __config__.getboolean("verbosity", "warnings")
-except Exception:
-    _SHOW_WARNINGS: bool = True
-else:
-    _SHOW_WARNINGS: bool = __config__.getboolean("verbosity", "warnings")
+
+class Conf(_config.ConfigNamespace):
+    """Configuration parameters for :mod:`~utilipy.utils.exceptions`."""
+
+    verbose_warnings = _config.ConfigItem(
+        False,
+        description="When True, use verbose warnings",
+        cfgtype="boolean(default=False)",
+    )
+
+
+conf = Conf()
 
 
 ###############################################################################
@@ -76,7 +74,10 @@ def _warning(
     line: None = None,
 ):
     if issubclass(category, utilipyWarning):
-        if not issubclass(category, utilipyWarningVerbose) or _SHOW_WARNINGS:
+        if (
+            not issubclass(category, utilipyWarningVerbose)
+            or conf.verbose_warnings
+        ):
             print("utilipyWarning: " + str(message))
     else:
         print(warnings.formatwarning(message, category, filename, lineno))

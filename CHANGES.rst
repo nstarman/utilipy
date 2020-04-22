@@ -2,11 +2,10 @@
 1.1dev (unreleased)
 ===================
 
-- No changes yet
+- adopted Astropy's configuration system, removing the old `config` module.
 
-================
-1.1 (unreleased)
-================
+    + utilipy.cfg sets the template
+    + each module has the specific config code in the ``setup_package.py`` (preferred), ``__init__.py``, or the relevant python file.
 
 
 ==================

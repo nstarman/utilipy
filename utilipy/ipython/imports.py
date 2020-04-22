@@ -67,9 +67,9 @@ from typing import Optional, Dict
 # PROJECT-SPECIFIC
 
 from ..utils import functools
-from ..config import use_import_verbosity
 from ..utils.logging import LogFile
 
+from . import use_import_verbosity
 from .autoreload import aimport, set_autoreload
 
 
@@ -201,7 +201,7 @@ def run_imports(
     ``run_imports(base=True, verbose_imports=False)``
     imports from `utilipy/imports/base.py`, without an import summary
 
-    ``utilipy.config.set_import_verbosity(False)``
+    ``utilipy.imports.conf.verbose_imports = False``
     ``utilipy.ipython.imports.run_imports(base=True, verbose_imports=None)``
     imports from `utilipy/imports/base.py` with default import-verbosity state
 

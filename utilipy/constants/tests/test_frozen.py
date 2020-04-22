@@ -1,26 +1,21 @@
 # -*- coding: utf-8 -*-
 # see LICENSE.rst
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : test constants frozen
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-"""Tests."""
+"""Test frozen constants, in :mod:`~utilipy.constants._frozen`."""
 
 __author__ = "Nathaniel Starkman"
 
-# __all__ = [
-#     ""
-# ]
+
+__all__ = [
+    "test_FrozenConstants",
+    "test_frozen",
+]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# THIRD PARTY
 
 import astropy.units as u
 

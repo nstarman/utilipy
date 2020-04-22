@@ -103,9 +103,10 @@ from IPython.display import (
 
 # PROJECT-SPECIFIC
 
+
 from ..utils.logging import LogPrint, LogFile
-from ..config import __config__
 from ..decorators.docstring import _set_docstring_import_file_helper
+from ..imports import use_import_verbosity
 
 from .autoreload import set_autoreload, aimport
 from .imports import run_imports, import_from_file
@@ -139,9 +140,9 @@ if _HAS_IPY:
 
 
 ##############################################################################
-# INFORMATION
+# HELP
 
-# @set_docstring(docstring=__doc__)
+
 @_set_docstring_import_file_helper(None, __doc__)  # doc from __doc__
 def help():
     """Help for ipython module."""

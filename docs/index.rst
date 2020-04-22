@@ -37,7 +37,6 @@ Subpackages
 .. toctree::
    :maxdepth: 1
 
-   utilipy/config
    utilipy/astro/index
    utilipy/constants/index
    utilipy/data_utils/index

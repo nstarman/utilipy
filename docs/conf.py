@@ -28,6 +28,8 @@
 import os
 import sys
 import datetime
+# import shutil
+import easydev
 from importlib import import_module
 
 try:
@@ -68,18 +70,27 @@ rst_epilog += """
 """
 
 # modindex formatting
-modindex_common_prefix = ['utilipy.']
+modindex_common_prefix = ["utilipy."]
 
 # extensions
 extensions += [
     "sphinx.ext.todo",
+    # "easydev.copybutton",
     "nbsphinx",
-    'IPython.sphinxext.ipython_console_highlighting',
-    'sphinx_automodapi.smart_resolver'
+    "IPython.sphinxext.ipython_console_highlighting",
+    "sphinx_automodapi.smart_resolver",
+    "sphinxcontrib.bibtex",
 ]
 
 # Show / hide TODO blocks
 todo_include_todos = True
+
+# # Copy Buttton
+# jscopybutton_path = easydev.copybutton.get_copybutton_path()
+# if os.path.isdir('_static') is False:
+#     os.mkdir('_static')
+# shutil.copy(jscopybutton_path, '_static')
+# html_static_path = ['_static']
 
 
 # -- Project information ------------------------------------------------------
@@ -87,7 +98,9 @@ todo_include_todos = True
 # This does not *have* to match the package name, but typically does
 project = setup_cfg["name"]
 author = setup_cfg["author"]
-copyright = "{0}, {1}".format(datetime.datetime.now().year, setup_cfg["author"])
+copyright = "{0}, {1}".format(
+    datetime.datetime.now().year, setup_cfg["author"]
+)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -139,7 +152,7 @@ html_theme_options = {
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = '_static/favicon.ico'
+html_favicon = "_static/favicon.ico"
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -166,7 +179,9 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [("index", project.lower(), project + u" Documentation", [author], 1)]
+man_pages = [
+    ("index", project.lower(), project + u" Documentation", [author], 1)
+]
 
 
 # -- Options for the edit_on_github extension ---------------------------------
@@ -182,7 +197,9 @@ if setup_cfg.get("edit_on_github").lower() == "true":
     edit_on_github_doc_root = "docs"
 
 # -- Resolving issue number to links in changelog -----------------------------
-github_issues_url = "https://github.com/{0}/issues/".format(setup_cfg["github_project"])
+github_issues_url = "https://github.com/{0}/issues/".format(
+    setup_cfg["github_project"]
+)
 
 # -- Turn on nitpicky mode for sphinx (to warn about references not found) ----
 #

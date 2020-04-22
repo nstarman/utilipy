@@ -14,7 +14,7 @@
 # ex: !/papers/_sample/
 
 # scratch folder
-scratch/
+scratch/*
 
 # _old
 **/_old

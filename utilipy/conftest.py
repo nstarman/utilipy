@@ -57,6 +57,7 @@ def pytest_configure(config):
 # ------------------------------------------------------
 # Added by @nstarman
 
+
 @pytest.fixture(autouse=True)
 def add_units(doctest_namespace):
     """Add Imports to Pytest.
@@ -68,6 +69,7 @@ def add_units(doctest_namespace):
     """
     # import
     import astropy.units
+
     # add to namespace
     doctest_namespace["u"] = astropy.units
 

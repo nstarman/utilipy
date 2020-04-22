@@ -36,7 +36,7 @@ __all__ = [
 import importlib
 import warnings
 from contextlib import contextmanager
-from typing import Union
+import typing as T
 
 # astropy
 import astropy
@@ -60,11 +60,11 @@ else:
 
 # PROJECT-SPECIFIC
 
+from . import conf
 from . import data
 from ._frozen import frozen as frozenconstants
 
 from .. import units as u
-from ..config import __config__
 
 
 ###############################################################################
@@ -79,7 +79,7 @@ __all__ += data.__all_constants__
 
 
 @contextmanager
-def _set_enabled_constants(modname: Union[str, bool]):
+def _set_enabled_constants(modname: T.Union[str, bool]):
     """_set_enabled_constants."""
     try:
         if isinstance(modname, bool):
@@ -153,17 +153,18 @@ class ConstantsValues:
 
     # /def
 
-    def __init__(
-        self, frozen=bool(__config__.get("util", "frozen-constants"))
-    ):
+    def __init__(self, frozen: T.Optional[bool] = None):
         """__init__.
 
         Parameters
         ----------
-        frozen: bool
+        frozen: bool, optional
             whether to use frozen constants
+            None uses configuration defaults
 
         """
+        frozen = conf.frozen_constants if frozen is None else frozen
+
         super().__setattr__("from_frozen", frozen)
         super().__setattr__("_names", set())
 

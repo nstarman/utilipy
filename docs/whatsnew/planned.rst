@@ -10,11 +10,6 @@ Planned Features
 full code coverage in tests
 generalized help function class that can be implemented in all subpackages.
 
-utilipy.config
-^^^^^^^^^^^^^^
-
-- for `use_`, adopt a `contextmanager <https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager>`_, possibly using a `ContextDecorator <https://docs.python.org/3/library/contextlib.html#contextlib.ContextDecorator>`_.
-
 utilipy.astro
 ^^^^^^^^^^^^^
 

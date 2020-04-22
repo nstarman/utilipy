@@ -1,14 +1,14 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : Extending the Standard Import File
+# TITLE   : extended base imports
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
 
-r"""extending the standard import file.
+
+r"""Extending the standard import file.
 
 Routine Listings
 ----------------
@@ -67,7 +67,8 @@ __all__ = [
 ##############################################################################
 # HELPER FUNCTIONS
 
-from utilipy.config import __config__
+from utilipy.imports import conf
+
 from utilipy.decorators.docstring import (
     _set_docstring_import_file_helper,
     _import_file_docstring_helper,
@@ -96,7 +97,7 @@ def extended_imports_help():
 # /def
 
 
-if __config__.getboolean("verbosity", "verbose-imports"):
+if conf.verbose_imports:
     extended_imports_help()
 
 

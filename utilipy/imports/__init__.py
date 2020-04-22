@@ -17,9 +17,8 @@ The provided quick imports are ``base_imports``, ``extended_imports``,
 ``amuse_imports``.
 
 The files will print an import summary. To prevent this summary, set
-``verbose-imports=False`` in the ``.astroPHCrc`` config file in your
-home or local directory. For details, see `config
-file <#config-file>`__. Each of the imports also provides a helper
+``verbose_imports=False`` in the configuration file in your
+home directory. Each of the imports also provides a helper
 function that will print out the import summary.
 
 
@@ -33,7 +32,7 @@ The purpose of this module is to provide such sets of standard imports,
 so that, for the `matplotlib` package as an example, the following are
 imported with one line
 
-    `from utilipy.imports.matplotlib_ import *`
+    `from utilipy.imports.matplotlib_imports import *`
 
     - pyplot->plt
     - matplotlib->mpl, .cm, .colors
@@ -44,6 +43,20 @@ imported with one line
 """
 
 __author__ = "Nathaniel Starkman"
+
+
+__all__ = [
+    "conf",
+    "use_import_verbosity",
+]
+
+
+##############################################################################
+# IMPORTS
+
+# PROJECT-SPECIFIC
+
+from .setup_package import conf, use_import_verbosity
 
 
 ##############################################################################
