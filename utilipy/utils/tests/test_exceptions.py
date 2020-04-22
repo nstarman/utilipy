@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE  : test util/exceptions
-#
-# ----------------------------------------------------------------------------
+"""Tests for :mod:`~utilipy.utils.exceptions`."""
 
-"""tests for util/exceptions.py."""
 
-__author__ = "Nathaniel Starkman"
+__all__ = [
+    "test_utilipyWarning",
+    "test_utilipyWarningVerbose",
+]
 
 
 ##############################################################################
@@ -30,7 +28,7 @@ from .. import exceptions
 
 
 def test_utilipyWarning():
-    """Test utilipyWarning."""
+    """Test :class:`~utilipy.utils.exceptions.utilipyWarning`."""
     self = unittest.TestCase()
     with self.assertWarns(exceptions.utilipyWarning):
         warnings.warn("utilipyWarning", exceptions.utilipyWarning)
@@ -42,7 +40,7 @@ def test_utilipyWarning():
 
 
 def test_utilipyWarningVerbose():
-    """Test utilipyWarningVerbose."""
+    """Test :class:`~utilipy.utils.exceptions.utilipyWarningVerbose`."""
     self = unittest.TestCase()
     with self.assertWarns(exceptions.utilipyWarningVerbose):
         warnings.warn(

@@ -4,12 +4,18 @@
 """Logging Tests."""
 
 
+__all__ = [
+    "test_logprint",
+    "test_logfile",
+]
 
 
 ##############################################################################
 # IMPORTS
 
 # PROJECT-SPECIFIC
+
+from . import test_logprint, test_logfile
 
 
 ##############################################################################

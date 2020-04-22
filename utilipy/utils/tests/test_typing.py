@@ -1,22 +1,20 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE  : test util/typing
-#
-# ----------------------------------------------------------------------------
+"""Tests for :mod:`~utilipy.utils.typing`."""
 
-"""tests for util/typing.py."""
 
-__author__ = "Nathaniel Starkman"
+__all__ = [
+    "test_array_like",
+]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# THIRD PARTY
 
-# import numpy as np
+import pytest
+
 
 # PROJECT-SPECIFIC
 
@@ -27,13 +25,9 @@ from .. import typing
 # Tests
 
 
+@pytest.mark.skip(reason="TODO")
 def test_array_like():
-    """Test array_like.
-
-    TODO
-
-    """
-
+    """Test `~utilipy.utils.typing.array_like`."""
     return
 
 

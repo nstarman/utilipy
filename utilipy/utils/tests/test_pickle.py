@@ -1,20 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE  : test util/pickle
-#
-# ----------------------------------------------------------------------------
+"""Tests for :mod:`~utilipy.utils.pickle`."""
 
-"""tests for util/pickle.py."""
 
-__author__ = "Nathaniel Starkman"
+__all__ = [
+    "test_dump",
+    "test_save",
+    "test_dump_many",
+    "test_load",
+    "test_load_many",
+]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# THIRD PARTY
+
+import pytest
+
 
 # PROJECT-SPECIFIC
 
@@ -25,24 +29,27 @@ from .. import pickle  # TODO relative import
 # Tests
 
 
+@pytest.mark.skip(reason="TODO")
 def test_dump():
-    """Test dump.
-
-    TODO
-
-    """
+    """Test :func:`~utilipy.utils.pickle.dump`."""
     return
 
 
 # /def
 
 
+@pytest.mark.skip(reason="TODO")
+def test_save():
+    """Test :func:`~utilipy.utils.pickle.save`."""
+    return
+
+
+# /def
+
+
+@pytest.mark.skip(reason="TODO")
 def test_dump_many():
-    """Test dump.
-
-    TODO
-
-    """
+    """Test :func:`~utilipy.utils.pickle.dump_many`."""
     return
 
 
@@ -52,24 +59,18 @@ def test_dump_many():
 # --------------------------------------------------------------------------
 
 
+@pytest.mark.skip(reason="TODO")
 def test_load():
-    """Test dump.
-
-    TODO
-
-    """
+    """Test :func:`~utilipy.utils.pickle.load`."""
     return
 
 
 # /def
 
 
+@pytest.mark.skip(reason="TODO")
 def test_load_many():
-    """Test dump.
-
-    TODO
-
-    """
+    """Test :func:`~utilipy.utils.pickle.load_many`."""
     return
 
 

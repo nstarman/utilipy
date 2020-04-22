@@ -1,45 +1,32 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : functools
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-# Docstring
-"""functools.
-
-Routine Listings
-----------------
-test_WRAPPER_ASSIGNMENTS
-test_SIGNATURE_ASSIGNMENTS
-test_WRAPPER_UPDATES
+"""Tests :mod:`~utilipy.utils.functools`."""
 
 
-"""
-
-__author__ = "Nathaniel  Starkman"
-
-# __all__ = [
-#     ""
-# ]
+__all__ = [
+    "test_WRAPPER_ASSIGNMENTS",
+    "test_SIGNATURE_ASSIGNMENTS",
+    "test_WRAPPER_UPDATES",
+    "test_update_wrapper_signature_true",
+    "test_update_wrapper_signature_false",
+    "test_update_wrapper_signature_None",
+    "test_update_wrapper_signature_Signature",
+    "test_update_wrapper_signature_FullerSignature",
+    "test_update_wrapper_signature_notSignature",
+]
 
 
 ###############################################################################
 # IMPORTS
 
-# GENERAL
+# THIRD PARTY
 
-# import inspect
-# import types
+import pytest
 
 
 # PROJECT-SPECIFIC
 
 from .. import functools
-
-# from . import _test_functools_util
 
 
 ###############################################################################
@@ -47,7 +34,7 @@ from .. import functools
 
 
 def test_WRAPPER_ASSIGNMENTS():
-    """Test WRAPPER_ASSIGNMENTS."""
+    """Test `~utilipy.utils.functools.WRAPPER_ASSIGNMENTS`."""
     assert functools.WRAPPER_ASSIGNMENTS == (
         "__module__",
         "__name__",
@@ -61,7 +48,7 @@ def test_WRAPPER_ASSIGNMENTS():
 
 
 def test_SIGNATURE_ASSIGNMENTS():
-    """Test SIGNATURE_ASSIGNMENTS."""
+    """Test `~utilipy.utils.functools.SIGNATURE_ASSIGNMENTS`."""
     assert functools.SIGNATURE_ASSIGNMENTS == (
         "__kwdefaults__",
         "__annotations__",
@@ -72,7 +59,7 @@ def test_SIGNATURE_ASSIGNMENTS():
 
 
 def test_WRAPPER_UPDATES():
-    """Test WRAPPER_UPDATES."""
+    """Test `~utilipy.utils.functools.WRAPPER_UPDATES`."""
     assert functools.WRAPPER_UPDATES == ("__dict__",)
 
     # /def
@@ -367,43 +354,61 @@ def test_WRAPPER_UPDATES():
 # -----------------------------------------------------------------------------
 
 
+@pytest.mark.skip(reason="TODO")
 def test_update_wrapper_signature_true():
     """Test the case when `signature`=True."""
-
     return
 
 
+# /def
+
+
+@pytest.mark.skip(reason="TODO")
 def test_update_wrapper_signature_false():
     """Test the case when `signature`=False."""
-
     return
 
 
+# /def
+
+
+@pytest.mark.skip(reason="TODO")
 def test_update_wrapper_signature_None():
     """Test the case when `signature`=None."""
-
     return
 
 
+# /def
+
+
+@pytest.mark.skip(reason="TODO")
 def test_update_wrapper_signature_Signature():
     """Test the case when `signature`is an inspect.Signature object."""
     return
 
 
+# /def
+
+
+@pytest.mark.skip(reason="TODO")
 def test_update_wrapper_signature_FullerSignature():
     """Test the case when `signature`is an FullerSignature object."""
-
     return
 
 
+# /def
+
+
+@pytest.mark.skip(reason="TODO")
 def test_update_wrapper_signature_notSignature():
     """Test the case when `signature`is not a Signature object.
-
     This should raise an error.
 
     """
-
     return
+
+
+# /def
 
 
 ###############################################################################

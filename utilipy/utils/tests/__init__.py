@@ -1,43 +1,36 @@
 # -*- coding: utf-8 -*-
 # see LICENSE.rst
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   :
-# AUTHOR  :
-# PROJECT :
-#
-# ----------------------------------------------------------------------------
+"""Utilipy Utils Tests."""
 
-"""Initialization file.
 
-Routine Listings
-----------------
-
-"""
-
-__author__ = ""
-# __copyright__ = "Copyright 2018, "
-# __credits__ = [""]
-# __license__ = ""
-# __version__ = "0.0.0"
-# __maintainer__ = ""
-# __email__ = ""
-# __status__ = "Production"
-
-# __all__ = [
-#     ""
-# ]
+__all__ = [
+    "test_typing",
+    "test_string",
+    "test_pickle",
+    "test_inspect",
+    "test_functools",
+    "test_exceptions",
+    "test_collections",
+    "_test_functools_util",
+]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
-
-# CUSTOM
-
 # PROJECT-SPECIFIC
+
+from . import (
+    test_typing,
+    test_string,
+    test_pickle,
+    test_inspect,
+    test_functools,
+    test_exceptions,
+    test_collections,
+    _test_functools_util,
+)
 
 
 ##############################################################################

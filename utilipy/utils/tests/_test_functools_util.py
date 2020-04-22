@@ -1,13 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : _test_functools_util
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-"""Functions for use in testing functools."""
+"""Functions for use in testing :mod:`~utilipy.utils.functools`."""
 
 __author__ = "Nathaniel Starkman"
 
@@ -2039,4 +2032,5 @@ def func_xy_ab_args_pq_kwargs_annotate(
 # /def
 
 
-# ----------------------------------------------
+##############################################################################
+# END

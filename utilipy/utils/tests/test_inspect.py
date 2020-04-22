@@ -1,22 +1,42 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE  : test util/inspect
-#
-# ----------------------------------------------------------------------------
+"""Tests for :mod:`~utilipy.utils.inspect`."""
 
-"""tests for util/inspect.py."""
 
-__author__ = "Nathaniel Starkman"
+__all__ = [
+    "test_parameters",
+    "test__is_empty",
+    "test__is_void",
+    "test__is_placehold",
+    "test__is_placeholder",
+    "test_getfullerargspec",
+    "test_get_annotations_from_signature",
+    "test_get_defaults_from_signature",
+    "test_get_kwdefaults_from_signature",
+    "test_get_kwonlydefaults_from_signature",
+    "test_get_kinds_from_signature",
+    "test_modify_parameter",
+    "test_replace_with_parameter",
+    "test_insert_parameter",
+    "test_prepend_parameter",
+    "test_append_parameter",
+    "test_drop_parameter",
+    "test_FullerSignature",
+    "test_fuller_signature",
+]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 import inspect as nspct
+
+
+# THIRD PARTY
+
+import pytest
 
 
 # PROJECT-SPECIFIC
@@ -66,9 +86,8 @@ class NameSpace:
     # /class
 
 
-# /class
-
 NameSpace.NEQ = NameSpace.ExceptEquality()
+# /class
 
 
 ##############################################################################
@@ -125,7 +144,6 @@ def test_parameters():
 
 def test__is_empty():
     """Test _is_empty."""
-
     # True
     assert inspect._is_empty(inspect._empty)  # my inspect module
     assert inspect._is_empty(nspct.Parameter.empty)  # built-in
@@ -185,6 +203,8 @@ def test__is_placeholder():
     test__is_void()
     test__is_placehold()
 
+    return
+
 
 # /def
 
@@ -194,7 +214,7 @@ def test__is_placeholder():
 
 
 def test_getfullerargspec():
-
+    """Test :func:`~utilipy.utils.inspect.getfullerargspec`"""
     fullargspec = nspct.getfullargspec(NameSpace.test_func)
     fullerargspec = inspect.getfullerargspec(NameSpace.test_func)
 
@@ -226,6 +246,7 @@ def test_getfullerargspec():
 
 # /def
 
+
 ###########################################################################
 # Signature / ArgSpec Interface
 
@@ -244,6 +265,11 @@ def test_get_annotations_from_signature():
         "return": bool,
     }
 
+    return
+
+
+# /def
+
 
 def test_get_defaults_from_signature():
     """Test get_annotations_from_signature."""
@@ -251,6 +277,11 @@ def test_get_defaults_from_signature():
     defaults = inspect.get_defaults_from_signature(signature)
 
     assert defaults == (1, 2)
+
+    return
+
+
+# /def
 
 
 def test_get_kwdefaults_from_signature():
@@ -260,6 +291,11 @@ def test_get_kwdefaults_from_signature():
 
     assert kwdefaults == {"j": "a", "k": "b"}
 
+    return
+
+
+# /def
+
 
 def test_get_kwonlydefaults_from_signature():
     """Test get_annotations_from_signature."""
@@ -267,6 +303,11 @@ def test_get_kwonlydefaults_from_signature():
     kwdefaults = inspect.get_kwonlydefaults_from_signature(signature)
 
     assert kwdefaults == {"j": "a", "k": "b"}
+
+    return
+
+
+# /def
 
 
 def test_get_kinds_from_signature():
@@ -636,13 +677,21 @@ def test_FullerSignature():
     assert list(sig2.parameters.values())[-1].name == "kw"
     assert list(sig3.parameters.values())[-1].name == "kw"
 
+    return
+
+
+# /def
+
 
 # ------------------------------------------------------------------------
 
 
+@pytest.mark.skip(reason="TODO")
 def test_fuller_signature():
     """Test fuller_signature."""
     test_FullerSignature()
+
+    return
 
 
 # /def

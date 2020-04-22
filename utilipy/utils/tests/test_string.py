@@ -1,20 +1,15 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE  : test util/string
-#
-# ----------------------------------------------------------------------------
+"""Tests for :mod:`~utilipy.utils.string`."""
 
-"""tests for util/string.py."""
 
-__author__ = "Nathaniel Starkman"
+__all__ = [
+    "test_FormatTemplate",
+]
 
 
 ##############################################################################
 # IMPORTS
-
-# GENERAL
 
 # PROJECT-SPECIFIC
 
@@ -26,7 +21,7 @@ from .. import string
 
 
 def test_FormatTemplate():
-    """Test FormatTemplate.
+    """Test :class:`~utilipy.utils.string.FormatTemplate`.
 
     both full and partial format
 
