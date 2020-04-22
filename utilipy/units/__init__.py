@@ -59,30 +59,5 @@ from .decorators import quantity_output, quantity_io, QuantityInputOutput
 from . import amuse, composite, core, decorators, full_amuse
 
 
-# THIRD-PARTY
-
-
-#############################################################################
-# CLEANUP
-
-# try:  # TODO not need to delete b/c stub file.
-#     del add_enabled_equivalencies
-# except Exception:
-#     pass
-
-
-#############################################################################
-# __ALL__
-
-# if hasattr(astropy.units, "__all__"):
-#     __all__ += astropy.units.__all__
-# else:
-#     pass
-# #     __all__ += list(dir(astropy.units))
-
-# __all__ += _added_units.__all__
-# # __all__ += decorators.__all__
-
-
 ##############################################################################
 # END

@@ -13,9 +13,7 @@ __author__ = "Nathaniel Starkman"
 __credits__ = ["typing"]
 
 
-__all__ = [
-    "array_like",
-]
+__all__ = ["array_like", "ExpandedUnitType"]
 
 
 ###############################################################################
@@ -42,6 +40,26 @@ import numpy as np
 array_like = T.TypeVar("array_like", np.array, list, tuple)
 
 
+#####################################################################
+# Astropy
+
+ExpandedUnitType = TypeVar("ExpandedUnitType", Unit, Quantity)
+"""Expanded Unit Type.
+
+Type variable for Astropy [astropy]_ units, including quantities.
+
+References
+----------
+.. [astropy] Astropy Collaboration et al., 2018, AJ, 156, 123.
+
+Examples
+--------
+
+    >>> x: ExpandedUnitType = 10 * u.km
+    >>> isinstance(x, u.Unit)
+    True
+
+"""
 
 
 ###############################################################################

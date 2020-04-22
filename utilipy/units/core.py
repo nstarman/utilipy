@@ -29,29 +29,13 @@ from astropy.units import Quantity
 from astropy.units.core import Unit, IrreducibleUnit
 from astropy.utils.decorators import format_doc
 
+# PROJECT-SPECIFIC
+
+from ..utils.typing import ExpandedUnitType
+
 
 ##############################################################################
 # PARAMETERS
-
-ExpandedUnitType = TypeVar("ExpandedUnitType", Unit, Quantity)
-"""Expanded Unit Type.
-
-Type variable for Astropy [astropy]_ units, including quantities.
-
-References
-----------
-.. [astropy] Astropy Collaboration et al., 2018, AJ, 156, 123.
-
-Examples
---------
-
-    >>> x: ExpandedUnitType = 10 * u.km
-    >>> isinstance(x, u.Unit)
-    True
-
-"""
-
-# -------------------------------------------------------------------
 
 _doc_base_params = """
 unit: :class:`~astropy.units.core.Unit`, optional
