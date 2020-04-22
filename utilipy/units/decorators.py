@@ -7,34 +7,38 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""Decorators for functions acceptingAstropy Quantities."""
+"""Decorators for functions accepting Astropy Quantities."""
 
 __author__ = "Nathaniel Starkman"
 __credit__ = "astropy"
 
 
-__all__ = ["unit_output_decorator", "QuantityInputOutput", "quantity_io"]
+__all__ = ["quantity_output", "QuantityInputOutput", "quantity_io"]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
-from typing import Any, Union, Sequence, Callable
-import inspect
+# BUILT-IN
 
-# from warnings import warn
+import textwrap
+from typing import Any, Union, Sequence, Callable
+
+
+# THIRD-PARTY
 
 from astropy.units import dimensionless_unscaled
 from astropy.units.decorators import _validate_arg_value, _get_allowed_units
 from astropy.units.core import Unit, add_enabled_equivalencies
 from astropy.utils.misc import isiterable
+from astropy.utils.decorators import format_doc
+
 
 # PROJECT-SPECIFIC
-from .util import unit_output
-from ..decorators.docstring import format_doc
-from ..utils.functools import wraps
+
+from .core import quantity_return_, _doc_base_params, _doc_base_raises
+from ..utils import functools, inspect
+
 
 ###############################################################################
 # PARAMETERS
@@ -49,11 +53,140 @@ _aioattrs = (
 )
 
 
+# ----------------------------------------
+
+
+_doc_quantity_output_examples = """
+`quantity_output` decorated function
+
+    >>> from utilipy.units.decorators import quantity_output
+    >>> @quantity_output(unit=u.m, to_value=True)
+    ... def example_function(x):
+    ...     return x
+    >>> example_function(10 * u.km)
+    10000.0
+    >>> example_function(10)
+    10
+    >>> example_function(10 * u.km, to_value=False)  # doctest: +FLOAT_CMP
+    <Quantity 10000. m>
+
+"""
+
+_doc_quantity_output_wrapped = """
+Other Parameters
+----------------
+{parameters}
+
+Raises
+-------
+{raises}
+
+Examples
+--------
+{examples}
+""".format(
+    parameters=_doc_base_params,
+    raises=_doc_base_raises,
+    examples=_doc_quantity_output_examples,
+)
+
+
+# ----------------------------------------
+
+# QuantityInputOutput parameters, combine base and assumed_units
+_doc_qio_params = """
+function: function
+    the function to decorate
+    (default None)
+{parameters}
+assumed_units: dict
+    dictionary of default units
+    (default dict())
+
+    >>> from utilipy.units import QuantityInputOutput
+    >>> dfu = dict(x=u.km)
+    >>> x = 10
+    >>> y = 20*u.km
+    >>> @QuantityInputOutput.as_decorator(assumed_units=dfu)
+    ... def add(x, y):
+    ...     return x + y
+    >>> add(x, y) # doctest: +SKIP
+    <Quantity 30.0 km>
+
+assume_annotation_units: bool, optional
+    whether to interpret function annotations as default units
+    (default False)
+    function annotations have lower precedence than `assumed_units`
+
+""".format(
+    parameters=_doc_base_params,
+)
+
+_doc_qio_notes = """
+Order of Precedence:
+
+1. Function Arguments
+2. Decorator Arguments
+3. Function Annotation Arguments
+
+Decorator Key-Word Arguments:
+
+    Unit specifications can be provided as keyword arguments
+    to the decorator, or by using function annotation syntax.
+    Arguments to the decorator take precedence
+    over any function annotations present.
+    **note**
+    decorator key-word arguments are NEVER interpreted as `assumed_units`
+
+    >>> @QuantityInputOutput.as_decorator(x=u.m, y=u.s)
+    ... def func(x, y):
+    ...     pass
+
+Function Annotation Arguments:
+
+    Unit specifications can be provided as keyword arguments
+    to the decorator, or by using function annotation syntax.
+    Arguments to the function and decorator take precedence
+    over any function annotations present.
+
+    >>> def func(x: u.m, y: u.s) -> u.m / u.s:
+    ...     pass
+
+    if `assume_annotation_units` is True (default False)
+    function annotations are interpreted as default units
+    function annotations have lower precedence than `assumed_units`
+
+"""
+
+# TODO replace
+_funcdec = """
+
+Other Parameters
+----------------
+{parameters}
+
+""".format(
+    parameters=_doc_qio_params
+)
+
+
 ###############################################################################
 # CODE
+###############################################################################
 
 
-def unit_output_decorator(
+@format_doc(
+    None,
+    parameters=textwrap.indent(_doc_base_params, " " * 4),
+    raises=textwrap.indent(_doc_base_raises, " " * 4),
+    examples=textwrap.indent(_doc_quantity_output_examples, " " * 4),
+    doc_quantity_output_wrapped=textwrap.indent(
+        _doc_quantity_output_wrapped, " " * 12 + "| "
+    ),
+)
+def quantity_output(
+    function: Callable = None,
+    *,
     unit: Unit = None,
     to_value: bool = False,
     equivalencies: Sequence = [],
@@ -62,65 +195,35 @@ def unit_output_decorator(
     r"""Decorate functions for unit output.
 
     Any wrapped function accepts the additional key-word arguments:
-        ``unit``, ``to_value``, ``equivalencies``, ``decompose``
-
-    If provided to the decorator (ex: ``@unit_decorator(unit=unit)``),
-        then `unit` becomes the default value
-    If provided when calling the function (ex: ``myfunc(*args, **kwargs, unit=unit)``),
-        this unit is used in the conversion
+        - `unit`
+        - `to_value`
+        - `equivalencies`
+        - `decompose`
 
     Parameters
     ----------
-    unit: Unit, optional
-        sets the unit for the returned `res`
-        if None, returns `res` unchanged, unless `to_value` is used
-        if '', decomposes
-    to_value: bool, optional
-        whether to return ``.to_value(unit)``
-        see Astropy.units.Quantity.to_value
-    equivalencies: list, optional
-        equivalencies for ``.to()`` and ``.to_value()``
-        only used if `unit' to `to_value` are not None/False
-    decompose: bool or list, optional
-        unit decomposition
-        default, False
-
-        * bool: True, False for decomposing.
-        * list: bases for ``.decompose(bases=[])``
-
-            will first decompose, then apply ``unit``, ``to_value``, ``equivalencies``
-
-        Decomposing then converting wastes time, since
-        ``.to(unit, equivalencies)`` internally does conversions.
-        The only use for combining decompose with other `unit_output`
-        parameters is with::
-
-            unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
-            since this will decompose to desired bases then return the value in those bases
-
-        .. note::
-
-            **experimental feature:**
-            for things which are not (astropy.unit.Unit, astropy.unit.core.IrreducibleUnit),
-            tries wrapping in ``Unit()``. This would normally return an error, but now
-            allows for conversions such as:
-
-            >>> x = 10 * u.km * u.s
-            >>> bases = [u.Unit(2 * u.km), u.s]
-            >>> x.decompose(bases=bases) # doctest: +SKIP
-            <Quantity 5.0 2 km s>
+    {parameters}
 
     Returns
     -------
-    res: function result
-        result of wrapped function, with the unit operations performed by unit_output
+    wrapper: Callable
+        wrapped function
+        with the unit operations performed by `quantity_return_`
+
+        The following is added to the docstring
+
+            {doc_quantity_output_wrapped}
+
+    Raises
+    ------
+    {raises}
 
     Examples
     --------
     .. code-block:: python
 
-        @unit_decorator
-        def func(x, y, **kw):
+        @quantity_output
+        def func(x, y):
             return x + y
 
     is equivalent to
@@ -128,36 +231,67 @@ def unit_output_decorator(
     .. code-block:: python
 
         def func(x, y, unit=None, to_value=False, equivalencies=[],
-                 decompose=False, **kw):
+                 decompose=False):
             result = x + y
-            return unit_output(result, unit, to_value, equivalencies,
-                               decompose)
+            return quantity_return_(result, unit, to_value, equivalencies,
+                                    decompose)
+
+    {examples}
 
     """
+    # allowing for optional arguments
+    if function is None:
+        return functools.partial(
+            quantity_output,
+            unit=unit,
+            to_value=to_value,
+            equivalencies=equivalencies,
+            decompose=decompose,
+        )
 
-    def wrapper(func: Callable):
-        @wraps(func)
-        def wrapped(
-            *args: Any,
-            unit: Unit = unit,
-            to_value: bool = to_value,
-            equivalencies: Sequence = equivalencies,
-            decompose: Union[bool, Sequence] = decompose,
-            **kw: Any
-        ):
+    # making decorator
+    @functools.wraps(function)
+    @format_doc(
+        None,
+        parameters=textwrap.indent(_doc_base_params, " " * 8),
+        raises=textwrap.indent(_doc_base_raises, " " * 8),
+        examples=textwrap.indent(_doc_quantity_output_examples, " " * 8),
+        # _doc_quantity_output_wrapped=textwrap.indent(
+        #     _doc_quantity_output_wrapped, " " * 8
+        # ),
+    )
+    def wrapper(
+        *args: Any,
+        unit: Unit = unit,
+        to_value: bool = to_value,
+        equivalencies: Sequence = equivalencies,
+        decompose: Union[bool, Sequence] = decompose,
+        **kwargs: Any,
+    ):
+        """Wrapper docstring.
 
-            # evaluated function
-            res = func(*args, **kw)
+        Other Parameters
+        ----------------
+        {parameters}
 
-            return unit_output(
-                res,
-                unit=unit,
-                to_value=to_value,
-                equivalencies=equivalencies,
-                decompose=decompose,
-            )
+        Raises
+        ------
+        {raises}
 
-        return wrapped
+        Examples
+        --------
+        {examples}
+
+        """
+        return quantity_return_(
+            function(*args, **kwargs),  # evaluated function
+            unit=unit,
+            to_value=to_value,
+            equivalencies=equivalencies,
+            decompose=decompose,
+        )
+
+    # /def
 
     return wrapper
 
@@ -168,141 +302,47 @@ def unit_output_decorator(
 ###############################################################################
 
 
-class QuantityInputOutput(object):
-    r"""A decorator for validating the units of arguments to functions.
-
-    Parameters
-    ----------
-    func: function
-        the function to decorate
-        (default None)
-    unit: astropy Unit or Quantity or str
-        sets the unit for the function evaluation
-        (default {unit})
-        must be astropy-compatible unit specification
-        equivalent to ``func(*args, **kw).to(unit)``
-        if None, skips unit conversion
-    to_value: bool
-        whether to return .to_value(unit)
-        (default {to_value})
-        see Astropy.units.Quantity.to_value
-    equivalencies: list
-        equivalencies for any units provided
-        (default {equivalencies})
-        used by `.to()` and `.to_value()`
-    decompose: bool or list, optional
-        unit decomposition
-        (default {decompose})
-
-        * bool: True, False for decomposing.
-        * list: bases for ``.decompose(bases=[])``
-
-            will first decompose, then apply `unit`, `to_value`, `equivalencies`
-
-        Decomposing then converting wastes time, since
-        ``.to(unit, equivalencies)`` internally does conversions.
-        The only use for combining decompose with other `unit_output`
-        parameters is with::
-
-            unit=None, to_value=True, equivalencies=[], decompose=`bool or [user bases here]'
-            since this will decompose to desired bases then return the value in those bases
-
-        .. note::
-
-            **experimental feature:**
-            for things which are not (astropy.unit.Unit, astropy.unit.core.IrreducibleUnit),
-            tries wrapping in ``Unit()``.
-            allows for conversions such as:
-
-            >>> x = 10 * u.km * u.s
-            >>> bases = [u.Unit(2 * u.km), u.s]
-            >>> x.decompose(bases=bases) # doctest: +SKIP
-            <Quantity 5. 2 km s>
-
-    assumed_units: dict, optional
-        dictionary of default units
-        (default {assumed_units})
-
-        ex) if x has no units, it is assumed to be in u.km
-
-    assume_annotation_units: bool, optional
-        whether to interpret function annotations as default units
-        (default {assume_annotation_units})
-        function annotations have lower precedence than *assumed_units*
-
-    Notes
-    -----
-    **function must allow kwargs**
-
-    Order of Precedence:
-
-    - Function Arguments
-    - Decorator Arguments
-    - Function Annotation Arguments
-
-    arguments to the decorator take LOWER precedence
-    than arguments to the function itself.
-
-    See decorator argument section
-    function arguments override decorator & function annotation arguments
-
-    func_args: function arguments
-    unit
-    to_value
-    equivalencies
-    decompose
-    assumed_units
-    func_kwargs: function key-word argument
-
-    Decorator Key-Word Arguments:
-        Unit specifications can be provided as keyword arguments
-        to the decorator, or by using function annotation syntax.
-        Arguments to the decorator take precedence
-        over any function annotations present.
-        **note**
-        decorator key-word arguments are NEVER interpreted as `assumed_units`
-
-        >>> @quantity_io(x=u.m, y=u.s)
-        ... def func(x, y):
-        ...     pass
-
-    Function Annotation Arguments:
-
-        Unit specifications can be provided as keyword arguments
-        to the decorator, or by using function annotation syntax.
-        Arguments to the function and decorator take precedence
-        over any function annotations present.
-
-        >>> def func(x: u.m, y: u.s) -> u.m / u.s:
-        ...     pass
-
-        if assume_annotation_units is True (default False)
-        function annotations are interpreted as default units
-        function annotations have lower precedence than *assumed_units*
-
-    """
+class QuantityInputOutput:
+    """Decorator for validating the units of arguments to functions."""
 
     @classmethod
-    @format_doc(None, doc=__doc__)
+    @format_doc(
+        None,
+        parameters=textwrap.indent(_doc_qio_params, " " * 8),
+        notes=textwrap.indent(_doc_qio_notes, " " * 8),
+    )
     def as_decorator(
         cls,
-        func: Callable = None,
+        function: Callable = None,
         unit: Unit = None,
         to_value: bool = False,
         equivalencies: Sequence = [],
         decompose: Union[bool, Sequence] = False,
         assumed_units: dict = {},
         assume_annotation_units: bool = False,
-        **decorator_kwargs: Any
+        **decorator_kwargs: Any,
     ):
-        """{doc}."""
+        """Decorator for validating the units of arguments to functions.
+
+        Parameters
+        ----------
+        {parameters}
+
+        See Also
+        --------
+        :class:`~astropy.units.quantity_input`
+
+        Notes
+        -----
+        {notes}
+
+        """
         # making instance from base class
         self = super().__new__(cls)
 
         # modifying docstring
         _locals = locals()
-        self.__doc__ = self.__doc__.format(
-            # classname=func.__repr__() if func is not None else 'SideHists',
+        self.__doc__ = __doc__.format(
             **{k: _locals.get(k).__repr__() for k in set(_aioattrs)}
         )
 
@@ -313,27 +353,48 @@ class QuantityInputOutput(object):
             decompose=decompose,
             assumed_units=assumed_units,
             assume_annotation_units=assume_annotation_units,
-            **decorator_kwargs
+            **decorator_kwargs,
         )
 
-        if func is not None:
-            return self(func)
+        if function is not None:
+            return self(function)
         return self
 
     # /def
 
+    # ------------------------------------------
+
+    @format_doc(
+        None,
+        parameters=textwrap.indent(_doc_qio_params, " " * 4),
+        notes=textwrap.indent(_doc_qio_notes, " " * 4),
+    )
     def __init__(
         self,
-        func: Callable = None,
+        function: Callable = None,
         unit: Unit = None,
         to_value: bool = False,
         equivalencies: Sequence = [],
         decompose: Union[bool, Sequence] = False,
         assumed_units: dict = {},
         assume_annotation_units: bool = False,
-        **decorator_kwargs: Any
+        **decorator_kwargs: Any,
     ):
-        """Initialize decorator class."""
+        """Decorator for validating the units of arguments to functions.
+
+        Parameters
+        ----------
+        {parameters}
+
+        See Also
+        --------
+        :class:`~astropy.units.quantity_input`
+
+        Notes
+        -----
+        {notes}
+
+        """
         super().__init__()
 
         self.unit = unit
@@ -348,12 +409,26 @@ class QuantityInputOutput(object):
 
     # /def
 
+    # ------------------------------------------
+
     def __call__(self, wrapped_function: Callable):
-        """Make decorator."""
+        """Make decorator.
+
+        Parameters
+        ----------
+        wrapped_function : Callable
+            function to wrap
+
+        Returns
+        -------
+        wrapped: Callable
+            wrapped function
+
+        """
         # Extract the function signature for the function we are wrapping.
         wrapped_signature = inspect.signature(wrapped_function)
 
-        @wraps(wrapped_function)
+        @functools.wraps(wrapped_function)
         def wrapped(
             *func_args: Any,
             unit: Unit = self.unit,
@@ -362,7 +437,7 @@ class QuantityInputOutput(object):
             decompose: Union[bool, Sequence] = self.decompose,
             assumed_units: dict = self.assumed_units,
             _skip_decorator: bool = False,
-            **func_kwargs: Any
+            **func_kwargs: Any,
         ):
 
             # skip the decorator
@@ -502,7 +577,7 @@ class QuantityInputOutput(object):
             ):
                 unit = wrapped_signature.return_annotation
 
-            return unit_output(
+            return quantity_return_(
                 return_,
                 unit=unit,
                 to_value=to_value,
@@ -515,84 +590,19 @@ class QuantityInputOutput(object):
         # TODO dedent
         wrapped.__doc__ = inspect.cleandoc(wrapped.__doc__ or "") + _funcdec
 
-        # /def
         return wrapped
 
     # /def
 
 
-###############################################################################
-
-_funcdec = """
-
-Other Parameters
-----------------
-unit : astropy Unit or Quantity or str
-    sets the unit for the function evaluation.
-    (default None)
-    must be astropy-compatible unit specification.
-    equivalent to ``func(*args, **kw).to(unit)``
-    if None, skips unit conversion.
-    function arguments override decorator and function annotation arguments
-to_value : bool
-    whether to return ``.to_value(unit)``
-    (default False)
-    see ``astropy.units.Quantity.to_value``
-    function arguments override decorator and function annotation arguments
-equivalencies : list
-    equivalencies for any units provided
-    (default [])
-    used by ``.to()`` and ``.to_value()``
-    function arguments override decorator and function annotation arguments
-decompose : bool or list
-    Decompose the unit into base units, can provide base as list.
-    (default [])
-    function arguments override decorator and function annotation arguments
-    if bool, then do/don't decompose
-    if list, bases for ``.decompose(bases=[])``
-    will first decompose, then apply unit, to_value, equivalencies
-
-    Decomposing then converting wastes time, since `.to(unit, equivalencies)`
-    internally does conversions. The only use for combining decompose with
-    other params is with::
-
-        unit=None, to_value=True, equivalencies=[], decompose=[bases]
-
-    since this will decompose to desired bases then return the value
-
-    .. note::
-
-        for things which are not (u.Unit, u.core.IrreducibleUnit),
-        tries wrapping in Unit()
-        this allows things such as::
-
-            >>> x = 10 * u.km * u.s
-            >>> bases = [u.Unit(2 * u.km), u.s]
-            >>> x.decompose(bases=bases) # doctest: +SKIP
-            <Quantity 5. 2 km s>
-
-        (this would normally return an error)
-
-assumed_units: dict
-    dictionary of default units
-    (default {})
-
-    >>> from utilipy.units.decorators import QuantityInputOutput
-    >>> dfu = {'x': u.km}
-    >>> x = 10
-    >>> y = 20*u.km
-    >>> @QuantityInputOutput.as_decorator(assumed_units=dfu)
-    ... def add(x, y):
-    ...     return x + y
-    >>> add(x, y) # doctest: +SKIP
-    <Quantity 30.0 km>
-"""
-
-
-###############################################################################
-
-
 quantity_io = QuantityInputOutput.as_decorator
+# /class
+
+
+###############################################################################
+
+
+# del add_enabled_equivalencies
 
 
 ###############################################################################

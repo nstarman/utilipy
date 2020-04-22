@@ -41,6 +41,7 @@ Subpackages
    utilipy/math/index
    utilipy/plot/index
    utilipy/scripts/index
+   utilipy/units/index
    utilipy/utils/index
 
 

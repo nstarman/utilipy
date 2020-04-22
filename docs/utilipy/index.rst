@@ -19,6 +19,7 @@ Subpackages
    math/index
    plot/index
    scripts/index
+   units/index
 
 
 Reference/API
