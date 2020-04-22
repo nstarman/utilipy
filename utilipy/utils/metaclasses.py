@@ -7,8 +7,7 @@
 #
 # ----------------------------------------------------------------------------
 
-# Docstring and Metadata
-"""metaclass to inherit docstrings."""
+"""Metaclasses."""
 
 __author__ = "Nathaniel Starkman"
 __credits__ = ["astropy"]
