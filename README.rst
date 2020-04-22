@@ -1,6 +1,10 @@
 utilipy
 =======
 
+.. image:: https://api.codacy.com/project/badge/Grade/9d71872a0f63403e9972ccca01d59201
+   :alt: Codacy Badge
+   :target: https://app.codacy.com/manual/nstarman/utilipy?utm_source=github.com&utm_medium=referral&utm_content=nstarman/utilipy&utm_campaign=Badge_Grade_Dashboard
+
 ``utilipy`` is a Python package for non project-specific code. There are modules for making advanced decorators, interfacing with IPython environments, data utilities, making fitting libraries inter-operable, improving astropy units and quantity-enabled functions, and much more. 
 
 .. container::
