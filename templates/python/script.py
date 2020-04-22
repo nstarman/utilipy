@@ -34,15 +34,17 @@ __author__ = ""
 ##############################################################################
 # IMPORTS
 
-# GENERAL
-import sys
+# BUILT-IN
+
 import warnings
 import argparse
 from typing import Optional
 
-# CUSTOM
+
+# THIRD PARTY
 
 from utilipy import LogFile
+
 
 # PROJECT-SPECIFIC
 
@@ -56,7 +58,9 @@ _PLOT = True  # Plot the output
 # Log file
 _VERBOSE = 0  # Degree of verbosity
 _LOGFILE = LogFile.open(
-    f"./{__file__}.log", header="script", verbose=_VERBOSE  # File  # script header
+    f"./{__file__}.log",
+    header="script",
+    verbose=_VERBOSE,  # File  # script header
 )  # setting as default
 
 
@@ -77,7 +81,7 @@ class ClassName(object):
 # /class
 
 
-# ------------------------------------------------------------------------
+# -------------------------------------------------------------------
 
 
 def function():
@@ -122,7 +126,9 @@ def make_parser(inheritable=False):
 # ------------------------------------------------------------------------
 
 
-def main(args: Optional[list] = None, opts: Optional[argparse.Namespace] = None):
+def main(
+    args: Optional[list] = None, opts: Optional[argparse.Namespace] = None
+):
     """Script Function.
 
     Parameters

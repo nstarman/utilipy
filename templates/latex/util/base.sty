@@ -80,22 +80,22 @@
 
 % listings
 \lstset{frame=tb,
-	language=SQL,
-	aboveskip=3mm,
-	belowskip=3mm,
-	showstringspaces=false,
-	columns=fullflexible,
-	basicstyle={\small\ttfamily},
-	numbers=none,
-	numberstyle=\tiny\color{gray},
-	keywordstyle=\color{blue},
-	commentstyle=\color{darkgreen},
-	stringstyle=\color{mauve},
-	breaklines=true,
-	postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
-	breakatwhitespace=true,
-	tabsize=3,
-	emph={dec}
+    language=SQL,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=fullflexible,
+    basicstyle={\small\ttfamily},
+    numbers=none,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{darkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+    breakatwhitespace=true,
+    tabsize=3,
+    emph={dec}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -125,57 +125,67 @@
 %% Derivatives
 
 % differentials
-\NewDocumentCommand \dif {o m} {
-	\IfNoValueTF{#1}
-		{ \mathrm{d}{#2} }
-		{ \mathrm{d}^{#1}{#2} }
+\NewDocumentCommand \dif {s o m} {  % dx for use in integrals and PDEs
+    % #1: star, optional. change dx to \partial x.
+    % #2: symbol, optional. derivative order.
+    % #3: symbol, mandatory. the argument, the x in \rm{d}x.
+    \IfBooleanTF{#1}
+    {%
+        \IfNoValueTF{#2}
+        { \partial{#3} }
+        { \partial^{#2}{#3} }
+    }
+    {%
+        \IfNoValueTF{#2}
+        { \mathrm{d}{#3} }
+        { \mathrm{d}^{#2}{#3} }
+    }
 }
 \NewDocumentCommand \pdif {o m} {
-	\IfNoValueTF{#1}
-		{ \partial{#2} }
-		{ \partial^{#1}{#2} }
+    \dif[#1]{#2}
 }
 
 % derivative
 \NewDocumentCommand \deriv {s O{x} d<> m} {
-	% #1: star, optional change dydx to d/dx (y)
-	% #2: with rspect to, optional default to x
-	% #3: power of the derivative, optional
-	% #4: the thing being differentiated
-	\IfBooleanTF{#1}
-	{% 
-	 \IfNoValueTF{#3}
-	 { \frac{\mathrm{d}}{\dif{#2}}({#4}) }
-	 { \frac{\mathrm{d}^{#3}}{\dif{#2}^{#3}}({#4}) }
-	}
-	{%
-	 \IfNoValueTF{#3}
-	 { \frac{\mathrm{d}{#4}}{\dif{#2}} }
-	 { \frac{\dif[{#3}]{#4}}{\dif{#2}^{#3}} }
-	}
+    % #1: star, optional change dydx to d/dx (y)
+    % #2: with respect to, optional default to x
+    % #3: power of the derivative, optional
+    % #4: the thing being differentiated
+    \IfBooleanTF{#1}
+    {% 
+     \IfNoValueTF{#3}
+     { \frac{\mathrm{d}}{\dif{#2}}({#4}) }
+     { \frac{\mathrm{d}^{#3}}{\dif{#2}^{#3}}({#4}) }
+    }
+    {%
+     \IfNoValueTF{#3}
+     { \frac{\mathrm{d}{#4}}{\dif{#2}} }
+     { \frac{\dif[{#3}]{#4}}{\dif{#2}^{#3}} }
+    }
 }
 
 \NewDocumentCommand \pderiv {s O{x} d<> m} {
-	% #1: star, optional change dydx to d/dx (y)
-	% #2: with rspect to, optional default to x
-	% #3: power of the derivative, optional
-	% #4: the thing being differentiated
-	\IfBooleanTF{#1}
-	{% 
-	 \IfNoValueTF{#3}
-	 { \frac{\partial}{\pdif{#2}}({#4}) }
-	 { \frac{\partial^{#3}}{\pdif{#2}^{#3}}({#4}) }
-	}
-	{%
-	 \IfNoValueTF{#3}
-	 { \frac{\partial{#4}}{\pdif{#2}} }
-	 { \frac{\pdif[{#3}]{#4}}{\pdif{#2}^{#3}} }
-	}
+    % #1: star, optional change dydx to d/dx (y)
+    % #2: with rspect to, optional default to x
+    % #3: power of the derivative, optional
+    % #4: the thing being differentiated
+    \IfBooleanTF{#1}
+    {% 
+     \IfNoValueTF{#3}
+     { \frac{\partial}{\pdif{#2}}({#4}) }
+     { \frac{\partial^{#3}}{\pdif{#2}^{#3}}({#4}) }
+    }
+    {%
+     \IfNoValueTF{#3}
+     { \frac{\partial{#4}}{\pdif{#2}} }
+     { \frac{\pdif[{#3}]{#4}}{\pdif{#2}^{#3}} }
+    }
 }
 
 
+% Derivative symbol constructor
 \NewDocumentCommand \dSymbol {s m D[]{x} d<>} {
-	% #1: star, optional change to always use Leibniz notation
+    % #1: star, optional change to always use Leibniz notation
     % #1: the symbol
     % #2 the derivand
     % #3 the power of the derivative
@@ -208,18 +218,64 @@
 % -----------------------------------------------------------------------------
 %% Integrals
 
-\newcommand{\dx}{\mathrm{d}x}  % dx
+\newcommand{\dx}{\dif{x}}  % dx
 
 
 % -----------------------------------------------------------------------------
-%% Orthogonal Expansions
+%% Expansions
 
-\NewDocumentCommand \order {o m} {
+\NewDocumentCommand \order {o m} {  % expansion order
     % #1: the order, optional default to all
     % #2: the symbol
     \IfNoValueTF{#1}
     {{#2}}
     {{#2}_{(#1)}}
+}
+
+\NewDocumentCommand \LgP {s D[]{\ell} O{\mu}} {  % Legendre Polynomial
+    % #1: star, tilde
+    % #2: subscript
+    % #3: the argument
+    \IfBooleanTF{#1}
+    {\Tilde{P}_{#2}(#3)}
+    {P_{#2}(#3)}
+}
+
+
+\NewDocumentCommand \Yslm {s d<> D[]{\ell m} m} {  % Spin-weighted spherical harmonics
+    % #1: star, conjugate
+    % #2: spin weight, optional
+    %     if not given, defaults to no prescript (spin 0 shorthand)
+    % #3: lm, optional, defaults to {\ell m}
+    % #4: argument, mandatory
+    \IfBooleanTF{#1}
+    {%
+      \IfNoValueTF{#2}
+      {%
+       {Y^*_{{#3}}}{({#4})}
+      }
+      {%
+       \prescript{}{{#2}}{Y^*_{{#3}}}{({#4})}
+      }
+    }
+    {%
+      \IfNoValueTF{#2}
+      {%
+        {Y_{{#3}}}{({#4})}
+      }
+      {%
+        \prescript{}{{#2}}{Y_{{#3}}}{({#4})}
+      }
+    }
+}
+
+\NewDocumentCommand \Ylm {s D[]{\ell m} m} {  % Normal spherical harmonics (spin 0)
+    % #1: star, conjugate
+    % #2: lm, optional, defaults to {\ell m}
+    % #4: argument, mandatory
+    \IfBooleanTF{#1}
+    {\Yslm*[{#2}]{#3}}
+    {\Yslm[{#2}]{#3}}
 }
 
 
@@ -237,26 +293,54 @@
 
 
 % Cosmology
-\NewDocumentCommand \Vb {D[]{x} d<> o} {  % baryon velocity
-	% #1: the derivand
-    % #2: the derivative, defaults to no value
-    % #3: the order
-    \order[#3]{\dSymbol{V_b}[#1]<#2>}
-}
-
 \NewDocumentCommand \PHI {D[]{x} d<> o} {  % gravity term
-	% #1: the derivand
+    % #1: the derivand
     % #2: the derivative, defaults to no value
     % #3: the order
     \order[#3]{\dSymbol{\Phi}[#1]<#2>}
 }
-
 \NewDocumentCommand \PSI {D[]{x} d<> o} {  % gravity term
     % #1: the derivand
     % #2: the derivative, defaults to no value
     % #3: the order
     \order[#3]{\dSymbol{\Psi}[#1]<#2>}
 }
+
+\NewDocumentCommand \Vb {D[]{x} d<> o} { % Baryon velocity
+    % #1: the derivand
+    % #2: the derivative, defaults to no value
+    % #3: the order
+    \order[#3]{\dSymbol{V_b}[#1]<#2>}
+}
+
+
+\NewDocumentCommand \sigT {} {  % Thompson Scattering Cross Section
+    {\sigma_\rm{T}}
+}
+
+\NewDocumentCommand \sigeight {} {  % The present root-mean-square matter fluctuation averaged over a sphere of radius 8h–1 Mpc
+    {\sigma_8}
+}
+
+
+\NewDocumentCommand \kappadot {D[]{\tau} D<>{1}} {
+    % #1 the derivative, defaults to no value
+    {\dSymbol{\kappa}[#1]<#2>}
+}
+
+
+\NewDocumentCommand \Ho {
+    H_0
+}
+
+\NewDocumentCommand \Ho {
+    z_{\rm{re}}
+}
+
+\NewDocumentCommand \pcrit {
+    \rho_[\rm{crit}}]
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                JOURNALS
@@ -340,6 +424,9 @@
 %  ****************************************
 %  *              Change log              *
 %  ****************************************
+
+%   Apr 20, 2020 -- added spherical harmonics, Legendre Polynomial, and some
+%                   cosmology terms.
 
 %   merged with to base.sty and maths.sty to give a full basic standard suite 
 

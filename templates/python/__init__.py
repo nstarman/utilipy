@@ -33,9 +33,9 @@ __author__ = ""
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT IN
 
-# CUSTOM
+# THIRD PARTY
 
 # PROJECT-SPECIFIC
 
