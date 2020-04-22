@@ -1,7 +1,106 @@
 # -*- coding: utf-8 -*-
 
-# Docstring and Metadata
-"""Base class for decorators."""
+"""Base class for decorators.
+
+Most decorators are function-based. A function-based decorator is reasonably
+flexible, even permitting default values to be set dynamically. By using
+`~utilipy.utils.functools.wraps` in :mod:`~utility.utils.functools` these
+function-based decorators may can also merge the decorator and function
+signatures and docstrings.
+
+.. code-block:: python
+
+    def template_decorator(function=None, *, kw1=None, kw2=None):
+        '''Decorator Docstring.
+
+        Parameters
+        ----------
+        function : Callable or None, optional
+            the function to be decoratored
+            if None, then returns decorator to apply.
+        kw1, kw2 : Any, optional
+            keyword only arguments
+            sets the wrapper's default values.
+
+        Returns
+        -------
+        wrapper : Callable
+            wrapper for `function`
+            includes the original function in a method ``.__wrapped__``
+
+        '''
+        if function is None: # allowing for optional arguments
+            return functools.partial(template_decorator, kw1=k1, kw2=kw2)
+
+        @utilipy.wraps(function, _doc_style='numpy')
+        def wrapper(*args, kw1=kw1, kw2=kw2, kw3="kw3", **kw):
+            '''wrapper docstring.
+
+            Parameters
+            ----------
+            kw1, kw2 : Any, optional
+                default {kw1}, {kw2}
+            kw3 : str, optional
+                default {kw3}
+
+            '''
+            # do stuff here
+            return_ = function(*args, **kw)
+            # and here
+            return return_
+
+        return wrapper
+
+For most purposes decorators of these sorts are sufficient. However, there are
+a number of limitations inherent to a function-based approach. A more general
+architecture is possible using classes. As example, ``TemplateDecorator``
+is nearly equivalent to the previously defined ``template_decorator``.
+
+.. code-block:: python
+
+    class TemplateDecorator():
+
+        def __new__(cls, function=None, *, kw1=None, kw2=None):
+            self = super().__new__(cls)  # make instance
+            if function is not None:  # this will return a wrapped function
+                return self(function, kw1=kw1, kw2=kw2)
+            else:  # this will return a function wrapper
+                return self
+
+        def __init__(self, kw1=None, kw2=None):
+            self.kw1 = kw1
+            self.kw2 = kw2
+
+        def __call__(self, function, kw1=None, kw2=None):
+            '''Construct a function wrapper.'''
+            kw1 = self.kw1 if kw1 is None else kw1
+            kw2 = self.kw2 if kw2 is None else kw2
+
+            @utilipy.wraps(function)
+            def wrapper(*args, kw1=kw1, kw2=kw2, kw3="kw3", **kw):
+                '''wrapper docstring.
+
+                Parameters
+                ----------
+                kw1, kw2 : Any, optional
+                    default {kw1}, {kw2}
+                kw3 : str, optional
+                    default {kw3}
+
+                '''
+                # do stuff here
+                return_ = function(*args, **kw)
+                # and here
+                return return_
+
+            return wrapper
+
+An important difference between ``template_decorator`` and
+``TemplateDecorator`` happens at creation. If template decorator is
+created with
+
+
+"""
 
 __author__ = "Nathaniel Starkman"
 
@@ -60,7 +159,7 @@ class DecoratorBaseMeta(type):
     This metaclass is pretty specific for DecoratorBaseClass and should
     probably not be used in other contexts.
 
-    This metaclass
+    This metaclass:
 
     - creates `__kwdefaults__`, copying from `__base_kwdefaults__`.
     - makes a named-tuple class for read-only versions of `__kwdefaults__`
@@ -72,17 +171,16 @@ class DecoratorBaseMeta(type):
     def __new__(cls: type, name: str, bases: tuple, dct: dict):
         """Set properties for new decorator class.
 
-        define an init method and store original docs
+        define an `__init__` method and store original docs
 
         Parameters
         ----------
-        cls : type
         name : str
         bases : tuple
         dct : dictionary
 
         """
-        # ------------------------
+        # --------------------------------------------------
         # __base_kwdefaults__ -> __kwdefaults__
 
         dct["__kwdefaults__"] = dct["__base_kwdefaults__"].copy()
@@ -231,9 +329,9 @@ class DecoratorBaseMeta(type):
         The docstring inheritance method is modified from
         astropy's InheritDocstrings metaclass
 
-        TODO
-        ----
-        replace with better doc_inheritance from custom_inherit
+        .. todo::
+
+            replace with better doc_inheritance from custom_inherit
 
         """
         # ---------------------
@@ -521,7 +619,6 @@ def classy_decorator(decorator_function: Callable = None):
 
     # /def
 
-    # TODO rename decorator as function name
     class Decorator(DecoratorBaseClass):
 
         __base_kwdefaults__: dict = kwd

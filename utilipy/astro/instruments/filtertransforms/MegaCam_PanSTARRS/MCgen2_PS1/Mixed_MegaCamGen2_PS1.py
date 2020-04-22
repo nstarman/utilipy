@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : Mixed-MegaCamGen2-PS1
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-# Docstring and Metadata
 """Mega-Cam gen2 band and PanSTARRS 1 band Mixed Functions."""
 
 __author__ = "Nathaniel Starkman"
@@ -17,14 +9,12 @@ __credits__ = [
 ]
 
 
+__all__ = []
+
+
 #############################################################################
 # IMPORTS
 
-# GENERAL
-from astropy.table import Table, QTable
-
-# PROJECT-SPECIFIC
-from .. import units
 
 #############################################################################
 # CODE

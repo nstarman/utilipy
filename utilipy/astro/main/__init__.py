@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : initialization file
-# AUTHOR  :
-# PROJECT :
-#
-# ----------------------------------------------------------------------------
-
-# Docstring and Metadata
-"""initialization file for astro.main
-"""
+"""initialization file for astro.main"""
 
 __author__ = "Nathaniel Starkman"
+
+
+__all__ = [
+    # distance modulus
+    "distanceModulus_magnitude",
+    "distanceModulus_distance",
+    "distanceModulus",
+    # parallax
+    "parallax_angle",
+    "parallax_distance",
+    "parallax",
+    # angular separation
+    "max_angular_separation",
+]
+
 
 ##############################################################################
 # IMPORTS

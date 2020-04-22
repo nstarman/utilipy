@@ -11,3 +11,4 @@ Reference/API
 =============
 
 .. automodapi:: utilipy.constants.values
+	:include-all-objects:

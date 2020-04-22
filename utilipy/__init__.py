@@ -13,14 +13,14 @@ much more.
 Routine Listings
 ----------------
 `help`
-    `utilipy` help function. Online search or offline overview.
+    *utilipy* help function. Online search or offline overview.
 
 `online_help`
-    Search the online `utilipy` documentation for the given query.
+    Search the online *utilipy* documentation for the given query.
 
 `wraps`
-    overrides the default ``functools.wraps``, adding signature and docstring
-    features.
+    overrides the default :func:`~functools.wraps`, adding signature
+    and docstring features.
 
 `LogFile`
     Class for basic logger that can both print and record to a file.
@@ -138,34 +138,35 @@ def reload_config():
 
 
 def online_help(query: Optional[str] = None):
-    """Search the online `utilipy` documentation for the given query.
+    """Search the online documentation for the given query.
 
     Opens the results in the default web browser.
-    Requires an active Internet connection.
+    Requires an active internet connection.
 
     Parameters
     ----------
-    query : str
-        The search query.
+    query : str, optional
+        The search query for `RTD <https://utilipy.readthedocs.io>`_.
+        None (default) or "" is an empty search.
 
     """
     from urllib.parse import urlencode
     import webbrowser
 
+    # process the query
+    if query is None:  # empty query, empty search
+        query = ""
+    else:  # encode the query
+        query: str = urlencode({"q": query})
+
+    # first get version to search
     version = __version__
     if "dev" in version:
         version = "latest"
     else:
         version = "v" + version
 
-    if query is None:  # query is empty
-        _query = ""
-    else:
-        _query: str = urlencode({"q": query})
-
-    url = "https://utilipy.readthedocs.io/en/{}/search.html?{}".format(
-        version, _query
-    )
+    url = f"https://utilipy.readthedocs.io/en/{version}/search.html?{query}"
 
     webbrowser.open(url)
 
@@ -175,8 +176,9 @@ def online_help(query: Optional[str] = None):
 # /def
 
 
+@decorators.code_dev.indev
 def help(query=None, online: bool = False):
-    """`utilipy` help function.
+    """utilipy help function.
 
     Parameters
     ----------
@@ -186,13 +188,10 @@ def help(query=None, online: bool = False):
         Whether to open the online help or just print some help
         documentation (default)
 
-    See Also
-    --------
-    online_help
-
     """
-    if type == "online":
+    if online:
         return online_help(query=query)
+    # else:
 
     print("This function is a work in progress")
 

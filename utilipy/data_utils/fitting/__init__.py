@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : initialization file
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-"""initialization file for fitting module."""
+"""Fitting module."""
 
 __author__ = "Nathaniel Starkman"
+
+
+__all__ = [
+    "scipy_residual_to_lmfit",
+]
 
 
 ##############################################################################

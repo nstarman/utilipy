@@ -1,15 +1,11 @@
 utilipy
 =======
 
-.. image:: https://api.codacy.com/project/badge/Grade/9d71872a0f63403e9972ccca01d59201
-   :alt: Codacy Badge
-   :target: https://app.codacy.com/manual/nstarman/utilipy?utm_source=github.com&utm_medium=referral&utm_content=nstarman/utilipy&utm_campaign=Badge_Grade_Dashboard
-
 ``utilipy`` is a Python package for non project-specific code. There are modules for making advanced decorators, interfacing with IPython environments, data utilities, making fitting libraries inter-operable, improving astropy units and quantity-enabled functions, and much more. 
 
 .. container::
 
-   |astropy| |Build Status| |License| |Code style: black|
+   |astropy| |Build Status| |Coveralls| License| |Code style: black|
 
 
 Documentation
@@ -40,7 +36,7 @@ Attribution
 
 |DOI|
 
-If you make use of this code, please consider citing the Zenodo DOI |DOI| as a software citation::
+If you make use of this code, please consider citing the Zenodo DOI as a software citation::
 
    @software{utilipy:zenodo,
      author       = {nstarman},
@@ -76,3 +72,5 @@ Copyright 2018- Nathaniel Starkman and contributors.
    :target: https://opensource.org/licenses/BSD-3-Clause
 .. |PyPI| image:: https://badge.fury.io/py/utilipy.svg
    :target: https://badge.fury.io/py/utilipy
+.. |Coveralls| image:: https://coveralls.io/repos/github/nstarman/utilipy/badge.svg?branch=master
+   :target: https://coveralls.io/github/nstarman/utilipy?branch=master

@@ -31,6 +31,8 @@ import datetime
 # import shutil
 import easydev
 from importlib import import_module
+# import shutil
+# import easydev
 
 try:
     from sphinx_astropy.conf.v1 import *  # noqa

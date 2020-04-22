@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : test_dtype_decorator
-#
-# ----------------------------------------------------------------------------
-
 """Test functions for dtype_decorator."""
 
 __author__ = "Nathaniel Starkman"
@@ -16,6 +10,8 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # GENERAL
+
+import pytest
 
 import numpy as np
 
@@ -88,30 +84,20 @@ def test_dtypeDecorator_python_scalars():
     assert isinstance(func(y), float)
 
     # should fail
-    try:
+    with pytest.raises(TypeError):
         assert isinstance(func(z), float)
-    except TypeError:
-        pass
-    else:
-        raise AssertionError("func([3, 4.4]) should have failed")
 
     assert isinstance(func(u), float)
 
-    try:
+    with pytest.raises(ValueError):
         assert isinstance(func(uu), float)
-    except ValueError:
-        pass
-    else:
-        raise AssertionError("func('5.5') should have failed")
 
     assert isinstance(func(v), float)
 
-    try:
+    with pytest.raises(TypeError):
         assert isinstance(func(w), float)
-    except TypeError:
-        pass
-    else:
-        raise AssertionError("func(np.array([7, 8.8])) should have failed")
+
+    return
 
 
 # /def

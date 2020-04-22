@@ -179,9 +179,9 @@ def inRange(
     array([[ True,  True],
            [ True, False]])
 
-    TODO
-    ----
-    allow lbi & rbi to be lists, matching args, for individual adjustment
+    .. todo::
+
+        allow lbi & rbi to be lists, matching args, for individual adjustment
 
     """
     if rng is None:
@@ -255,9 +255,9 @@ def outRange(
         boolean array to select values outside box selection
         if as_ind, then index array of same
 
-    TODO
-    ----
-    allow `lbi` & `rbi` to be lists, matching `args`, for individual adjustment
+    .. todo::
+
+        allow `lbi` & `rbi` to be lists, matching `args`, for indiv adjustment
 
     """
     return ~inRange(*args, rng=rng, lbi=lbi, ubi=ubi)

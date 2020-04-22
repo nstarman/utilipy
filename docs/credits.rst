@@ -10,6 +10,8 @@ Nathaniel Starkman (`@nstarman <https://github.com/nstarman>`_)
 Core Package Contributors
 =========================
 
+|Contributors|
+
 All contributors (alphabetical last name):
 
 * Mohamed Shaaban
@@ -21,3 +23,7 @@ Credits
 
 * Astropy: package template
 * Jo Bovy: galpy package was also used as a template
+  
+
+.. |Contributors| image:: https://img.shields.io/github/contributors/nstarman/utilipy?style=flat-square
+   :alt: GitHub contributors

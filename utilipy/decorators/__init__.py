@@ -11,6 +11,10 @@
 
 
 __all__ = [
+    # top-level
+    "baseclass",
+    "docstring",
+    "func_io",
     # defined here
     "store_function_input",
     "add_folder_backslash",

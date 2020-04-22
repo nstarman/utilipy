@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : numpy Parse tools
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-# Docstring
 """Docstring inheritance-style implementations.
 
 To implement your own inheritance file, simply write a function to this template:

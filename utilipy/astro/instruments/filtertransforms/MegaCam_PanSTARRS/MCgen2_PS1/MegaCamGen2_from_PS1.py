@@ -7,17 +7,24 @@ __credits__ = [
     "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
 ]
 
-__all__ = ["I_MP9702"]
+__all__ = [
+    "I_MP9702",
+]
+
 
 #############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
+
 import warnings
+
+
+# THIRD PARTY
+
 from astropy.table import Table
 
-# PROJECT-SPECIFIC
-from .. import quantity_io, MAG
+from utilipy.units import quantity_io, mag as MAG
 
 
 #############################################################################

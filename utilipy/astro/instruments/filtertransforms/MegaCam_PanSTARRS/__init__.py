@@ -1,14 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : MegaCam_PanSTARRS
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-# Docstring and Metadata
-"""MegaCam_Panstarrs."""
+"""MegaCam_Panstarrs Filter Transformations."""
 
 __author__ = "Nathaniel Starkman"
 __credits__ = [
@@ -80,13 +72,23 @@ __all__ = [
 #############################################################################
 # IMPORTS
 
-# GENERAL
-from typing import Any, Union
+# BUILT-IN
+
+from typing import Any
 from typing_extensions import Literal
-from astropy.table import Table, QTable
+
+
+# THIRD PARTY
+
+from astropy.table import Table
+
+
+# CUSTOM
+
+from utilipy import units
+
 
 # PROJECT-SPECIFIC
-from .. import units, quantity_io, MAG
 
 from .MCgen1_PS1 import (
     # MegaCamGen1_from_PS1
@@ -159,13 +161,13 @@ def _b1mb2(ps: Any, band1: str, band2: str, **kw: Any) -> Any:
 # /def
 
 
-@quantity_io()
+@units.quantity_io()
 def UmG(
     ps: Table,
     u_band: Literal["9301", "9302"] = "9302",
     g_band: Literal["9401", "9402"] = "9402",
     **kw
-) -> MAG:
+) -> units.mag:
     """U-G color.
 
     Parameters
@@ -195,13 +197,13 @@ def UmG(
 # /def
 
 
-@quantity_io()
+@units.quantity_io()
 def UmR(
     ps: Table,
     u_band: Literal["9301", "9302"] = "9302",
     r_band: Literal["9601", "9602"] = "9602",
     **kw
-) -> MAG:
+) -> units.mag:
     """U-R color.
 
     Parameters
@@ -231,13 +233,13 @@ def UmR(
 # /def
 
 
-@quantity_io()
+@units.quantity_io()
 def UmI(
     ps: Table,
     u_band: Literal["9301", "9302"] = "9302",
     i_band: Literal["9701", "9702", "9703"] = "9703",
     **kw
-) -> MAG:
+) -> units.mag:
     """U-I color.
 
     Parameters
@@ -267,13 +269,13 @@ def UmI(
 # /def
 
 
-@quantity_io()
+@units.quantity_io()
 def UmZ(
     ps: Table,
     u_band: Literal["9301", "9302"] = "9302",
     z_band: Literal["9801", "9901"] = "9901",
     **kw
-) -> MAG:
+) -> units.mag:
     """U-Z color.
 
     Parameters
@@ -303,13 +305,13 @@ def UmZ(
 # /def
 
 
-@quantity_io()
+@units.quantity_io()
 def GmR(
     ps: Table,
     g_band: Literal["9401", "9402"] = "9402",
     r_band: Literal["9601", "9602"] = "9602",
     **kw
-) -> MAG:
+) -> units.mag:
     """G-R color.
 
     Parameters
@@ -339,13 +341,13 @@ def GmR(
 # /def
 
 
-@quantity_io()
+@units.quantity_io()
 def GmI(
     ps: Table,
     g_band: Literal["9401", "9402"] = "9402",
     i_band: Literal["9701", "9702", "9703"] = "9703",
     **kw
-) -> MAG:
+) -> units.mag:
     """G-I color.
 
     Parameters
@@ -375,13 +377,13 @@ def GmI(
 # /def
 
 
-@quantity_io()
+@units.quantity_io()
 def GmZ(
     ps: Table,
     g_band: Literal["9401", "9402"] = "9402",
     z_band: Literal["9801", "9901"] = "9901",
     **kw
-) -> MAG:
+) -> units.mag:
     """G-Z color.
 
     Parameters
@@ -411,13 +413,13 @@ def GmZ(
 # /def
 
 
-@quantity_io()
+@units.quantity_io()
 def RmI(
     ps: Table,
     r_band: Literal["9601", "9602"] = "9602",
     i_band: Literal["9701", "9702", "9703"] = "9703",
     **kw
-) -> MAG:
+) -> units.mag:
     """R-I color.
 
     Parameters
@@ -447,13 +449,13 @@ def RmI(
 # /def
 
 
-@quantity_io()
+@units.quantity_io()
 def RmZ(
     ps: Table,
     r_band: Literal["9601", "9602"] = "9602",
     z_band: Literal["9801", "9901"] = "9901",
     **kw
-) -> MAG:
+) -> units.mag:
     """R-Z color.
 
     Parameters
@@ -483,13 +485,13 @@ def RmZ(
 # /def
 
 
-@quantity_io()
+@units.quantity_io()
 def ImZ(
     ps: Table,
     i_band: Literal["9701", "9702", "9703"] = "9703",
     z_band: Literal["9801", "9901"] = "9901",
     **kw
-) -> MAG:
+) -> units.mag:
     """G-I color.
 
     Parameters

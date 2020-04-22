@@ -21,25 +21,36 @@ __all__ = [
 ###############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
-import typing
+import typing as T
 from typing import *
+
+
+# THIRD PARTY
+
+import numpy as np
 
 
 ###############################################################################
 # PARAMETERS
 
-array_like = typing.Sequence
+#####################################################################
+# Numpy
+
+
+array_like = T.TypeVar("array_like", np.array, list, tuple)
+
+
 
 
 ###############################################################################
 # __ALL__
 
-if hasattr(typing, "__all__"):
-    __all__ += typing.__all__
+if hasattr(T, "__all__"):
+    __all__ += T.__all__
 else:
-    __all__ += list(dir(typing))
+    __all__ += list(dir(T))
 
 
 ###############################################################################

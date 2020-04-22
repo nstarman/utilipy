@@ -13,4 +13,4 @@ The tests are written assuming they will be run with `pytest <http://doc.pytest.
 
 2. By cloning the ``utilipy`` repository and running::
 
-    python setup.py test
+    tox -e test

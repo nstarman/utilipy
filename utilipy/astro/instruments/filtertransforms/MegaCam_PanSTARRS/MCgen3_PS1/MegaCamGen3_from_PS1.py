@@ -20,12 +20,16 @@ __all__ = [
 #############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
+
 import warnings
 
-# PROJECT-SPECIFIC
+
+# THIRD PARTY
+
 from astropy.table import Table, QTable
-from .. import quantity_io, MAG
+
+from utilipy.units import quantity_io, mag as MAG
 
 
 #############################################################################

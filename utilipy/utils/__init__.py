@@ -1,45 +1,49 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : util
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-"""Utilities.
-
-Routine Listings
-----------------
-exceptions
-functools
-inspect
-pickle
-
-"""
+"""Utilities."""
 
 __author__ = "Nathaniel Starkman"
 
 
-__all__ = []
+__all__ = [
+    "LogPrint",
+    "LogFile",
+    "ObjDict",
+    "collections",
+    "doc_parse_tools",
+    "logging",
+    "exceptions",
+    "functools",
+    "inspect",
+    "metaclasses",
+    "pickle",
+    "string",
+    "typing",
+]
 
 
 ##############################################################################
 # IMPORTS
+
+# BUILT-IN
 
 # PROJECT-SPECIFIC
 
 from .logging import LogPrint, LogFile
 from .collections import ObjDict
 
-from . import functools, pickle
-
 # import top level packages
 from . import (
     collections,
     doc_parse_tools,
     logging,
+    exceptions,
+    functools,
+    inspect,
     metaclasses,
+    pickle,
+    string,
+    typing,
 )
 
 
@@ -54,13 +58,12 @@ __all_top_imports__ = (
 )
 
 __all__ += list(__all_top_imports__)
-__all__ += [
-    "LogPrint",
-    "LogFile",
-    "ObjDict",
-    "functools",
-    "pickle",
-]
 
-#############################################################################
+
+##############################################################################
+# CODE
+##############################################################################
+
+
+##############################################################################
 # END

@@ -59,10 +59,10 @@ class scipy_residual_to_lmfit(ObjectProxy):
     ...     # calculate residual here
     ...     return res
 
-    TODO
-    ----
-    since using ObjectProxy, make it compatible with bound functions
-    see https://wrapt.readthedocs.io/en/latest/wrappers.html#function-wrappers
+    .. todo::
+
+        since using ObjectProxy, make it compatible with bound functions
+        see https://wrapt.readthedocs.io/en/latest/wrappers.html
 
     """
 

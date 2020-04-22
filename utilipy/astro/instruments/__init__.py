@@ -1,26 +1,19 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : initialization file
-# AUTHOR  :
-# PROJECT :
-#
-# ----------------------------------------------------------------------------
-
-# Docstring and Metadata
-"""initialization file for instruments."""
+"""Instruments."""
 
 __author__ = "Nathaniel Starkman"
+
+
+__all__ = [
+    "filtertransforms",
+]
 
 
 ##############################################################################
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
-from .. import units
 
 # import top-level modules
 from . import filtertransforms

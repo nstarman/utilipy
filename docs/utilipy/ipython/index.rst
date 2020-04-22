@@ -7,14 +7,8 @@ IPython (`utilipy.ipython`)
 .. currentmodule:: utilipy.ipython
 
 
-Reference/API
-=============
-
-.. automodapi:: utilipy.ipython
-
-
 Submodules
-----------
+==========
 
 .. toctree::
    :maxdepth: 1
@@ -24,3 +18,9 @@ Submodules
    notebook
    plot
    printing
+
+
+Reference/API
+=============
+
+.. automodapi:: utilipy.ipython

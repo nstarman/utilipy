@@ -11,6 +11,7 @@ Reference/API
 =============
 
 .. automodapi:: utilipy.constants
+	:include-all-objects:
 
 
 Submodules

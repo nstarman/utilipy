@@ -28,15 +28,15 @@ figure out how to use get_pkg_data_fileobj
 __author__ = "Nathaniel Starkman"
 
 
-# __all__ = [
-#     ""
-# ]
+__all__ = [
+    "read_MegaCamGen1_from_PS1",
+]
 
 
 ###############################################################################
 # IMPORTS
 
-# GENERAL
+# THIRD PARTY
 
 from astropy.table import QTable
 from astropy.utils.data import get_pkg_data_filename
@@ -46,6 +46,7 @@ from astropy.utils.data import get_pkg_data_filename
 # PARAMETERS
 
 _PACKAGE = "utilipy.astro.instruments.filtertransforms.MegaCam_PanSTARRS.data"
+
 
 ###############################################################################
 # CODE

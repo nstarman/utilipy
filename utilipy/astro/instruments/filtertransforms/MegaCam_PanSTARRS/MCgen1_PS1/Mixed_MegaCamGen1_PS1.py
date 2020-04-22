@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : Mixed MegaCam Gen1 PS1
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-# Docstring and Metadata
 """Mega-Cam gen1 and PanSTARRS1 Mixed Functions."""
 
 __author__ = "Nathaniel Starkman"
@@ -20,14 +12,15 @@ __all__ = ["iCFHT", "rPS", "CFHTtoPanstarrs_gmr"]
 #############################################################################
 # IMPORTS
 
-# GENERAL
+# THIRD PARTY
 
 from astropy.table import Table
+
+from utilipy.units import quantity_io, mag as MAG
 
 
 # PROJECT-SPECIFIC
 
-from .. import quantity_io, MAG
 from . import PS1_from_MegaCamGen1
 
 # from . import MegaCamGen1_from_PS1

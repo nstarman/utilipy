@@ -8,10 +8,30 @@ __credits__ = [
 ]
 
 
+__all__ = [
+    # Mixed_MegaCamGen3_PS1
+    "mixed",
+    # MegaCamGen3_from_PS1
+    "U_MP9302",
+    "u_MC",
+    "G_MP9402",
+    "g_MC",
+    "R_MP9602",
+    "r_MC",
+    "I_MP9703",
+    "i_MC",
+    "Z_MP9901",
+    "z_MC",
+    "GRI_MP9605",
+    "gri_MC",
+]
+
+
 #############################################################################
 # IMPORTS
 
 # PROJECT-SPECIFIC
+
 from . import Mixed_MegaCamGen3_PS1 as mixed
 
 from .MegaCamGen3_from_PS1 import (

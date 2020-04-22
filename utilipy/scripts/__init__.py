@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------
 
 
-"""Scripts initialization file.
+"""Scripts.
 
 Scripts that are meant to be run just once are located in the main
 repository space, up 2 directory levels. This module contains the code
@@ -25,11 +25,9 @@ Routine Listings
 """
 
 __author__ = "Astropy Developers"
-# __credits__ = [""]
 
-# __all__ = [
-#     ""
-# ]
+
+__all__ = []
 
 
 ##############################################################################

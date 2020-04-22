@@ -1,24 +1,38 @@
 # -*- coding: utf-8 -*-
 
-# Docstring and Metadata
-"""Mega-Cam gen1 bands from PanSTARRS 1 bands."""
+"""Mega-Cam Generation-1 bands from PanSTARRS 1 bands."""
 
 __author__ = "Nathaniel Starkman"
 __credits__ = [
     "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/megapipe/docs/filt.html"
 ]
 
-__all__ = ["G", "R", "I", "Z", "GmR", "GmI", "GmZ", "RmI", "RmZ", "ImZ"]
+__all__ = [
+    "G",
+    "R",
+    "I",
+    "Z",
+    "GmR",
+    "GmI",
+    "GmZ",
+    "RmI",
+    "RmZ",
+    "ImZ",
+]
+
 
 #############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 import warnings
+
+
+# THIRD PARTY
+
 from astropy.table import Table
 
-# PROJECT-SPECIFIC
-from .. import quantity_io, MAG
+from utilipy.units import quantity_io, mag as MAG
 
 
 #############################################################################
@@ -76,7 +90,11 @@ def G(cfht: Table, **kw) -> MAG:
     g_cfht = cfht[g]
 
     g_ps = g_cfht + c0 + (c1 * gmr)
+
     return g_ps
+
+
+# /def
 
 
 @quantity_io()

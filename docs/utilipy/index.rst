@@ -4,13 +4,6 @@
 
 This is the documentation for the top-level of ``utilipy``, ie, what happens on import.
 
-
-Reference/API
-=============
-
-.. automodapi:: utilipy
-
-
 Subpackages
 ===========
 
@@ -28,9 +21,7 @@ Subpackages
    scripts/index
 
 
-Submodules
-==========
+Reference/API
+=============
 
-.. toctree::
-   :maxdepth: 1
-
+.. automodapi:: utilipy

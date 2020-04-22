@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : data_util decorators
-#
-# ----------------------------------------------------------------------------
+"""Test data_util :mod:`~utilipy.data_utils.decorators`."""
 
-"""Test data_util decorators."""
 
-__author__ = "Nathaniel Starkman"
+__all__ = [
+    "test_idxDecorator_standard",
+    "test_idxDecorator_defaults",
+    "test_idxDecorator_new_decorator",
+    "test_idxDecorator_existing_function",
+]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# THIRD PARTY
 
 import numpy as np
 
@@ -96,7 +96,7 @@ def test_idxDecorator_new_decorator():
 
     # defining function
     @trueidxdec
-    def func3(x):
+    def func3(x, **kw):  # kw only for Codacy code quality check
         return x < 1
 
     # /def

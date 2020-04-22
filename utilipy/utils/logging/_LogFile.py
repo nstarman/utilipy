@@ -278,7 +278,6 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         header : None or str, optional
             the header for the file
             None -> filename
-        ...
 
         Notes
         -----

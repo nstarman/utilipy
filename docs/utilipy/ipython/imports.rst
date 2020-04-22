@@ -11,3 +11,4 @@ Reference/API
 =============
 
 .. automodapi:: utilipy.ipython.imports
+	:include-all-objects:

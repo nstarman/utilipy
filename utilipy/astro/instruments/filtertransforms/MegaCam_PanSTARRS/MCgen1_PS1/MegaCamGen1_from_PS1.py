@@ -28,14 +28,20 @@ __all__ = [
 #############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 import warnings
-from astropy.table import Table, QTable
+
+
+# THIRD PARTY
+
+from astropy.table import QTable
+
+from utilipy.units import quantity_io, mag as MAG
+
 
 # PROJECT-SPECIFIC
 
-from .. import quantity_io, MAG
 from ..data import read_MegaCamGen1_from_PS1
 
 

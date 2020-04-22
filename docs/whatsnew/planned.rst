@@ -4,6 +4,8 @@
 What's Planned for utilipy?
 ***************************
 
+|Last Commit|
+
 Planned Features
 ----------------
 
@@ -55,3 +57,7 @@ stacked Coxcomb plot
 utilipy.pipeline
 ^^^^^^^^^^^^^^^^
 In the development pipeline
+
+
+.. |Last Commit| image:: https://img.shields.io/github/last-commit/nstarman/utilipy/master?style=flat-square
+   :alt: GitHub last commit (branch)

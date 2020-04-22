@@ -543,9 +543,9 @@ def prepend_parameter(sig: Signature, param: Parameter) -> Signature:
     Signature: Signature
         a new `Signature` object with the inserted `param`
 
-    TODO
-    ----
-    have a `skip_self` option to skip self/cls in class methods.
+    .. todo::
+
+        have a `skip_self` option to skip self/cls in class methods.
 
     """
     return insert_parameter(sig, 0, param)

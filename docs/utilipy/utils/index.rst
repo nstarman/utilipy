@@ -19,11 +19,13 @@ Submodules
 .. toctree::
    :maxdepth: 1
 
-   logging
+   collections
    doc_parse_tools
+   logging
    exceptions
    functools
    inspect
+   metaclasses
    pickle
    string
    typing

@@ -74,9 +74,9 @@ class LogPrint(object):
     ) -> Any:
         """Open LogPrint.
 
-        TODO
-        ----
-        kw absorbs all extra kwargs to be consistent with LogFile
+        .. todo::
+
+            kw absorbs all extra kwargs to be consistent with LogFile
 
         """
         return cls(
@@ -99,9 +99,9 @@ class LogPrint(object):
     ) -> Any:
         """open_to_write.
 
-        TODO
-        ----
-        **kw absorbs all extra kwargs to be consistent with LogFile
+        .. todo::
+
+            kw absorbs all extra kwargs to be consistent with LogFile
 
         """
         return cls(
@@ -357,11 +357,10 @@ class LogPrint(object):
         ----------
         filename: str
             the file name / path at which to save this log
-        ...
 
-        TODO
-        ----
-        what should this return?
+        .. todo::
+
+            what should this return?
 
         """
         file = open(

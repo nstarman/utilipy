@@ -22,11 +22,13 @@ References
 ----------
 Some functions modified from https://docs.python.org/3/library/functools.html
 
-Todo
-----
-improve `makeFunction` call signature
-test `makeFunction`-made function speeds
-todo make partial respect signature
+Notes
+-----
+.. todo::
+
+    improve `makeFunction` call signature
+    test `makeFunction`-made function speeds
+    todo make partial respect signature
 
 """
 
@@ -105,10 +107,10 @@ def make_function(
     function: Callable
         the created function
 
-    TODO
-    ----
-    check how signature and closure relate
-    __qualname__
+    .. todo::
+
+        check how signature and closure relate
+        __qualname__
 
     """
     if not isinstance(signature, _FullerSignature):  # not my custom signature
@@ -397,7 +399,7 @@ def wraps(
     _doc_fmt: Optional[dict] = None,
     _doc_style: Union[str, Callable, None] = None,
 ):
-    """Improved implementation of ``functools.wraps``.
+    """Improved implementation of :func:`~functools.wraps`.
 
     Decorator factory to apply ``update_wrapper()`` to a wrapper function.
 

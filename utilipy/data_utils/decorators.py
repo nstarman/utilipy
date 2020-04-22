@@ -30,7 +30,7 @@ from ..utils import functools
 # PARAMETERS
 
 # Windows prints numpy differently. Numpy outputs need to be ignored.
-# TODO, a better platform-specific fix for numpy.
+# TODO: a better platform-specific fix for numpy.
 if sys.platform.startswith("win"):
     __doctest_skip__ = ["idxDecorator"]
 

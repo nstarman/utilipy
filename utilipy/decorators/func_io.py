@@ -1,19 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : decorators
-#
-# ----------------------------------------------------------------------------
+"""Function Input and Output Decorators.
 
-"""DataType Decorators.
+.. todo::
 
-TODO
-----
-support argument 'all' in [(index, dtype),] as the IndexError
-supoort single argumens so that (index, dtype) works w/out [(), ]
-full support of numpy.dtype
-add in_dtype and out_dtype kwargs to wrapped functions which override defaults
+    support argument 'all' in [(index, dtype),] as the IndexError
+    supoort single argumens so that (index, dtype) works w/out [(), ]
+    full support of numpy.dtype
+    add in_dtype and out_dtype kw to wrapped functions to override defaults
 
 """
 
@@ -162,16 +156,16 @@ def add_folder_backslash(
     wrapper : Callable
         wrapper for function
         does a few things
-        includes the original function in a method `.__wrapped__`
+        includes the original function in a method ``.__wrapped__``
 
     Other Parameters
     ----------------
     _doc_style: str or formatter, optional
         default 'numpy'
-        parameter to `utilipy.wraps`
+        parameter to `~utilipy.wraps`
     _doc_fmt: dict, optional
         default None
-        parameter to `utilipy.wraps`
+        parameter to `~utilipy.wraps`
 
     """
     if function is None:  # allowing for optional arguments
@@ -192,9 +186,9 @@ def add_folder_backslash(
             whether to store function inputs in a BoundArguments instance
             default {store_inputs}
 
-        TODO
-        ----
-        need to do by inspect, since can pass args as kwargs
+        .. todo::
+
+            need to do by inspect, since can pass args as kwargs
 
         """
         args = list(args)

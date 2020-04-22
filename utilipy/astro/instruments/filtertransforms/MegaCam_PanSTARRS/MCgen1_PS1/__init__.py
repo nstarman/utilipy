@@ -1,32 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : initialize MCgen1_PS1
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-# Docstring and Metadata
-
 """MegaCam Generation 1 and panSTARRS generation 1.
 
     The conversions are sourced from [1]_
 
 Modules
 -------
-Mixed_MegaCamGen1_PS1:
-    iCFHT
-    rPS
-    CFHTtoPanstarrs_gm
-    PSfromCFHTg2gmrSpl
+Mixed_MegaCamGen1_PS1
 MegaCamGen1_from_PS1:
-    gCFHT
-    rCFHT
 PS1_from_MegaCamGen1:
-    gPS
-    gmrPS
-
 
 References
 ----------
@@ -40,10 +22,49 @@ __credits__ = [
 ]
 
 
+__all__ = [
+    # Mixed_MegaCamGen1_PS1
+    "mixed",
+    # MegaCamGen1_from_PS1
+    "U_MP9301",
+    "u_MC",
+    "G_MP9401",
+    "g_MC",
+    "R_MP9601",
+    "r_MC",
+    "I_MP9701",
+    "i_MC",
+    "Z_MP9801",
+    "z_MC",
+    "umg_MC",
+    "umr_MC",
+    "umi_MC",
+    "umz_MC",
+    "gmr_MC",
+    "gmi_MC",
+    "gmz_MC",
+    "rmi_MC",
+    "rmz_MC",
+    "imz_MC",
+    # PS1_from_MegaCamGen1
+    "g_PS",
+    "r_PS",
+    "i_PS",
+    "z_PS",
+    "gmr_PS",
+    "gmi_PS",
+    "gmz_PS",
+    "rmi_PS",
+    "rmz_PS",
+    "imz_PS",
+]
+
+
 #############################################################################
 # IMPORTS
 
 # PROJECT-SPECIFIC
+
 from . import Mixed_MegaCamGen1_PS1 as mixed
 
 from .MegaCamGen1_from_PS1 import (

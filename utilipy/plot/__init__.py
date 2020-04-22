@@ -4,10 +4,16 @@
 
 __author__ = "Nathaniel Starkman"
 
+
+__all__ = []
+
+
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
+
+# THIRD PARTY
 
 # PROJECT-SPECIFIC
 
