@@ -60,17 +60,24 @@ Copyright 2018- Nathaniel Starkman and contributors.
 
 .. |astropy| image:: http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat
    :target: http://www.astropy.org/
+
 .. |Build Status| image:: https://travis-ci.org/nstarman/utilipy.svg?branch=master
    :target: https://travis-ci.org/nstarman/utilipy
+
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
+
 .. |Documentation Status| image:: https://readthedocs.org/projects/utilipy/badge/?version=latest
    :target: https://utilipy.readthedocs.io/en/latest/?badge=latest
+
 .. |DOI| image:: https://zenodo.org/badge/192425953.svg
    :target: https://zenodo.org/badge/latestdoi/192425953
+
 .. |License| image:: https://img.shields.io/badge/License-BSD%203--Clause-blue.svg
    :target: https://opensource.org/licenses/BSD-3-Clause
+
 .. |PyPI| image:: https://badge.fury.io/py/utilipy.svg
    :target: https://badge.fury.io/py/utilipy
+
 .. |Coveralls| image:: https://coveralls.io/repos/github/nstarman/utilipy/badge.svg?branch=master
    :target: https://coveralls.io/github/nstarman/utilipy?branch=master

@@ -16,17 +16,6 @@ __all__ = [
     "store_function_input",
     "add_folder_backslash",
     "random_generator_from_seed",
-    # dtype
-    "dtypeDecorator",
-    "dtypeDecoratorMaker",
-    # built-in types
-    "boolDecorator",
-    "intDecorator",
-    "floatDecorator",
-    "strDecorator",
-    # numpy types
-    "ndarrayDecorator",
-    "ndfloat64Decorator",
 ]
 
 
@@ -220,7 +209,7 @@ def add_folder_backslash(
 def random_generator_from_seed(
     function=None,
     seed_names=["random", "random_seed"],
-    generator=np.random.default_rng,
+    generator=np.random.RandomState,
 ):
     """Function decorator to convert random seed to random number generator.
 

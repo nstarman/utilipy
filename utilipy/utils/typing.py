@@ -29,6 +29,8 @@ from typing import *
 
 import numpy as np
 
+from astropy.units import Unit, Quantity
+
 
 ###############################################################################
 # PARAMETERS
@@ -43,7 +45,7 @@ array_like = T.TypeVar("array_like", np.array, list, tuple)
 #####################################################################
 # Astropy
 
-ExpandedUnitType = TypeVar("ExpandedUnitType", Unit, Quantity)
+ExpandedUnitType = T.TypeVar("ExpandedUnitType", Unit, Quantity)
 """Expanded Unit Type.
 
 Type variable for Astropy [astropy]_ units, including quantities.
