@@ -15,6 +15,7 @@ __all__ = [
     # func_io
     "store_function_input",
     "add_folder_backslash",
+    "random_generator_from_seed",
     # dtype
     "dtypeDecorator",
     "dtypeDecoratorMaker",
@@ -204,6 +205,86 @@ def add_folder_backslash(
                 raise TypeError("elements of `args` must be int or str")
 
         return function(*args, **kw)
+
+    # /def
+
+    return wrapper
+
+
+# /def
+
+
+#####################################################################
+
+
+def random_generator_from_seed(
+    function=None,
+    seed_names=["random", "random_seed"],
+    generator=np.random.default_rng,
+):
+    """Function decorator to convert random seed to random number generator.
+
+    Parameters
+    ----------
+    function : types.FunctionType or None, optional
+        the function to be decoratored
+        if None, then returns decorator to apply.
+    seed_names : list, optional
+        possible parameter names for the random seed
+    generator : ClassType, optional
+        ex :class:`numpy.random.default_rng`, :class:`numpy.random.RandomState`
+
+    Returns
+    -------
+    wrapper : types.FunctionType
+        wrapper for function
+        converts random seeds to random number generators before calling.
+        includes the original function in a method `.__wrapped__`
+
+    """
+    if isinstance(seed_names, str):  # correct a bare string to list
+        seed_names = [
+            seed_names,
+        ]
+
+    if function is None:  # allowing for optional arguments
+        return functools.partial(
+            random_generator_from_seed,
+            seed_names=seed_names,
+            generator=generator,
+        )
+
+    sig = inspect.signature(function)
+    pnames = tuple(sig.parameters.keys())
+
+    @functools.wraps(
+        function,
+        _doc_fmt={"seed_names": seed_names, "random_generator": generator},
+    )
+    def wrapper(*args, **kw):
+        """Wrapper docstring, added to Function.
+
+        Notes
+        -----
+        Any argument in {seed_names} will be interpreted as a random seed,
+        if it is an integer, and will be converted to a random number generator
+        of type {random_generator}.
+
+        """
+        ba = sig.bind_partial(*args, **kw)
+        ba.apply_defaults()
+
+        # go through possible parameter names for the random seed
+        # if it is a parameter and the value is an int, change to RandomState
+        for name in seed_names:  # iterate through possible
+            if name in pnames:  # see if present
+                if isinstance(ba.arguments[name], int):  # seed -> generator
+                    ba.arguments[name] = generator(ba.arguments[name])
+                else:  # do not replace
+                    pass
+        # /for
+
+        return function(*ba.args, **ba.kwargs)
 
     # /def
 
