@@ -1,31 +1,40 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : ObjDict
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-# Docstring and Metadata
-"""initialization file for util."""
+"""Collections."""
 
 __author__ = "Nathaniel Starkman"
+
+__credit__ = """
+    ReadOnlyDictionaryWrapper: https://stackoverflow.com/a/28452633
+"""
+
+
+__all__ = [
+    # "odict_values",  # TODO fix raises stub file error
+    # "odict_items",  # TODO fix raises stub file error
+    "ObjDict",
+    "ReadOnlyDictionaryWrapper",
+]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 from collections import OrderedDict
+from collections.abc import Mapping
+
 from typing import Any, Union, Sequence, Tuple, Callable, Optional
+
+# THIRD PARTY
+
+from astropy.utils.decorators import format_doc
 
 
 # PROJECT-SPECIFIC
 
-from ..pickle import dump as _dump, load as _load
-from ...decorators.docstring import format_doc
+from .pickle import dump as _dump, load as _load
 
 
 ##############################################################################
@@ -133,15 +142,15 @@ class ObjDict(OrderedDict):
     # attribute get / set
     # redirects to item get / set
 
-    def __setattr__(self, key: Any, value: Any) -> None:
-        """Setattr -> setitem."""
-        self[key] = value
-
-    # /def
-
     def __getattr__(self, key: Any) -> Any:
         """Getattr -> getitem."""
         return self[key]
+
+    # /def
+
+    def __setattr__(self, key: Any, value: Any) -> None:
+        """Setattr -> setitem."""
+        self[key] = value
 
     # /def
 
@@ -321,6 +330,44 @@ class ObjDict(OrderedDict):
     def print(self):
         """Print."""
         print(self.__repr__())
+
+
+# /class
+
+
+##############################################################################
+
+
+class ReadOnlyDictionaryWrapper(Mapping):
+    """Read-Only Dictionary.
+
+    Warning, the contained dictionary can be modified
+
+    """
+
+    def __init__(self, data):
+        """__init__."""
+        self._data = data
+
+    # /def
+
+    def __getitem__(self, key):
+        """__getitem__."""
+        return self._data[key]
+
+    # /def
+
+    def __len__(self):
+        """__len__."""
+        return len(self._data)
+
+    # /def
+
+    def __iter__(self):
+        """__iter__."""
+        return iter(self._data)
+
+    # /def
 
 
 # /class
