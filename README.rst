@@ -5,7 +5,7 @@ utilipy
 
 .. container::
 
-   |astropy| |Build Status| |Coveralls| License| |Code style: black|
+   |astropy| |Build Status| |Coveralls| |License| |Code style: black|
 
 
 Documentation

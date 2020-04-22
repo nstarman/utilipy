@@ -30,9 +30,9 @@ Planned Features:
    planned
 
 
-.. |Milestones| image:: https://img.shields.io/github/milestones/open/nstarman/utilipy?style=flat-square
+.. |Milestones| image:: https://img.shields.io/github/milestones/open/nstarman/utilipy?style=flat
    :alt: GitHub milestones
-.. |Open Issues| image:: https://img.shields.io/github/issues-raw/nstarman/utilipy?style=flat-square
+.. |Open Issues| image:: https://img.shields.io/github/issues-raw/nstarman/utilipy?style=flat
    :alt: GitHub issues
-.. |Last GitHub Release| image:: https://img.shields.io/github/release-date/nstarman/utilipy?style=flat-square
+.. |Last GitHub Release| image:: https://img.shields.io/github/release-date/nstarman/utilipy?style=flat
    :alt: GitHub Release Date

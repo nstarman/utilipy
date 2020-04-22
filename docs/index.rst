@@ -123,13 +123,13 @@ Project details
 .. |PyPI| image:: https://badge.fury.io/py/utilipy.svg
    :target: https://badge.fury.io/py/utilipy
 
-.. |Milestones| image:: https://img.shields.io/github/milestones/open/nstarman/utilipy?style=flat-square
+.. |Milestones| image:: https://img.shields.io/github/milestones/open/nstarman/utilipy?style=flat
    :alt: GitHub milestones
 
-.. |Open Issues| image:: https://img.shields.io/github/issues-raw/nstarman/utilipy?style=flat-square
+.. |Open Issues| image:: https://img.shields.io/github/issues-raw/nstarman/utilipy?style=flat
    :alt: GitHub issues
 
-.. |Last Commit| image:: https://img.shields.io/github/last-commit/nstarman/utilipy/master?style=flat-square
+.. |Last Commit| image:: https://img.shields.io/github/last-commit/nstarman/utilipy/master?style=flat
    :alt: GitHub last commit (branch)
 
 .. |Coveralls| image:: https://coveralls.io/repos/github/nstarman/utilipy/badge.svg?branch=master
