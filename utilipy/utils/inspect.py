@@ -19,13 +19,8 @@ from inspect import (
     _void,
 )
 
-from typing import (
-    Callable,
-    Dict,
-    Union,
-    Any,
-    Optional,
-)
+import typing as T
+
 from typing_extensions import Literal
 from collections import namedtuple
 
@@ -87,7 +82,7 @@ class _placehold:
 
 
 # types
-_typing_tuple_false = Union[tuple, Literal[False]]
+_typing_tuple_false = T.Union[tuple, Literal[False]]
 
 
 FullerArgSpec: namedtuple = namedtuple(
@@ -179,7 +174,7 @@ def _is_placeholder(value):
 # getfullerargspec
 
 
-def getfullerargspec(func: Callable) -> FullerArgSpec:
+def getfullerargspec(func: T.Callable) -> FullerArgSpec:
     """Separated version of FullerArgSpec.
 
     fullargspec with separation of mandatory and optional arguments
@@ -238,7 +233,7 @@ def getfullerargspec(func: Callable) -> FullerArgSpec:
 # Signature / ArgSpec Interface
 
 
-def get_annotations_from_signature(signature: Signature) -> Dict[str, Any]:
+def get_annotations_from_signature(signature: Signature) -> T.Dict[str, T.Any]:
     """Get annotations from Signature object.
 
     Parameters
@@ -261,7 +256,7 @@ def get_annotations_from_signature(signature: Signature) -> Dict[str, Any]:
     {'x': 'x annotation', 'return': 'return annotation'}
 
     """
-    annotations: Dict[str, Any] = {
+    annotations: T.Dict[str, T.Any] = {
         k: v.annotation
         for k, v in signature.parameters.items()
         if v.annotation != _empty
@@ -384,16 +379,47 @@ def get_kinds_from_signature(signature: Signature) -> tuple:
 
 
 ###########################################################################
+
+
+def valuesdict(signature, include_empty=False):
+    """Get dictionary of current values in `signature`.
+
+    Parameters
+    ----------
+    signature : :class:`~Signature`
+    include_empty : bool, optional
+        whether to include placeholder values
+        see :func:`~_is_placeholder`
+
+    Returns
+    -------
+    vdict : Dict[str, Any]
+        name, value dictionary
+
+    """
+    vdict: T.Dict[str, T.Any] = {
+        p.name: p.default
+        for p in signature.parameters.values()
+        if ((not _is_placeholder(p.default)) or include_empty)
+    }
+
+    return vdict
+
+
+# /def
+
+
+###########################################################################
 # Signature Methods
 
 
 def modify_parameter(
     sig: Signature,
-    param: Union[str, int],
-    name: Union[str, _empty] = _empty,
-    kind: Any = _empty,
-    default: Any = _empty,
-    annotation: Any = _empty,
+    param: T.Union[str, int],
+    name: T.Optional[str] = None,
+    kind: T.Any = None,
+    default: T.Any = _void,
+    annotation: T.Any = _void,
 ) -> Signature:
     """Modify a Parameter.
 
@@ -435,10 +461,10 @@ def modify_parameter(
     _param = params[index]
 
     # replacements
-    name = _param.name if name is _empty else name
-    kind = _param.kind if kind is _empty else kind
-    default = _param.default if default is _empty else default
-    annotation = _param.annotation if annotation is _empty else annotation
+    name = _param.name if name is None else name
+    kind = _param.kind if kind is None else kind
+    default = _param.default if default is _void else default
+    annotation = _param.annotation if annotation is _void else annotation
 
     # adjust parameter list
     params[index] = _param.replace(
@@ -452,7 +478,7 @@ def modify_parameter(
 
 
 def replace_with_parameter(
-    sig: Signature, name: Union[int, str], param: Parameter
+    sig: Signature, name: T.Union[int, str], param: Parameter
 ) -> Signature:
     """Replace a Parameter with another Parameter.
 
@@ -583,7 +609,7 @@ def append_parameter(sig: Signature, param: Parameter) -> Signature:
 
 
 def drop_parameter(
-    sig: Signature, param: Union[str, int, Parameter]
+    sig: Signature, param: T.Union[str, int, Parameter]
 ) -> Signature:
     """Drop a Parameter.
 
@@ -642,7 +668,7 @@ class FullerSignature(Signature):
 
         Parameters
         ----------
-        obj : Callable
+        obj : T.Callable
         follow_wrapped : bool
 
         Returns
@@ -709,7 +735,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def annotations(self) -> Any:
+    def annotations(self) -> T.Any:
         """Get annotations from Signature object.
 
         Returns
@@ -731,7 +757,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def __defaults__(self) -> Optional[tuple]:
+    def __defaults__(self) -> T.Optional[tuple]:
         """Get defaults.
 
         Returns
@@ -764,7 +790,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def defaults(self) -> Optional[tuple]:
+    def defaults(self) -> T.Optional[tuple]:
         """Get defaults.
 
         Returns
@@ -785,7 +811,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def __kwdefaults__(self) -> Optional[dict]:
+    def __kwdefaults__(self) -> T.Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -817,7 +843,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def kwdefaults(self) -> Optional[dict]:
+    def kwdefaults(self) -> T.Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -838,7 +864,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def kwonlydefaults(self) -> Optional[dict]:
+    def kwonlydefaults(self) -> T.Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -1002,7 +1028,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def index_var_positional(self) -> Union[int, Literal[False]]:
+    def index_var_positional(self) -> T.Union[int, Literal[False]]:
         """Index of `*args`.
 
         Returns
@@ -1059,7 +1085,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def index_var_keyword(self) -> Union[int, Literal[False]]:
+    def index_var_keyword(self) -> T.Union[int, Literal[False]]:
         """Index of `**kwargs`.
 
         Returns
@@ -1088,11 +1114,11 @@ class FullerSignature(Signature):
 
     def modify_parameter(
         self,
-        param: Union[str, int],
-        name: Union[str, _empty] = _empty,
-        kind: Any = _empty,
-        default: Any = _empty,
-        annotation: Any = _empty,
+        param: T.Union[str, int],
+        name: T.Optional[str] = None,
+        kind: T.Any = None,
+        default: T.Any = _void,
+        annotation: T.Any = _void,
     ) -> Signature:
         """Modify a Parameter.
 
@@ -1134,8 +1160,8 @@ class FullerSignature(Signature):
     # /def
 
     def replace_with_parameter(
-        self, name: Union[int, str], param: Parameter
-    ) -> Any:
+        self, name: T.Union[int, str], param: Parameter
+    ) -> T.Any:
         """Replace a Parameter with another Parameter.
 
         Similar to `.replace,` but more convenient for modifying a single parameter
@@ -1288,7 +1314,7 @@ class FullerSignature(Signature):
     # /def
 
     def add_var_positional_parameter(
-        self, name: str = "args", index: Optional[int] = None
+        self, name: str = "args", index: T.Optional[int] = None
     ):
         """Add var positional parameter.
 
@@ -1375,7 +1401,7 @@ class FullerSignature(Signature):
 # ------------------------------------------------------------------------
 
 
-def fuller_signature(obj: Any, *, follow_wrapped: bool = True) -> Any:
+def fuller_signature(obj: T.Any, *, follow_wrapped: bool = True) -> T.Any:
     """Get a signature object for the passed callable."""
     return FullerSignature.from_callable(obj, follow_wrapped=follow_wrapped)
 
