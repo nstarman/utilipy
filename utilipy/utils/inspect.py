@@ -19,19 +19,13 @@ from inspect import (
     _void,
 )
 
-from typing import (
-    Callable,
-    Dict,
-    Union,
-    Any,
-    Optional,
-)
+import typing as T
 from typing_extensions import Literal
 from collections import namedtuple
 
 
 ##############################################################################
-# __ALL__
+# PARAMETERS
 
 __all__ = [
     "POSITIONAL_ONLY",
@@ -39,8 +33,8 @@ __all__ = [
     "VAR_POSITIONAL",
     "KEYWORD_ONLY",
     "VAR_KEYWORD",
-    # "_void",
-    # "_empty",
+    # "_void",  # TODO: add to RTD
+    # "_empty",  # TODO: add to RTD
     "_placehold",
     "_is_empty",
     "_is_void",
@@ -63,14 +57,6 @@ __all__ = [
     "fuller_signature",
 ]
 
-# __all__ += (
-#     inspect.__all__ if hasattr(inspect, "__all__") else list(dir(inspect))
-# )
-
-
-##############################################################################
-# PARAMETERS
-
 POSITIONAL_ONLY = Parameter.POSITIONAL_ONLY
 POSITIONAL_OR_KEYWORD = Parameter.POSITIONAL_OR_KEYWORD
 VAR_POSITIONAL = Parameter.VAR_POSITIONAL
@@ -82,12 +68,28 @@ _empty = Parameter.empty  # TODO: add to RTD
 _void = _void  # TODO: add to RTD
 
 
+# class _void:  # FIX import _void from `inspect`
+#     """Void."""
+
+#     pass
+
+
+# /class
+
+
 class _placehold:
+    """Placehold."""
+
     pass
 
 
+# /class
+
+
 # types
-_typing_tuple_false = Union[tuple, Literal[False]]
+
+# EmptyType = T.Type[_empty]
+_typing_tuple_false = T.Union[tuple, Literal[False]]
 
 
 FullerArgSpec: namedtuple = namedtuple(
@@ -179,7 +181,7 @@ def _is_placeholder(value):
 # getfullerargspec
 
 
-def getfullerargspec(func: Callable) -> FullerArgSpec:
+def getfullerargspec(func: T.Callable) -> FullerArgSpec:
     """Separated version of FullerArgSpec.
 
     fullargspec with separation of mandatory and optional arguments
@@ -208,8 +210,10 @@ def getfullerargspec(func: Callable) -> FullerArgSpec:
 
     if spec.defaults is not None:  # separate out argument types
 
-        args = spec.args[: -len(spec.defaults)]
-        defargs = spec.args[-len(spec.defaults) :]
+        args: T.Optional[T.List[str]] = spec.args[: -len(spec.defaults)]
+        defargs: T.Optional[T.List[str, T.Any]] = spec.args[
+            -len(spec.defaults) :
+        ]
         defaults = {k: v for k, v in zip(defargs, spec.defaults)}
 
     else:  # nothing to separate
@@ -238,7 +242,7 @@ def getfullerargspec(func: Callable) -> FullerArgSpec:
 # Signature / ArgSpec Interface
 
 
-def get_annotations_from_signature(signature: Signature) -> Dict[str, Any]:
+def get_annotations_from_signature(signature: Signature) -> T.Dict[str, T.Any]:
     """Get annotations from Signature object.
 
     Parameters
@@ -261,7 +265,7 @@ def get_annotations_from_signature(signature: Signature) -> Dict[str, Any]:
     {'x': 'x annotation', 'return': 'return annotation'}
 
     """
-    annotations: Dict[str, Any] = {
+    annotations: T.Dict[str, T.Any] = {
         k: v.annotation
         for k, v in signature.parameters.items()
         if v.annotation != _empty
@@ -389,11 +393,11 @@ def get_kinds_from_signature(signature: Signature) -> tuple:
 
 def modify_parameter(
     sig: Signature,
-    param: Union[str, int],
-    name: Union[str, _empty] = _empty,
-    kind: Any = _empty,
-    default: Any = _empty,
-    annotation: Any = _empty,
+    param: T.Union[str, int],
+    name: T.Union[str, _empty] = _empty,
+    kind: T.Any = _empty,
+    default: T.Any = _empty,
+    annotation: T.Any = _empty,
 ) -> Signature:
     """Modify a Parameter.
 
@@ -452,7 +456,7 @@ def modify_parameter(
 
 
 def replace_with_parameter(
-    sig: Signature, name: Union[int, str], param: Parameter
+    sig: Signature, name: T.Union[int, str], param: Parameter
 ) -> Signature:
     """Replace a Parameter with another Parameter.
 
@@ -583,7 +587,7 @@ def append_parameter(sig: Signature, param: Parameter) -> Signature:
 
 
 def drop_parameter(
-    sig: Signature, param: Union[str, int, Parameter]
+    sig: Signature, param: T.Union[str, int, Parameter]
 ) -> Signature:
     """Drop a Parameter.
 
@@ -659,6 +663,28 @@ class FullerSignature(Signature):
 
     # /def
 
+    @classmethod
+    def from_signature(cls, signature: Signature):
+        """Create :class:`FullerSignature` from :class:`~inspect.Signature`.
+
+        Parameters
+        ----------
+        signature : Signature
+
+        Returns
+        -------
+        FullerSignature
+
+        """
+        sig: FullerSignature = super().__init__(
+            parameters=signature.parameters,
+            return_annotation=signature.return_annotation,
+        )
+
+        return sig
+
+    # /def
+
     # ------------------------------------------
 
     @property
@@ -666,8 +692,8 @@ class FullerSignature(Signature):
         """Return a classical Signature."""
         return Signature(
             parameters=list(self.parameters.values()),
-            return_annotation=self._return_annotation,
-            __validate_parameters__=False,
+            return_annotation=self.return_annotation,
+            # __validate_parameters__=False,
         )
 
     # /def
@@ -697,19 +723,16 @@ class FullerSignature(Signature):
         {'x': 'x annotation', 'return': 'return annotation'}
 
         """
-        # res = {
-        #     k: v.annotation
-        #     for k, v in self.parameters.items()
-        #     if v.annotation != _empty
-        # }
-        # if self.return_annotation is not _empty:
-        #     res["return"] = self.return_annotation
-        return get_annotations_from_signature(self.signature)
+        annotations: T.Dict[str, T.Any] = get_annotations_from_signature(
+            self.signature
+        )
+
+        return annotations
 
     # /def
 
     @property
-    def annotations(self) -> Any:
+    def annotations(self) -> T.Any:
         """Get annotations from Signature object.
 
         Returns
@@ -731,7 +754,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def __defaults__(self) -> Optional[tuple]:
+    def __defaults__(self) -> T.Optional[tuple]:
         """Get defaults.
 
         Returns
@@ -747,24 +770,12 @@ class FullerSignature(Signature):
         (2,)
 
         """
-        # p: Parameter
-        # out: tuple = tuple(
-        #     [
-        #         p.default
-        #         for p in self.parameters.values()
-        #         if ((p.kind == POSITIONAL_OR_KEYWORD) & _is_empty(p.default))
-        #     ]
-        # )
-        # if out == ():  # empty list
-        #     return None
-        # else:
-        #     return out
         return get_defaults_from_signature(self.signature)
 
     # /def
 
     @property
-    def defaults(self) -> Optional[tuple]:
+    def defaults(self) -> T.Optional[tuple]:
         """Get defaults.
 
         Returns
@@ -785,7 +796,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def __kwdefaults__(self) -> Optional[dict]:
+    def __kwdefaults__(self) -> T.Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -801,23 +812,12 @@ class FullerSignature(Signature):
         {'k': 3}
 
         """
-        # n: str
-        # p: Parameter
-        # out: dict = {
-        #     n: p.default
-        #     for n, p in self.parameters.items()
-        #     if ((p.kind == KEYWORD_ONLY) and not _is_empty(p.default))
-        # }
-        # if out == {}:  # empty dict
-        #     return None
-        # else:
-        #     return out
         return get_kwdefaults_from_signature(self.signature)
 
     # /def
 
     @property
-    def kwdefaults(self) -> Optional[dict]:
+    def kwdefaults(self) -> T.Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -838,7 +838,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def kwonlydefaults(self) -> Optional[dict]:
+    def kwonlydefaults(self) -> T.Optional[dict]:
         """Get key-word only defaults.
 
         Returns
@@ -882,7 +882,6 @@ class FullerSignature(Signature):
         <_ParameterKind.VAR_KEYWORD: 4>
 
         """
-        # return tuple([p.kind for p in self.parameters.values()])
         return get_kinds_from_signature(self.signature)
 
     @property
@@ -991,18 +990,10 @@ class FullerSignature(Signature):
                 ]
             )
 
-            # return tuple(
-            #     [
-            #         i
-            #         for (k, d) in zip(kinds, defaults)
-            #         if ((k == 1) and not _is_placeholder(d))
-            #     ]
-            # )
-
     # /def
 
     @property
-    def index_var_positional(self) -> Union[int, Literal[False]]:
+    def index_var_positional(self) -> T.Union[int, Literal[False]]:
         """Index of `*args`.
 
         Returns
@@ -1059,7 +1050,7 @@ class FullerSignature(Signature):
     # /def
 
     @property
-    def index_var_keyword(self) -> Union[int, Literal[False]]:
+    def index_var_keyword(self) -> T.Union[int, Literal[False]]:
         """Index of `**kwargs`.
 
         Returns
@@ -1080,7 +1071,7 @@ class FullerSignature(Signature):
 
     # ------------------------------------------
 
-    def copy(self) -> Signature:
+    def copy(self):
         """Copy of self."""
         return self.replace(parameters=list(self.parameters.values()))
 
@@ -1088,12 +1079,12 @@ class FullerSignature(Signature):
 
     def modify_parameter(
         self,
-        param: Union[str, int],
-        name: Union[str, _empty] = _empty,
-        kind: Any = _empty,
-        default: Any = _empty,
-        annotation: Any = _empty,
-    ) -> Signature:
+        param: T.Union[str, int],
+        name: T.Union[str, _empty] = _empty,
+        kind: T.Any = _empty,
+        default: T.Any = _empty,
+        annotation: T.Any = _empty,
+    ):
         """Modify a Parameter.
 
         Similar to `.replace,` but more convenient for modifying a single parameter
@@ -1109,16 +1100,16 @@ class FullerSignature(Signature):
         kind: type
             new parameter kind, defaults to old parameter kind
             **default: None**
-        default: any
+        default: T.Any
             new parameter default, defaults to old parameter default
             **default: None**
-        annotation: any
+        annotation: T.Any
             new parameter annotation, defaults to old parameter annotation
             **default: None**
 
         Returns
         -------
-        Signature
+        FullerSignature
             a new Signature object with the replaced parameter
 
         """
@@ -1134,8 +1125,8 @@ class FullerSignature(Signature):
     # /def
 
     def replace_with_parameter(
-        self, name: Union[int, str], param: Parameter
-    ) -> Any:
+        self, name: T.Union[int, str], param: Parameter
+    ):
         """Replace a Parameter with another Parameter.
 
         Similar to `.replace,` but more convenient for modifying a single parameter
@@ -1151,7 +1142,7 @@ class FullerSignature(Signature):
 
         Returns
         -------
-        Signature
+        FullerSignature
             a new Signature object with the replaced parameter
 
         """
@@ -1159,7 +1150,7 @@ class FullerSignature(Signature):
 
     # /def
 
-    def insert_parameter(self, index: int, parameter: Parameter) -> Signature:
+    def insert_parameter(self, index: int, parameter: Parameter):
         """Insert a new Parameter.
 
         Similar to .replace, but more convenient for adding a single parameter
@@ -1174,7 +1165,7 @@ class FullerSignature(Signature):
 
         Returns
         -------
-        Signature: Signature
+        FullerSignature
             a new `Signature` object with the inserted `parameter`
 
         """
@@ -1182,7 +1173,7 @@ class FullerSignature(Signature):
 
     # /def
 
-    def prepend_parameter(self, param: Parameter) -> Signature:
+    def prepend_parameter(self, param: Parameter):
         """Insert a new Parameter at the start.
 
         Similar to .replace, but more convenient for adding a single parameter
@@ -1197,19 +1188,19 @@ class FullerSignature(Signature):
 
         Returns
         -------
-        Signature: Signature
+        FullerSignature
             a new `Signature` object with the inserted `param`
 
-        TODO
-        ----
-        have a `skip_self` option to skip self/cls in class methods.
+        .. todo::
+
+            have a `skip_self` option to skip self/cls in class methods.
 
         """
         return prepend_parameter(self, param)
 
     # /def
 
-    def append_parameter(self, param: Parameter) -> Signature:
+    def append_parameter(self, param: Parameter):
         """Insert a new Parameter at the end.
 
         Similar to .replace, but more convenient for adding a single parameter
@@ -1224,7 +1215,7 @@ class FullerSignature(Signature):
 
         Returns
         -------
-        Signature: Signature
+        FullerSignature
             a new `Signature` object with the inserted `param`
 
         """
@@ -1232,7 +1223,7 @@ class FullerSignature(Signature):
 
     # /def
 
-    def drop_parameter(self, param: str) -> Signature:
+    def drop_parameter(self, param: str):
         """Drop a Parameter.
 
         Parameters
@@ -1242,8 +1233,8 @@ class FullerSignature(Signature):
 
         Returns
         -------
-        Signature
-            a new Signature object with the replaced parameter
+        FullerSignature
+            a new FullerSignature object with the replaced parameter
 
         """
         return drop_parameter(self, param)
@@ -1273,7 +1264,7 @@ class FullerSignature(Signature):
         return list/info of parameters promoted
 
         """
-        signature: Signature = self
+        signature: FullerSignature = self
 
         if signature.defaults is None:  # no defaults
             return signature
@@ -1288,7 +1279,7 @@ class FullerSignature(Signature):
     # /def
 
     def add_var_positional_parameter(
-        self, name: str = "args", index: Optional[int] = None
+        self, name: str = "args", index: T.Optional[int] = None
     ):
         """Add var positional parameter.
 
@@ -1311,7 +1302,7 @@ class FullerSignature(Signature):
             and also promoted parameters if `promote_default_pos`=True
 
         """
-        signature: Signature = self
+        signature: FullerSignature = self
 
         if self.index_var_positional is not False:  # already exists
             pass
@@ -1356,11 +1347,13 @@ class FullerSignature(Signature):
 
         Returns
         -------
-        Signature
+        FullerSignature
             a new Signature object with the new var_positional parameter
             and also promoted parameters if `promote_default_pos`=True
 
         """
+        signature: FullerSignature
+
         if self.index_keyword_only is not False:  # already exists
             signature = self
 
@@ -1375,7 +1368,7 @@ class FullerSignature(Signature):
 # ------------------------------------------------------------------------
 
 
-def fuller_signature(obj: Any, *, follow_wrapped: bool = True) -> Any:
+def fuller_signature(obj: T.Any, *, follow_wrapped: bool = True):
     """Get a signature object for the passed callable."""
     return FullerSignature.from_callable(obj, follow_wrapped=follow_wrapped)
 

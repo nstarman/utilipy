@@ -60,4 +60,4 @@ In the development pipeline
 
 
 .. |Last Commit| image:: https://img.shields.io/github/last-commit/nstarman/utilipy/master?style=flat
-   :alt: GitHub last commit (branch)
+   :alt: GitHub last commit (master)

@@ -15,7 +15,7 @@ __all__ = [
 
 # BUILT-IN
 
-from typing import Sequence
+import typing as T
 
 
 # THIRD PARTY
@@ -28,7 +28,7 @@ import numpy as np
 ###############################################################################
 
 
-def quadrature(*args: Sequence, axis: int = 0) -> Sequence:
+def quadrature(*args: T.Tuple[T.Sequence], axis: int = 0) -> T.Sequence:
     """Return arguments summed in quadrature.
 
     ::

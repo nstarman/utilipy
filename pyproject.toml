@@ -2,6 +2,8 @@
 
 requires = ["setuptools",
             "setuptools_scm",
+            "extension_helpers",
+            "astropy",
             "wheel"]
 
 build-backend = 'setuptools.build_meta'

@@ -106,12 +106,15 @@ def amuse_imports_help():
     doc = _import_file_docstring_helper(amuse_imports_help.__doc__)
     print(doc)
 
+    return
+
 
 # /def
 
 
 if conf.verbose_imports:
     amuse_imports_help()
+
 
 ##############################################################################
 # END

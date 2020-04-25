@@ -192,10 +192,10 @@ class DecoratorBaseMeta(type):
         # --------------------------------------------------
         # store original docs
         # with None -> ''
-        dct["_orig_classdoc_"]: FormatTemplate = FormatTemplate(
+        dct["_orig_classdoc_"] = FormatTemplate(
             copy.copy(dct.get("__doc__", None)) or ""
         )
-        dct["_orig_calldoc_"]: FormatTemplate = FormatTemplate(
+        dct["_orig_calldoc_"] = FormatTemplate(
             copy.copy(dct["__call__"].__doc__) or ""
         )
 
@@ -604,10 +604,10 @@ def classy_decorator(decorator_function: Callable = None):
     if decorator_function is None:  # allowing for optional arguments
         return functools.partial(classy_decorator)
 
-    signature: inspect.Signature
+    signature: inspect.FullerSignature
     signature = inspect.fuller_signature(decorator_function)
     signature = signature.prepend_parameter(  # add in self
-        inspect.Parameter("self", inspect._POSITIONAL_ONLY)
+        inspect.Parameter("self", inspect.POSITIONAL_ONLY)
     )
     # key-word defaults from function
     kwd: dict = inspect.getfullerargspec(decorator_function).kwonlydefaults

@@ -3,7 +3,10 @@
 
 """Setup Script."""
 
-__all__ = ["__version__"]
+__all__ = [
+    "__version__",
+]
+
 
 ##############################################################################
 # CODE
@@ -11,7 +14,7 @@ __all__ = ["__version__"]
 
 # this indicates whether or not we are in the package's setup.py
 try:
-    _ASTROPY_SETUP_
+    _ASTROPY_SETUP_  # type: ignore
 except NameError:
     import builtins
 

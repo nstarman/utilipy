@@ -25,5 +25,5 @@ Credits
 * Jo Bovy: galpy package was also used as a template
   
 
-.. |Contributors| image:: https://img.shields.io/github/contributors/nstarman/utilipy?style=flat-square
+.. |Contributors| image:: https://img.shields.io/github/contributors/nstarman/utilipy?style=flat
    :alt: GitHub contributors

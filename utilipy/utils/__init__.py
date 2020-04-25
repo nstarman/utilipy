@@ -60,7 +60,13 @@ __all_top_imports__ = (
     "collections",
     "doc_parse_tools",
     "logging",
+    "exceptions",
+    "functools",
+    "inspect",
     "metaclasses",
+    "pickle",
+    "string",
+    "typing",
 )
 
 __all__ += list(__all_top_imports__)

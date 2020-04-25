@@ -5,13 +5,12 @@
 __author__ = "Nathaniel Starkman"
 
 
-__all__ = []
-
-
 ##############################################################################
 # IMPORTS
 
 # BUILT-IN
+
+import typing as T
 
 # THIRD PARTY
 
@@ -19,6 +18,11 @@ __all__ = []
 
 # from ..extern import starkplot
 # from ..extern.starkplot import mpl_decorator
+
+##############################################################################
+# PARAMETERS
+
+__all__: T.List[str] = []
 
 
 ##############################################################################

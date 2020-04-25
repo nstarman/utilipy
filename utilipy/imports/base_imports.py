@@ -145,10 +145,8 @@ else:
 
     # %run runs in the main namespace, so need to run as 'src.', not '.''
     from utilipy.ipython import (
-        printmd,
         printMD,  # markdown printing
-        printltx,
-        printLaTeX,  # LaTeX printing
+        printLTX,  # LaTeX printing
         set_autoreload,
         aimport,  # imports
         run_imports,
