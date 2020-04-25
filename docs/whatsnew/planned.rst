@@ -12,17 +12,6 @@ Planned Features
 full code coverage in tests
 generalized help function class that can be implemented in all subpackages.
 
-utilipy.astro
-^^^^^^^^^^^^^
-
-move to separate package
-
-
-utilipy.constants
-^^^^^^^^^^^^^^^^^
-
-get the `values` module to include the proper documentation from imported astropy constants
-
 
 utilipy.data_utils.fitting
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

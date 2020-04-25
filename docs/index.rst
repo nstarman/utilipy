@@ -32,8 +32,6 @@ Subpackages
 .. toctree::
    :maxdepth: 1
 
-   utilipy/astro/index
-   utilipy/constants/index
    utilipy/data_utils/index
    utilipy/decorators/index
    utilipy/imports/index
@@ -41,7 +39,6 @@ Subpackages
    utilipy/math/index
    utilipy/plot/index
    utilipy/scripts/index
-   utilipy/units/index
    utilipy/utils/index
 
 
@@ -78,7 +75,7 @@ Attribution
 
 Copyright 2018- Nathaniel Starkman and contributors.
 
-``utilipy`` is free software made available under the BSD-3 License. For details see the `LICENSE <https://github.com/nstarman/utilitpy/blob/master/LICENSE>`_ file.
+``utilipy`` is free software made available under the BSD-3 License. For details see the `LICENSE <https://github.com/nstarman/utilipy/blob/master/LICENSE>`_ file.
 
 If you make use of this code, please consider citing the Zenodo DOI as a software citation::
 

@@ -5,10 +5,8 @@
 
 Welcome to utilipy, a collection of useful python codes. This is a centralized
 repository for non project-specific code. There are modules for making
-advanced decorators, interfacing with IPython environments, miscellaneous
-astronomical functions, data utilities, making fitting libraries
-inter-operable, improving astropy units and quantity-enabled functions, and
-much more.
+advanced decorators, interfacing with IPython environments, data utilities,
+making fitting libraries inter-operable, and much more.
 
 Routine Listings
 ----------------
@@ -34,7 +32,7 @@ References
 ----------
 Zenodo [1]_, Astropy [2]_
 
-.. [1] nstarman. (2020, March 23). nstarman/astroPHD: astropy_template (Version
+.. [1] nstarman. (2020, March 23). nstarman/utilipy: astropy_template (Version
     astropy_template). Zenodo. http://doi.org/10.5281/zenodo.3724822
 .. [2] Astropy Collaboration et al., 2018, AJ, 156, 123.
 
@@ -82,10 +80,6 @@ __all__ = [
 from ._astropy_init import *  # noqa
 from ._astropy_init import __version__  # noqa
 
-# GENERAL
-
-from typing import Optional
-
 
 # THIRD PARTY
 
@@ -94,14 +88,13 @@ import astropy.config as config
 
 # PROJECT-SPECIFIC
 
+from .utils import typing as T
 from .utils.logging import LogFile
 from .utils.collections import ObjDict
 from .utils.functools import wraps
 
 # import packages into top-level namespace
 from . import (  # noqa
-    astro,
-    constants,
     data_utils,
     decorators,
     extern,
@@ -110,7 +103,6 @@ from . import (  # noqa
     math,
     plot,
     scripts,
-    units,
     utils,
 )
 
@@ -137,7 +129,7 @@ def reload_config():
 # HELP FUNCTIONS
 
 
-def online_help(query: Optional[str] = None):
+def online_help(query: T.Optional[str] = None):
     """Search the online documentation for the given query.
 
     Opens the results in the default web browser.
@@ -177,7 +169,7 @@ def online_help(query: Optional[str] = None):
 
 
 @decorators.code_dev.indev
-def help(query=None, online: bool = False):
+def help(query: T.Optional[str] = None, online: bool = False):
     """utilipy help function.
 
     Parameters
@@ -208,9 +200,6 @@ def help(query=None, online: bool = False):
 # __ALL__
 
 __all_top_imports__ = (
-    "astro",
-    "astro",
-    "constants",
     "data_utils",
     "decorators",
     "extern",
@@ -219,7 +208,6 @@ __all_top_imports__ = (
     "math",
     "plot",
     "scripts",
-    "units",
     "utils",
 )
 

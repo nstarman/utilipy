@@ -1,7 +1,7 @@
 utilipy
 =======
 
-``utilipy`` is a Python package for non project-specific code. There are modules for making advanced decorators, interfacing with IPython environments, data utilities, making fitting libraries inter-operable, improving astropy units and quantity-enabled functions, and much more. 
+``utilipy`` is a Python package for non project-specific code. There are modules for making advanced decorators, interfacing with IPython environments, data utilities, making fitting libraries inter-operable, improving astropy units and quantity-enabled functions, and much more.
 
 .. container::
 
@@ -54,7 +54,7 @@ License
 
 Copyright 2018- Nathaniel Starkman and contributors.
 
-``utilipy`` is free software made available under the BSD-3 License. For details see the `LICENSE <https://github.com/nstarman/utilitpy/blob/master/LICENSE>`_ file.
+``utilipy`` is free software made available under the BSD-3 License. For details see the `LICENSE <https://github.com/nstarman/utilipy/blob/master/LICENSE>`_ file.
 
 
 

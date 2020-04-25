@@ -10,8 +10,6 @@ Subpackages
 .. toctree::
    :maxdepth: 1
 
-   astro/index
-   constants/index
    data_utils/index
    decorators/index
    imports/index
@@ -19,7 +17,6 @@ Subpackages
    math/index
    plot/index
    scripts/index
-   units/index
 
 
 Reference/API
