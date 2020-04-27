@@ -132,13 +132,13 @@
     \IfBooleanTF{#1}
     {%
         \IfNoValueTF{#2}
-        { \partial{#3} }
-        { \partial^{#2}{#3} }
+        { \partial_{#3} }
+        { \partial^{#2}_{#3} }
     }
     {%
         \IfNoValueTF{#2}
-        { \mathrm{d}{#3} }
-        { \mathrm{d}^{#2}{#3} }
+        { \mathrm{d}_{#3} }
+        { \mathrm{d}^{#2}_{#3} }
     }
 }
 \NewDocumentCommand \pdif {o m} {
