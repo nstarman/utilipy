@@ -24,7 +24,7 @@ __all__ = [
 
 # GENERAL
 
-from typing import Any, Callable, Optional, Union, Iterable, Dict
+import typing as T
 from typing_extensions import Literal
 
 import numpy as np
@@ -41,11 +41,11 @@ from ..utils import functools, inspect
 
 
 def store_function_input(
-    function: Callable = None,
+    function: T.Callable = None,
     *,
     store_inputs: bool = True,
     _doc_style: str = "numpy",
-    _doc_fmt: Dict[str, Any] = {}
+    _doc_fmt: T.Dict[str, T.Any] = {}
 ):
     """Store Function Inputs.
 
@@ -53,7 +53,7 @@ def store_function_input(
 
     Parameters
     ----------
-    function : Callable or None, optional
+    function : T.Callable or None, optional
         the function to be decoratored
         if None, then returns decorator to apply.
     store_inputs : bool, optional
@@ -61,10 +61,10 @@ def store_function_input(
 
     Returns
     -------
-    wrapper : Callable
-        wrapper for function
-        does a few things
-        includes the original function in a method `.__wrapped__`
+    wrapper : T.Callable
+        Wrapper for `function` that can store function inputs
+        in a BoundArguments instance.
+        Includes the original function in a method `.__wrapped__`
 
     Other Parameters
     ----------------
@@ -107,9 +107,8 @@ def store_function_input(
         """
         return_ = function(*args, **kw)
 
-        if store_inputs:
-            inputs = sig.bind_partial(*args, **kw)  # make BoundArguments
-            inputs.apply_defaults()  # get default values from function
+        if store_inputs:  # make and return BoundArguments
+            inputs = sig.bind_partial_with_defaults(*args, **kw)
             return return_, inputs
         else:
             return return_
@@ -134,7 +133,7 @@ def add_folder_backslash(
 
     Parameters
     ----------
-    function : Callable or None, optional
+    function : T.Callable or None, optional
         the function to be decoratored
         if None, then returns decorator to apply.
     arguments : list of strings, optional
@@ -143,7 +142,7 @@ def add_folder_backslash(
 
     Returns
     -------
-    wrapper : Callable
+    wrapper : T.Callable
         wrapper for function
         does a few things
         includes the original function in a method ``.__wrapped__``
@@ -255,7 +254,7 @@ def random_generator_from_seed(
 
         Notes
         -----
-        Any argument in {seed_names} will be interpreted as a random seed,
+        T.Any argument in {seed_names} will be interpreted as a random seed,
         if it is an integer, and will be converted to a random number generator
         of type {random_generator}.
 
@@ -308,9 +307,9 @@ class dtypeDecorator:
 
     def __new__(
         cls,
-        func: Optional[Callable] = None,
-        in_dtype: Any = None,
-        out_dtype: Any = None,
+        func: T.Optional[T.Callable] = None,
+        in_dtype: T.Any = None,
+        out_dtype: T.Any = None,
     ):
         """New dtypeDecorator."""
         self = super().__new__(cls)  # making instance of self
@@ -318,7 +317,7 @@ class dtypeDecorator:
         # correcting if forgot to specify in_dtype and no function
         # in this case, *in_dtype* is stored in *func*
         # need to do func->None, inarags<-func, and out_dtype<-in_dtype
-        if not isinstance(func, Callable):
+        if not isinstance(func, T.Callable):
             # moving arguments 'forward'
             out_dtype = in_dtype
             in_dtype = func
@@ -333,7 +332,9 @@ class dtypeDecorator:
 
     # /def
 
-    def __init__(self, in_dtype: Any = None, out_dtype: Any = None) -> None:
+    def __init__(
+        self, in_dtype: T.Any = None, out_dtype: T.Any = None
+    ) -> None:
         """Initialize dtypeDecorator."""
         super().__init__()
 
@@ -349,7 +350,7 @@ class dtypeDecorator:
 
     # /def
 
-    def __call__(self, wrapped_func: Callable) -> Callable:
+    def __call__(self, wrapped_func: T.Callable) -> T.Callable:
         """Make Decorator.
 
         Parameters
@@ -360,7 +361,7 @@ class dtypeDecorator:
         """
         # make wrapper
         @functools.wraps(wrapped_func)
-        def wrapper(*args: Any, **kw: Any) -> Any:
+        def wrapper(*args: T.Any, **kw: T.Any) -> T.Any:
             # making arguments self._dtype
             if self._in_dtype is None:  # no conversion needed
                 return_ = wrapped_func(*args, **kw)
@@ -403,7 +404,7 @@ class dtypeDecorator:
 # -------------------------------------------------------------------
 
 
-def dtypeDecoratorMaker(dtype: Any):
+def dtypeDecoratorMaker(dtype: T.Any):
     """Function to make a dtype decorator.
 
     Parameters
@@ -468,9 +469,9 @@ def dtypeDecoratorMaker(dtype: Any):
 
         def __new__(
             cls,
-            func: Callable = None,
-            inargs: Union[Literal["all"], slice, Iterable] = None,
-            outargs: Union[Literal["all"], slice, Iterable] = None,
+            func: T.Callable = None,
+            inargs: T.Union[Literal["all"], slice, T.Iterable] = None,
+            outargs: T.Union[Literal["all"], slice, T.Iterable] = None,
         ):
             """__new__."""
             self = super().__new__(cls)  # making instance of self
@@ -478,7 +479,7 @@ def dtypeDecoratorMaker(dtype: Any):
             # correcting if forgot to specify inargs and did not provide a func
             # in this case, *inargs* is stored in *func*
             # need to do func->None, inarags<-func, and outargs<-inargs
-            if not isinstance(func, Callable):
+            if not isinstance(func, T.Callable):
                 # moving arguments 'forward'
                 outargs = inargs
                 inargs = func
@@ -495,8 +496,8 @@ def dtypeDecoratorMaker(dtype: Any):
 
         def __init__(
             self,
-            inargs: Union[Literal["all"], slice, Iterable] = None,
-            outargs: Union[Literal["all"], slice, Iterable] = None,
+            inargs: T.Union[Literal["all"], slice, T.Iterable] = None,
+            outargs: T.Union[Literal["all"], slice, T.Iterable] = None,
         ) -> None:
             super().__init__()
 
@@ -521,11 +522,11 @@ def dtypeDecoratorMaker(dtype: Any):
 
         # /def
 
-        def __call__(self, wrapped_func: Callable) -> Callable:
+        def __call__(self, wrapped_func: T.Callable) -> T.Callable:
             # print(self._inargs)
 
             @functools.wraps(wrapped_func)
-            def wrapper(*args: Any, **kw: Any) -> Any:
+            def wrapper(*args: T.Any, **kw: T.Any) -> T.Any:
 
                 args = list(args)  # allowing modifications
 

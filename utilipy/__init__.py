@@ -97,7 +97,6 @@ from .utils.functools import wraps
 from . import (  # noqa
     data_utils,
     decorators,
-    extern,
     imports,
     ipython,
     math,
@@ -202,7 +201,6 @@ def help(query: T.Optional[str] = None, online: bool = False):
 __all_top_imports__ = (
     "data_utils",
     "decorators",
-    "extern",
     "imports",
     "ipython",
     "math",

@@ -1,13 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : boolean to index decorator
-#
-# ----------------------------------------------------------------------------
-
-# Docstring and Metadata
-"""index decorator."""
+"""`data_util` decorators."""
 
 
 ##############################################################################
@@ -58,7 +51,7 @@ def idxDecorator(
         (default None)
         the function to be decoratored
         if None, then returns decorator to apply.
-    as_ind : bool of "flatten", optional
+    as_ind : bool or "flatten", optional
         (default False)
         whether to return bool array or indices
         (``where(bool array == np.True_)``)
@@ -155,22 +148,20 @@ def idxDecorator(
             whether to return a boolean array, or array of indices.
 
         """
+        # Step 1: call function
         return_ = function(*args, **kwargs)
 
-        # determine whether to return indices or bool array
+        # Step 2:  determine whether to return indices or bool array
         if as_ind:  # works for bool or full str
-
             # get the indices
             return_ = np.where(np.asarray(return_) == np.True_)
-
             # determine whether to return as-is, or flatten
             if as_ind == "flatten":
                 if len(return_) == 1:  # nested list with only 1 element
                     return return_[0]
                 else:  # not a valid option
                     raise ValueError
-            # do not flatten
-            else:
+            else:  # do not flatten
                 return return_
 
         # return a bool array

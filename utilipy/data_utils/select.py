@@ -1,21 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : select
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
 """Selection Functions.
-
-Routine Listings
-----------------
-inRange
-outRange
-ioRange
-ellipse
-circle
 
 Examples
 --------

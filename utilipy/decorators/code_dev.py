@@ -6,7 +6,7 @@
 
 See Also
 --------
-deprecation decorators in :mod:`~astropy.util.exceptions.deprecated`,
+deprecation decorators in :function:`~astropy.util.exceptions.deprecated`,
 upon which this code is based.
 
 """
@@ -122,12 +122,12 @@ def indev(
 
     warning_type : warning
         Warning to be issued.
-        Default is `~UpcomingWarning`.
+        Default is `~DevelopmentWarning`.
 
 
     See Also
     --------
-    deprecation decorators in :mod:`~astropy.util.exceptions.deprecated`
+    deprecation decorators in :func:`~astropy.util.exceptions.deprecated`
 
     """
     method_types = (classmethod, staticmethod, types.MethodType)
