@@ -21,6 +21,7 @@ from typing import *
 # THIRD PARTY
 
 import numpy as np
+from astropy import table
 
 
 ###############################################################################
@@ -34,13 +35,10 @@ import numpy as np
 array_like = T.TypeVar("array_like", np.array, list, tuple)
 
 
-###############################################################################
-# __ALL__
+#####################################################################
+# Astropy
 
-# if hasattr(T, "__all__"):
-#     __all__ += T.__all__
-# else:
-# __all__ += list(dir(T))
+TableType = T.TypeVar("TableType", table.Table, table.QTable)
 
 
 ###############################################################################

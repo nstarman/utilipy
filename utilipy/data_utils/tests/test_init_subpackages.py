@@ -4,22 +4,18 @@
 
 
 __all__ = [
-    "test_init_data",
     "test_init_fitting",
+    "test_init_xfm",
 ]
 
 
 ##############################################################################
 # IMPORTS
 
-# BUILT-IN
-
-import os
-
 
 # PROJECT-SPECIFIC
 
-from .. import data, fitting
+from .. import fitting, xfm
 
 
 ##############################################################################
@@ -29,28 +25,6 @@ from .. import data, fitting
 ##############################################################################
 # CODE
 ##############################################################################
-
-
-def test_init_data():
-    """Test module initialization."""
-    # Expectations
-    local = []
-
-    # test __all__ conforms to module
-    for name in data.__all__:
-        assert hasattr(data, name)
-
-    # test __all__ matches expectations
-    for name in data.__all__:
-        assert name in local
-
-    return
-
-
-# /def
-
-
-# -------------------------------------------------------------------
 
 
 def test_init_fitting():
@@ -66,6 +40,37 @@ def test_init_fitting():
 
     # test __all__ matches expectations
     for name in fitting.__all__:
+        assert name in local
+
+    return
+
+
+# /def
+
+# -------------------------------------------------------------------
+
+
+def test_init_xfm():
+    """Test module initialization."""
+    # Expectations
+    local = [
+        # modules
+        "graph", "transformations",
+        # functions
+        "TransformGraph",
+        # transformations
+        "DataTransform",
+        "CompositeTransform",
+        # Parameters
+        "data_graph",
+    ]
+
+    # test __all__ conforms to module
+    for name in xfm.__all__:
+        assert hasattr(xfm, name)
+
+    # test __all__ matches expectations
+    for name in xfm.__all__:
         assert name in local
 
     return

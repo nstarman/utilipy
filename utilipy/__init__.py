@@ -62,6 +62,17 @@ The same can be accomplished with the general `help` function.
 __author__ = "Nathaniel Starkman"
 
 __all__ = [
+    # modules
+    "data_utils",
+    "decorators",
+    "imports",
+    "ipython",
+    "math",
+    "plot",
+    "scripts",
+    "utils",
+    # functions
+    "data_graph",
     "LogFile",
     "ObjDict",
     "wraps",
@@ -93,6 +104,8 @@ from .utils.logging import LogFile
 from .utils.collections import ObjDict
 from .utils.functools import wraps
 
+from .data_utils import data_graph
+
 # import packages into top-level namespace
 from . import (  # noqa
     data_utils,
@@ -103,6 +116,21 @@ from . import (  # noqa
     plot,
     scripts,
     utils,
+)
+
+
+#############################################################################
+# PARAMTERS
+
+__all_top_imports__ = (  # TODO deprecate
+    "data_utils",
+    "decorators",
+    "imports",
+    "ipython",
+    "math",
+    "plot",
+    "scripts",
+    "utils",
 )
 
 
@@ -128,7 +156,7 @@ def reload_config():
 # HELP FUNCTIONS
 
 
-def online_help(query: T.Optional[str] = None):
+def online_help(query: T.Union[None, str, T.Any] = None):
     """Search the online documentation for the given query.
 
     Opens the results in the default web browser.
@@ -136,11 +164,27 @@ def online_help(query: T.Optional[str] = None):
 
     Parameters
     ----------
-    query : str, optional
-        The search query for `RTD <https://utilipy.readthedocs.io>`_.
+    query : str, object, optional
+        The search query for `RTD <https://utislipy.readthedocs.io>`_.
         None (default) or "" is an empty search.
+        If an object, uses :func:`~astropy.utils.misc.find_api_page`
+        to find the correct API page.
 
     """
+    # first get version to search
+    version = __version__
+    if "dev" in version:
+        version = "latest"
+    else:
+        version = "v" + version
+
+    if not isinstance(query, str) and query is not None:
+        if version == "latest":
+            version = None
+        find_api_page(query, version=version, openinbrowser=True)
+        return
+    # else:
+
     from urllib.parse import urlencode
     import webbrowser
 
@@ -150,18 +194,9 @@ def online_help(query: T.Optional[str] = None):
     else:  # encode the query
         query: str = urlencode({"q": query})
 
-    # first get version to search
-    version = __version__
-    if "dev" in version:
-        version = "latest"
-    else:
-        version = "v" + version
-
     url = f"https://utilipy.readthedocs.io/en/{version}/search.html?{query}"
 
     webbrowser.open(url)
-
-    return
 
 
 # /def
@@ -193,23 +228,6 @@ def help(query: T.Optional[str] = None, online: bool = False):
 
 
 # /def
-
-
-#############################################################################
-# __ALL__
-
-__all_top_imports__ = (
-    "data_utils",
-    "decorators",
-    "imports",
-    "ipython",
-    "math",
-    "plot",
-    "scripts",
-    "utils",
-)
-
-__all__ += list(__all_top_imports__)
 
 
 #############################################################################

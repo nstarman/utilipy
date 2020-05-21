@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : muulti initialization
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
 """Metaclasses."""
 
 __author__ = "Nathaniel Starkman"
@@ -16,8 +9,9 @@ __credits__ = ["astropy"]
 ##############################################################################
 # IMPORTS
 
-# GENERAL
-from typing import Any
+# BUILT-IN
+
+import typing as T
 import inspect
 
 
@@ -50,9 +44,13 @@ class InheritDocstrings(type):
 
     taken from astropy
 
+    .. todo::
+
+        - add docparse tools so can merge docstrings
+
     """
 
-    def __init__(cls, name: str, bases: Any, dct: dict) -> None:
+    def __init__(cls, name: str, bases: T.Any, dct: T.Dict):
         """Set up docstring inheritance."""
 
         def is_public_member(key):

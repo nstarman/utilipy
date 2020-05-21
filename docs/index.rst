@@ -42,9 +42,9 @@ Subpackages
    utilipy/utils/index
 
 
-*********
-Tutorials
-*********
+********
+Examples
+********
 
 .. toctree::
    :maxdepth: 1

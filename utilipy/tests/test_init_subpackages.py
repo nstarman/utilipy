@@ -46,7 +46,22 @@ from .. import (
 def test_init_data_utils():
     """Test :mod:`~utilipy.data_utils` initialization."""
     # Expectations
-    local = ["idxDecorator", *data_utils.select.__all__]
+    local = [
+        # modules
+        "decorators",
+        "select",
+        "fitting",
+        "xfm",
+        # functions
+        "get_path_to_file",
+        "idxDecorator",
+        # data transformation graph
+        "data_graph",
+        "TransformGraph",
+        "DataTransform",
+        # select
+        *data_utils.select.__all__,
+    ]
 
     # test __all__ conforms to module
     for name in data_utils.__all__:
@@ -243,9 +258,7 @@ def test_init_utils():
     """Test :mod:`~utilipy.utils` initialization."""
     # Expectations
     local = [
-        "LogPrint",
-        "LogFile",
-        "ObjDict",
+        # modules
         "collections",
         "doc_parse_tools",
         "logging",
@@ -255,13 +268,17 @@ def test_init_utils():
         "metaclasses",
         "pickle",
         "string",
+        "typing",
+        # functions
+        "LogPrint",
+        "LogFile",
+        "ObjDict",
+        "WithDocstring",
+        "WithMeta",
+        "WithReference",
+        "doc_parse_tools",
         "temporary_namespace",
         "typing",
-        # top-level imports
-        "collections",
-        "doc_parse_tools",
-        "logging",
-        "metaclasses",
     ]
 
     # test __all__ conforms to module
