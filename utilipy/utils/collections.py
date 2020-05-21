@@ -4,16 +4,16 @@
 
 __author__ = "Nathaniel Starkman"
 
-__credit__ = """
-    ReadOnlyDictionaryWrapper: https://stackoverflow.com/a/28452633
-"""
-
 
 __all__ = [
     # "odict_values",  # TODO fix raises stub file error
     # "odict_items",  # TODO fix raises stub file error
+    # -------
+    "WithDocstring",
+    "WithMeta",
+    "WithReference",
+    # -------
     "ObjDict",
-    "ReadOnlyDictionaryWrapper",
 ]
 
 
@@ -23,13 +23,16 @@ __all__ = [
 # BUILT-IN
 
 from collections import OrderedDict
-from collections.abc import Mapping
 
-from typing import Any, Union, Sequence, Tuple, Callable, Optional
+import typing as T
+
 
 # THIRD PARTY
 
 from astropy.utils.decorators import format_doc
+from astropy.utils.metadata import MetaData
+
+import wrapt
 
 
 # PROJECT-SPECIFIC
@@ -46,6 +49,190 @@ odict_items = type(OrderedDict().items())
 
 ##############################################################################
 # CODE
+##############################################################################
+
+##########################################################################
+# Wrapper Classes
+
+
+class WithDocstring(wrapt.ObjectProxy):
+    """Wrap object to add docstring.
+
+    This is a :class:`~wrapt.ObjectProxy`.
+
+    - Thin: All operations are carried to the wrapt value,
+            except for ``self.meta``, which accesses the meta attribute.
+    - Light: operations do not carry the metadata
+
+        >>> x = WithMeta(2)
+        >>> y = x + 2
+        >>> y.meta
+        AttributeError: 'int' object has no attribute 'meta'
+
+    Attributes
+    ----------
+    meta : :class:`~astropy.utils.metadata.MetaData`
+        metadata OrderedDict managed by the Astropy metadata module.
+
+
+    See Also
+    --------
+    :mod:`~astropy.utils.metadata` for usage of the metadata module.
+
+    """
+
+    __doc__ = None
+
+    def __init__(self, wrapped: T.Any, doc: str = None):
+        """Object wrapt to include metadata.
+
+        Parameters
+        ----------
+        wrapped : T.Any
+            `WithMeta` wraps anything, just adding metadata.
+        kw : Dict[T.Any, T.Any]
+            the key, value pairs for the metadata
+
+        """
+        super().__init__(wrapped)
+        self.__doc__ = doc
+
+        return
+
+    # /def
+
+
+# /class
+
+
+# ---------------------------------------------------------------------------
+
+
+class WithMeta(wrapt.ObjectProxy):
+    """Objects wrapt to include metadata.
+
+    This is an :class:`~wrapt.ObjectProxy` for thin and light wrappers.
+
+    - Thin: All operations are carried to the wrapt value,
+            except for ``self.meta``, which accesses the meta attribute.
+    - Light: operations do not carry the metadata
+
+        >>> x = WithMeta(2)
+        >>> y = x + 2
+        >>> y.meta  # doctest: +SKIP
+        AttributeError: 'int' object has no attribute 'meta'
+
+    Attributes
+    ----------
+    meta : `~astropy.utils.metadata.MetaData`
+        metadata OrderedDict managed by the Astropy metadata module.
+
+        .. todo::
+
+            implement with actual MetaData descriptor, not OrderedDict
+
+
+    Notes
+    -----
+    see :mod:`~astropy.utils.metadata` for usage of the metadata module.
+
+    """
+
+    # meta = MetaData(copy=False)
+    _meta = None
+
+    def __init__(self, wrapped: T.Any, **kw):
+        """Object wrapt to include metadata.
+
+        Parameters
+        ----------
+        wrapped : T.Any
+            `WithMeta` wraps anything, just adding metadata.
+        kw : Dict[T.Any, T.Any]
+            the key, value pairs for the metadata
+
+        """
+        super().__init__(wrapped)
+        # self.meta = MetaData(copy=False)
+        self._meta = OrderedDict()
+
+        for k, v in kw.items():
+            self.meta[k] = v
+
+        return
+
+    # /def
+
+    @property
+    def meta(self):
+        """Metadata."""
+        return self._meta
+
+
+# /class
+
+
+# ---------------------------------------------------------------------------
+
+
+class WithReference(WithMeta, WithDocstring):
+    """Objects wrapt to include reference(s) and other metadata.
+
+    Attributes
+    ----------
+    meta : `~astropy.utils.metadata.MetaData`
+        metadata OrderedDict managed by the Astropy metadata module.
+        Always has a "reference" item; None if not set.
+
+    Notes
+    -----
+    see :mod:`~astropy.utils.metadata` for usage of the metadata module.
+
+    """
+
+    def __init__(
+        self,
+        wrapped: T.Any,
+        *,
+        doc: str = None,
+        reference: T.Optional[T.Any] = None,
+        **kw
+    ):
+        """Object wrapt to include a reference, and any other metadata.
+
+        Parameters
+        ----------
+        wrapped : Any
+            `WithMeta` wraps anything, just adding metadata.
+        reference: Any, optional
+            The attribution for the object, such as a paper link.
+        kw : Dict[Any, Any], any
+            the key, value pairs for the metadata
+
+        """
+        # instantiate, with metadata
+        # need to do this first to make the wrapt object
+        super().__init__(wrapped, reference=reference, **kw)
+        # then manually do WithDocstring
+        self.__doc__ = doc
+
+        return
+
+    # /def
+
+    @property
+    def __reference__(self):
+        """References Meta Information."""
+        return self.meta["reference"]
+
+    # /def
+
+
+# /class
+
+
+##########################################################################
+# ObjDict
 
 
 class ObjDict(OrderedDict):
@@ -69,7 +256,7 @@ class ObjDict(OrderedDict):
 
     """
 
-    def __init__(self, name: str = "", **kw: Any) -> None:
+    def __init__(self, name: str = "", **kw: T.Any):
         """Initialize ObjDict."""
         super().__init__()
 
@@ -89,8 +276,8 @@ class ObjDict(OrderedDict):
     # item get / set
 
     def __getitem__(
-        self, keys: Union[str, Sequence[str]], _as_generator: bool = False
-    ) -> Any:
+        self, keys: T.Union[str, T.Sequence[str]], as_generator: bool = False
+    ) -> T.Any:
         """Override __getitem__.
 
         Parameters
@@ -99,7 +286,7 @@ class ObjDict(OrderedDict):
             the keys into ObjDict
             if str: just the value from key-value pair
             if list: list of values
-        _as_generator: bool  (default False)
+        as_generator: bool  (default False)
             whether to return as a generator
             only if keys is a list
 
@@ -108,7 +295,7 @@ class ObjDict(OrderedDict):
         value(s): anything
             if str, just the value from key-value pair
             if list, list of values
-            if _as_generator, generator for list
+            if as_generator, generator for list
 
         Examples
         --------
@@ -123,7 +310,7 @@ class ObjDict(OrderedDict):
         if isinstance(keys, str):
             return super().__getitem__(keys)
         # multiple keys
-        if _as_generator:  # return generator
+        if as_generator:  # return generator
             return (OrderedDict.__getitem__(self, k) for k in keys)
         return [OrderedDict.__getitem__(self, k) for k in keys]
 
@@ -131,10 +318,10 @@ class ObjDict(OrderedDict):
 
     @format_doc(__getitem__.__doc__)
     def getitem(
-        self, keys: Union[str, Sequence[str]], _as_generator: bool = False
-    ) -> Any:
+        self, keys: T.Union[str, T.Sequence[str]], as_generator: bool = False
+    ) -> T.Any:
         """Docstring from __getitem__."""
-        return self.__getitem__(keys, _as_generator=_as_generator)
+        return self.__getitem__(keys, as_generator=as_generator)
 
     # /def
 
@@ -142,13 +329,13 @@ class ObjDict(OrderedDict):
     # attribute get / set
     # redirects to item get / set
 
-    def __getattr__(self, key: Any) -> Any:
+    def __getattr__(self, key: T.Any) -> T.Any:
         """Getattr -> getitem."""
         return self[key]
 
     # /def
 
-    def __setattr__(self, key: Any, value: Any) -> None:
+    def __setattr__(self, key: T.Any, value: T.Any) -> None:
         """Setattr -> setitem."""
         self[key] = value
 
@@ -168,7 +355,7 @@ class ObjDict(OrderedDict):
 
     # ----------------------------------
 
-    def values(self, *keys: Any) -> Union[odict_values, tuple]:
+    def values(self, *keys: T.Any) -> T.Union[odict_values, tuple]:
         """Values.
 
         Parameters
@@ -181,13 +368,14 @@ class ObjDict(OrderedDict):
             list of values for `*keys`
 
         """
-        if not keys:  # if no specific keys provided
-            return super().values()
-        return tuple([self[k] for k in keys])
+        if keys:  # keys provided
+            allkeys = self.keys()
+            return tuple([self[k] for k in allkeys if k in keys])
+        return super().values()
 
     # /def
 
-    def items(self, *keys: Any) -> Union[odict_items, dict]:
+    def items(self, *keys: T.Any) -> T.Union[odict_items, dict]:
         """Items.
 
         Parameters
@@ -202,11 +390,11 @@ class ObjDict(OrderedDict):
         """
         if not keys:
             return super().items()
-        return self.subset(*keys).items()
+        return self.fromkeys(keys).items()
 
     # /def
 
-    def subset(self, *keys: Any) -> Any:
+    def fromkeys(self, keys: T.Any = [], name: str = None) -> T.Any:
         """Subset.
 
         Parameters
@@ -221,7 +409,15 @@ class ObjDict(OrderedDict):
         """
         if not keys:
             return self
-        return {k: self[k] for k in keys}
+        else:
+            allkeys = self.keys()
+
+            if name is None:
+                name = self.name + " subset"
+
+            return ObjDict(
+                name=name, **{k: self[k] for k in allkeys if k in keys}
+            )
 
     # /def
 
@@ -245,7 +441,7 @@ class ObjDict(OrderedDict):
     # ----------------------------------
     # Serialize (I/O)
 
-    def __reduce__(self) -> Tuple[Callable, str, odict_items]:
+    def __reduce__(self) -> T.Tuple[T.Callable, str, odict_items]:
         """Reduction method for serialization.
 
         structured as:
@@ -255,6 +451,8 @@ class ObjDict(OrderedDict):
 
         """
         return (self.__class__, (self.name,), OrderedDict(self.items()))
+
+    # /def
 
     def __setstate__(self, state: dict) -> None:
         """Set-state method for loading from pickle.
@@ -270,7 +468,7 @@ class ObjDict(OrderedDict):
     def dump(
         self,
         fname: str,
-        protocol: Optional[int] = None,
+        protocol: T.Optional[int] = None,
         *,
         fopt: str = "b",
         fix_imports: bool = True
@@ -290,7 +488,7 @@ class ObjDict(OrderedDict):
     def save(
         self,
         fname: str,
-        protocol: Optional[int] = None,
+        protocol: T.Optional[int] = None,
         *,
         fopt: str = "b",
         fix_imports: bool = True
@@ -330,42 +528,6 @@ class ObjDict(OrderedDict):
     def print(self):
         """Print."""
         print(self.__repr__())
-
-
-# /class
-
-
-##############################################################################
-
-
-class ReadOnlyDictionaryWrapper(Mapping):
-    """Read-Only Dictionary.
-
-    Warning, the contained dictionary can be modified
-
-    """
-
-    def __init__(self, data):
-        """__init__."""
-        self._data = data
-
-    # /def
-
-    def __getitem__(self, key):
-        """__getitem__."""
-        return self._data[key]
-
-    # /def
-
-    def __len__(self):
-        """__len__."""
-        return len(self._data)
-
-    # /def
-
-    def __iter__(self):
-        """__iter__."""
-        return iter(self._data)
 
     # /def
 
