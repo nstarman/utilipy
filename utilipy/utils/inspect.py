@@ -23,6 +23,10 @@ import typing as T
 from typing_extensions import Literal
 from collections import namedtuple
 
+# THIRD PARTY
+
+from astropy.utils.decorators import format_doc
+
 
 ##############################################################################
 # PARAMETERS
@@ -682,6 +686,36 @@ class FullerSignature(Signature):
         )
 
         return sig
+
+    # /def
+
+    @format_doc(None, original_doc=Signature.bind.__doc__)
+    def bind_with_defaults(self, *args, **kwargs):
+        """Bind arguments to parameters.
+
+        {original_doc}
+
+        Applies defaults to the BoundArgument using ``apply_defaults``.
+
+        """
+        ba = self.bind(*args, **kwargs)
+        ba.apply_defaults()
+        return ba
+
+    # /def
+
+    @format_doc(None, original_doc=Signature.bind_partial.__doc__)
+    def bind_partial_with_defaults(self, *args, **kwargs):
+        """Bind (allowing omissions) arguments to parameters.
+
+        {original_doc}
+
+        Applies defaults to the BoundArgument using ``apply_defaults``.
+
+        """
+        ba = self.bind_partial(*args, **kwargs)
+        ba.apply_defaults()
+        return ba
 
     # /def
 
