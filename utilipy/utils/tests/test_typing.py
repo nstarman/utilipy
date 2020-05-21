@@ -37,5 +37,29 @@ def test_array_like():
 # --------------------------------------------------------------------------
 
 
+@pytest.mark.skip(reason="TODO")
+def test_TableType():
+    """Test `~utilipy.utils.typing.TableType`."""
+    return
+
+
+# /def
+
+
+# --------------------------------------------------------------------------
+
+
+@pytest.mark.skip(reason="TODO")
+def test_FrameOptionsType():
+    """Test `~utilipy.utils.typing.FrameOptionsType`."""
+    return
+
+
+# /def
+
+
+# --------------------------------------------------------------------------
+
+
 ##############################################################################
 # END

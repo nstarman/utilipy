@@ -4,7 +4,9 @@
 
 
 __all__ = [
-    "od",
+    "test_WithDocstring",
+    "test_WithMeta",
+    "test_WithReference",
     "test_ObjDict_creation",
     "test_ObjDict_getitem",
     "test_ObjDict__setitem__",

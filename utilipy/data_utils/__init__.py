@@ -25,6 +25,18 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
+# BUILT-IN
+
+import pathlib
+
+
+# THIRD PARTY
+
+from astropy.utils.data import get_pkg_data_filenames
+
+
+# PACKAGE-SPECIFIC
+
 from .xfm import data_graph, TransformGraph, DataTransform
 from .decorators import idxDecorator
 from .select import *

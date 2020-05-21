@@ -399,7 +399,7 @@ def wraps(
     _doc_fmt: Optional[dict] = None,
     _doc_style: Union[str, Callable, None] = None,
 ):
-    """Improved implementation of :func:`~functools.wraps`.
+    """:func:`~functools.wraps`, adding signature and docstring features.
 
     Decorator factory to apply ``update_wrapper()`` to a wrapper function.
 

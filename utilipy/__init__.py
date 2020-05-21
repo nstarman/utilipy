@@ -1,32 +1,13 @@
 # -*- coding: utf-8 -*-
 # see LICENSE.rst
 
-"""The `utilipy` Package.
+"""The `utilipy` Package on import.
 
 Welcome to utilipy, a collection of useful python codes. This is a centralized
 repository for non project-specific code. There are modules for making
 advanced decorators, interfacing with IPython environments, data utilities,
 making fitting libraries inter-operable, and much more.
 
-Routine Listings
-----------------
-`help`
-    *utilipy* help function. Online search or offline overview.
-
-`online_help`
-    Search the online *utilipy* documentation for the given query.
-
-`wraps`
-    overrides the default :func:`~functools.wraps`, adding signature
-    and docstring features.
-
-`LogFile`
-    Class for basic logger that can both print and record to a file.
-
-`ObjDict`
-    Expanded dictionary with better slicing and attribute-style access.
-    Use sparingly. Intended for rapid prototyping since it is NOT a high
-    performance object.
 
 References
 ----------
@@ -39,9 +20,6 @@ Zenodo [1]_, Astropy [2]_
 
 Examples
 --------
-
-help
-^^^^
 
 To do a specific search of `utilipy`'s docs, use the ``online_help`` function.
 If you don't have a specific query, that's fine too,
@@ -95,6 +73,7 @@ from ._astropy_init import __version__  # noqa
 # THIRD PARTY
 
 import astropy.config as config
+from astropy.utils.misc import find_api_page
 
 
 # PROJECT-SPECIFIC
@@ -170,6 +149,26 @@ def online_help(query: T.Union[None, str, T.Any] = None):
         If an object, uses :func:`~astropy.utils.misc.find_api_page`
         to find the correct API page.
 
+    Examples
+    --------
+    To do a specific search of `utilipy`'s docs, use the ``online_help``
+    function. If you don't have a specific query, that's fine too,
+    `utilipy` will open the general search page.
+
+    As an example, here we query RTD for the documentation on `LogFile`.
+
+        >>> import utilipy
+        >>> utilipy.online_help(query="LogFile") # doctest: +SKIP
+
+    The same can be accomplished with the general `help` function.
+
+        >>> import utilipy
+        >>> utilipy.help(query="LogFile", online=True) # doctest: +SKIP
+
+    See Also
+    --------
+    :func:`~utilipy.help`
+
     """
     # first get version to search
     version = __version__
@@ -204,7 +203,7 @@ def online_help(query: T.Union[None, str, T.Any] = None):
 
 @decorators.code_dev.indev
 def help(query: T.Optional[str] = None, online: bool = False):
-    """utilipy help function.
+    """*Utilipy* help function. Online search or offline overview.
 
     Parameters
     ----------
@@ -213,6 +212,17 @@ def help(query: T.Optional[str] = None, online: bool = False):
     online : bool, optional
         Whether to open the online help or just print some help
         documentation (default)
+
+    Examples
+    --------
+    A search of `utilipy`'s online docs.
+
+        >>> import utilipy
+        >>> utilipy.help(query="LogFile", online=True) # doctest: +SKIP
+
+    See Also
+    --------
+    :func:`~utilipy.online_help`
 
     """
     if online:

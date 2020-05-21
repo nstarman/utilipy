@@ -4,6 +4,9 @@
 
 This is the documentation for the top-level of ``utilipy``, ie, what happens on import.
 
+.. automodule:: utilipy
+
+
 Subpackages
 ===========
 
@@ -23,3 +26,5 @@ Reference/API
 =============
 
 .. automodapi:: utilipy
+	:include-all-objects:
+	:no-main-docstr:

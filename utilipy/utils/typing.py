@@ -3,10 +3,15 @@
 """Typing library utilities."""
 
 __author__ = "Nathaniel Starkman"
-__credits__ = ["typing"]
 
 
-__all__ = ["array_like"]
+__all__ = [
+    # numpy
+    "array_like",
+    # Astropy
+    "TableType",
+    "FrameOptionsType",
+]
 
 
 ###############################################################################
@@ -21,7 +26,7 @@ from typing import *
 # THIRD PARTY
 
 import numpy as np
-from astropy import table
+from astropy import table, coordinates as coords
 
 
 ###############################################################################
@@ -39,6 +44,10 @@ array_like = T.TypeVar("array_like", np.array, list, tuple)
 # Astropy
 
 TableType = T.TypeVar("TableType", table.Table, table.QTable)
+
+FrameOptionsType = T.TypeVar(
+    "FrameOptionsType", str, coords.BaseCoordinateFrame, coords.SkyCoord
+)
 
 
 ###############################################################################
