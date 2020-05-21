@@ -2,13 +2,9 @@
 
 """Utilities."""
 
-__author__ = "Nathaniel Starkman"
-
 
 __all__ = [
-    "LogPrint",
-    "LogFile",
-    "ObjDict",
+    # modules
     "collections",
     "doc_parse_tools",
     "logging",
@@ -18,9 +14,31 @@ __all__ = [
     "metaclasses",
     "pickle",
     "string",
+    "typing",
+    # functions
+    "LogPrint",
+    "LogFile",
+    "ObjDict",
+    "WithDocstring",
+    "WithMeta",
+    "WithReference",
+    "doc_parse_tools",
     "temporary_namespace",
     "typing",
 ]
+
+__all_top_imports__ = (  # TODO deprecate
+    "collections",
+    "doc_parse_tools",
+    "logging",
+    "exceptions",
+    "functools",
+    "inspect",
+    "metaclasses",
+    "pickle",
+    "string",
+    "typing",
+)
 
 
 ##############################################################################
@@ -36,9 +54,9 @@ from types import ModuleType
 # PROJECT-SPECIFIC
 
 from .logging import LogPrint, LogFile
-from .collections import ObjDict
+from .collections import ObjDict, WithDocstring, WithMeta, WithReference
 
-# import top level packages
+# import modules
 from . import (
     collections,
     doc_parse_tools,
@@ -54,32 +72,12 @@ from . import (
 
 
 ##############################################################################
-# __ALL__
-
-__all_top_imports__ = (
-    "collections",
-    "doc_parse_tools",
-    "logging",
-    "exceptions",
-    "functools",
-    "inspect",
-    "metaclasses",
-    "pickle",
-    "string",
-    "typing",
-)
-
-__all__ += list(__all_top_imports__)
-
-
-##############################################################################
 # CODE
 ##############################################################################
 
-
 @contextmanager
 def temporary_namespace(module: ModuleType, keep: List[str] = []):
-    """Temporary Namespace within ``with`` statement
+    """Temporary Namespace within ``with`` statement.
 
     1. Stores keys in ``__dict__`` (determined by ``__name__``)
     2. Enters ``with`` statement

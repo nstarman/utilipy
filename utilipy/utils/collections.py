@@ -6,12 +6,13 @@ __author__ = "Nathaniel Starkman"
 
 
 __all__ = [
-    # "odict_values",  # TODO fix raises stub file error
-    # "odict_items",  # TODO fix raises stub file error
     # -------
     "WithDocstring",
     "WithMeta",
     "WithReference",
+    # -------
+    "MetaDataBase",
+    "ReferenceBase",
     # -------
     "ObjDict",
 ]
@@ -224,6 +225,70 @@ class WithReference(WithMeta, WithDocstring):
     def __reference__(self):
         """References Meta Information."""
         return self.meta["reference"]
+
+    # /def
+
+
+# /class
+
+
+##########################################################################
+# Base Classes
+
+
+class MetaDataBase:
+    """Superclass for object with MetaData.
+
+    Attributes
+    ----------
+    meta : `~astropy.utils.metadata.MetaData`
+        Meta-data descriptor with ``copy=False``.
+
+
+    .. todo::
+
+        init that accepts dictionary to add to meta
+
+    """
+
+    meta = MetaData(copy=False)  # TODO control this by Metaclass argument
+
+
+# /class
+
+
+class ReferenceBase(MetaDataBase):
+    """Superclass for objects with references.
+
+    Attributes
+    ----------
+    meta : `~astropy.utils.metadata.MetaData`
+        Meta-data descriptor with ``copy=False``.
+        Always has a key "reference"
+    __reference__  : Any
+        A property attribute to access the key-value "reference" in `meta`.
+
+    """
+
+    def __init__(self, *, reference: T.Union[None, str] = None):
+        """Initialize Reference Metadata.
+
+        Parameters
+        ----------
+        reference : str, optional
+            reference, added to metadata.
+            accessible by ``__reference__``
+
+        """
+        super().__init__()
+        self.meta["reference"] = reference
+
+    # /def
+
+    @property
+    def __reference__(self):
+        """Get reference from metadata, if exists."""
+        return self.meta.get("reference", None)
 
     # /def
 
