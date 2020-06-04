@@ -637,12 +637,42 @@ def drop_parameter(
 class FullerSignature(Signature):
     """Signature with better ArgSpec compatibility.
 
+    Constructs FullerSignature from the given list of Parameter
+    objects and 'return_annotation'.  All arguments are optional.
+
     Though `Signature` is the new object, python still largely
     uses the outputs  as  defined by ``getfullargspec``
     This serves as a bridge, providing methods that return
     the same output as ``getfullargspec``
 
+    Parameters
+    ----------
+    parameters : Sequence, optional
+        list of Parameter objects
+    return_annotation : Any
+        return annotation of `obj`
+    obj : Any
+        the object for which this is the signature
+
     """
+
+    def __init__(
+        self,
+        parameters=None,
+        *,
+        return_annotation=_empty,
+        obj=None,
+        __validate_parameters__=True
+    ):
+        super().__init__(
+            parameters=parameters,
+            return_annotation=return_annotation,
+            __validate_parameters__=__validate_parameters__,
+        )
+
+        self.obj = obj
+
+    # /def
 
     @classmethod
     def from_callable(cls, obj, *, follow_wrapped=True):
@@ -662,13 +692,14 @@ class FullerSignature(Signature):
         sig = FullerSignature(
             parameters=sig.parameters.values(),
             return_annotation=sig.return_annotation,
+            obj=obj,
         )
         return sig
 
     # /def
 
     @classmethod
-    def from_signature(cls, signature: Signature):
+    def from_signature(cls, signature: Signature, *, obj=None):
         """Create :class:`FullerSignature` from :class:`~inspect.Signature`.
 
         Parameters
@@ -1405,6 +1436,26 @@ class FullerSignature(Signature):
 def fuller_signature(obj: T.Any, *, follow_wrapped: bool = True):
     """Get a signature object for the passed callable."""
     return FullerSignature.from_callable(obj, follow_wrapped=follow_wrapped)
+
+
+# /def
+
+
+###########################################################################
+# Signature Convenience Methods
+
+
+def fuller_signature_from_method(method: T.Callable):
+    sig = fuller_signature(method)
+    return sig.drop_parameter("self")
+
+
+# /def
+
+
+def signature_from_method(method: T.Callable):
+    sig = inspect.signature(method)
+    return drop_parameter(sig, "self")
 
 
 # /def
