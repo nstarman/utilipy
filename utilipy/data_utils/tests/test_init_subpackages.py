@@ -55,7 +55,8 @@ def test_init_xfm():
     # Expectations
     local = [
         # modules
-        "graph", "transformations",
+        "graph",
+        "transformations",
         # functions
         "TransformGraph",
         # transformations

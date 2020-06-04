@@ -11,12 +11,18 @@ __all__ = [
     "select",
     "fitting",
     "xfm",
+    "XMatch",
     # functions
     "idxDecorator",
     # data transformation graph
     "data_graph",
     "TransformGraph",
     "DataTransform",
+    # xmatch
+    "indices_xmatch_fields",
+    "xmatch_fields",
+    "xmatch",
+    "non_xmatched",
     # local
     "get_path_to_file",
 ]
@@ -37,12 +43,18 @@ from astropy.utils.data import get_pkg_data_filenames
 
 # PACKAGE-SPECIFIC
 
-from .xfm import data_graph, TransformGraph, DataTransform
 from .decorators import idxDecorator
+from .xfm import data_graph, TransformGraph, DataTransform
+from .xmatch import (
+    indices_xmatch_fields,
+    xmatch_fields,
+    xmatch,
+    non_xmatched,
+)
 from .select import *
 
 # import top=level directories
-from . import decorators, select, fitting, xfm
+from . import decorators, select, fitting, xfm, xmatch as XMatch
 
 
 # -------------------------------------------------------------------

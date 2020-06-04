@@ -32,7 +32,8 @@ __credits__ = ["Astropy"]
 
 __all__ = [
     # modules
-    "graph", "transformations",
+    "graph",
+    "transformations",
     # functions
     "TransformGraph",
     # transformations
