@@ -59,6 +59,7 @@ from typing import Any, Union, Callable, Sequence, Optional
 
 # PROJECT-SPECIFIC
 
+from ..extern.doc_parse_tools import store as _store
 from .string import FormatTemplate
 from .inspect import (
     FullerSignature as _FullerSignature,
@@ -68,7 +69,11 @@ from .inspect import (
     KEYWORD_ONLY,
     VAR_KEYWORD,
 )
-from .doc_parse_tools import store as _store
+
+
+# CLEAN MULTIPLE DEFINITIONS
+del globals()["update_wrapper"]
+del globals()["wraps"]
 
 
 ###############################################################################

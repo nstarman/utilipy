@@ -6,7 +6,6 @@
 __all__ = [
     # modules
     "collections",
-    "doc_parse_tools",
     "logging",
     "exceptions",
     "functools",
@@ -15,21 +14,20 @@ __all__ = [
     "pickle",
     "string",
     "typing",
-    # functions
+    # classes and functions
     "LogPrint",
     "LogFile",
     "ObjDict",
     "WithDocstring",
     "WithMeta",
     "WithReference",
-    "doc_parse_tools",
     "temporary_namespace",
-    "typing",
+    "make_help_function",
 ]
 
 __all_top_imports__ = (  # TODO deprecate
     "collections",
-    "doc_parse_tools",
+    # "doc_parse_tools",
     "logging",
     "exceptions",
     "functools",
@@ -47,8 +45,8 @@ __all_top_imports__ = (  # TODO deprecate
 # BUILT-IN
 
 from contextlib import contextmanager
-from typing import List
 from types import ModuleType
+import typing as T
 
 
 # PROJECT-SPECIFIC
@@ -59,7 +57,7 @@ from .collections import ObjDict, WithDocstring, WithMeta, WithReference
 # import modules
 from . import (
     collections,
-    doc_parse_tools,
+    # doc_parse_tools,
     logging,
     exceptions,
     functools,
@@ -75,8 +73,9 @@ from . import (
 # CODE
 ##############################################################################
 
+
 @contextmanager
-def temporary_namespace(module: ModuleType, keep: List[str] = []):
+def temporary_namespace(module: ModuleType, keep: T.List[str] = []):
     """Temporary Namespace within ``with`` statement.
 
     1. Stores keys in ``__dict__`` (determined by ``__name__``)

@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : Docstring Parsing Tools
-# PROJECT : Adapted for utilipy
-#
-# ----------------------------------------------------------------------------
-
 """Docstring Parsing Tools.
 
 Docstring inheritance-style implementations.

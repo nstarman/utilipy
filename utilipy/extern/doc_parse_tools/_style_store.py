@@ -2,7 +2,8 @@
 
 """Docstring inheritance-style implementations.
 
-To implement your own inheritance file, simply write a function to this template:
+To implement your own inheritance file,
+simply write a function to this template:
 
 .. code-block:: python
     :linenos:
@@ -43,10 +44,6 @@ References
 The code source [1]_.
 
 .. [1] https://github.com/rsokl/custom_inherit
-
-TODO
-----
-https://stackoverflow.com/a/41083968
 
 
 """
