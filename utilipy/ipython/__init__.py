@@ -103,11 +103,11 @@ from IPython.display import (
 
 # PROJECT-SPECIFIC
 
-
+from ..utils import make_help_function
 from ..utils.logging import LogPrint, LogFile
-from ..decorators.docstring import _set_docstring_import_file_helper
 from ..imports import use_import_verbosity
 
+from .setup_package import conf
 from .autoreload import set_autoreload, aimport
 from .imports import run_imports, import_from_file
 from .notebook import add_raw_code_toggle
@@ -127,30 +127,28 @@ try:
         raise NameError
 except NameError:
     _HAS_IPY: bool = False
+
 else:
     _HAS_IPY: bool = True
 
-
-if _HAS_IPY:
-
     # Running Imported Functions
-    InteractiveShell.ast_node_interactivity = "all"
+    InteractiveShell.ast_node_interactivity = conf.ast_node_interactivity
 
-    configure_matplotlib(backend="inline", figure_format="retina")
+    configure_matplotlib(
+        backend=conf.ipython_matplotlib_backend,
+        figure_format=conf.ipython_matplotlib_figure_format,
+    )
+
+# /try
 
 
 ##############################################################################
 # HELP
 
 
-@_set_docstring_import_file_helper(None, __doc__)  # doc from __doc__
-def help():
-    """Help for ipython module."""
-    print(__doc__)
-    return
-
-
-# /def
+ipython_help = make_help_function(
+    "ipython", __doc__, look_for=None, doctitle="ipython module."
+)
 
 
 ##############################################################################

@@ -39,6 +39,7 @@ IPython [#]_
 
 __author__ = "Nathaniel Starkman"
 
+
 __all__ = [
     "import_from_file",
     "run_imports",
@@ -50,6 +51,7 @@ __all__ = [
     "import_matplotlib",  # 'import_plotly',
     "import_galpy",
     "import_amuse",
+    "import_astronat",
 ]
 
 
@@ -58,15 +60,15 @@ __all__ = [
 
 # GENERAL
 
-import ast
-import os.path
 from pathlib import Path
 from IPython import get_ipython
-from typing import Optional, Dict
+import typing as T
 
 
 # PROJECT-SPECIFIC
 
+from ..data_utils import get_path_to_file
+from ..decorators.docstring import set_docstring_for_import_func
 from ..utils import functools
 from ..utils.logging import LogFile
 
@@ -83,15 +85,16 @@ _LOGGER_KW = {"print": False}
 
 ##############################################################################
 # CODE
+##############################################################################
 
 
 def import_from_file(
     *files: str,
     is_relative: bool = True,
-    verbose_imports: Optional[bool] = None,
+    verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
     verbose=None,
-    logger_kw: Dict = _LOGGER_KW,
+    logger_kw: T.Dict = _LOGGER_KW,
 ) -> None:
     """Run import(s) from a file(s).
 
@@ -108,19 +111,18 @@ def import_from_file(
     """
     # Handle `relative`
     if isinstance(is_relative, bool):  # broadcasting to same length as files
-        relatives = [is_relative] * len(files)
+        relative = [is_relative] * len(files)
     else:  # already a list
         if len(is_relative) != len(files):  # checking correct length
             raise ValueError("len(relative) != len(files)")
-        relatives = is_relative
+        relative = is_relative
 
-    # handle verbose-imports
-    with use_import_verbosity(verbose_imports):
+    with use_import_verbosity(verbose_imports):  # handle verbose-imports
 
-        # Importing
-        for file, relative in zip(files, relatives):
-            if relative:
+        for file, rltv in zip(files, relative):  # loop over imports
+            if rltv:
                 file = str(Path(file).resolve())
+
             # get_ipython inbuilt to jupyter
             get_ipython().magic(f"run {file}")
 
@@ -150,13 +152,14 @@ def run_imports(
     # additional, requires extra installs
     galpy: bool = False,
     amuse: bool = False,
+    astronat: bool = False,
     # autoreload
-    set_autoreload_to: Optional[int] = None,
-    verbose_imports: Optional[bool] = None,
+    set_autoreload_to: T.Optional[int] = None,
+    verbose_imports: T.Optional[bool] = None,
     # logging
     logger: LogFile = _LOGFILE,
-    verbose: Optional[int] = 0,
-    logger_kw: Dict = {},
+    verbose: T.Optional[int] = 0,
+    logger_kw: T.Dict = {},
 ) -> None:
     """Import file using IPython magic.
 
@@ -169,19 +172,21 @@ def run_imports(
         need to include file suffix
     base: bool
         a broad set of basic imports
-        import_base -> `utilipy/imports/base.py`
+        import_base -> `utilipy/imports/base_imports.py`
     astropy: bool
-        import_astropy -> `utilipy/imports/astropy.py`
+        import_astropy -> `utilipy/imports/astropy_imports.py`
     matplotlib: bool
-        import_matplotlib -> `utilipy/imports/matplotlib.py`
+        import_matplotlib -> `utilipy/imports/matplotlib_imports.py`
     plotly: bool
-        import_plotly -> `utilipy/imports/plotly.py`
+        import_plotly -> `utilipy/imports/plotly_imports.py`
     extended: bool
-        import_extended -> `utilipy/imports/extended.py`
+        import_extended -> `utilipy/imports/extended_imports.py`
     galpy: bool
-        import_galpy -> `utilipy/imports/galpy.py`
+        import_galpy -> `utilipy/imports/galpy_imports.py`
     amuse: bool
-        import_amuse -> `utilipy/imports/amuse.py`
+        import_amuse -> `utilipy/imports/amuse_imports.py`
+    astronat : bool
+        import_astronat -> `utilipy/imports/astronat_imports.py`
 
     Other Parameters
     ----------------
@@ -207,7 +212,12 @@ def run_imports(
     imports from `utilipy/imports/base.py` with default import-verbosity state
 
     """
+    # make kwargs that go into every standard import
     kw = dict(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
+
+    if verbose_imports:
+        print("Importing:")
+
     # ---------------------------------------------
     # base
 
@@ -236,6 +246,9 @@ def run_imports(
 
     if amuse:
         import_amuse(**kw)
+
+    if astronat:
+        import_astronat(**kw)
 
     # ---------------------------------------------
 
@@ -271,66 +284,21 @@ def run_imports(
 # /def
 
 
-# ----------------------------------------------------------------------------
-# UTILITIES TODO BETTER
-
-
-def _set_docstring_import_x(path: tuple) -> str:
-    """Set docstring Returns section.
-
-    takes a helper function for a module and adds the content of the modules'
-    `Returns` section.
-
-    Parameters
-    ----------
-    path: str
-        path of import module
-
-    """
-    module = str(Path(__file__).parent.joinpath(os.path.join(*path)))
-
-    # read docstring out of file
-    with open(module, "r") as fd:
-        module_doc = ast.get_docstring(ast.parse(fd.read()))
-
-    # process docstring
-    ind = module_doc.find("Returns")
-    len_title = 2 * len("Returns")
-    end_ind = ind + module_doc[ind + len_title :].find("---") + 2  # noqa
-
-    doc = module_doc[ind:end_ind]  # get section (+ next header)
-
-    # modify function with a basic decorator
-    def decorator(func):
-        @functools.wraps(func, docstring=func.__doc__ + "\n\n" + doc)
-        def wrapper(*args, **kwargs):
-            return func(*args, **kwargs)
-
-        # /def
-        return wrapper
-
-    # /def
-    return decorator
-
-
-# /def
-
-
 ##############################################################################
 # Specific Imports
 # TODO make these with a function
 
 
-@_set_docstring_import_x(("..", "imports", "base_imports.py"))
+@set_docstring_for_import_func("base_imports.py", package="utilipy.imports")
 def import_base(
-    verbose_imports: Optional[bool] = None,
+    verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
-    verbose: Optional[int] = None,
-    logger_kw: Dict = _LOGGER_KW,
+    verbose: T.Optional[int] = None,
+    logger_kw: T.Dict = _LOGGER_KW,
 ) -> None:
     """Import base packages."""
     import_from_file(
-        ("..", "imports", "base_imports.py"),
+        get_path_to_file("base_imports.py", package="utilipy.imports"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -343,16 +311,18 @@ def import_base(
 # /def
 
 
-@_set_docstring_import_x(("..", "imports", "extended_imports.py"))
+@set_docstring_for_import_func(
+    "extended_imports.py", package="utilipy.imports"
+)
 def import_extended(
-    verbose_imports: Optional[bool] = None,
+    verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
-    verbose: Optional[int] = None,
-    logger_kw: Dict = _LOGGER_KW,
+    verbose: T.Optional[int] = None,
+    logger_kw: T.Dict = _LOGGER_KW,
 ) -> None:
     """Import extended packages."""
     import_from_file(
-        ("..", "imports", "extended_imports.py"),
+        get_path_to_file("extended_imports.py", package="utilipy.imports"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -365,16 +335,16 @@ def import_extended(
 # /def
 
 
-@_set_docstring_import_x(("..", "imports", "astropy_imports.py"))
+@set_docstring_for_import_func("astropy_imports.py", package="utilipy.imports")
 def import_astropy(
-    verbose_imports: Optional[bool] = None,
+    verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
-    verbose: Optional[int] = None,
-    logger_kw: Dict = _LOGGER_KW,
+    verbose: T.Optional[int] = None,
+    logger_kw: T.Dict = _LOGGER_KW,
 ) -> None:
     """Import basic astropy packages."""
     import_from_file(
-        ("..", "imports", "astropy_imports.py"),
+        get_path_to_file("astropy_imports.py", package="utilipy.imports"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -391,16 +361,18 @@ def import_astropy(
 # plotting
 
 
-@_set_docstring_import_x(("..", "imports", "matplotlib_imports.py"))
+@set_docstring_for_import_func(
+    "matplotlib_imports.py", package="utilipy.imports"
+)
 def import_matplotlib(
-    verbose_imports: Optional[bool] = None,
+    verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
-    verbose: Optional[int] = None,
-    logger_kw: Dict = _LOGGER_KW,
+    verbose: T.Optional[int] = None,
+    logger_kw: T.Dict = _LOGGER_KW,
 ) -> None:
     """Import basic Matplotlib packages."""
     import_from_file(
-        ("..", "imports", "matplotlib_imports.py"),
+        get_path_to_file("matplotlib_imports.py", package="utilipy.imports"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -413,16 +385,16 @@ def import_matplotlib(
 # /def
 
 
-@_set_docstring_import_x(("..", "imports", "plotly_imports.py"))
+@set_docstring_for_import_func("plotly_imports.py", package="utilipy.imports")
 def import_plotly(
-    verbose_imports: Optional[bool] = None,
+    verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
-    verbose: Optional[int] = None,
-    logger_kw: Dict = _LOGGER_KW,
+    verbose: T.Optional[int] = None,
+    logger_kw: T.Dict = _LOGGER_KW,
 ) -> None:
     """Import basic Matplotlib packages."""
     import_from_file(
-        ("..", "imports", "plotly_imports.py"),
+        get_path_to_file("plotly_imports.py", package="utilipy.imports"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -439,16 +411,16 @@ def import_plotly(
 # extras
 
 
-@_set_docstring_import_x(("..", "imports", "galpy_imports.py"))
+@set_docstring_for_import_func("galpy_imports.py", package="utilipy.imports")
 def import_galpy(
-    verbose_imports: Optional[bool] = None,
+    verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
-    verbose: Optional[int] = None,
-    logger_kw: Dict = _LOGGER_KW,
+    verbose: T.Optional[int] = None,
+    logger_kw: T.Dict = _LOGGER_KW,
 ) -> None:
     """Import basic galpy packages."""
     import_from_file(
-        ("..", "imports", "galpy_imports.py"),
+        get_path_to_file("galpy_imports.py", package="utilipy.imports"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
@@ -461,16 +433,40 @@ def import_galpy(
 # /def
 
 
-@_set_docstring_import_x(("..", "imports", "amuse_imports.py"))
+@set_docstring_for_import_func("amuse_imports.py", package="utilipy.imports")
 def import_amuse(
-    verbose_imports: Optional[bool] = None,
+    verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
-    verbose: Optional[int] = None,
-    logger_kw: Dict = _LOGGER_KW,
+    verbose: T.Optional[int] = None,
+    logger_kw: T.Dict = _LOGGER_KW,
 ) -> None:
     """Import basic amuse packages."""
     import_from_file(
-        ("..", "imports", "amuse_imports.py"),
+        get_path_to_file("amuse_imports.py", package="utilipy.imports"),
+        is_relative=False,
+        verbose_imports=verbose_imports,
+        logger=logger,
+        verbose=verbose,
+        logger_kw=logger_kw,
+    )
+    return
+
+
+# /def
+
+
+@set_docstring_for_import_func(
+    "astronat_imports.py", package="utilipy.imports"
+)
+def import_astronat(
+    verbose_imports: T.Optional[bool] = None,
+    logger: LogFile = _LOGFILE,
+    verbose: T.Optional[int] = None,
+    logger_kw: T.Dict = _LOGGER_KW,
+) -> None:
+    """Import basic amuse packages."""
+    import_from_file(
+        get_path_to_file("astronat_imports.py", package="utilipy.imports"),
         is_relative=False,
         verbose_imports=verbose_imports,
         logger=logger,
