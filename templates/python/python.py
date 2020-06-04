@@ -10,7 +10,7 @@
 
 """**DOCSTRING**.
 
-description
+Description.
 
 """
 
@@ -23,8 +23,12 @@ __author__ = ""
 # __email__ = ""
 # __status__ = "Production"
 
+
 # __all__ = [
-#     ""
+#     # functions
+#     "",
+#     # other
+#     "",
 # ]
 
 

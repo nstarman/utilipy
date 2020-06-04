@@ -9,7 +9,9 @@
 #
 # ----------------------------------------------------------------------------
 
-"""Initialization file.
+"""**DOCSTRING**.
+
+Description.
 
 Routine Listings
 ----------------
@@ -25,8 +27,14 @@ __author__ = ""
 # __email__ = ""
 # __status__ = "Production"
 
+
 # __all__ = [
-#     ""
+#     # modules
+#     "",
+#     # functions
+#     "",
+#     # other
+#     "",
 # ]
 
 
