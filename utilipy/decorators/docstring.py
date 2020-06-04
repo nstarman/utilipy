@@ -1,36 +1,30 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : docstring
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
-
-"""Docstring decorators.
-
-Routine Listings
-----------------
-`format_doc`
-    Astropy's Format Docstring Function
-
-"""
+"""Docstring decorators."""
 
 __author__ = "Nathaniel Starkman"
 
 
-# __all__ = [
-#     "format_doc",
-# ]
+__all__ = [
+    "format_doc",
+    "set_docstring_for_import_func",
+    "set_docstring_import_file_helper",
+]
 
 
 ##############################################################################
 # IMPORTS
 
-import inspect
-import functools
+# BUILT-IN
 
-from typing import Any, Callable, Optional
+import ast
+import typing as T
+
+
+# PROJECT-SPECIFIC
+
+from ..utils import functools
+from ..data_utils import get_path_to_file
 
 
 ##############################################################################
@@ -47,65 +41,66 @@ from astropy.utils.decorators import format_doc as _format_doc
 
 
 def format_doc(
-    docstring: Optional[str], *args: Any, **kwargs: Any
-) -> Callable:
-    """Astropy's Format Docstring Function."""
+    docstring: T.Optional[str], *args: T.Any, **kwargs: T.Any
+) -> T.Callable:
+    """Astropy's Format Docstring Function.
+
+    .. deprecated:: 1.0.0
+
+    """
     return _format_doc(docstring, *args, **kwargs)
 
 
 format_doc.__doc__ = _format_doc.__doc__
+# /def
+
+#####################################################################
 
 
-##############################################################################
+def set_docstring_for_import_func(
+    *path: str, package: T.Optional[str] = None, section: str = "Returns"
+) -> str:
+    """Set docstring for IPython import function, from import file's docstring.
 
-
-def _set_docstring_import_file_helper(
-    name: Optional[str], module_doc: str
-) -> Callable:
-    """Set docstring from module Returns section.
-
-    takes a helper function for a module and adds the content of the modules'
-    `Returns` section.
+    Takes a helper function for a module and adds the content of the modules'
+    `section`. This currently only works on numpy-doc style docstrings.
 
     Parameters
     ----------
-    name: str
-        name of importer
-    module_doc: str
-        docstring of import module
+    *path: str
+        path of import module
+    package : str, optional, keyword only
+        package for :func:`~utilipy.data_utils.get_path_to_file`
+    section: str, optiona, keyword only
+        numpy-doc style section name
+
+    Notes
+    -----
+    This function might be moved
 
     """
-    look_for = "Routine Listings"
-    ind = (
-        module_doc.find(look_for) + 2 * len(look_for) + 2
-    )  # skip 'Routine Listings' & line
-    end_ind = ind + module_doc[ind:].find("---")  # finding next section
+    module = get_path_to_file(*path, package=package)
+
+    # read docstring out of file
+    with open(module, "r") as fd:
+        module_doc = ast.get_docstring(ast.parse(fd.read()))
+
+    # process docstring
+    ind = module_doc.find(section)
+    len_title = 2 * len(section)  # section & underline
+    end_ind = ind + module_doc[ind + len_title :].find("---") + 2  # noqa
 
     doc = module_doc[ind:end_ind]  # get section (+ next header)
-    doc = "\n".join(doc.split("\n")[:-2])  # strip next header
 
-    def decorator(func: Callable) -> Callable:
-        @functools.wraps(func)
+    # modify function with a basic decorator
+    def decorator(func):
+        @functools.wraps(func, docstring=func.__doc__ + "\n\n" + doc)
         def wrapper(*args, **kwargs):
             return func(*args, **kwargs)
 
-        # /def
-        wrapper.__doc__ += f"\n\nReturns\n-------\n{doc}"
         return wrapper
 
-    # /def
     return decorator
-
-
-# /def
-
-
-def _import_file_docstring_helper(docstring: str) -> str:
-    """Help from import file helper function."""
-    doc = docstring.split("\n")  # split on lines
-    doc = "\n".join(doc[1:])  # join all after 1st line
-    doc = inspect.cleandoc(doc)  # clean up
-    return doc
 
 
 # /def
