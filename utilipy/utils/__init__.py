@@ -170,10 +170,7 @@ def make_help_function(
 
         if look_for == "Routine Listings":  # skip 'Routine Listings' & line
             Name = name.capitalize()
-            doc = (
-                f"\n{Name} Returns\n{'-'*(len(name) + 1)}-------\n"
-                + doc
-            )
+            doc = f"\n{Name} Returns\n{'-'*(len(name) + 1)}-------\n" + doc
 
     else:
         raise TypeError

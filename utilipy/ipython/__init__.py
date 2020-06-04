@@ -67,7 +67,7 @@ __author__ = "Nathaniel Starkman"
 
 
 __all__ = [
-    "help",
+    # "ipython_help",
     # "get_ipython",
     # "InteractiveShell",
     # "set_trace",
@@ -144,7 +144,6 @@ else:
 
 ##############################################################################
 # HELP
-
 
 ipython_help = make_help_function(
     "ipython", __doc__, look_for=None, doctitle="ipython module."

@@ -20,7 +20,6 @@ Submodules
    :maxdepth: 1
 
    collections
-   doc_parse_tools
    logging
    exceptions
    functools

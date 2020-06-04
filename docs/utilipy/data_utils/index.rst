@@ -13,10 +13,16 @@ Reference/API
 .. automodapi:: utilipy.data_utils
 
 
+.. automodapi:: utilipy.data_utils.decorators
+.. automodapi:: utilipy.data_utils.select
+.. automodapi:: utilipy.data_utils.xmatch
+
+
 Submodules
 ----------
 
 .. toctree::
 	:maxdepth: 1
 
-	fitting/index
+	fitting
+	xfm

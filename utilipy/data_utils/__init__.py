@@ -11,7 +11,7 @@ __all__ = [
     "select",
     "fitting",
     "xfm",
-    "XMatch",
+    "xmatch",
     # functions
     "idxDecorator",
     # data transformation graph
@@ -21,7 +21,7 @@ __all__ = [
     # xmatch
     "indices_xmatch_fields",
     "xmatch_fields",
-    "xmatch",
+    "XMatch",
     "non_xmatched",
     # local
     "get_path_to_file",
@@ -48,13 +48,13 @@ from .xfm import data_graph, TransformGraph, DataTransform
 from .xmatch import (
     indices_xmatch_fields,
     xmatch_fields,
-    xmatch,
+    xmatch as XMatch,
     non_xmatched,
 )
 from .select import *
 
 # import top=level directories
-from . import decorators, select, fitting, xfm, xmatch as XMatch
+from . import decorators, select, fitting, xfm, xmatch
 
 
 # -------------------------------------------------------------------

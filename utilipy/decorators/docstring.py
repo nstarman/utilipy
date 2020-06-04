@@ -8,7 +8,6 @@ __author__ = "Nathaniel Starkman"
 __all__ = [
     "format_doc",
     "set_docstring_for_import_func",
-    "set_docstring_import_file_helper",
 ]
 
 

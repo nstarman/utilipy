@@ -43,6 +43,7 @@ __all__ = [
     # modules
     "data_utils",
     "decorators",
+    "extern",
     "imports",
     "ipython",
     "math",
@@ -58,6 +59,18 @@ __all__ = [
     "online_help",
     "reload_config",
 ]
+
+__all_top_imports__ = (  # TODO deprecate
+    "data_utils",
+    "decorators",
+    "extern",
+    "imports",
+    "ipython",
+    "math",
+    "plot",
+    "scripts",
+    "utils",
+)
 
 
 ##############################################################################
@@ -89,27 +102,13 @@ from .data_utils import data_graph
 from . import (  # noqa
     data_utils,
     decorators,
+    extern,
     imports,
     ipython,
     math,
     plot,
     scripts,
     utils,
-)
-
-
-#############################################################################
-# PARAMTERS
-
-__all_top_imports__ = (  # TODO deprecate
-    "data_utils",
-    "decorators",
-    "imports",
-    "ipython",
-    "math",
-    "plot",
-    "scripts",
-    "utils",
 )
 
 

@@ -49,6 +49,7 @@ Examples
 .. toctree::
    :maxdepth: 1
 
+   examples/datagraph.ipynb
    examples/ipython-imports.ipynb
    examples/making-decorators.ipynb
 

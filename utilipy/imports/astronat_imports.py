@@ -20,13 +20,6 @@ astronat : imports
     - online_help -> astronat_online_help
     - help -> astronat_help
 
-References
-----------
-Plotly reference [#]_.
-
-.. [#] plotly: Collaborative data science, Plotly Technologies (2015),
-    (https://plot.ly)
-
 """
 
 __author__ = "Nathaniel Starkman"
@@ -90,13 +83,13 @@ else:
 ##############################################################################
 # Printing Information
 
-plotly_imports_help = make_help_function(
-    "plotly", __doc__, look_for="Routine Listings"
+astronat_imports_help = make_help_function(
+    "astronat", __doc__, look_for="Routine Listings"
 )
 
 
 if conf.verbose_imports:
-    plotly_imports_help()
+    astronat_imports_help()
 
 
 ##############################################################################

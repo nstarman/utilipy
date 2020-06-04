@@ -4,27 +4,15 @@
 # ----------------------------------------------------------------------------
 #
 # TITLE   : Scripts
-# AUTHOR  : Astropy Developers
+# AUTHOR  : Nathaniel Starkman
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
 
 
-"""Scripts.
+"""Scripts."""
 
-Scripts that are meant to be run just once are located in the main
-repository space, up 2 directory levels. This module contains the code
-necessary to run these scripts, as well as any appropriate script-like
-code. The purpose of housing such code here is to minimize code repetition
-and expose the underlying scripts to the command line and import by
-other packages.
-
-Routine Listings
-----------------
-
-"""
-
-__author__ = "Astropy Developers"
+__author__ = "Nathaniel Starkman"
 
 
 ##############################################################################
@@ -36,7 +24,11 @@ import typing as T
 
 # CUSTOM
 
+
 # PROJECT-SPECIFIC
+
+# See for better symlink creation
+# https://docs.python.org/3.8/library/os.html#os.stat_result
 
 
 ##############################################################################

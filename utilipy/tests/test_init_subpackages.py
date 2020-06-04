@@ -52,16 +52,22 @@ def test_init_data_utils():
         "select",
         "fitting",
         "xfm",
+        "XMatch",
         # functions
-        "get_path_to_file",
         "idxDecorator",
         # data transformation graph
         "data_graph",
         "TransformGraph",
         "DataTransform",
-        # select
-        *data_utils.select.__all__,
+        # xmatch
+        "indices_xmatch_fields",
+        "xmatch_fields",
+        "xmatch",
+        "non_xmatched",
+        # local
+        "get_path_to_file",
     ]
+    local += data_utils.select.__all__
 
     # test __all__ conforms to module
     for name in data_utils.__all__:
@@ -152,7 +158,7 @@ def test_init_ipython():
     """Test :mod:`~utilipy.ipython` initialization."""
     # Expectations
     local = [
-        "help",
+        "ipython_help",
         # "get_ipython",
         # "InteractiveShell",
         # "set_trace",
@@ -171,7 +177,7 @@ def test_init_ipython():
 
     # test __all__ conforms to module
     for name in ipython.__all__:
-        assert hasattr(ipython, name)
+        assert hasattr(ipython, name), name
 
     # test __all__ matches expectations
     for name in ipython.__all__:
@@ -260,7 +266,6 @@ def test_init_utils():
     local = [
         # modules
         "collections",
-        "doc_parse_tools",
         "logging",
         "exceptions",
         "functools",
@@ -269,16 +274,15 @@ def test_init_utils():
         "pickle",
         "string",
         "typing",
-        # functions
+        # classes and functions
         "LogPrint",
         "LogFile",
         "ObjDict",
         "WithDocstring",
         "WithMeta",
         "WithReference",
-        "doc_parse_tools",
         "temporary_namespace",
-        "typing",
+        "make_help_function",
     ]
 
     # test __all__ conforms to module
