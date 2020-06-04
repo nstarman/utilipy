@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------
 
 # Docstring and Metadata
-"""Base set of imports for the galpy code.
+"""Base set of imports for :mod:`~galpy`.
 
 Routine Listings
 ----------------
@@ -34,10 +34,7 @@ __author__ = "Nathaniel Starkman"
 # HELPER FUNCTIONS
 
 from utilipy.imports import conf
-from utilipy.decorators.docstring import (
-    _set_docstring_import_file_helper,
-    _import_file_docstring_helper,
-)
+from utilipy.utils import make_help_function
 
 
 ##############################################################################
@@ -80,15 +77,9 @@ else:
 ##############################################################################
 # Printing Information
 
-
-@_set_docstring_import_file_helper("galpy", __doc__)  # doc from __doc__
-def galpy_imports_help():
-    """Help for galpy base imports."""
-    doc = _import_file_docstring_helper(galpy_imports_help.__doc__)
-    print(doc)
-
-
-# /def
+galpy_imports_help = make_help_function(
+    "galpy", __doc__, look_for="Routine Listings"
+)
 
 
 if conf.verbose_imports:

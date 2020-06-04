@@ -2,27 +2,23 @@
 
 # ----------------------------------------------------------------------------
 #
-# TITLE   : plotly imports
+# TITLE   : astronat imports
 # PROJECT : utilipy
 #
 # ----------------------------------------------------------------------------
 
-"""Base set of imports for :mod:`~plotly`.
+"""Base set of imports for :mod:`~astronat`.
 
-Only imports if plotly is installed
+Only imports if astronat is installed
 
 Routine Listings
 ----------------
-plotly : imports
+astronat : imports
 
-    - plotly
-    - express -> px
-    - graph_objs -> go
-    - io -> pio
-    - subplots -> make_subplots
-
-plotly_imports_help
-
+    - constants, dynamics, units, utils
+    - reload_config -> astronat_reload_config
+    - online_help -> astronat_online_help
+    - help -> astronat_help
 
 References
 ----------
@@ -37,7 +33,19 @@ __author__ = "Nathaniel Starkman"
 
 
 __all__ = [
-    "plotly_imports_help",
+    "astronat_imports_help",
+    # modules
+    "constants",
+    "dynamics",
+    "units",
+    "utils",
+    # functions
+    "astronat_reload_config",
+    "astronat_online_help",
+    "astronat_help",
+    "TableList",
+    "QTableList",
+    "TablesList",
 ]
 
 
@@ -53,20 +61,28 @@ from utilipy.utils import make_help_function
 
 try:
 
-    import plotly
+    import astronat
 
 except ImportError:
 
     import warnings
 
-    warnings.warn("Cannot import plotly")
+    warnings.warn("Cannot import astronat")
 
 else:
 
-    import plotly.express as px
-    import plotly.graph_objects as go
-    import plotly.io as pio
-    from plotly.subplots import make_subplots
+    # modules
+    from astronat import constants, dynamics, units, utils
+
+    # functions
+    from astronat import (
+        reload_config as astronat_reload_config,
+        online_help as astronat_online_help,
+        help as astronat_help,
+    )
+
+    from astronat.utils.table import TableList, QTableList, TablesList
+
 
 # /if
 

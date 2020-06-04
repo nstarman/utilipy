@@ -68,12 +68,7 @@ __all__ = [
 # HELPER FUNCTIONS
 
 from utilipy.imports import conf
-
-from utilipy.decorators.docstring import (
-    _set_docstring_import_file_helper,
-    _import_file_docstring_helper,
-)
-
+from utilipy.utils import make_help_function
 
 ##############################################################################
 # IMPORTS
@@ -86,15 +81,9 @@ from scipy.stats import binned_statistic as binned_stats
 ##############################################################################
 # Printing Information
 
-
-@_set_docstring_import_file_helper("extend", __doc__)  # doc from __doc__
-def extended_imports_help():
-    """Help for extended base imports."""
-    doc = _import_file_docstring_helper(extended_imports_help.__doc__)
-    print(doc)
-
-
-# /def
+extended_imports_help = make_help_function(
+    "extend", __doc__, look_for="Routine Listings"
+)
 
 
 if conf.verbose_imports:

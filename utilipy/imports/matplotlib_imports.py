@@ -7,7 +7,7 @@
 #
 # ----------------------------------------------------------------------------
 
-"""Base set of imports for matplotlib.
+"""Base set of imports for :mod:`~matplotlib`.
 
 Routine Listings
 ----------------
@@ -48,10 +48,7 @@ __all__ = [
 # HELPER FUNCTIONS
 
 from utilipy.imports import conf
-from utilipy.decorators.docstring import (
-    _set_docstring_import_file_helper,
-    _import_file_docstring_helper,
-)
+from utilipy.utils import make_help_function
 
 
 ##############################################################################
@@ -104,15 +101,9 @@ if _HAS_IPYTHON:
 ##############################################################################
 # Printing Information
 
-
-@_set_docstring_import_file_helper("Matplotlib", __doc__)  # doc from __doc__
-def matplotlib_imports_help():
-    """Help for Matplotlib base imports."""
-    doc = _import_file_docstring_helper(matplotlib_imports_help.__doc__)
-    print(doc)
-
-
-# /def
+matplotlib_imports_help = make_help_function(
+    "matplotlib", __doc__, look_for="Routine Listings"
+)
 
 
 if conf.verbose_imports:

@@ -81,10 +81,7 @@ __all__ = [
 # PARAMETERS
 
 from utilipy.imports import conf
-from utilipy.decorators.docstring import (
-    _set_docstring_import_file_helper,
-    _import_file_docstring_helper,
-)
+from utilipy.utils import make_help_function
 
 
 ##############################################################################
@@ -166,15 +163,9 @@ if _HAS_IPYTHON:
 ##############################################################################
 # Printing Information
 
-
-@_set_docstring_import_file_helper("base", __doc__)  # doc from __doc__
-def base_imports_help():
-    """Help for Matplotlib base imports."""
-    doc = _import_file_docstring_helper(base_imports_help.__doc__)
-    print(doc)
-
-
-# /def
+base_imports_help = make_help_function(
+    "base", __doc__, look_for="Routine Listings"
+)
 
 
 if conf.verbose_imports:

@@ -7,7 +7,7 @@
 #
 # ----------------------------------------------------------------------------
 
-"""Base set of imports for the AMUSE code.
+"""Base set of imports for :mod:`~amuse`.
 
 Routine Listings
 ----------------
@@ -61,10 +61,7 @@ __all__ = [
 # HELPER FUNCTIONS
 
 from utilipy.imports import conf
-from utilipy.decorators.docstring import (
-    _set_docstring_import_file_helper,
-    _import_file_docstring_helper,
-)
+from utilipy.utils import make_help_function
 
 
 ##############################################################################
@@ -99,17 +96,9 @@ else:
 ##############################################################################
 # Printing Information
 
-
-@_set_docstring_import_file_helper("amuse", __doc__)  # doc from __doc__
-def amuse_imports_help():
-    """Help for amuse base imports."""
-    doc = _import_file_docstring_helper(amuse_imports_help.__doc__)
-    print(doc)
-
-    return
-
-
-# /def
+amuse_imports_help = make_help_function(
+    "amuse", __doc__, look_for="Routine Listings"
+)
 
 
 if conf.verbose_imports:

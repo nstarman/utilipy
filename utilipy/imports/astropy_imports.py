@@ -7,7 +7,7 @@
 #
 # ----------------------------------------------------------------------------
 
-"""Base set of imports for the astropy code.
+"""Base set of imports for :mod:`~astropy`.
 
 Notes
 -----
@@ -43,6 +43,11 @@ __all__ = [
     "Table",
     "QTable",
     "astropy_mpl_style",
+    # modeling
+    "modeling",
+    "models",
+    "fitting",
+    "custom_model",
 ]
 
 
@@ -50,10 +55,7 @@ __all__ = [
 # HELPER FUNCTIONS
 
 from utilipy.imports import conf
-from utilipy.decorators.docstring import (
-    _set_docstring_import_file_helper,
-    _import_file_docstring_helper,
-)
+from utilipy.utils import make_help_function
 
 
 ##############################################################################
@@ -69,6 +71,11 @@ from astropy.table import Table, QTable  # table data structure
 
 from astropy.visualization import quantity_support, astropy_mpl_style
 
+# modeling
+from astropy import modeling
+from astropy.modeling import models, fitting
+from astropy.modeling.models import custom_model
+
 
 ##############################################################################
 # Cleaning Up
@@ -80,15 +87,9 @@ quantity_support()
 ##############################################################################
 # Printing Information
 
-
-@_set_docstring_import_file_helper("astropy", __doc__)  # doc from __doc__
-def astropy_imports_help():
-    """Help for extended base imports."""
-    doc = _import_file_docstring_helper(astropy_imports_help.__doc__)
-    print(doc)
-
-
-# /def
+astropy_imports_help = make_help_function(
+    "astropy", __doc__, look_for="Routine Listings"
+)
 
 
 if conf.verbose_imports:

@@ -119,5 +119,77 @@ def temporary_namespace(module: ModuleType, keep: T.List[str] = []):
 # /def
 
 
+# -------------------------------------------------------------------
+
+
+def make_help_function(
+    name: str,
+    module_doc: str,
+    look_for: T.Optional[str] = None,  # "Routine Listings",
+    doctitle: T.Optional[str] = None,
+) -> T.Callable:
+    """Set docstring from module Returns section.
+
+    Takes a helper function for a module and adds the content of the modules'
+    `look_for` section. Currently only works on numpy-style docstring.
+
+    Parameters
+    ----------
+    name: str
+        name of function. Add "_help".
+    module_doc: str
+        docstring of import module
+    look_for : str, optional
+        The section to look for (default None)
+        The section name "Routine Listings" is replaced by "Returns"
+    doctitle : str, optional
+
+    Returns
+    -------
+    decorator : Callable
+        decorator function to change the wrapped function's docstring.
+
+    Notes
+    -----
+    .. todo::
+
+        separate the imports help function from the general helps function.
+        the general help function should be similar to the find_api_page
+        in astropy and the help function in the utilipy init.
+
+    """
+    if look_for is None:
+        doc = module_doc
+
+    elif isinstance(look_for, str):
+        ind = module_doc.find(look_for) + 2 * len(look_for) + 2
+        end_ind = ind + module_doc[ind:].find("---")  # finding next section
+
+        doc = module_doc[ind:end_ind]  # get section (+ next header)
+        doc = "\n".join(doc.split("\n")[:-2])  # strip next header
+
+        if look_for == "Routine Listings":  # skip 'Routine Listings' & line
+            Name = name.capitalize()
+            doc = (
+                f"\n{Name} Returns\n{'-'*(len(name) + 1)}-------\n"
+                + doc
+            )
+
+    else:
+        raise TypeError
+
+    def help_function():
+        print(doc)
+
+    help_function.__name__ = f"{name}_help"
+    help_function.__doc__ = f"Help for {doctitle or name}."
+    # /def
+
+    return help_function
+
+
+# /def
+
+
 ##############################################################################
 # END
