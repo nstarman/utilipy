@@ -15,7 +15,7 @@ Reference/API
 
 .. automodapi:: utilipy.data_utils.decorators
 .. automodapi:: utilipy.data_utils.select
-.. automodapi:: utilipy.data_utils.xmatch
+.. automodapi:: utilipy.data_utils.crossmatch
 
 
 Submodules

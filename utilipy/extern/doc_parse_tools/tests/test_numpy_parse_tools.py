@@ -20,7 +20,7 @@ import pytest
 
 # PROJECT-SPECIFIC
 
-from .. import numpy_parse_tools
+# from .. import numpy_parse_tools
 
 
 ##############################################################################

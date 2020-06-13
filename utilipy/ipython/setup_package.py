@@ -9,8 +9,7 @@
 # BUILT-IN
 
 from __future__ import absolute_import
-from contextlib import contextmanager
-from typing import Optional
+import typing as T
 
 
 # THIRD PARTY
@@ -57,7 +56,7 @@ conf = Conf()
 # INFO
 
 
-__all__ = [
+__all__: T.List[str] = [
     "conf",  # configuration instance
 ]
 

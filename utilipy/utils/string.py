@@ -14,11 +14,9 @@ __all__ = ["FormatTemplate"]
 
 import re
 import string
-from string import *
 
-# CUSTOM
+# from string import *
 
-# PROJECT-SPECIFIC
 
 ###############################################################################
 # __ALL__

@@ -30,6 +30,11 @@ Galpy reference [#]_.
 __author__ = "Nathaniel Starkman"
 
 
+__all__ = [
+    "galpy_imports_help",
+]
+
+
 ##############################################################################
 # HELPER FUNCTIONS
 
@@ -40,15 +45,9 @@ from utilipy.utils import make_help_function
 ##############################################################################
 # IMPORTS
 
-import time
-
-# ------------------------
-
 try:
 
     from galpy import __version__
-
-    # time.sleep(0.2)
 
 except ImportError:
 
@@ -72,6 +71,18 @@ else:
 
     from galpy.util import galpyWarning
 
+    __all__ += [
+        # modules
+        "galpy",
+        # functions
+        "potential",
+        "MWPotential2014",
+        "Orbit",
+        "bovy_conversion",
+        "bovy_coords",
+        "galpyWarning",
+    ]
+
 # /if
 
 ##############################################################################
@@ -84,6 +95,7 @@ galpy_imports_help = make_help_function(
 
 if conf.verbose_imports:
     galpy_imports_help()
+
 
 ##############################################################################
 # END

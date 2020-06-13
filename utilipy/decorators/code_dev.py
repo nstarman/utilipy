@@ -49,16 +49,12 @@ class DevelopmentWarning(utilipyWarning):
 
     """
 
-    pass
-
 
 # /class
 
 
 class BetaDevelopmentWarning(DevelopmentWarning):
     """Warning class to indicate an upcoming feature that is nearly ready."""
-
-    pass
 
 
 # /class

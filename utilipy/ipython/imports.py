@@ -43,7 +43,8 @@ __author__ = "Nathaniel Starkman"
 __all__ = [
     "import_from_file",
     "run_imports",
-    # "aimport",
+    "aimport",
+    "set_autoreload",
     # specific importers
     "import_base",
     "import_extended",
@@ -69,10 +70,10 @@ import typing as T
 
 from ..data_utils import get_path_to_file
 from ..decorators.docstring import set_docstring_for_import_func
+from ..imports import use_import_verbosity
 from ..utils import functools
 from ..utils.logging import LogFile
 
-from . import use_import_verbosity
 from .autoreload import aimport, set_autoreload
 
 
@@ -94,7 +95,7 @@ def import_from_file(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
     verbose=None,
-    logger_kw: T.Dict = _LOGGER_KW,
+    logger_kw: T.Optional[T.Dict[str, T.Any]] = _LOGGER_KW,
 ) -> None:
     """Run import(s) from a file(s).
 
@@ -128,6 +129,7 @@ def import_from_file(
 
             # logging
             # implemented separately b/c files often have own print statements
+            logger_kw = logger_kw or {}
             logger.report(f"imported {file}", verbose=verbose, **logger_kw)
 
     return
@@ -159,7 +161,7 @@ def run_imports(
     # logging
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = 0,
-    logger_kw: T.Dict = {},
+    logger_kw: T.Optional[T.Dict[str, T.Any]] = None,
 ) -> None:
     """Import file using IPython magic.
 
@@ -214,6 +216,7 @@ def run_imports(
     """
     # make kwargs that go into every standard import
     kw = dict(verbose_imports=verbose_imports, logger=logger, verbose=verbose)
+    logger_kw = logger_kw or {}
 
     if verbose_imports:
         print("Importing:")
@@ -259,8 +262,9 @@ def run_imports(
 
         pyplot.style.use(astropy_mpl_style)
 
-    if galpy & amuse:  # TODO, embed in galpy_imports using argparse
-        from galpy.potential import to_amuse
+    # TODO, embed in galpy_imports using argparse
+    if galpy & amuse:
+        from galpy.potential import to_amuse  # noqa
 
     # other import filess
     if files:  # True if not empty
@@ -294,7 +298,7 @@ def import_base(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
-    logger_kw: T.Dict = _LOGGER_KW,
+    logger_kw: T.Optional[T.Dict[str, T.Any]] = _LOGGER_KW,
 ) -> None:
     """Import base packages."""
     import_from_file(
@@ -318,7 +322,7 @@ def import_extended(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
-    logger_kw: T.Dict = _LOGGER_KW,
+    logger_kw: T.Optional[T.Dict[str, T.Any]] = _LOGGER_KW,
 ) -> None:
     """Import extended packages."""
     import_from_file(
@@ -340,7 +344,7 @@ def import_astropy(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
-    logger_kw: T.Dict = _LOGGER_KW,
+    logger_kw: T.Optional[T.Dict[str, T.Any]] = _LOGGER_KW,
 ) -> None:
     """Import basic astropy packages."""
     import_from_file(
@@ -368,7 +372,7 @@ def import_matplotlib(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
-    logger_kw: T.Dict = _LOGGER_KW,
+    logger_kw: T.Optional[T.Dict[str, T.Any]] = _LOGGER_KW,
 ) -> None:
     """Import basic Matplotlib packages."""
     import_from_file(
@@ -390,7 +394,7 @@ def import_plotly(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
-    logger_kw: T.Dict = _LOGGER_KW,
+    logger_kw: T.Optional[T.Dict[str, T.Any]] = _LOGGER_KW,
 ) -> None:
     """Import basic Matplotlib packages."""
     import_from_file(
@@ -416,7 +420,7 @@ def import_galpy(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
-    logger_kw: T.Dict = _LOGGER_KW,
+    logger_kw: T.Optional[T.Dict[str, T.Any]] = _LOGGER_KW,
 ) -> None:
     """Import basic galpy packages."""
     import_from_file(
@@ -438,7 +442,7 @@ def import_amuse(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
-    logger_kw: T.Dict = _LOGGER_KW,
+    logger_kw: T.Optional[T.Dict[str, T.Any]] = _LOGGER_KW,
 ) -> None:
     """Import basic amuse packages."""
     import_from_file(
@@ -462,7 +466,7 @@ def import_astronat(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
-    logger_kw: T.Dict = _LOGGER_KW,
+    logger_kw: T.Optional[T.Dict[str, T.Any]] = _LOGGER_KW,
 ) -> None:
     """Import basic amuse packages."""
     import_from_file(

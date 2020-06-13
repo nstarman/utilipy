@@ -10,6 +10,7 @@ __all__ = [
     "array_like",
     # Astropy
     "TableType",
+    "CoordinateType",
     "FrameOptionsType",
 ]
 
@@ -57,12 +58,30 @@ Examples
 #####################################################################
 # Astropy
 
-FrameOptionsType = T.TypeVar(
-    "FrameOptionsType", str, coord.BaseCoordinateFrame, coord.SkyCoord
+CoordinateType = T.TypeVar(
+    "CoordinateType", coord.BaseCoordinateFrame, coord.SkyCoord
 )
-"""Astropy [astropy]_ frame-like types.
+"""Astropy [astropy]_ coordinate frame-like types.
 
 Subclasses of BaseCoordinateFrame or SkyCoord.
+
+References
+----------
+.. [astropy] Astropy Collaboration et al., 2018, AJ, 156, 123.
+
+Examples
+--------
+
+    >>> sc: FrameOptionsType = SkyCoord()
+    >>> isinstance(sc, SkyCoord)
+    True
+
+"""
+
+FrameOptionsType = T.TypeVar("FrameOptionsType", str, CoordinateType)
+"""Astropy [astropy]_ frame-like types.
+
+Subclasses of BaseCoordinateFrame or SkyCoord, or a string.
 
 References
 ----------

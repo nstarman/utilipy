@@ -1,49 +1,50 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : test_amuse
-#
-# ----------------------------------------------------------------------------
+"""Test functions for AMUSE imports."""
 
-# Docstring and Metadata
-"""test functions for amuse imports."""
-
-__author__ = "Nathaniel Starkman"
+__all__ = ["test_import_amuse"]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 import warnings
+
+
+# THIRD PARTY
+
+import pytest
 
 try:
     import amuse
 except ImportError:
-    _do_amuse_import = False
+    HAS_AMUSE = False
 else:
-    _do_amuse_import = True
+    if isinstance(amuse.__version__, str):  # check not empty namespace
+        HAS_AMUSE = True
+    else:
+        HAS_AMUSE = False
 
 
 ##############################################################################
 
 
+@pytest.mark.skipif(~HAS_AMUSE, reason="requires AMUSE")
 def test_import_amuse():
-    """Test _inRange."""
-    if _do_amuse_import:
+    """Test AMUSE imports."""
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    from .. import amuse_imports as imports
 
-        warnings.filterwarnings("ignore", category=DeprecationWarning)
-        from .. import amuse_imports as imports
-
-        imports.amuse
-        imports.lab
-        imports.units
-        imports.constants
-        imports.bridge
-
-    return
+    for obj in (
+        "amuse",
+        "lab",
+        "units",
+        "constants",
+        "bridge",
+    ):
+        assert hasattr(imports, obj)
 
 
 # /def

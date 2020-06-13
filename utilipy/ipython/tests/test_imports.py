@@ -30,10 +30,21 @@ from .. import imports
 ##############################################################################
 
 
+def test__all__():
+    """Test everything in  ``__all__`` is there."""
+    for obj in imports.__all__:
+        assert hasattr(imports, obj)
+
+
+# /def
+
+
+# -------------------------------------------------------------------
+
+
 @pytest.mark.skip(reason="TODO")
 def test_imports():
     """Test :class:`~utilipy.ipython.imports`."""
-    pass
 
 
 # /def

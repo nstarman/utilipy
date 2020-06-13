@@ -652,6 +652,12 @@ class TransformGraph:
     decorate = function_decorator
     # /def
 
+    # def copy(self):
+    #     """Deep-copy self"""
+    #     return copy.deepcopy(self)
+
+    # # /def
+
 
 # /class
 

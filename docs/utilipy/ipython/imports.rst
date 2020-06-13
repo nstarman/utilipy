@@ -12,3 +12,5 @@ Reference/API
 
 .. automodapi:: utilipy.ipython.imports
 	:include-all-objects:
+	:skip: aimport
+	:skip: set_autoreload

@@ -67,14 +67,14 @@ __author__ = "Nathaniel Starkman"
 
 
 __all__ = [
-    # "ipython_help",
-    # "get_ipython",
-    # "InteractiveShell",
-    # "set_trace",
-    # "display",
-    # "Latex",
-    # "Markdown",
-    # "HTML",
+    "ipython_help",
+    "get_ipython",
+    "InteractiveShell",
+    "set_trace",
+    "display",
+    "Latex",
+    "Markdown",
+    "HTML",
     "set_autoreload",
     "aimport",
     "run_imports",
@@ -103,9 +103,9 @@ from IPython.display import (
 
 # PROJECT-SPECIFIC
 
+# from ..utils.logging import LogPrint, LogFile
+# from ..imports import use_import_verbosity
 from ..utils import make_help_function
-from ..utils.logging import LogPrint, LogFile
-from ..imports import use_import_verbosity
 
 from .setup_package import conf
 from .autoreload import set_autoreload, aimport

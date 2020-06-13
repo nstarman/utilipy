@@ -20,7 +20,7 @@ import pytest
 
 # PROJECT-SPECIFIC
 
-from .. import _style_store
+# from .. import _style_store
 
 
 ##############################################################################

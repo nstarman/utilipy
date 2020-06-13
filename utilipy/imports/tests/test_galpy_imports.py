@@ -1,45 +1,54 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : test_galpy
-#
-# ----------------------------------------------------------------------------
-
-# Docstring and Metadata
 """test functions for galpy imports."""
 
-__author__ = "Nathaniel Starkman"
 
+__all__ = ["test_import_amuse"]
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
+
+import warnings
+
+
+# THIRD PARTY
+
+import pytest
+
 try:
     import galpy
 except ImportError:
-    _do_galpy_import = False
+    HAS_GALPY = False
 else:
-    _do_galpy_import = True
+    if isinstance(galpy.__version__, str):  # check not empty namespace
+        HAS_GALPY = True
+    else:
+        HAS_GALPY = False
 
+
+##############################################################################
+# CODE
 ##############################################################################
 
 
-def test_import_galpy():
-    """Test galpy imports when not in IPython environment"""
-    if _do_galpy_import:
+@pytest.mark.skipif(~HAS_GALPY, reason="requires galpy")
+def test_import_amuse():
+    """Test AMUSE imports."""
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    from .. import amuse_imports as imports
 
-        from utilipy.imports import galpy_imports as imports
-
-        imports.galpy
-        imports.potential
-        imports.MWPotential2014
-        imports.Orbit
-        imports.bovy_conversion, imports.bovy_coords
-
-    return
+    for obj in (
+        "galpy",
+        "potential",
+        "MWPotential2014",
+        "Orbit",
+        "bovy_conversion",
+        "bovy_coords",
+    ):
+        assert hasattr(imports, obj)
 
 
 # /def

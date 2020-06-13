@@ -55,7 +55,7 @@ __all__ = [
     "LogFile",
     "ObjDict",
     "wraps",
-    "help",
+    "lookup",
     "online_help",
     "reload_config",
 ]
@@ -82,6 +82,7 @@ __all_top_imports__ = (  # TODO deprecate
 from ._astropy_init import *  # noqa
 from ._astropy_init import __version__  # noqa
 
+import typing as T
 
 # THIRD PARTY
 
@@ -91,7 +92,6 @@ from astropy.utils.misc import find_api_page
 
 # PROJECT-SPECIFIC
 
-from .utils import typing as T
 from .utils.logging import LogFile
 from .utils.collections import ObjDict
 from .utils.functools import wraps
@@ -201,7 +201,7 @@ def online_help(query: T.Union[None, str, T.Any] = None):
 
 
 @decorators.code_dev.indev
-def help(query: T.Optional[str] = None, online: bool = False):
+def lookup(query: T.Optional[str] = None, online: bool = False):
     """*Utilipy* help function. Online search or offline overview.
 
     Parameters

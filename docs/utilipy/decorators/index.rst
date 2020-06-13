@@ -12,6 +12,8 @@ Reference/API
 =============
 
 .. automodapi:: utilipy.decorators
+	:include-all-objects:
+	:skip: wraps
 
 
 Submodules

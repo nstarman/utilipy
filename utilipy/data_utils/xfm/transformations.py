@@ -180,8 +180,8 @@ class DataTransform(DataTransformBase):
         totype,
         priority: int = 1,
         register_graph=None,
-        func_args: T.Sequence = [],
-        func_kwargs: T.Mapping = {},
+        func_args: T.Optional[T.Sequence] = None,
+        func_kwargs: T.Optional[T.Mapping] = None,
     ):
         """Create a data transformer."""
         if not callable(func):
@@ -199,8 +199,8 @@ class DataTransform(DataTransformBase):
                 )
 
         self.func = func
-        self.func_args = list(func_args)
-        self.func_kwargs = func_kwargs
+        self.func_args = list(func_args or [])  # None -> [], keeps full
+        self.func_kwargs = func_kwargs  # None -> {}, keeps full
 
         # TODO store these or make each time in __call__?
         self.func_sig = inspect.signature(func)

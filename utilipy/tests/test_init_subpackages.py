@@ -48,11 +48,11 @@ def test_init_data_utils():
     # Expectations
     local = [
         # modules
+        "crossmatch",
         "decorators",
         "select",
         "fitting",
         "xfm",
-        "XMatch",
         # functions
         "idxDecorator",
         # data transformation graph
@@ -90,7 +90,7 @@ def test_init_decorators():
     """Test :mod:`~utilipy.decorators` initialization."""
     # Expectations
     local = [
-        # top-level
+        # modules
         "baseclass",
         "docstring",
         "func_io",
@@ -110,6 +110,10 @@ def test_init_decorators():
         "boolDecorator",
         "ndarrayDecorator",
         "ndfloat64Decorator",
+        # convenience
+        "functools",
+        "inspect",
+        "wraps",
     ]
 
     # test __all__ conforms to module
@@ -159,13 +163,13 @@ def test_init_ipython():
     # Expectations
     local = [
         "ipython_help",
-        # "get_ipython",
-        # "InteractiveShell",
-        # "set_trace",
-        # "display",
-        # "Latex",
-        # "Markdown",
-        # "HTML",
+        "get_ipython",
+        "InteractiveShell",
+        "set_trace",
+        "display",
+        "Latex",
+        "Markdown",
+        "HTML",
         "set_autoreload",
         "aimport",
         "run_imports",

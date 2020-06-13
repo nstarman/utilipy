@@ -47,7 +47,6 @@ __all__ = [
     "modeling",
     "models",
     "fitting",
-    "custom_model",
 ]
 
 
@@ -74,7 +73,11 @@ from astropy.visualization import quantity_support, astropy_mpl_style
 # modeling
 from astropy import modeling
 from astropy.modeling import models, fitting
-from astropy.modeling.models import custom_model
+
+if float(astropy.__version__[:3]) > 4.1:
+    from astropy.modeling import custom_model
+
+    __all__ += ("custom_model",)
 
 
 ##############################################################################

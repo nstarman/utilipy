@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : test_base
-#
-# ----------------------------------------------------------------------------
 
-# Docstring and Metadata
 """test functions for base imports."""
 
-__author__ = "Nathaniel Starkman"
+__all__ = [
+    "test_import_base",
+    "test_import_base_has_ipython",
+]
 
 
 ##############################################################################
@@ -19,20 +16,21 @@ def test_import_base():
     """Test base imports when not in ipython environment."""
     from utilipy.imports import base_imports as imports
 
-    imports.os
-    imports.sys
-    imports.time
-    imports.pdb
-    imports.warnings
-
-    imports.np
-    imports.scipy
-
-    imports.TQDM
-    imports.tqdm, imports.tqdmn
-
-    imports.ObjDict
-    imports.LogFile
+    for obj in (
+        "os",
+        "sys",
+        "time",
+        "pdb",
+        "warnings",
+        "np",
+        "scipy",
+        "TQDM",
+        "tqdm",
+        "tqdmn",
+        "ObjDict",
+        "LogFile",
+    ):
+        assert hasattr(imports, obj)
 
     return
 
@@ -57,17 +55,23 @@ def test_import_base_has_ipython():
         pass
 
     else:
-
-        imports.InteractiveShell
-        imports.set_trace
-        imports.display
-        imports.Latex, imports.Markdown
-
-        imports.printmd, imports.printMD
-        imports.printltx, imports.printLaTeX
-        imports.set_autoreload, imports.aimport
-        imports.run_imports, imports.import_from_file
-        imports.add_raw_code_toggle
+        for obj in (
+            "InteractiveShell",
+            "set_trace",
+            "display",
+            "Latex",
+            "Markdown",
+            "printmd",
+            "printMD",
+            "printltx",
+            "printLaTeX",
+            "set_autoreload",
+            "aimport",
+            "run_imports",
+            "import_from_file",
+            "add_raw_code_toggle",
+        ):
+            assert hasattr(imports, obj)
 
     return
 

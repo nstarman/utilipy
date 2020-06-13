@@ -54,9 +54,7 @@ conf = Conf()
 
 
 class utilipyWarning(Warning):
-    """utilipyWarning."""
-
-    pass
+    """:mod:`~utilipy` package warning."""
 
 
 # /class
@@ -66,9 +64,7 @@ class utilipyWarning(Warning):
 
 
 class utilipyWarningVerbose(Warning):
-    """utilipyWarningVerbose."""
-
-    pass
+    """Verbose :mod:`~utilipy` warning."""
 
 
 # /class

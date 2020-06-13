@@ -62,23 +62,16 @@ class WithDocstring(wrapt.ObjectProxy):
     This is a :class:`~wrapt.ObjectProxy`.
 
     - Thin: All operations are carried to the wrapt value,
-            except for ``self.meta``, which accesses the meta attribute.
-    - Light: operations do not carry the metadata
+        except for ``__doc__``, which accesses the docstring attribute.
+    - Light: operations do not carry the docstring
 
-        >>> x = WithMeta(2)
+        >>> x = WithDocstring(2, doc="description")
         >>> y = x + 2
-        >>> y.meta
-        AttributeError: 'int' object has no attribute 'meta'
 
     Attributes
     ----------
-    meta : :class:`~astropy.utils.metadata.MetaData`
-        metadata OrderedDict managed by the Astropy metadata module.
-
-
-    See Also
-    --------
-    :mod:`~astropy.utils.metadata` for usage of the metadata module.
+    __doc__ : str
+        description.
 
     """
 
@@ -140,7 +133,7 @@ class WithMeta(wrapt.ObjectProxy):
     """
 
     # meta = MetaData(copy=False)
-    _meta = None
+    _meta: T.Optional[T.Dict] = None
 
     def __init__(self, wrapped: T.Any, **kw):
         """Object wrapt to include metadata.
@@ -158,9 +151,7 @@ class WithMeta(wrapt.ObjectProxy):
         self._meta = OrderedDict()
 
         for k, v in kw.items():
-            self.meta[k] = v
-
-        return
+            self._meta[k] = v
 
     # /def
 
@@ -168,6 +159,8 @@ class WithMeta(wrapt.ObjectProxy):
     def meta(self):
         """Metadata."""
         return self._meta
+
+    # /def
 
 
 # /class

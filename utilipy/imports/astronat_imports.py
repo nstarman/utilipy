@@ -28,6 +28,7 @@ __author__ = "Nathaniel Starkman"
 __all__ = [
     "astronat_imports_help",
     # modules
+    "astronat",
     "constants",
     "dynamics",
     "units",

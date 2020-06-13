@@ -1,15 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : test_amuse
-#
-# ----------------------------------------------------------------------------
+"""Test functions for astropy imports."""
 
-# Docstring and Metadata
-"""test functions for astropy imports."""
 
-__author__ = "Nathaniel Starkman"
+__all__ = ["test_import_astropy"]
 
 
 ##############################################################################
@@ -19,12 +13,17 @@ def test_import_astropy():
     """Test _inRange."""
     from utilipy.imports import astropy_imports as imports
 
-    imports.astropy
-    imports.u
-    imports.coords
-    imports.SkyCoord
-    imports.Table, imports.QTable
-    imports.quantity_support, imports.astropy_mpl_style
+    for obj in (
+        "astropy",
+        "u",
+        "coords",
+        "SkyCoord",
+        "Table",
+        "QTable",
+        "quantity_support",
+        "astropy_mpl_style",
+    ):
+        assert hasattr(imports, obj)
 
     return
 

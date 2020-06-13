@@ -20,7 +20,7 @@ import pytest
 
 # PROJECT-SPECIFIC
 
-from .. import napoleon_parse_tools
+# from .. import napoleon_parse_tools
 
 
 ##############################################################################

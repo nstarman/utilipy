@@ -49,6 +49,11 @@ from types import ModuleType
 import typing as T
 
 
+# THIRD PARTY
+
+from astropy.utils.data import find_current_module
+
+
 # PROJECT-SPECIFIC
 
 from .logging import LogPrint, LogFile
@@ -124,7 +129,7 @@ def temporary_namespace(module: ModuleType, keep: T.List[str] = []):
 
 def make_help_function(
     name: str,
-    module_doc: str,
+    module: T.Union[None, ModuleType, str] = None,
     look_for: T.Optional[str] = None,  # "Routine Listings",
     doctitle: T.Optional[str] = None,
 ) -> T.Callable:
@@ -137,8 +142,8 @@ def make_help_function(
     ----------
     name: str
         name of function. Add "_help".
-    module_doc: str
-        docstring of import module
+    module:
+        Module
     look_for : str, optional
         The section to look for (default None)
         The section name "Routine Listings" is replaced by "Returns"
@@ -158,6 +163,16 @@ def make_help_function(
         in astropy and the help function in the utilipy init.
 
     """
+    if module is None:
+        mod_name = find_current_module(1).__name__
+        module_doc = module.__doc__
+    elif isinstance(module, ModuleType):
+        module_doc = module.__doc__
+        mod_name = module.__name__
+    elif isinstance(module, str):
+        module_doc = module
+        mod_name = find_current_module(2).__name__
+
     if look_for is None:
         doc = module_doc
 
@@ -175,10 +190,12 @@ def make_help_function(
     else:
         raise TypeError
 
+    # TODO with FunctionType in types
     def help_function():
         print(doc)
 
     help_function.__name__ = f"{name}_help"
+    help_function.__module__ = mod_name
     help_function.__doc__ = f"Help for {doctitle or name}."
     # /def
 

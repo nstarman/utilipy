@@ -7,11 +7,11 @@ __author__ = "Nathaniel Starkman"
 
 __all__ = [
     # modules
+    "crossmatch",
     "decorators",
     "select",
     "fitting",
     "xfm",
-    "xmatch",
     # functions
     "idxDecorator",
     # data transformation graph
@@ -21,7 +21,7 @@ __all__ = [
     # xmatch
     "indices_xmatch_fields",
     "xmatch_fields",
-    "XMatch",
+    "xmatch",
     "non_xmatched",
     # local
     "get_path_to_file",
@@ -43,18 +43,18 @@ from astropy.utils.data import get_pkg_data_filenames
 
 # PACKAGE-SPECIFIC
 
-from .decorators import idxDecorator
-from .xfm import data_graph, TransformGraph, DataTransform
-from .xmatch import (
+from .crossmatch import (
     indices_xmatch_fields,
     xmatch_fields,
-    xmatch as XMatch,
+    xmatch,
     non_xmatched,
 )
-from .select import *
+from .decorators import idxDecorator
+from .xfm import data_graph, TransformGraph, DataTransform
+from .select import *  # noqa
 
-# import top=level directories
-from . import decorators, select, fitting, xfm, xmatch
+# modules
+from . import decorators, select, fitting, xfm, crossmatch
 
 
 # -------------------------------------------------------------------

@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : test_amuse
-#
-# ----------------------------------------------------------------------------
-
-# Docstring and Metadata
-"""Test functions for data_utils/select."""
-
-__author__ = "Nathaniel Starkman"
+"""Test functions for :mod:`~matplotlib` imports."""
 
 
 ##############################################################################
@@ -19,15 +10,14 @@ def test_import_matplotlib():
     """Test import matplotlib."""
     from utilipy.imports import matplotlib_imports as imports
 
-    imports.mpl
-    imports.plt
-    imports.cm, imports.colors
-    # imports.Axes3D
-
-    return
+    for obj in ("mpl", "plt", "cm", "colors"):
+        assert hasattr(imports, obj)
 
 
 # /def
+
+
+# -------------------------------------------------------------------
 
 
 def test_import_matplotlib_has_ipython():

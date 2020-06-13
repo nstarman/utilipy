@@ -54,8 +54,8 @@ class scipy_residual_to_lmfit(ObjectProxy):
     see https://lmfit.github.io/lmfit-py/fitting.html
 
     >>> @scipy_residual_to_lmfit(var_order=['amp', 'phase', 'freq', 'decay'])
-    ... def residual(vars, x, data, eps_data):
-    ...     amp, phase, freq, decay = vars
+    ... def residual(variables, x, data, eps_data):
+    ...     amp, phase, freq, decay = variables
     ...     # calculate residual here
     ...     return res
 
@@ -106,8 +106,8 @@ class scipy_residual_to_lmfit(ObjectProxy):
 
     def lmfit(self, params: Parameters, *args: Any, **kwargs: Any) -> Any:
         """`lmfit` version of function."""
-        vars = [params[n].value for n in self.var_order]
-        return self.__wrapped__(vars, *args, **kwargs)
+        variables = [params[n].value for n in self.var_order]
+        return self.__wrapped__(variables, *args, **kwargs)
 
     # /def
 

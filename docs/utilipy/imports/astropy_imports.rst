@@ -11,3 +11,4 @@ Reference/API
 =============
 
 .. automodapi:: utilipy.imports.astropy_imports
+	:include-all-objects:

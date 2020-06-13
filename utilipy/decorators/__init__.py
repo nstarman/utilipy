@@ -11,7 +11,7 @@
 
 
 __all__ = [
-    # top-level
+    # modules
     "baseclass",
     "docstring",
     "func_io",
@@ -31,6 +31,10 @@ __all__ = [
     "boolDecorator",
     "ndarrayDecorator",
     "ndfloat64Decorator",
+    # convenience
+    "functools",
+    "inspect",
+    "wraps",
 ]
 
 ##############################################################################
@@ -38,7 +42,7 @@ __all__ = [
 
 # GENERAL
 
-from astropy.utils.decorators import sharedmethod  # replaces semistaticmethod
+# from astropy.utils.decorators import sharedmethod  # replaces semistaticmethod
 
 
 # PROJECT-SPECIFIC
