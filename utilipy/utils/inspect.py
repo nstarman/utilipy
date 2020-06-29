@@ -1447,7 +1447,13 @@ def fuller_signature(obj: T.Any, *, follow_wrapped: bool = True):
 
 def fuller_signature_from_method(method: T.Callable):
     sig = fuller_signature(method)
-    return sig.drop_parameter("self")
+
+    if tuple(sig.parameters.keys())[0] == "self":
+        sig = sig.drop_parameter("self")
+    elif tuple(sig.parameters.keys())[0] == "cls":
+        sig = sig.drop_parameter("cls")
+
+    return sig
 
 
 # /def
@@ -1455,7 +1461,13 @@ def fuller_signature_from_method(method: T.Callable):
 
 def signature_from_method(method: T.Callable):
     sig = inspect.signature(method)
-    return drop_parameter(sig, "self")
+
+    if tuple(sig.parameters.keys())[0] == "self":
+        sig = drop_parameter(sig, "self")
+    elif tuple(sig.parameters.keys())[0] == "cls":
+        sig = sig.drop_parameter("cls")
+
+    return sig
 
 
 # /def
