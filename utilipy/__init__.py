@@ -76,9 +76,7 @@ __all_top_imports__ = (  # TODO deprecate
 ##############################################################################
 # IMPORTS
 
-# Packages may add whatever they like to this file, but
-# should keep this content at the top.
-# (sets the __version__)
+# keep this content at the top. (sets the __version__)
 from ._astropy_init import *  # noqa
 from ._astropy_init import __version__  # noqa
 

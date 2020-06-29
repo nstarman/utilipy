@@ -199,9 +199,8 @@ def test_init_ipython():
 def test_init_math():
     """Test :mod:`~utilipy.math` initialization."""
     # Expectations
-    local = [
-        "quadrature",
-    ]
+    local = []
+    local += math.core.__all__
 
     # test __all__ conforms to module
     for name in math.__all__:

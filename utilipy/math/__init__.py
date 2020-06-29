@@ -5,9 +5,7 @@
 __author__ = "Nathaniel Starkman"
 
 
-__all__ = [
-    "quadrature",
-]
+__all__ = []
 
 
 ##############################################################################
@@ -15,7 +13,14 @@ __all__ = [
 
 # PROJECT-SPECIFIC
 
-from .core import quadrature
+# import modules
+from . import core
+
+# import functions
+from .core import *  # noqa
+
+
+__all__ += core.__all__
 
 
 ###############################################################################
