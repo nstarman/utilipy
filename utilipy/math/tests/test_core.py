@@ -17,6 +17,9 @@ __all__ = [
 
 # BUILT-IN
 
+import warnings
+
+
 # THIRD PARTY
 
 import astropy.units as u
@@ -31,6 +34,17 @@ from .. import core
 
 ##############################################################################
 # PARAMETERS
+
+_NP_V = [
+    int(v) for i, v in enumerate(np.__version__.split(".")) if i < 3
+]
+if (_NP_V[0] <= 1) and (_NP_V[1] <= 16):  # v1.16
+    warnings.warn(
+        (
+            "Need to set the environment variable "
+            "NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1"
+        )
+    )
 
 
 ##############################################################################
@@ -190,6 +204,9 @@ def test_qsquare():
 # -------------------------------------------------------------------
 
 
+@pytest.mark.skip(
+    (_NP_V[0] <= 1) & (_NP_V[1] <= 16), reason="Numpy version <= 1.16"
+)
 def test_qnorm():
     """Test :func:`~utilipy.math.core.qnorm`.
 

@@ -51,7 +51,6 @@ env:
 
         # The following is needed for astropy Quantity compatibility on
         # old versions of numpy
-
         - NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1
 
 matrix:
@@ -161,10 +160,21 @@ matrix:
           env: TOXENV=linkcheck
 
 before_install:
- # skip travis build if [skip travis] or [travis skip] in commit message
- # built into travis, but a good reminder
- - if git show -s HEAD | grep -F -q "[skip travis]" ; then echo "skip travis" && exit 0 ; fi
- - if git show -s HEAD | grep -F -q "[travis skip]" ; then echo "skip travis" && exit 0 ; fi
+    # So codecov can find the coverage report
+    - if [[ $TOXENV == *-cov ]]; then
+        export TOXPOSARGS=$TOXPOSARGS" --cov-report=xml:"$TRAVIS_BUILD_DIR"/coverage.xml";
+      fi
+
+    - echo "TOXENV="$TOXENV
+    - echo "TOXARGS="$TOXARGS
+    - echo "TOXPOSARGS="$TOXPOSARGS
+
+    # skip travis build if [skip travis] or [travis skip] in commit message
+    # built into travis, but a good reminder
+    - if git show -s HEAD | grep -F -q "[skip travis]" ; then echo "skip travis" && exit 0 ; fi
+    - if git show -s HEAD | grep -F -q "[travis skip]" ; then echo "skip travis" && exit 0 ; fi
+    - if git show -s HEAD | grep -F -q "[skip ci]" ; then echo "skip travis" && exit 0 ; fi
+    - if git show -s HEAD | grep -F -q "[ci skip]" ; then echo "skip travis" && exit 0 ; fi
 
 install:
 
@@ -183,6 +193,10 @@ script:
     - tox $TOXARGS -- $TOXPOSARGS
 
 after_success:
+    - if [[ $TOXENV == *-cov ]]; then
+        pip install codecov;
+        codecov;
+      fi
     # # If coveralls.io is set up for this package, uncomment the two lines below.
     # pip install coveralls
     # coveralls

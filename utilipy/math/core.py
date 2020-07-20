@@ -21,6 +21,7 @@ __all__ = [
 # BUILT-IN
 
 import typing as T
+import warnings
 
 
 # THIRD PARTY
@@ -29,6 +30,21 @@ from astropy.units import Quantity
 
 import numpy as np
 from numpy.linalg import norm
+
+
+##############################################################################
+# IMPORTS
+
+_NUMPY_VERSION = [
+    int(v) for i, v in enumerate(np.__version__.split(".")) if i < 3
+]
+if (_NUMPY_VERSION[0] <= 1) and (_NUMPY_VERSION[1] <= 16):  # v1.16
+    warnings.warn(
+        (
+            "Need to set the environment variable "
+            "NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1"
+        )
+    )
 
 
 ###############################################################################
