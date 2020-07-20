@@ -49,6 +49,11 @@ env:
         # to open a GUI window.
         - SETUP_XVFB=True
 
+        # The following is needed for astropy Quantity compatibility on
+        # old versions of numpy
+
+        - NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1
+
 matrix:
 
     # Don't wait for allowed failures
@@ -117,20 +122,19 @@ matrix:
 
         - os: linux
           python: 3.7
-          name: Python 3.7 with astropy 3.0 and Numpy 1.17
+          name: Python 3.7 with astropy 4.0 and Numpy 1.17
           stage: Comprehensive tests
-          env: TOXENV=py37-test-astropy30-numpy117
+          env: TOXENV=py37-test-astropy40-numpy117
 
+    allow_failures:
+        # Do a PEP8 test with flake8
+        # (do allow to fail unless your code is completely compliant)
         # Do a PEP8 test with flake8
         - os: linux
           python: 3.8
           name: Code style check (PEP8 via flake8)
           stage: Initial tests
           env: TOXENV=codestyle
-
-    allow_failures:
-        # Do a PEP8 test with flake8
-        # (do allow to fail unless your code completely compliant)
 
         - os: linux
           python: 3.8
