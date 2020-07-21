@@ -17,6 +17,7 @@ __all__ = [
 
 # BUILT-IN
 
+import os
 import warnings
 
 
@@ -35,16 +36,7 @@ from .. import core
 ##############################################################################
 # PARAMETERS
 
-_NP_V = [
-    int(v) for i, v in enumerate(np.__version__.split(".")) if i < 3
-]
-if (_NP_V[0] <= 1) and (_NP_V[1] <= 16):  # v1.16
-    warnings.warn(
-        (
-            "Need to set the environment variable "
-            "NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1"
-        )
-    )
+_NP_V = [int(v) for i, v in enumerate(np.__version__.split(".")) if i < 3]
 
 
 ##############################################################################
@@ -52,7 +44,6 @@ if (_NP_V[0] <= 1) and (_NP_V[1] <= 16):  # v1.16
 ##############################################################################
 
 
-@pytest.mark.skip(reason="TODO")
 def test_quadrature():
     """Test :class:`~utilipy.math.core.quadrature`."""
     # ------------------
@@ -68,7 +59,8 @@ def test_quadrature():
     assert core.quadrature(-2.0) == 2.0
 
     # axis argument can matter
-    assert core.quadrature(-2.0, axis=1) == 2.0
+    with pytest.raises(np.AxisError):
+        assert core.quadrature(-2.0, axis=1) == 2.0
 
     with pytest.raises(np.AxisError):
         core.quadrature(2, axis=2)
@@ -93,11 +85,11 @@ def test_quadrature():
     # not expanded
     actual = core.quadrature(x)
     expected = 12.36931687685298
-    assert np.testing.assert_equal(actual, expected)
+    np.testing.assert_almost_equal(actual, expected, decimal=7)
 
     # same as expanded
     actual = core.quadrature(*x)
-    assert np.testing.assert_equal(actual, expected)
+    np.testing.assert_equal(actual, expected)
 
     # axis argument can matter
     actual = core.quadrature(x, axis=-1)
@@ -114,12 +106,12 @@ def test_quadrature():
 
     actual = core.quadrature(x, y)
     expected = np.array([5.0, 13.0])
-    assert np.testing.assert_equal(actual, expected)
+    np.testing.assert_equal(actual, expected)
 
     # axis argument matters
     actual = core.quadrature(x, y, axis=-1)
     expected = np.array([12.36931688, 6.40312424])
-    assert np.testing.assert_almost_equal(actual, expected)
+    np.testing.assert_almost_equal(actual, expected)
 
     with pytest.raises(np.AxisError):
         core.quadrature(x, y, axis=2)
@@ -204,9 +196,6 @@ def test_qsquare():
 # -------------------------------------------------------------------
 
 
-@pytest.mark.skip(
-    (_NP_V[0] <= 1) & (_NP_V[1] <= 16), reason="Numpy version <= 1.16"
-)
 def test_qnorm():
     """Test :func:`~utilipy.math.core.qnorm`.
 
@@ -214,15 +203,34 @@ def test_qnorm():
     and numpy's internal testing for :func:`~numpy.linalg.norm`
 
     """
-    # norm a scalar
-    x = -2 * u.m
-    y = core.qnorm(x)
-    assert y == -x
+    # Have to split into pre and post numpy 1.16
+    # https://docs.astropy.org/en/lts/whatsnew/4.0.html
+    if (
+        (os.environ.get("NUMPY_EXPERIMENTAL_ARRAY_FUNCTION", 0) == 0)
+        & (_NP_V[0] <= 1)
+        & (_NP_V[1] <= 16)
+    ):
+        # norm a scalar
+        x = -2 * u.m
+        y = core.qnorm(x)
+        assert y == 2.0
 
-    # norm an array
-    x = [3, 4] * u.m
-    y = core.qnorm(x)
-    assert y == 5 * u.m
+        # norm an array
+        x = [3, 4] * u.m
+        y = core.qnorm(x)
+        assert y == 5.0
+
+    else:
+
+        # norm a scalar
+        x = -2 * u.m
+        y = core.qnorm(x)
+        assert y == -x
+
+        # norm an array
+        x = [3, 4] * u.m
+        y = core.qnorm(x)
+        assert y == 5 * u.m
 
 
 # /def
