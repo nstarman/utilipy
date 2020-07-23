@@ -4,8 +4,15 @@
 
 
 __all__ = [
-    "test_quadrature",
-    "test_as_quantity",
+    "test_quadrature_no_input",
+    "test_quadrature_single_argument",
+    "test_quadrature_multi_scalar_argument",
+    "test_quadrature_single_vector_argument",
+    "test_quadrature_multi_vector_argument",
+    "test_as_quantity_unchanged",
+    "test_as_quantity_modifications",
+    "test_as_quantity_recast",
+    "test_as_quantity_exceptions",
     "test_qsquare",
     "test_qnorm",
     "test_qarange",
@@ -18,7 +25,6 @@ __all__ = [
 # BUILT-IN
 
 import os
-import warnings
 
 
 # THIRD PARTY
@@ -43,18 +49,21 @@ _NP_V = [int(v) for i, v in enumerate(np.__version__.split(".")) if i < 3]
 # CODE
 ##############################################################################
 
+# -------------------------------------------------------------------
+# Quadrature
 
-def test_quadrature():
-    """Test :class:`~utilipy.math.core.quadrature`."""
-    # ------------------
-    # No input
 
+def test_quadrature_no_input():
+    """Test :class:`~utilipy.math.core.quadrature` no input Exception."""
     with pytest.raises(ValueError):
-        core.quadrature()
+        core.quadrature()  # No input
 
-    # ------------------
-    # 1 argument
 
+# /def
+
+
+def test_quadrature_single_argument():
+    """Test :class:`~utilipy.math.core.quadrature` single input."""
     assert core.quadrature(2.0) == 2.0
     assert core.quadrature(-2.0) == 2.0
 
@@ -65,9 +74,12 @@ def test_quadrature():
     with pytest.raises(np.AxisError):
         core.quadrature(2, axis=2)
 
-    # ------------------
-    # many scalar arguments
 
+# /def
+
+
+def test_quadrature_multi_scalar_argument():
+    """Test :class:`~utilipy.math.core.quadrature` multi-scalar inputs."""
     assert core.quadrature(3.0, 4.0) == 5.0
     assert core.quadrature(-3, 4.0) == 5.0
 
@@ -77,9 +89,12 @@ def test_quadrature():
     with pytest.raises(np.AxisError):
         core.quadrature(3.0, 4.0, axis=2)
 
-    # ------------------
-    # 1 vector argument
 
+# /def
+
+
+def test_quadrature_single_vector_argument():
+    """Test :class:`~utilipy.math.core.quadrature` single vector inputs."""
     x = [3.0, 12.0]
 
     # not expanded
@@ -98,9 +113,12 @@ def test_quadrature():
     with pytest.raises(np.AxisError):
         core.quadrature(x, axis=2)
 
-    # ------------------
-    # many vector arguments
 
+# /def
+
+
+def test_quadrature_multi_vector_argument():
+    """Test :class:`~utilipy.math.core.quadrature` multi-vector argument."""
     x = [3.0, 12.0]
     y = [4.0, 5.0]
 
@@ -116,20 +134,16 @@ def test_quadrature():
     with pytest.raises(np.AxisError):
         core.quadrature(x, y, axis=2)
 
-    pass
-
 
 # /def
 
 
 # -------------------------------------------------------------------
+# As_quantity
 
 
-def test_as_quantity():
-    """Test :func:`~utilipy.math.core.as_quantity`."""
-    # ------------------
-    # Quantities Unchanged
-
+def test_as_quantity_unchanged():
+    """Test :func:`~utilipy.math.core.as_quantity` pass-through."""
     # single number
     x = 1 * u.m
     y = core.as_quantity(x)
@@ -140,9 +154,12 @@ def test_as_quantity():
     y = core.as_quantity(x)
     assert all(y == x)
 
-    # ------------------
-    # Change Copies
 
+# /def
+
+
+def test_as_quantity_modifications():
+    """Test :func:`~utilipy.math.core.as_quantity` in-place modification."""
     # array
     x = [1, 2, 3] * u.m
     y = core.as_quantity(x)
@@ -152,9 +169,12 @@ def test_as_quantity():
     x[0] = 0 * u.m
     assert all(y == x)
 
-    # ------------------
-    # Recast arrays
 
+# /def
+
+
+def test_as_quantity_recast():
+    """Test :func:`~utilipy.math.core.as_quantity` array recasting."""
     # array
     x = [1 * u.m, 2 * u.m, 3 * u.m]
     y = core.as_quantity(x)
@@ -165,9 +185,12 @@ def test_as_quantity():
     y = core.as_quantity(x)
     assert all(y == [1, 2, 3] * u.m)
 
-    # ------------------
-    # Failure Tests
 
+# /def
+
+
+def test_as_quantity_exceptions():
+    """Test :func:`~utilipy.math.core.as_quantity` expected Exceptions."""
     with pytest.raises(NotImplementedError):
         core.as_quantity("arg")
 
