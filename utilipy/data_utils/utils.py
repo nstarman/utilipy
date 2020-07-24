@@ -58,7 +58,10 @@ def shuffle(
 
     """
     if rng is None:
-        rng = np.random.default_rng()
+        try:
+            rng = np.random.default_rng()
+        except AttributeError:
+            rng = np.random
 
     # start with index array
     shuffler = np.arange(length)
