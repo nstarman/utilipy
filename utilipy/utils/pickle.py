@@ -27,11 +27,14 @@ __all__ = [
 #############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 import pickle as _pickle
+import typing as T
 import warnings
-from typing import Optional, Tuple, Any
+
+
+# THIRD PARTY
 
 try:
     import dill
@@ -60,16 +63,16 @@ _LOGFILE = LogFile(header=False)
 
 @format_doc(None, odoc="\n\t".join(_pickle.dump.__doc__.split("\n")))
 def dump(
-    obj: Any,
+    obj: T.Any,
     fname: str,
-    protocol: Any = None,
+    protocol: T.Any = None,
     *,
     fopt: str = "b",
     fix_imports: bool = True,
     use_dill=False,
     # logger
     logger: LogFile = _LOGFILE,
-    verbose: Optional[int] = None,
+    verbose: T.Optional[int] = None,
 ) -> None:
     """Wrap pickle.dump.
 
@@ -112,14 +115,14 @@ save = dump
 
 
 def dump_many(
-    *objs: Tuple[Any, str],
-    protocol: Any = None,
+    *objs: T.Tuple[T.Any, str],
+    protocol: T.Any = None,
     fopt: str = "b",
     fix_imports: bool = True,
     use_dill=False,
     # logger
     logger: LogFile = _LOGFILE,
-    verbose: Optional[int] = None,
+    verbose: T.Optional[int] = None,
 ) -> None:
     """Wrap pickle.dump.
 
@@ -168,7 +171,7 @@ def load(
     use_dill=False,
     # logger
     logger: LogFile = _LOGFILE,
-    verbose: Optional[int] = None,
+    verbose: T.Optional[int] = None,
 ):
     """Wrap pickle.load.
 

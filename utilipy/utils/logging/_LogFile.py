@@ -16,9 +16,9 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
-from typing import Any, Union, Optional
+import typing as T
 
 
 # PROJECT-SPECIFIC
@@ -72,10 +72,10 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
 
     def __new__(
         cls,
-        filename: Optional[str] = None,
+        filename: T.Optional[str] = None,
         verbose: int = 0,
         sec_div: str = "-",
-        header: Union[str, None, bool] = None,
+        header: T.Union[str, None, bool] = None,
         show_header: bool = True,
         # for open
         mode: str = "w",
@@ -109,10 +109,10 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
 
     def __init__(
         self,
-        filename: Optional[str] = None,
+        filename: T.Optional[str] = None,
         verbose: int = 0,
         sec_div: str = "-",
-        header: Union[str, None, bool] = None,
+        header: T.Union[str, None, bool] = None,
         show_header: bool = True,
         # for open
         mode: str = "w",
@@ -167,7 +167,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
 
     # /def
 
-    def __getattr__(self, name: str) -> Any:
+    def __getattr__(self, name: str) -> T.Any:
         """Redirect non-defined attributes to self.file."""
         return getattr(self.file, name)
 
@@ -181,7 +181,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         filename: str,
         verbose: int = 0,
         sec_div: str = "-",
-        header: Optional[str] = None,
+        header: T.Optional[str] = None,
         show_header: bool = True,
         # for open
         mode: str = "w",
@@ -191,7 +191,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         newline: None = None,
         closefd: bool = True,
         opener: None = None,
-    ) -> Any:
+    ) -> T.Any:
         """Make basic logger that can both print and record to a file.
 
         this class uses `open`, not a more extensive logger, like `logging`
@@ -247,7 +247,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         filename: str,
         verbose: int = 0,
         sec_div: str = "-",
-        header: Optional[str] = None,
+        header: T.Optional[str] = None,
         show_header: bool = True,
         # for open
         mode: int = "w",
@@ -257,7 +257,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         newline: None = None,
         closefd: bool = True,
         opener: None = None,
-    ) -> Any:
+    ) -> T.Any:
         """Make basic logger that can both print and record to a file.
 
         this class uses `open`, not a more extensive logger, like `logging`
@@ -321,7 +321,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         newline: None = None,
         closefd: bool = True,
         opener: None = None,
-    ) -> Any:
+    ) -> T.Any:
         """Make basic logger that can both print and record to a file.
 
         this class uses `open`, not a more extensive logger, like `logging`
@@ -353,7 +353,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
 
     def _write(
         self, *string: str, start: str = "", sep: str = " ", end: str = "\n"
-    ) -> None:
+    ):
         r"""Write helper method.
 
         this is used by all write methods
@@ -389,7 +389,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         startsection: bool = False,
         endsection: bool = False,
         print: bool = True,
-    ) -> Any:
+    ) -> T.Any:
         r"""Write string to stream and print it to output.
 
         Parameters
@@ -426,7 +426,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
         end: str = "\n",
         startsection: bool = False,
         endsection: bool = False,
-    ) -> Any:
+    ) -> T.Any:
         """Write, but doesn't print as well as write to file."""
         return super().record(
             *text,
@@ -443,12 +443,12 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
     def report(
         self,
         *msgs: str,
-        verbose: Optional[int] = None,
+        verbose: T.Optional[int] = None,
         print: bool = True,
         write: bool = True,
         start_at: int = 1,
         **kw,
-    ) -> Any:
+    ) -> T.Any:
         """a report function whose message is determined by the `verbose`.
 
         Parameters
@@ -482,7 +482,7 @@ class LogFile(LogPrint, metaclass=InheritDocstrings):
 
     # ------------------------------------------------------------------------
 
-    def close(self) -> None:
+    def close(self):
         """Close the file."""
         self.newsection(title="closing file", div="=")
         self.file.close()

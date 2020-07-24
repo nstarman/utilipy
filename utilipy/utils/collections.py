@@ -190,7 +190,7 @@ class WithReference(WithMeta, WithDocstring):
         *,
         doc: str = None,
         reference: T.Optional[T.Any] = None,
-        **kw
+        **kw,
     ):
         """Object wrapt to include a reference, and any other metadata.
 
@@ -296,6 +296,9 @@ class MetaDataBase:
 
 
 # /class
+
+
+# -------------------------------------------------------------------
 
 
 class ReferenceBase(MetaDataBase):
@@ -587,7 +590,7 @@ class ObjDict(OrderedDict):
         protocol: T.Optional[int] = None,
         *,
         fopt: str = "b",
-        fix_imports: bool = True
+        fix_imports: bool = True,
     ):
         """Dump to pickle file.
 
@@ -607,7 +610,7 @@ class ObjDict(OrderedDict):
         protocol: T.Optional[int] = None,
         *,
         fopt: str = "b",
-        fix_imports: bool = True
+        fix_imports: bool = True,
     ):
         """.Dump alias."""
         self.dump(fname, protocol=protocol, fopt=fopt, fix_imports=fix_imports)
@@ -621,7 +624,7 @@ class ObjDict(OrderedDict):
         fopt: str = "b",
         fix_imports: bool = True,
         encoding: str = "ASCII",
-        errors: str = "strict"
+        errors: str = "strict",
     ):
         """Load from pickle file.
 

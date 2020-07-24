@@ -6,10 +6,14 @@
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 import sys
-from typing import Any, Union, Callable, Optional
+import typing as T
+
+
+# THIRD PARTY
+
 from typing_extensions import Literal
 import numpy as np
 
@@ -34,12 +38,12 @@ if sys.platform.startswith("win"):
 
 
 def idxDecorator(
-    function: Optional[Callable] = None,
+    function: T.Optional[T.Callable] = None,
     *,
-    as_ind: Union[bool, Literal["flatten"]] = False,
-    _doc_fmt: Optional[dict] = None,  # ibid
-    _doc_style: Union[str, Callable, None] = None,  # ibid
-) -> Callable:
+    as_ind: T.Union[bool, Literal["flatten"]] = False,
+    _doc_fmt: T.Optional[dict] = None,  # ibid
+    _doc_style: T.Union[str, T.Callable, None] = None,  # ibid
+) -> T.Callable:
     """Control whether to return boolean array or indices.
 
     for functions which return bool arrays
@@ -47,7 +51,7 @@ def idxDecorator(
 
     Parameters
     ----------
-    function : types.Callable or None, optional
+    function : Callable, optional
         (default None)
         the function to be decoratored
         if None, then returns decorator to apply.
@@ -57,89 +61,95 @@ def idxDecorator(
         (``where(bool array == np.True_)``)
         if "flatten", flattens a nested list with only 1 element
         ie ([0], ) -> [0]
-        sets the default behavior for the wrapped function `func`
+        sets the default behavior for the wrapped `function`
 
     Returns
     -------
-    wrapper : types.Callable
-        wrapper for function
-        includes the original function in a method `.__wrapped__`
+    wrapper : Callable
+        wrapper for `function`
+        includes the original function in a method ``.__wrapped__``
 
     Other Parameters
     ----------------
     _doc_fmt : dict, optional
         docstring formatter
-        argument into utilipy.functools.wraps
+        argument into :func:`~utilipy.utils.functools.wraps`
     _doc_style : str or Callable, optional
         docstring style
-        argument into utilipy.functools.wraps
+        argument into :func:`~utilipy.utils.functools.wraps`
 
     Notes
     -----
-    Adds `as_ind`, `_flatten` and other parameters to the function
-    signature and docstring.
+    Adds `as_ind` and other parameters to the function signature and docstring.
 
     Examples
     --------
     Use the Standard Decorator:
 
-    >>> x = np.array([0, 2])
-    >>> @idxDecorator
-    ... def func1(x):
-    ...     return x < 1
+        >>> x = np.array([0, 2])
+        >>> @idxDecorator
+        ... def func1(x):
+        ...     return x < 1
 
     calling normally
-    >>> func1(x) # doctest: +SKIP
-    array([ True, False], dtype=bool))
+        >>> func1(x) # doctest: +SKIP
+        array([ True, False], dtype=bool))
 
     using added kwarg
-    >>> func1(x, as_ind=True)
-    (array([0]),)
+        >>> func1(x, as_ind=True)
+        (array([0]),)
 
     and flattening
-    >>> func1(x, as_ind="flatten")
-    array([0])
+        >>> func1(x, as_ind="flatten")
+        array([0])
 
     Set a Different Default:
 
-    >>> @idxDecorator(as_ind=True)
-    ... def func2(x):
-    ...     return x < 1
+        >>> @idxDecorator(as_ind=True)
+        ... def func2(x):
+        ...     return x < 1
 
-    >>> func2(x)
-    (array([0]),)
+        >>> func2(x)
+        (array([0]),)
 
-    >>> func2(x, as_ind=False) # doctest: +SKIP
-    array([ True, False])
+        >>> func2(x, as_ind=False) # doctest: +SKIP
+        array([ True, False])
 
     Making a New Decorator:
 
-    >>> trueidxdec = idxDecorator(as_ind="flatten")
-    >>> @trueidxdec
-    ... def func3(x):
-    ...     return x < 1
-    >>> func3(x)
-    array([0])
-    >>> func3(x, as_ind=False) # doctest: +SKIP
-    array([ True, False])
+        >>> trueidxdec = idxDecorator(as_ind="flatten")
+        >>> @trueidxdec
+        ... def func3(x):
+        ...     return x < 1
+        >>> func3(x)
+        array([0])
+        >>> func3(x, as_ind=False) # doctest: +SKIP
+        array([ True, False])
 
     Wrapping Existing Functions
 
-    >>> def func(x):
-    ...     return x < 1
-    >>> newfunc = idxDecorator(func, as_ind=True)
-    >>> newfunc(x)
-    (array([0]),)
-    >>> newfunc(x, as_ind=False) # doctest: +SKIP
-    array([ True, False])
+        >>> def func(x):
+        ...     return x < 1
+        >>> newfunc = idxDecorator(func, as_ind=True)
+        >>> newfunc(x)
+        (array([0]),)
+        >>> newfunc(x, as_ind=False) # doctest: +SKIP
+        array([ True, False])
 
     """
     if function is None:  # allowing for optional arguments
-        return functools.partial(idxDecorator, as_ind=as_ind)
+        return functools.partial(
+            idxDecorator,
+            as_ind=as_ind,
+            _doc_fmt=_doc_fmt,
+            _doc_style=_doc_style,
+        )
 
     @functools.wraps(function, _doc_fmt=_doc_fmt, _doc_style=_doc_style)
-    def wrapper(*args: Any, as_ind: bool = as_ind, **kwargs: Any) -> Any:
-        """Docstring for wrapper.
+    def wrapper(
+        *args: T.Any, as_ind: bool = as_ind, **kwargs: T.Any
+    ) -> T.Sequence:
+        """idxDecorator wrapper docstring, overwritten by `function`.
 
         Other Parameters
         ----------------
@@ -147,26 +157,31 @@ def idxDecorator(
             (default {as_ind})
             whether to return a boolean array, or array of indices.
 
+        Raises
+        ------
+        `~ValueError`
+            if `as_ind` is "flatten" and cannot be flattened (len > 1)
+
         """
         # Step 1: call function
-        return_ = function(*args, **kwargs)
+        bool_arr = function(*args, **kwargs)
 
         # Step 2:  determine whether to return indices or bool array
         if as_ind:  # works for bool or full str
             # get the indices
-            return_ = np.where(np.asarray(return_) == np.True_)
+            inds = np.nonzero(np.asarray(bool_arr) == np.True_)
+
             # determine whether to return as-is, or flatten
             if as_ind == "flatten":
-                if len(return_) == 1:  # nested list with only 1 element
-                    return return_[0]
+                if len(inds) == 1:  # nested list with only 1 element
+                    return inds[0]
                 else:  # not a valid option
                     raise ValueError
             else:  # do not flatten
-                return return_
+                return inds
 
         # return a bool array
-        else:
-            return return_
+        return bool_arr
 
     # /def
 

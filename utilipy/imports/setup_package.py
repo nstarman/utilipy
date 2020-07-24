@@ -10,8 +10,7 @@
 
 from __future__ import absolute_import
 from contextlib import contextmanager
-from typing import Optional
-
+import typing as T
 
 # THIRD PARTY
 
@@ -38,7 +37,7 @@ conf = Conf()
 
 
 @contextmanager
-def use_import_verbosity(verbosity: Optional[bool] = None):
+def use_import_verbosity(verbosity: T.Optional[bool] = None):
     """Set import verbosity only inside a with block.
 
     Wrapper for conf.set_temp('verbose_imports', verbosity).

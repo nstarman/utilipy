@@ -6,6 +6,8 @@ __author__ = "Nathaniel Starkman"
 
 
 __all__ = [
+    # compat
+    "OrderedDictType",
     # numpy
     "array_like",
     # Astropy
@@ -27,8 +29,9 @@ __all__ = [
 
 # BUILT-IN
 
+import sys
 import typing as T
-from typing import *  # NOQA
+from typing import *  # noqa
 
 
 # THIRD PARTY
@@ -46,11 +49,23 @@ from astropy.modeling.core import Model, FittableModel, CompoundModel
 # CODE
 ###############################################################################
 
+if sys.version_info.minor > 7:
+    OrderedDictType = T.OrderedDict
+else:  # because `typing` doesn't have OrderedDict for py3.6
+    from collections import OrderedDict
+
+    OrderedDictType = T.TypeVar(
+        "OrderedDictType", OrderedDict, T.Sequence[T.Tuple[str, T.Any]]
+    )
+
+EllipsisType = type(Ellipsis)
+
+
 #####################################################################
 # Numpy
 
 
-array_like = T.TypeVar("array_like", np.array, list, tuple, T.Sequence)
+array_like = T.TypeVar("array_like", np.ndarray, list, tuple, T.Sequence)
 """Array-like types compatible with [numpy]_'s "array-like".
 
 References
@@ -114,7 +129,7 @@ References
 Examples
 --------
 
-    >>> sc: FrameOptionsType = SkyCoord()
+    >>> sc: CoordinateType = SkyCoord()
     >>> isinstance(sc, SkyCoord)
     True
 
@@ -174,6 +189,24 @@ Examples
 
     >>> x: UnitableType = 10 * u.km
     >>> isinstance(x, u.Quantity)
+    True
+
+"""
+
+UnitType = T.TypeVar("UnitType", u.UnitBase, u.Unit)
+""":class:`~astropy.units.Unit` Type [astropy]_.
+
+Subclasses of Unit.
+
+References
+----------
+.. [astropy] Astropy Collaboration et al., 2018, AJ, 156, 123.
+
+Examples
+--------
+
+    >>> unit: UnitType = u.km
+    >>> isinstance(x, u.Unit)
     True
 
 """

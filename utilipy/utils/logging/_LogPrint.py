@@ -10,13 +10,11 @@
 # Docstring and Metadata
 """LogPrint function for logging to the console."""
 
-__author__ = "Nathaniel Starkman"
-
 
 ##############################################################################
 # IMPORTS
 
-from typing import Any, Union, Optional
+import typing as T
 
 
 ##############################################################################
@@ -30,10 +28,10 @@ class LogPrint(object):
         self,
         verbose: int = 0,
         sec_div: str = "-",
-        header: Union[str, bool, None] = None,
+        header: T.Union[str, bool, None] = None,
         show_header: bool = True,
         # for compatibility
-        **kw: Any,
+        **kw: T.Any,
     ) -> None:
         """Initialize LogPrint.
 
@@ -68,10 +66,10 @@ class LogPrint(object):
         cls,
         verbose: int = 0,
         sec_div: str = "-",
-        header: Union[bool, None, str] = None,
+        header: T.Union[bool, None, str] = None,
         show_header: bool = True,
-        **kw: Any,
-    ) -> Any:
+        **kw: T.Any,
+    ) -> T.Any:
         """Open LogPrint.
 
         .. todo::
@@ -93,10 +91,10 @@ class LogPrint(object):
         cls,
         verbose: int = 0,
         sec_div: str = "-",
-        header: Union[bool, None, str] = None,
+        header: T.Union[bool, None, str] = None,
         show_header: bool = True,
-        **kw: Any,
-    ) -> Any:
+        **kw: T.Any,
+    ) -> T.Any:
         """open_to_write.
 
         .. todo::
@@ -114,7 +112,7 @@ class LogPrint(object):
     # /def
 
     @classmethod
-    def open_to_read(cls) -> Any:
+    def open_to_read(cls) -> T.Any:
         """Open a logfile to read.
 
         this class uses ``open``, not a more extensive logger, like ``logging``
@@ -205,8 +203,8 @@ class LogPrint(object):
         start: str = "",
         sep: str = " ",
         end: str = "\n",
-        startsection: Union[bool, str] = False,
-        endsection: Union[bool, str] = False,
+        startsection: T.Union[bool, str] = False,
+        endsection: T.Union[bool, str] = False,
         print: bool = True,
     ) -> None:
         r"""Print text.
@@ -252,8 +250,8 @@ class LogPrint(object):
         start: str = "",
         sep: str = " ",
         end: str = "\n",
-        startsection: Union[bool, str] = False,
-        endsection: Union[bool, str] = False,
+        startsection: T.Union[bool, str] = False,
+        endsection: T.Union[bool, str] = False,
     ) -> None:
         """Redirects to write, which goes to print.
 
@@ -278,11 +276,11 @@ class LogPrint(object):
     def report(
         self,
         *msgs: str,
-        verbose: Optional[int] = None,
+        verbose: T.Optional[int] = None,
         print: bool = True,
         write: bool = True,
         start_at: int = 1,
-        **kw: Any,
+        **kw: T.Any,
     ) -> None:
         """Report function whose message is determined by `verbose`.
 
@@ -330,7 +328,7 @@ class LogPrint(object):
 
     # ------------------------------------------------------------------------
 
-    def close(self) -> None:
+    def close(self):
         """Close the non-existent file.
 
         implemented solely to be overwritten by child classes.
@@ -345,13 +343,13 @@ class LogPrint(object):
         cls,
         filename: str,
         buffering: int = -1,
-        encoding: Any = None,
-        errors: Any = None,
-        newline: Any = None,
+        encoding: T.Any = None,
+        errors: T.Any = None,
+        newline: T.Any = None,
         closefd: bool = True,
         opener: None = None,
     ) -> str:
-        """Read and print out a previous log
+        """Read and print out a previous log.
 
         Parameters
         ----------

@@ -2,8 +2,6 @@
 
 """Docstring decorators."""
 
-__author__ = "Nathaniel Starkman"
-
 
 __all__ = [
     "format_doc",

@@ -23,15 +23,20 @@ __all__ = [
 #############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
-from typing import Union, Sequence, Optional
+import typing as T
+
+
+# THIRD PARTY
+
 import numpy as np
 
 
 # PROJECT-SPECIFIC
 
 from .decorators import idxDecorator
+from..utils.typing import EllipsisType
 
 
 #############################################################################
@@ -39,7 +44,7 @@ from .decorators import idxDecorator
 
 
 def _inRange(
-    x: np.array, rng: list, lbi: bool = True, ubi: bool = False
+    x: np.array, rng: T.Sequence, lbi: bool = True, ubi: bool = False
 ) -> np.array:
     """`inRange` helper function.
 
@@ -104,8 +109,8 @@ def _inRange(
 
 @idxDecorator(_doc_style="numpy")
 def inRange(
-    *args: Union[np.array, Sequence],
-    rng: Union[list, type(Ellipsis)] = Ellipsis,
+    *args: T.Union[np.array, T.Sequence],
+    rng: T.Union[T.Sequence, EllipsisType] = Ellipsis,
     lbi: bool = True,
     ubi: bool = False
 ) -> np.array:
@@ -113,11 +118,11 @@ def inRange(
 
     Parameters
     ----------
-    args : list
+    args : Sequence
         list of values along each dimension
         must be the same length
         can be same-shaped ND arrays, each treated as a series of rows.
-    rng : list
+    rng : Sequence or Ellipsis, optional
         (default Ellipsis)
         the domain for each argument in `args`::
 
@@ -127,13 +132,14 @@ def inRange(
                      ...]
 
         if each 'xn' is multidimensional
-    lbi : bool
+    lbi : bool, optional
         (default True)
         Lower Bound Inclusive, whether to be inclusive on the lower bound
-    ubi : bool
+    ubi : bool, optional
         (default False)
         Upper Bound Inclusive, whether to be inclusive on the upper bound
-    as_ind : bool  (default False)
+    as_ind : bool, optional
+        (default False)
         whether to return bool array or the indices (where(bool array == True))
         sets the default behavior for the wrapped fnction *func*
 
@@ -151,27 +157,24 @@ def inRange(
     --------
     list of args:
 
-    >>> x = np.arange(5)
-    >>> y = np.arange(5) + 10
-    >>> inRange(x, y, rng=[[0, 3], [10, 15]]) # doctest: +SKIP
-    array([ True,  True,  True, False, False])
+        >>> x = np.arange(5)
+        >>> y = np.arange(5) + 10
+        >>> inRange(x, y, rng=[[0, 3], [10, 15]]) # doctest: +SKIP
+        array([ True,  True,  True, False, False])
 
     multidimensional arg:
 
-    >>> x = np.array([[ 0,  1], [10, 11]])
-    >>> rng = [[0, 3], [9, 11]]
-    >>> inRange(x, rng=rng) # doctest: +SKIP
-    array([[ True,  True],
-           [ True, False]])
+        >>> x = np.array([[ 0,  1], [10, 11]])
+        >>> rng = [[0, 3], [9, 11]]
+        >>> inRange(x, rng=rng) # doctest: +SKIP
+        array([[ True,  True],
+               [ True, False]])
 
     .. todo::
 
         allow lbi & rbi to be lists, matching args, for individual adjustment
 
     """
-    if rng is None:
-        raise ValueError()
-
     # if only one arg
     if len(args) == 1:
         rng = (rng,)
@@ -199,8 +202,8 @@ def inRange(
 
 @idxDecorator(_doc_style="numpy")
 def outRange(
-    *args: Union[np.array, Sequence],
-    rng: Optional[Sequence] = None,
+    *args: T.Union[np.array, T.Sequence],
+    rng: T.Union[T.Sequence, EllipsisType] = Ellipsis,
     lbi: bool = True,
     ubi: bool = False
 ) -> np.array:
@@ -210,12 +213,12 @@ def outRange(
 
     Parameters
     ----------
-    args : list
+    args : Sequence
         either list of values along each dimension or list of values & bounds
         the input type depends on `rng`
-    rng : None or list
-        (default None)
-        if rng is not None::
+    rng : Ellipsis or Sequence, optional
+        (default Ellipsis)
+        if rng is not Ellipsis::
 
             args = [[x1], [x2], ...]
             rng =   [1st [lower, upper],
@@ -223,13 +226,13 @@ def outRange(
                      ...]
 
         else, args are the list of (x, [lower bound, upper. bound])
-    lbi : bool
+    lbi : bool, optional
         (default False)
         Lower Bound Inclusive, whether to be inclusive on the lower bound
-    ubi : bool
+    ubi : bool, optional
         (default True)
         Upper Bound Inclusive, whether to be inclusive on the upper bound
-    as_ind : bool
+    as_ind : bool, optional
         (default False)
         whether to return bool array or the indices (where(bool array == True))
         sets the default behavior for the wrapped fnction *func*
@@ -256,21 +259,21 @@ def outRange(
 
 @idxDecorator(_doc_style="numpy")
 def ioRange(
-    incl: Union[np.array, Sequence] = None,
-    excl: Union[np.array, Sequence] = None,
-    rng: Optional[Sequence] = None,
+    incl: T.Union[None, tuple, np.array] = None,
+    excl: T.Union[None, tuple, np.array] = None,
+    rng: T.Union[T.Sequence, EllipsisType] = Ellipsis,
 ) -> np.array:
     """Supports inRange and outRange.
 
     Parameters
     ----------
-    incl : array_like
+    incl : array_like, optional
         args into `inRange`
         must be a tuple if many args, not a tuple else
-    excl : array_like
+    excl : array_like, optional
         args into `outRange`
         must be a tuple if many args, not a tuple else
-    rng : array_like
+    rng : Sequence or Ellipsis, optional
         concatenated list of (in)outRange rng
         must be in orgder of [inRange rng, outRange rng]
     as_ind : bool
@@ -303,19 +306,19 @@ def ioRange(
     # Both inclusion and exclusion
     else:
         if isinstance(incl, tuple):
-            inclrng = rng[: len(incl)] if rng is not None else None
+            inclrng = rng[: len(incl)] if rng is not ... else ...
             out = inRange(*incl, rng=inclrng)
         else:
-            inclrng = rng[: np.shape(incl)[0] - 1] if rng is not None else None
+            inclrng = rng[: np.shape(incl)[0] - 1] if rng is not ... else ...
             if len(inclrng) == 1:
                 inclrng = inclrng[0]
             out = inRange(incl, rng=inclrng)
 
         if isinstance(excl, tuple):
-            exclrng = rng[len(excl) :] if rng is not None else None
+            exclrng = rng[len(excl) :] if rng is not ... else ...
             out &= outRange(*excl, rng=exclrng)
         else:
-            exclrng = rng[np.shape(excl)[0] - 1 :] if rng is not None else None
+            exclrng = rng[np.shape(excl)[0] - 1 :] if rng is not ... else ...
             if len(exclrng) == 1:
                 exclrng = exclrng[0]
             out &= outRange(excl, rng=exclrng)
@@ -331,9 +334,9 @@ def ioRange(
 
 @idxDecorator(_doc_style="numpy")
 def ellipse(
-    *x: Union[np.array, Sequence],
-    x0: Union[float, Sequence] = 0.0,
-    dx: Union[float, Sequence] = 1.0
+    *x: T.Union[np.array, T.Sequence],
+    x0: T.Union[float, T.Sequence] = 0.0,
+    dx: T.Union[float, T.Sequence] = 1.0
 ) -> np.array:
     r"""Elliptical selection of data in many dimensions.
 
@@ -345,11 +348,11 @@ def ellipse(
     ----------
     x: m x (n, 1) array_like
         values along each dimension
-    x0: scalar or (m, 1) array
+    x0: scalar or (m, 1) array, optional
         (default = 0.)
         the center position of each x.
         can broadcast a scalar to apply to all
-    dx: scalar or (m, 1) array
+    dx: scalar or (m, 1) array, optional
         (default = 0.)
         the radius in each dimension
 
@@ -378,9 +381,9 @@ def ellipse(
 
 @idxDecorator(_doc_style="numpy")
 def circle(
-    *x: Union[np.array, Sequence],
-    x0: Union[float, Sequence] = 0.0,
-    radius: Union[float, Sequence] = 1.0
+    *x: T.Union[np.array, T.Sequence],
+    x0: T.Union[float, T.Sequence] = 0.0,
+    radius: T.Union[float, T.Sequence] = 1.0
 ) -> np.array:
     """Circular selection of data in many dimensions.
 
@@ -399,7 +402,7 @@ def circle(
         scalar or (m, 1) array
         the center position of each x, [default 0.]
         can broadcast a scalar to apply to all
-    dx : scalar
+    radius : float, optional
         the radius
 
     Returns

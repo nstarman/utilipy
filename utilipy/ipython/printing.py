@@ -39,7 +39,8 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-from typing import Union, Optional
+import typing as T
+
 from IPython.display import display  # display is a better print
 from IPython.display import Latex, Markdown  # , HTML
 
@@ -51,13 +52,13 @@ from IPython.display import Latex, Markdown  # , HTML
 
 def printMD(
     s: str,
-    color: Optional[str] = None,
-    size: Optional[float] = None,
+    color: T.Optional[str] = None,
+    size: T.Optional[float] = None,
     bold: bool = False,
     italic: bool = False,
-    fontweight: Optional[float] = None,
-    fontstyle: Optional[str] = None,
-    highlight: Optional[str] = None,
+    fontweight: T.Optional[float] = None,
+    fontstyle: T.Optional[str] = None,
+    highlight: T.Optional[str] = None,
 ):
     """Print in Markdown.
 
@@ -136,9 +137,9 @@ def printMD(
 
 def printLTX(
     s: str,
-    math: Union[str, bool] = False,
-    equation: Union[str, bool] = False,
-    matrix: Union[str, bool] = False,
+    math: T.Union[str, bool] = False,
+    equation: T.Union[str, bool] = False,
+    matrix: T.Union[str, bool] = False,
     label: str = "",
 ):
     r"""Print in LaTeX.
