@@ -36,7 +36,7 @@ __all__ = [
 
 # GENERAL
 
-from typing import Union, Optional
+import typing as T
 
 from IPython import get_ipython
 
@@ -66,7 +66,7 @@ else:
 ##############################################################################
 
 
-def set_autoreload(reload_type: Optional[int] = None):
+def set_autoreload(reload_type: T.Optional[int] = None):
     """Global imports setting.
 
     Parameters
@@ -104,7 +104,7 @@ def set_autoreload(reload_type: Optional[int] = None):
 ##############################################################################
 
 
-def aimport(*modules: str, autoreload: Union[bool, list, tuple] = True):
+def aimport(*modules: str, autoreload: T.Union[bool, list, tuple] = True):
     """Jupyter magic aimport.
 
     Parameters
@@ -149,7 +149,7 @@ if _HAS_IPY is True:
     if get_ipython() is not None:
         get_ipython().magic("load_ext autoreload")  # autoreload extensions
         set_autoreload(1)
-
+# /if
 
 ##############################################################################
 # END

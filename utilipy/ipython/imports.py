@@ -293,7 +293,9 @@ def run_imports(
 # TODO make these with a function
 
 
-@set_docstring_for_import_func("base_imports.py", package="utilipy.imports")
+@set_docstring_for_import_func(
+    "base_imports.py", package="utilipy.imports", section="Returns"
+)
 def import_base(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -316,7 +318,9 @@ def import_base(
 
 
 @set_docstring_for_import_func(
-    "extended_imports.py", package="utilipy.imports"
+    "extended_imports.py",
+    package="utilipy.imports",
+    section="Routine Listings",
 )
 def import_extended(
     verbose_imports: T.Optional[bool] = None,
@@ -339,7 +343,9 @@ def import_extended(
 # /def
 
 
-@set_docstring_for_import_func("astropy_imports.py", package="utilipy.imports")
+@set_docstring_for_import_func(
+    "astropy_imports.py", package="utilipy.imports", section="Routine Listings"
+)
 def import_astropy(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -366,7 +372,9 @@ def import_astropy(
 
 
 @set_docstring_for_import_func(
-    "matplotlib_imports.py", package="utilipy.imports"
+    "matplotlib_imports.py",
+    package="utilipy.imports",
+    section="Routine Listings",
 )
 def import_matplotlib(
     verbose_imports: T.Optional[bool] = None,
@@ -389,7 +397,9 @@ def import_matplotlib(
 # /def
 
 
-@set_docstring_for_import_func("plotly_imports.py", package="utilipy.imports")
+@set_docstring_for_import_func(
+    "plotly_imports.py", package="utilipy.imports", section="Routine Listings"
+)
 def import_plotly(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -415,7 +425,9 @@ def import_plotly(
 # extras
 
 
-@set_docstring_for_import_func("galpy_imports.py", package="utilipy.imports")
+@set_docstring_for_import_func(
+    "galpy_imports.py", package="utilipy.imports", section="Routine Listings"
+)
 def import_galpy(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -437,7 +449,9 @@ def import_galpy(
 # /def
 
 
-@set_docstring_for_import_func("amuse_imports.py", package="utilipy.imports")
+@set_docstring_for_import_func(
+    "amuse_imports.py", package="utilipy.imports", section="Routine Listings"
+)
 def import_amuse(
     verbose_imports: T.Optional[bool] = None,
     logger: LogFile = _LOGFILE,
@@ -460,7 +474,9 @@ def import_amuse(
 
 
 @set_docstring_for_import_func(
-    "astronat_imports.py", package="utilipy.imports"
+    "astronat_imports.py",
+    package="utilipy.imports",
+    section="Routine Listings",
 )
 def import_astronat(
     verbose_imports: T.Optional[bool] = None,

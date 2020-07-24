@@ -22,6 +22,7 @@ __all__ = [
     "test_append_parameter",
     "test_drop_parameter",
     # test FullerSignature
+    "test_FullerSignature_creation",
     "test_FullerSignature_bind",
     "test_FullerSignature_signature",
     "test_FullerSignature_annotations",
@@ -537,10 +538,55 @@ def test_drop_parameter():
 # Signature
 
 
+def test_FullerSignature_creation():
+    """Test `~utilipy.utils.inspect.FullerSignature` class creation."""
+    # ------------------
+    # __init__
+
+    blanksig = inspect.FullerSignature()
+
+    assert blanksig.parameters == MappingProxyType(OrderedDict())
+    assert blanksig.return_annotation == inspect._empty
+    assert blanksig.obj is None
+
+    # manual construction
+    parameters = {
+        "x": inspect.Parameter("x", inspect.POSITIONAL_OR_KEYWORD, default=0),
+        "y": inspect.Parameter("y", inspect.POSITIONAL_OR_KEYWORD, default=1),
+    }
+
+    madesig = inspect.FullerSignature(
+        parameters=parameters.values(), return_annotation="return_"
+    )
+
+    assert madesig.parameters == parameters
+    assert madesig.return_annotation == "return_"
+    assert madesig.obj is None
 
     # ------------------
+    # from_callable
+
+    normsig = nspct.Signature.from_callable(NS.test_func)
+    fromcallsig = inspect.FullerSignature.from_callable(NS.test_func)
+
+    assert fromcallsig.parameters == normsig.parameters
+    assert fromcallsig.return_annotation == normsig.return_annotation
+    assert fromcallsig.obj == NS.test_func
 
     # ------------------
+    # from_signature
+
+    fromsigsig = inspect.FullerSignature.from_signature(
+        fromcallsig, obj=NS.test_func
+    )
+
+    assert fromsigsig.parameters == fromcallsig.parameters
+    assert fromsigsig.return_annotation == fromcallsig.return_annotation
+    assert fromsigsig.obj == NS.test_func
+
+
+# /def
+
 
 def test_FullerSignature_bind():
     """Test `~utilipy.utils.inspect.FullerSignature` argument binding.

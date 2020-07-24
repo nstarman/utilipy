@@ -591,7 +591,7 @@ def append_parameter(sig: Signature, param: Parameter) -> Signature:
 
 
 def drop_parameter(
-    sig: Signature, param: T.Union[str, int, Parameter]
+    sig: Signature, param: T.Union[str, int, Parameter, None]
 ) -> Signature:
     """Drop a Parameter.
 
@@ -603,6 +603,7 @@ def drop_parameter(
         the parameter to drop in self.parameters
         identified by either the name (str) or index (int)
         (Parameter type calls name)
+        If None, does not drop anything
 
     Returns
     -------
@@ -610,7 +611,9 @@ def drop_parameter(
         a new Signature object with the replaced parameter
 
     """
-    if isinstance(param, int):  # convert index to name
+    if param is None:
+        return sig
+    elif isinstance(param, int):  # convert index to name
         index = param
     elif isinstance(param, str):
         index = list(sig.parameters.keys()).index(param)
@@ -711,10 +714,13 @@ class FullerSignature(Signature):
         FullerSignature instance
 
         """
-        sig: FullerSignature = super().__init__(
-            parameters=signature.parameters,
+        sig = cls(
+            parameters=signature.parameters.values(),
             return_annotation=signature.return_annotation,
+            obj=obj
         )
+
+        # TODO check on obj, that has matching sig as signature
 
         return sig
 

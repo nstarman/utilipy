@@ -123,8 +123,7 @@ __all__ = [
 import copy
 from abc import abstractmethod
 from collections import namedtuple
-from typing import Any, Optional, Callable
-
+import typing as T
 
 # PROJECT-SPECIFIC
 
@@ -255,7 +254,7 @@ class DecoratorBaseMeta(type):
         #   - change function default to None
 
         # store original call function   # TODO fix copy_function
-        dct["__orig_call__"]: Callable = functools.copy_function(
+        dct["__orig_call__"]: T.Callable = functools.copy_function(
             dct["__call__"]
         )
         dct["__orig_call__"].__kwdefaults__: dict = dct[
@@ -276,7 +275,7 @@ class DecoratorBaseMeta(type):
 
         # make wrapper
         def callwrapper(
-            self, function: Callable = None, *args: Any, **kwargs: Any
+            self, function: T.Callable = None, *args: T.Any, **kwargs: T.Any
         ):
             self = self.new(
                 **kwargs
@@ -302,7 +301,7 @@ class DecoratorBaseMeta(type):
 
         # overwrite __call__ with wrapped function
         # TODO fix update_wrapper
-        dct["__call__"]: Callable = functools.update_wrapper(
+        dct["__call__"]: T.Callable = functools.update_wrapper(
             callwrapper,
             dct["__orig_call__"],
             signature=callsig,
@@ -347,7 +346,7 @@ class DecoratorBaseMeta(type):
 
         # add docstring to methods
         key: str
-        val: Any
+        val: T.Any
         for key, val in dct.items():
             # check is public function without a docstring
             if (
@@ -412,7 +411,7 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 
     # /def
 
-    def __new__(cls: type, function: Optional[Callable] = None, **kwargs: Any):
+    def __new__(cls: type, function: T.Optional[T.Callable] = None, **kwargs: T.Any):
         """Make new DecoratorBaseClass.
 
         Parameters
@@ -502,7 +501,7 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 
     # /def
 
-    def __setitem__(self: type, name: str, value: Any):
+    def __setitem__(self: type, name: str, value: T.Any):
         """Set kwdefaults item."""
         self.__kwdefaults__[name] = value
 
@@ -510,8 +509,8 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 
     def as_decorator(
         self: type,
-        wrapped_function: Optional[Callable] = None,
-        **kwdefaults: Any
+        wrapped_function: T.Optional[T.Callable] = None,
+        **kwdefaults: T.Any
     ):
         """Make decorator.
 
@@ -568,9 +567,9 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
     # /def
 
     @abstractmethod
-    def __call__(self: type, function: Callable):
+    def __call__(self: type, function: T.Callable):
         @functools.wraps(function)
-        def wrapper(*func_args: Any, **func_kwargs: Any):
+        def wrapper(*func_args: T.Any, **func_kwargs: T.Any):
             return function(*func_args, **func_kwargs)
 
         # /def
@@ -587,7 +586,7 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 # Turn a Function into a Decorator
 
 
-def classy_decorator(decorator_function: Callable = None):
+def classy_decorator(decorator_function: T.Callable = None):
     """Convert decorated functions to classes.
 
     Parameters
@@ -613,7 +612,7 @@ def classy_decorator(decorator_function: Callable = None):
     kwd: dict = inspect.getfullerargspec(decorator_function).kwonlydefaults
 
     def mycall(
-        self: type, wrapped_function: Callable, *args: Any, **kwargs: Any
+        self: type, wrapped_function: T.Callable, *args: T.Any, **kwargs: T.Any
     ):
         return decorator_function(wrapped_function, *args, **kwargs)
 
@@ -624,7 +623,7 @@ def classy_decorator(decorator_function: Callable = None):
         __base_kwdefaults__: dict = kwd
 
         # /def
-        __call__: Callable = functools.makeFunction(
+        __call__: T.Callable = functools.makeFunction(
             mycall.__code__,
             mycall.__globals__,
             name="__call__",

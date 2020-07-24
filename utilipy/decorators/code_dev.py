@@ -29,7 +29,7 @@ import inspect
 import textwrap
 import types
 import warnings
-from typing import Union
+import typing as T
 
 
 # PROJECT-SPECIFIC
@@ -130,7 +130,7 @@ def indev(
 
     # -----------------------------------------------------
 
-    def indev_doc(old_doc: Union[str, None], message: str):
+    def indev_doc(old_doc: T.Union[str, None], message: str):
         """Returns a given docstring with an in-dev message prepended.
 
         .. todo::

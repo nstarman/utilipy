@@ -31,6 +31,9 @@ def test_init_fitting():
     """Test module initialization."""
     # Expectations
     local = [
+        # modules
+        "lmfit_utils",
+        # functions
         "scipy_residual_to_lmfit",
     ]
 

@@ -18,7 +18,7 @@ Routine Listings
 Astropy: imports
 
     - units->u,
-    - coordinates->coords, SkyCoord,
+    - coordinates->coord, SkyCoord,
     - table.Table, QTable
     - visualization.quantity_support, astropy_mpl_style
 
@@ -38,7 +38,7 @@ __all__ = [
     # "quantity_support",
     "astropy",
     "u",
-    "coords",
+    "coord",
     "SkyCoord",
     "Table",
     "QTable",
@@ -62,13 +62,17 @@ from utilipy.utils import make_help_function
 
 import astropy
 
-from astropy import units as u  # units TODO replace with mine
-from astropy import coordinates as coords  # coordinates
+import astropy.coordinates as coord  # coordinates
+import astropy.units as u  # units TODO replace with mine
 
 from astropy.coordinates import SkyCoord
 from astropy.table import Table, QTable  # table data structure
 
-from astropy.visualization import quantity_support, astropy_mpl_style
+from astropy.visualization import (
+    quantity_support,
+    time_support,
+    astropy_mpl_style,
+)
 
 # modeling
 from astropy import modeling
@@ -85,6 +89,7 @@ if float(astropy.__version__[:3]) > 4.1:
 
 # astropy changes to matplotlib
 quantity_support()
+time_support()
 
 
 ##############################################################################

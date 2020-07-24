@@ -16,10 +16,14 @@ __author__ = "Nathaniel Starkman"
 ##############################################################################
 # IMPORTS
 
-# General
-import numpy as np
+# THIRD PARTY
 
-# Project-Specific
+import numpy as np
+import pytest
+
+
+# PROJECT-SPECIFIC
+
 from utilipy.data_utils.select import (
     _inRange,
     inRange,

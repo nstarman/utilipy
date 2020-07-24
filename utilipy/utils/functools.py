@@ -46,15 +46,15 @@ __all__ = [  # TODO use :allowed-package-names: `functools`
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
+
+import typing as T
 
 from functools import *  # so can be a drop-in for `functools`
 from functools import partial
 
-# import functools
 from inspect import signature as _get_signature
 from types import FunctionType
-from typing import Any, Union, Callable, Sequence, Optional
 
 
 # PROJECT-SPECIFIC
@@ -82,12 +82,12 @@ del globals()["wraps"]
 
 
 def make_function(
-    code: Any,
-    globals_: Any,
+    code: T.Any,
+    globals_: T.Any,
     name: str,
     signature: _FullerSignature,
     docstring: str = None,
-    closure: Any = None,
+    closure: T.Any = None,
     qualname: str = None,
     # options
     _add_signature=False,
@@ -152,7 +152,7 @@ def make_function(
 # -----------------------------------------------------------------------------
 
 
-def copy_function(func: Callable):
+def copy_function(func: T.Callable):
     """Copy an existing function.
 
     Notes
@@ -200,15 +200,15 @@ WRAPPER_UPDATES = ("__dict__",)
 
 
 def update_wrapper(
-    wrapper: Callable,
-    wrapped: Callable,
-    signature: Union[_FullerSignature, None, bool] = True,  # not in functools
-    docstring: Union[str, bool] = True,  # not in functools
-    assigned: Sequence[str] = WRAPPER_ASSIGNMENTS,
-    updated: Sequence[str] = WRAPPER_UPDATES,
+    wrapper: T.Callable,
+    wrapped: T.Callable,
+    signature: T.Union[_FullerSignature, None, bool] = True,  # not in functools
+    docstring: T.Union[str, bool] = True,  # not in functools
+    assigned: T.Sequence[str] = WRAPPER_ASSIGNMENTS,
+    updated: T.Sequence[str] = WRAPPER_UPDATES,
     # docstring options
-    _doc_fmt: Optional[dict] = None,  # not in functools
-    _doc_style: Union[str, Callable, None] = None,
+    _doc_fmt: T.Optional[dict] = None,  # not in functools
+    _doc_style: T.Union[str, T.Callable, None] = None,
 ):
     """Update a wrapper function to look like the wrapped function.
 
@@ -396,13 +396,13 @@ def update_wrapper(
 
 
 def wraps(
-    wrapped: Callable,
-    signature: Union[_FullerSignature, None, bool] = True,
-    docstring: Union[str, None, bool] = None,
-    assigned: Sequence[str] = WRAPPER_ASSIGNMENTS,
-    updated: Sequence[str] = WRAPPER_UPDATES,
-    _doc_fmt: Optional[dict] = None,
-    _doc_style: Union[str, Callable, None] = None,
+    wrapped: T.Callable,
+    signature: T.Union[_FullerSignature, None, bool] = True,
+    docstring: T.Union[str, None, bool] = None,
+    assigned: T.Sequence[str] = WRAPPER_ASSIGNMENTS,
+    updated: T.Sequence[str] = WRAPPER_UPDATES,
+    _doc_fmt: T.Optional[dict] = None,
+    _doc_style: T.Union[str, T.Callable, None] = None,
 ):
     """:func:`~functools.wraps`, adding signature and docstring features.
 

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-"""Fitting module."""
-
-__author__ = "Nathaniel Starkman"
-
+"""Fitting utilities."""
 
 __all__ = [
+    # modules
+    "lmfit_utils",
+    # functions
     "scipy_residual_to_lmfit",
 ]
 
@@ -13,7 +13,12 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-from .lmfit_decorator import scipy_residual_to_lmfit
+from .lmfit_utils import scipy_residual_to_lmfit
+
+# from .astropy_decorator import scipy_function_to_astropy_model
+
+# modules
+from . import lmfit_utils
 
 
 ##############################################################################

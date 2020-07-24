@@ -52,8 +52,9 @@ def test_init_data_utils():
         "decorators",
         "select",
         "fitting",
+        "utils",
         "xfm",
-        # functions
+        # decorators
         "idxDecorator",
         # data transformation graph
         "data_graph",
@@ -64,8 +65,9 @@ def test_init_data_utils():
         "xmatch_fields",
         "xmatch",
         "non_xmatched",
-        # local
+        # utils
         "get_path_to_file",
+        "shuffle",
     ]
     local += data_utils.select.__all__
 
@@ -274,6 +276,7 @@ def test_init_utils():
         "functools",
         "inspect",
         "metaclasses",
+        "misc",
         "pickle",
         "string",
         "typing",
