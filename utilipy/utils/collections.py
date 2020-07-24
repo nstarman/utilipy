@@ -230,21 +230,69 @@ class WithReference(WithMeta, WithDocstring):
 
 
 class MetaDataBase:
-    """Superclass for object with MetaData.
+    r"""Superclass for object with MetaData.
+
+    Child classes accept the class argument ``meta_copy``.
 
     Attributes
     ----------
     meta : `~astropy.utils.metadata.MetaData`
-        Meta-data descriptor with ``copy=False``.
+        Meta-data descriptor with ``copy`` set by `_meta_copy`.
+    \_meta_copy : bool
+        Whether `meta` has ``copy=True``.
+        This is set with the class argument ``meta_copy``
 
+        >>> class Child(MetaDataBase, meta_copy=False):
+        ...     pass
 
-    .. todo::
+    Examples
+    --------
+    Making a child class
 
-        init that accepts dictionary to add to meta
+        >>> class Child(MetaDataBase, meta_copy=False):
+        ...     pass
 
     """
 
-    meta = MetaData(copy=False)  # TODO control this by Metaclass argument
+    _meta = OrderedDict()
+
+    def __init_subclass__(cls, meta_copy: bool = True):
+        """Control subclass creation.
+
+        Parameters
+        ----------
+        meta_copy : bool, optional
+            Whether the `~astropy.utils.metadata.MetaData` instance uses
+            ``copy=True``.
+            The value is stored in ``self._meta_copy``
+
+        """
+        cls.meta = MetaData(copy=meta_copy)
+        cls._meta_copy = meta_copy
+        super().__init_subclass__()
+
+    # /def
+
+    def __new__(cls, *args, **kwargs):
+        if cls == MetaDataBase:
+            raise TypeError(f"Must subclass {cls.__name__} to use.")
+        return super().__new__(cls)
+
+    # /def
+
+    def __init__(self, **metadata):
+        """Initialize Metadata.
+
+        Parameters
+        ----------
+        **metadata : Any
+            added to ``meta``
+
+        """
+        super().__init__()
+        self.meta.update(metadata)
+
+    # /def
 
 
 # /class
@@ -252,6 +300,8 @@ class MetaDataBase:
 
 class ReferenceBase(MetaDataBase):
     """Superclass for objects with references.
+
+    Accepts the class argument ``meta_copy``.
 
     Attributes
     ----------
@@ -263,7 +313,14 @@ class ReferenceBase(MetaDataBase):
 
     """
 
-    def __init__(self, *, reference: T.Union[None, str] = None):
+    def __new__(cls, *args, **kwargs):
+        if cls == ReferenceBase:
+            raise TypeError(f"Must subclass {cls.__name__} to use.")
+        return super().__new__(cls, *args, **kwargs)
+
+    # /def
+
+    def __init__(self, *, reference: T.Union[None, str] = None, **metadata):
         """Initialize Reference Metadata.
 
         Parameters
@@ -271,10 +328,11 @@ class ReferenceBase(MetaDataBase):
         reference : str, optional
             reference, added to metadata.
             accessible by ``__reference__``
+        **metadata
+            To add to metadata.
 
         """
-        super().__init__()
-        self.meta["reference"] = reference
+        super().__init__(reference=reference, **metadata)
 
     # /def
 

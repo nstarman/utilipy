@@ -172,6 +172,53 @@ def test_WithReference():
 
 # /def
 
+###############################################################################
+# MetaDataBase
+
+
+def test_MetaDataBase():
+    """Test :class:`~utilipy.utils.collections.MetaDataBase`."""
+
+    class ChildClass(collections.MetaDataBase):
+        pass
+
+    meta = OrderedDict([("m1", "meta 1"), ("m2", "meta 2")])
+    mdb = ChildClass(**meta)
+
+    assert mdb._meta == meta
+    assert mdb.meta == meta
+    assert mdb.meta["m1"] == meta["m1"]
+
+
+# /def
+
+
+###############################################################################
+# ReferenceBase
+
+
+def test_ReferenceBase():
+    """Test :class:`~utilipy.utils.collections.ReferenceBase`."""
+    meta = OrderedDict([("m1", "meta 1"), ("m2", "meta 2")])
+    reference = "the reference"
+
+    class ChildClass(collections.ReferenceBase):
+        pass
+
+    mdb = ChildClass(reference=reference, **meta)  # has reference in meta
+
+    meta["reference"] = reference
+
+    assert mdb._meta == meta
+    assert mdb.meta == meta
+    assert mdb.meta["reference"] == meta["reference"] == reference
+    assert mdb.meta["m1"] == meta["m1"]
+
+    assert mdb.__reference__ == reference
+
+
+# /def
+
 
 ###############################################################################
 # ObjDict
