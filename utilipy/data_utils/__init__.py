@@ -2,8 +2,6 @@
 
 """Data Utilities."""
 
-__author__ = "Nathaniel Starkman"
-
 
 __all__ = [
     # modules
@@ -42,8 +40,8 @@ from .crossmatch import (
 )
 from .decorators import idxDecorator
 from .xfm import data_graph, TransformGraph, DataTransform
-from .select import *  # noqa
 from .utils import shuffle, get_path_to_file
+from .select import *  # noqa
 
 # modules
 from . import decorators, select, fitting, xfm, crossmatch, utils
