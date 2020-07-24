@@ -48,28 +48,35 @@ zT = z.T  # [[0,  10], [1, 11]]
 # _inRange
 
 
+def test__inRange_1D_default():
+    """Test _inRange."""
+    # standard  (lbi=True, ubi=False)
+    assert all(_inRange(x, rng=[0, 1]) == np.array([True, False]))
+
+
+# /def
+
+
+@pytest.mark.parametrize(
+    "flags, expected",
+    [
+        ((False, False), np.array([False, False])),
+        ((False, True), np.array([False, True])),
+        ((True, False), np.array([True, False])),
+        ((True, True), np.array([True, True])),
+    ],
+    ids=["non-inclusive", "ubi", "lbi", "inclusive"],
+)
+def test__inRange_1D_options(flags, expected):
+    """Test _inRange, 1D, flag options."""
+    assert all(_inRange(x, rng=[0, 1], lbi=flags[0], ubi=flags[1]) == expected)
+
+
+# /def
+
+
 def test__inRange():
     """Test _inRange."""
-    # ---------------------------------
-    # 1-Dimensional
-
-    # set range
-    rng = [0, 1]
-
-    # standard  (lbi=True, ubi=False)
-    assert all(_inRange(x, rng) == np.array([True, False]))
-
-    # going through options
-    assert all(
-        _inRange(x, rng, lbi=False, ubi=False) == np.array([False, False])
-    )
-    assert all(
-        _inRange(x, rng, lbi=False, ubi=True) == np.array([False, True])
-    )
-    assert all(
-        _inRange(x, rng, lbi=True, ubi=False) == np.array([True, False])
-    )
-    assert all(_inRange(x, rng, lbi=True, ubi=True) == np.array([True, True]))
 
     # ---------------------------------
     # N-Dimensional
@@ -687,42 +694,27 @@ def test_outRange_mixing_1D_and_ND_arguments():
 # ioRange
 
 
-def test_ioRange_single_1D_argument():
-    """Test outRange for a single, 1D argument."""
-    # ---------------------------------
-    # in & out
+def test_ioRange_raises():
+    """Test ioRange for expected failures."""
+    with pytest.raises(ValueError):
+        ioRange(incl=None, excl=None)
 
-    rng = ([0, 1], [11, 12])
 
-    # standard  (lbi=True, ubi=False)
-    assert all(ioRange(incl=x, excl=y, rng=rng) == np.array([True, False]))
+# /def
 
-    # going through options
-    # NO OPTIONS
 
-    # ---------------------------------
-    # both in
-
-    rng = ([0, 1], [10, 11])
-
-    # standard  (lbi=True, ubi=False)
-    assert all(ioRange(incl=(x, y), rng=rng) == np.array([True, False]))
-
-    # going through options
-    # NO OPTIONS
-
-    # ---------------------------------
-    # both out
-
-    rng = ([1, 2], [11, 12])
-
-    # standard  (lbi=True, ubi=False)
-    assert all(ioRange(excl=(x, y), rng=rng) == np.array([True, False]))
-
-    # going through options
-    # NO OPTIONS
-
-    return
+@pytest.mark.parametrize(
+    "rng, expected",
+    [
+        (([0, 1], [11, 12]), np.array([True, False])),
+        (([0, 1], [10, 11]), np.array([False, False])),
+        (([1, 2], [11, 12]), np.array([False, False])),
+    ],
+    ids=["in & out", "both in", "both out"],
+)
+def test_ioRange_single_1D_argument(rng, expected):
+    """Test ioRange for a single, 1D argument."""
+    assert all(ioRange(incl=x, excl=y, rng=rng) == expected)
 
 
 # /def
