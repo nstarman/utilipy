@@ -216,7 +216,7 @@ def getfullerargspec(func: T.Callable) -> FullerArgSpec:
 
         args: T.Optional[T.List[str]] = spec.args[: -len(spec.defaults)]
         defargs: T.Optional[T.List[str, T.Any]] = spec.args[
-            -len(spec.defaults) :
+            -len(spec.defaults):
         ]
         defaults = {k: v for k, v in zip(defargs, spec.defaults)}
 
@@ -601,7 +601,7 @@ def drop_parameter(
         Signature object
     param: str, int, Parameter
         the parameter to drop in self.parameters
-        identified by either the name or index
+        identified by either the name (str) or index (int)
         (Parameter type calls name)
 
     Returns
@@ -708,7 +708,7 @@ class FullerSignature(Signature):
 
         Returns
         -------
-        FullerSignature
+        FullerSignature instance
 
         """
         sig: FullerSignature = super().__init__(
@@ -1433,7 +1433,7 @@ class FullerSignature(Signature):
 # ------------------------------------------------------------------------
 
 
-def fuller_signature(obj: T.Any, *, follow_wrapped: bool = True):
+def fuller_signature(obj: T.Callable, *, follow_wrapped: bool = True):
     """Get a signature object for the passed callable."""
     return FullerSignature.from_callable(obj, follow_wrapped=follow_wrapped)
 

@@ -21,8 +21,35 @@ __all__ = [
     "test_prepend_parameter",
     "test_append_parameter",
     "test_drop_parameter",
-    "test_FullerSignature",
+    # test FullerSignature
+    "test_FullerSignature_bind",
+    "test_FullerSignature_signature",
+    "test_FullerSignature_annotations",
+    "test_FullerSignature_defaults",
+    "test_FullerSignature_kwdefaults",
+    "test_FullerSignature_kinds",
+    "test_FullerSignature_names",
+    "test_FullerSignature_index_positional",
+    "test_FullerSignature_index_positional_only",
+    "test_FullerSignature_defaulted",
+    "test_FullerSignature_index_var_positional",
+    "test_FullerSignature_index_keyword_only",
+    "test_FullerSignature_index_end_keyword_only",
+    "test_FullerSignature_index_var_keyword",
+    "test_FullerSignature_copy",
+    "test_FullerSignature_modify_parameter",
+    "test_FullerSignature_replace_with_parameter",
+    "test_FullerSignature_insert_parameter",
+    "test_FullerSignature_prepend_parameter",
+    "test_FullerSignature_append_parameter",
+    "test_FullerSignature_drop_parameter",
+    "test_FullerSignature_add_var_positional_parameter",
+    "test_FullerSignature_add_var_keyword_parameter",
+    "test_FullerSignature_hidden_methods",
+    # fuller_signature
     "test_fuller_signature",
+    "test_signature_from_method",
+    "test_fuller_signature_from_method",
 ]
 
 
@@ -31,7 +58,9 @@ __all__ = [
 
 # BUILT-IN
 
+from collections import OrderedDict
 import inspect as nspct
+from types import MappingProxyType
 
 
 # THIRD PARTY
@@ -48,8 +77,8 @@ from .. import inspect
 # PARAMETERS
 
 
-class NameSpace:
-    """Store things for use in testing without messing up pytest."""
+class NS:
+    """Name Space. Testing without messing up pytest."""
 
     @staticmethod
     def test_func(
@@ -61,12 +90,14 @@ class NameSpace:
 
     # /def
 
+    @staticmethod
     def appendable_func(x, y):
         """Docstring."""
         pass
 
     # /def
 
+    @staticmethod
     def no_arg_func():
         """Docstring."""
         pass
@@ -78,15 +109,49 @@ class NameSpace:
 
         def __eq__(self, other):
             """No Equality."""
-            other
-            raise Exception
+            raise Exception(f"forbidden equality tests with {other}")
 
         # /def
 
     # /class
 
+    def method(
+        self,
+        x: int,
+        y,
+        a: int = 1,
+        b=2,
+        *args: str,
+        j: str = "a",
+        k="b",
+        **kw: dict,
+    ):
+        pass
 
-NameSpace.NEQ = NameSpace.ExceptEquality()
+    # /def
+
+    @classmethod
+    def classmethod(
+        cls,
+        x: int,
+        y,
+        a: int = 1,
+        b=2,
+        *args: str,
+        j: str = "a",
+        k="b",
+        **kw: dict,
+    ):
+        pass
+
+    # /def
+
+
+NS.NEQ = NS.ExceptEquality()
+NS.normsig = nspct.Signature.from_callable(NS.test_func)
+NS.fullsig = inspect.FullerSignature.from_callable(NS.test_func)
+NS.noargsig = inspect.FullerSignature.from_callable(NS.no_arg_func)
+NS.appsig = inspect.FullerSignature.from_callable(NS.appendable_func)
 # /class
 
 
@@ -132,8 +197,6 @@ def test_parameters():
         )
     )
 
-    return
-
 
 # /def
 
@@ -152,9 +215,7 @@ def test__is_empty():
     assert not inspect._is_empty(1)
 
     # Exception
-    assert not inspect._is_empty(NameSpace.NEQ)
-
-    return
+    assert not inspect._is_empty(NS.NEQ)
 
 
 # /def
@@ -171,9 +232,7 @@ def test__is_void():
     assert not inspect._is_void(1)
 
     # Exception
-    assert not inspect._is_void(NameSpace.NEQ)
-
-    return
+    assert not inspect._is_void(NS.NEQ)
 
 
 # /def
@@ -189,9 +248,7 @@ def test__is_placehold():
     assert not inspect._is_placehold(1)
 
     # Exception
-    assert not inspect._is_placehold(NameSpace.NEQ)
-
-    return
+    assert not inspect._is_placehold(NS.NEQ)
 
 
 # /def
@@ -199,11 +256,20 @@ def test__is_placehold():
 
 def test__is_placeholder():
     """Test _is_placeholder."""
-    test__is_empty()
-    test__is_void()
-    test__is_placehold()
+    # True
+    assert all(
+        (
+            inspect._is_placeholder(inspect._empty),
+            inspect._is_placeholder(inspect._void),
+            inspect._is_placeholder(inspect._placehold),
+        )
+    )
 
-    return
+    # False
+    assert not inspect._is_placeholder(1)
+
+    # Exception
+    assert not inspect._is_placehold(NS.NEQ)
 
 
 # /def
@@ -215,8 +281,8 @@ def test__is_placeholder():
 
 def test_getfullerargspec():
     """Test :func:`~utilipy.utils.inspect.getfullerargspec`"""
-    fullargspec = nspct.getfullargspec(NameSpace.test_func)
-    fullerargspec = inspect.getfullerargspec(NameSpace.test_func)
+    fullargspec = nspct.getfullargspec(NS.test_func)
+    fullerargspec = inspect.getfullerargspec(NS.test_func)
 
     # arguments
     assert fullerargspec.args == ["x", "y"] == fullargspec.args[:-2]
@@ -239,7 +305,7 @@ def test_getfullerargspec():
     # annotations
     assert fullerargspec.annotations == fullargspec.annotations
 
-    assert fullerargspec.docstring == NameSpace.test_func.__doc__
+    assert fullerargspec.docstring == NS.test_func.__doc__
 
     return
 
@@ -253,7 +319,7 @@ def test_getfullerargspec():
 
 def test_get_annotations_from_signature():
     """Test get_annotations_from_signature."""
-    signature = inspect.signature(NameSpace.test_func)
+    signature = inspect.signature(NS.test_func)
     annotations = inspect.get_annotations_from_signature(signature)
 
     assert annotations == {
@@ -273,7 +339,7 @@ def test_get_annotations_from_signature():
 
 def test_get_defaults_from_signature():
     """Test get_annotations_from_signature."""
-    signature = inspect.signature(NameSpace.test_func)
+    signature = inspect.signature(NS.test_func)
     defaults = inspect.get_defaults_from_signature(signature)
 
     assert defaults == (1, 2)
@@ -286,7 +352,7 @@ def test_get_defaults_from_signature():
 
 def test_get_kwdefaults_from_signature():
     """Test get_annotations_from_signature."""
-    signature = inspect.signature(NameSpace.test_func)
+    signature = inspect.signature(NS.test_func)
     kwdefaults = inspect.get_kwdefaults_from_signature(signature)
 
     assert kwdefaults == {"j": "a", "k": "b"}
@@ -299,7 +365,7 @@ def test_get_kwdefaults_from_signature():
 
 def test_get_kwonlydefaults_from_signature():
     """Test get_annotations_from_signature."""
-    signature = inspect.signature(NameSpace.test_func)
+    signature = inspect.signature(NS.test_func)
     kwdefaults = inspect.get_kwonlydefaults_from_signature(signature)
 
     assert kwdefaults == {"j": "a", "k": "b"}
@@ -312,7 +378,7 @@ def test_get_kwonlydefaults_from_signature():
 
 def test_get_kinds_from_signature():
     """Test get_annotations_from_signature."""
-    signature = inspect.signature(NameSpace.test_func)
+    signature = inspect.signature(NS.test_func)
     kinds = inspect.get_kinds_from_signature(signature)
 
     assert kinds == (
@@ -333,7 +399,7 @@ def test_get_kinds_from_signature():
 
 def test_modify_parameter():
     """Test modify_parameter."""
-    signature = inspect.signature(NameSpace.test_func)
+    signature = inspect.signature(NS.test_func)
 
     # ----------------------------------------------------
     # doing piecemeal for full code coverage
@@ -363,7 +429,7 @@ def test_modify_parameter():
 
 def test_replace_with_parameter():
     """Test replace_with_parameter."""
-    signature = inspect.signature(NameSpace.test_func)
+    signature = inspect.signature(NS.test_func)
 
     sig = inspect.modify_parameter(signature, 0, name="xx")
     sig = inspect.modify_parameter(sig, 1, name="yy")
@@ -386,7 +452,7 @@ def test_replace_with_parameter():
 
 def test_insert_parameter():
     """Test insert_parameter."""
-    signature = inspect.signature(NameSpace.test_func)
+    signature = inspect.signature(NS.test_func)
 
     sig = inspect.modify_parameter(signature, 0, name="xx")
     new_param = list(sig.parameters.values())[0]
@@ -403,7 +469,7 @@ def test_insert_parameter():
 
 def test_prepend_parameter():
     """Test prepend_parameter."""
-    signature = inspect.signature(NameSpace.test_func)
+    signature = inspect.signature(NS.test_func)
 
     sig = inspect.modify_parameter(signature, 0, name="xx")
     new_param = list(sig.parameters.values())[0]
@@ -420,7 +486,7 @@ def test_prepend_parameter():
 
 def test_append_parameter():
     """Test append_parameter."""
-    signature = inspect.signature(NameSpace.appendable_func)
+    signature = inspect.signature(NS.appendable_func)
 
     sig = inspect.modify_parameter(signature, 0, name="xx")
     new_param = list(sig.parameters.values())[0]
@@ -437,7 +503,11 @@ def test_append_parameter():
 
 def test_drop_parameter():
     """Test drop_parameter."""
-    signature = inspect.signature(NameSpace.test_func)
+    signature = inspect.signature(NS.test_func)
+
+    # don't drop anything
+    newsignature = inspect.drop_parameter(signature, None)
+    assert newsignature == signature
 
     # drop x, by name
     signature = inspect.drop_parameter(signature, "x")
@@ -453,6 +523,10 @@ def test_drop_parameter():
     )
     assert list(signature.parameters.values())[0].name == "b"
 
+    # exception
+    with pytest.raises(TypeError):  # can't drop a set
+        inspect.drop_parameter(signature, set())
+
     return
 
 
@@ -463,40 +537,87 @@ def test_drop_parameter():
 # Signature
 
 
-def test_FullerSignature():
-    """TODO."""
-    normsig = nspct.Signature.from_callable(NameSpace.test_func)
-    fullsig = inspect.FullerSignature.from_callable(NameSpace.test_func)
-    noargsig = inspect.FullerSignature.from_callable(NameSpace.no_arg_func)
-    appsig = inspect.FullerSignature.from_callable(NameSpace.appendable_func)
 
     # ------------------
-    # basic test
-    assert fullsig.parameters == normsig.parameters
-    assert fullsig.return_annotation == normsig.return_annotation
 
     # ------------------
-    # signature
+
+def test_FullerSignature_bind():
+    """Test `~utilipy.utils.inspect.FullerSignature` argument binding.
+
+    The ``bind`` and ``bind_partial`` methods are tested by base python.
+    Here we test the ``bind_with_defaults`` and ``bind_partial_with_defaults``
+
+    """
+    # ------------------
+    # bind_with_defaults
+
+    sig = NS.fullsig
+
+    ba = sig.bind_with_defaults(-1, -2, 1.1, 2.2, 4, 5, l="cc")
+
+    assert ba.args == (-1, -2, 1.1, 2.2, 4, 5)
+    assert ba.kwargs == dict(j="a", k="b", l="cc")  # defaults in here
+
+    # ------------------
+    # bind_partial_with_defaults
+
+    ba = sig.bind_partial_with_defaults(-1, l="cc")
+
+    assert ba.args == (-1,)  # no y
+    assert ba.arguments["a"] == 1
+    assert ba.arguments["b"] == 2
+    assert ba.kwargs == dict(
+        a=1, b=2, args=(), j="a", k="b", l="cc"
+    )  # defaults in here
+
+
+# /def
+
+
+def test_FullerSignature_signature():
+    """Test `~utilipy.utils.inspect.FullerSignature` signature."""
+    normsig = NS.normsig
+    fullsig = NS.fullsig
+
     assert fullsig.signature == fullsig.__signature__ == normsig
 
-    # ------------------
-    # annotations
+
+# /def
+
+
+def test_FullerSignature_annotations():
+    normsig = NS.normsig
+    fullsig = NS.fullsig
+
     assert (
         fullsig.annotations
         == fullsig.__annotations__
         == inspect.get_annotations_from_signature(normsig)
     )
 
-    # ------------------
-    # defaults
+
+# /def
+
+
+def test_FullerSignature_defaults():
+    normsig = NS.normsig
+    fullsig = NS.fullsig
+
     assert (
         fullsig.defaults
         == fullsig.__defaults__
         == inspect.get_defaults_from_signature(normsig)
     )
 
-    # ------------------
-    # kwdefaults
+
+# /def
+
+
+def test_FullerSignature_kwdefaults():
+    normsig = NS.normsig
+    fullsig = NS.fullsig
+
     assert (
         fullsig.kwdefaults
         == fullsig.__kwdefaults__
@@ -504,59 +625,119 @@ def test_FullerSignature():
         == inspect.get_kwdefaults_from_signature(normsig)
     )
 
-    # ------------------
-    # kinds
+
+# /def
+
+
+def test_FullerSignature_kinds():
+    normsig = NS.normsig
+    fullsig = NS.fullsig
+
     assert fullsig.kinds == inspect.get_kinds_from_signature(normsig)
 
-    # ------------------
-    # names
-    assert fullsig.names == ("x", "y", "a", "b", "args", "j", "k", "kw")
 
-    # ------------------
-    # index_positional
+# /def
+
+
+def test_FullerSignature_names():
+
+    assert NS.fullsig.names == ("x", "y", "a", "b", "args", "j", "k", "kw")
+
+
+# /def
+
+
+def test_FullerSignature_index_positional():
+    noargsig = NS.noargsig
+    fullsig = NS.fullsig
+
     assert fullsig.index_positional == (0, 1, 2, 3)
     assert noargsig.index_positional is False
 
-    # ------------------
-    # index_positional_only
-    # for parameters with kind = POSITIONAL_ONLY
+
+# /def
+
+
+def test_FullerSignature_index_positional_only():
+    fullsig = NS.fullsig
 
     assert fullsig.index_positional_only is False
     # need to make such a signature
     sig = fullsig.modify_parameter("x", kind=inspect.POSITIONAL_ONLY)
     assert sig.index_positional_only == (0,)
 
-    # ------------------
-    # index_positional_defaulted
+
+# /def
+
+
+def test_FullerSignature_defaulted():
+    fullsig = NS.fullsig
+    noargsig = NS.noargsig
+
     assert fullsig.index_positional_defaulted == (0, 1, 2, 3)  # FIXME
     assert noargsig.index_positional_defaulted is False
 
-    # ------------------
-    # index_var_positional
+
+# /def
+
+
+def test_FullerSignature_index_var_positional():
+    fullsig = NS.fullsig
+    noargsig = NS.noargsig
+
     assert fullsig.index_var_positional == 4
     assert noargsig.index_var_positional is False
 
-    # ------------------
-    # index_keyword_only
+
+# /def
+
+
+def test_FullerSignature_index_keyword_only():
+    fullsig = NS.fullsig
+    noargsig = NS.noargsig
+
     assert fullsig.index_keyword_only == (5, 6)
     assert noargsig.index_keyword_only is False
 
-    # ------------------
-    # index_end_keyword_only
+
+# /def
+
+
+def test_FullerSignature_index_end_keyword_only():
+    fullsig = NS.fullsig
+    noargsig = NS.noargsig
+
     assert fullsig.index_end_keyword_only == (6 + 1)
     assert noargsig.index_end_keyword_only == (0 + 1)
 
-    # ------------------
-    # index_var_keyword
+
+# /def
+
+
+def test_FullerSignature_index_var_keyword():
+    fullsig = NS.fullsig
+    noargsig = NS.noargsig
+
     assert fullsig.index_var_keyword == 7
     assert noargsig.index_var_keyword is False
 
-    # ------------------
-    # copy
-    assert fullsig == fullsig.copy()
 
-    # ------------------
-    # modify_parameter
+# /def
+
+
+def test_FullerSignature_copy():
+    fullsig = NS.fullsig
+    noargsig = NS.noargsig
+
+    assert fullsig == fullsig.copy()
+    assert noargsig == noargsig.copy()
+
+
+# /def
+
+
+def test_FullerSignature_modify_parameter():
+    fullsig = NS.fullsig
 
     # doing piecemeal for full code coverage
     # and so can cycle through index / versus name as `param` arg
@@ -579,8 +760,12 @@ def test_FullerSignature():
     assert parameters[0].annotation == int
     assert parameters[1].name == "y"
 
-    # ------------------
-    # replace_with_parameter
+
+# /def
+
+
+def test_FullerSignature_replace_with_parameter():
+    fullsig = NS.fullsig
 
     sig = fullsig.modify_parameter(0, name="xx")
     sig = sig.modify_parameter(1, name="yy")
@@ -597,8 +782,12 @@ def test_FullerSignature():
     assert parameters[0].name == "xx"
     assert parameters[1].name == "yy"
 
-    # ------------------
-    # insert_parameter
+
+# /def
+
+
+def test_FullerSignature_insert_parameter():
+    fullsig = NS.fullsig
 
     sig = fullsig.modify_parameter(0, name="xx")
     new_param = list(sig.parameters.values())[0]
@@ -609,8 +798,12 @@ def test_FullerSignature():
 
     assert list(sig.parameters.values())[1].name == "xx"
 
-    # ------------------
-    # prepend_parameter
+
+# /def
+
+
+def test_FullerSignature_prepend_parameter():
+    fullsig = NS.fullsig
 
     sig = fullsig.modify_parameter(0, name="xx")
     new_param = list(sig.parameters.values())[0]
@@ -621,8 +814,12 @@ def test_FullerSignature():
 
     assert list(sig.parameters.values())[0].name == "xx"
 
-    # ------------------
-    # append_parameter
+
+# /def
+
+
+def test_FullerSignature_append_parameter():
+    appsig = NS.appsig
 
     sig = appsig.modify_parameter(0, name="xx")
     new_param = list(sig.parameters.values())[0]
@@ -633,8 +830,12 @@ def test_FullerSignature():
 
     assert list(sig.parameters.values())[2].name == "xx"
 
-    # ------------------
-    # drop_parameter
+
+# /def
+
+
+def test_FullerSignature_drop_parameter():
+    fullsig = NS.fullsig
 
     # drop x, by name
     sig = fullsig.drop_parameter("x")
@@ -648,15 +849,13 @@ def test_FullerSignature():
     sig = sig.drop_parameter(list(sig.parameters.values())[0])
     assert list(sig.parameters.values())[0].name == "b"
 
-    # ------------------
-    # _default_pos_to_kwonly_from
 
-    # sig = fullsig._default_pos_to_kwonly_from(index=3)
+# /def
 
-    # assert False, list(sig.parameters.values())[2].kind
 
-    # ------------------
-    # add_var_positional_parameter
+def test_FullerSignature_add_var_positional_parameter():
+    fullsig = NS.fullsig
+    noargsig = NS.noargsig
 
     sig1 = fullsig.add_var_positional_parameter()
     sig2 = fullsig.add_var_positional_parameter(name="nargs")  # not changed
@@ -666,8 +865,26 @@ def test_FullerSignature():
     assert list(sig2.parameters.values())[4].name == "args"
     assert list(sig3.parameters.values())[0].name == "nargs"
 
-    # ------------------
-    # add_var_keyword_parameter
+    # if index in self.index_positional_defaulted
+    dropsig = fullsig.drop_parameter("args")
+    sig4 = dropsig.add_var_positional_parameter(name="args", index=3)
+    assert list(sig4.parameters.values())[3].name == "args"
+
+    # index < self.index_positional_defaulted[0]
+    sig5 = dropsig.add_var_positional_parameter(name="args", index=2)
+    assert list(sig5.parameters.values())[2].name == "args"
+
+    # adding what already exists
+    sig6 = dropsig.add_var_positional_parameter()
+    assert list(sig6.parameters.values())[4].name == "args"
+
+
+# /def
+
+
+def test_FullerSignature_add_var_keyword_parameter():
+    fullsig = NS.fullsig
+    noargsig = NS.noargsig
 
     sig1 = fullsig.add_var_keyword_parameter()
     sig2 = fullsig.add_var_keyword_parameter(name="nargs")  # not changed
@@ -683,15 +900,64 @@ def test_FullerSignature():
 # /def
 
 
+# def test_FullerSignature_hidden_methods():
+#     fullsig = NS.fullsig
+
+#     sig = fullsig._default_pos_to_kwonly_from(index=3)
+
+#     assert False, list(sig.parameters.values())[2].kind
+
+
+# # /def
+
 # ------------------------------------------------------------------------
 
 
-@pytest.mark.skip(reason="TODO")
 def test_fuller_signature():
-    """Test fuller_signature."""
-    test_FullerSignature()
+    """Test `~utilipy.utils.inspect.fuller_signature`."""
+    test_FullerSignature_creation()
 
-    return
+
+# /def
+
+
+def test_signature_from_method():
+    """Test `~utilipy.utils.inspect.signature_from_method`."""
+    # instance method
+    sig = inspect.signature_from_method(NS.method)
+
+    assert tuple(sig.parameters.values()) == tuple(
+        NS.fullsig.signature.parameters.values()
+    )
+
+    # class method
+
+    sig = inspect.signature_from_method(NS.classmethod)
+
+    assert tuple(sig.parameters.values()) == tuple(
+        NS.fullsig.signature.parameters.values()
+    )
+
+
+# /def
+
+
+def test_fuller_signature_from_method():
+    """Test `~utilipy.utils.inspect.fuller_signature_from_method`."""
+    # instance method
+    sig = inspect.fuller_signature_from_method(NS.method)
+
+    assert tuple(sig.parameters.values()) == tuple(
+        NS.fullsig.parameters.values()
+    )
+
+    # class method
+
+    sig = inspect.fuller_signature_from_method(NS.classmethod)
+
+    assert tuple(sig.parameters.values()) == tuple(
+        NS.fullsig.parameters.values()
+    )
 
 
 # /def
