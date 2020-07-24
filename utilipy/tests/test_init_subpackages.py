@@ -52,6 +52,7 @@ def test_init_data_utils():
         "decorators",
         "select",
         "fitting",
+        "utils",
         "xfm",
         # functions
         "idxDecorator",
@@ -274,6 +275,7 @@ def test_init_utils():
         "functools",
         "inspect",
         "metaclasses",
+        "misc",
         "pickle",
         "string",
         "typing",
