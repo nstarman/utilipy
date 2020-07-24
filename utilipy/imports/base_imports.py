@@ -10,8 +10,8 @@
 # Docstring and Metadata
 """Base set of imports.
 
-Routine Listings
-----------------
+Returns
+-------
 Base: imports
 
     - os, sys, time, pdb, warnings,
@@ -164,7 +164,7 @@ if _HAS_IPYTHON:
 # Printing Information
 
 base_imports_help = make_help_function(
-    "base", __doc__, look_for="Routine Listings"
+    "base", __doc__, look_for="Returns"
 )
 
 

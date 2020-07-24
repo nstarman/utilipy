@@ -16,7 +16,7 @@ def test_import_astropy():
     for obj in (
         "astropy",
         "u",
-        "coords",
+        "coord",
         "SkyCoord",
         "Table",
         "QTable",

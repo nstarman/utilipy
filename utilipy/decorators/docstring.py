@@ -51,6 +51,7 @@ def format_doc(
 format_doc.__doc__ = _format_doc.__doc__
 # /def
 
+
 #####################################################################
 
 
@@ -83,19 +84,28 @@ def set_docstring_for_import_func(
         module_doc = ast.get_docstring(ast.parse(fd.read()))
 
     # process docstring
-    ind = module_doc.find(section)
-    len_title = 2 * len(section)  # section & underline
-    end_ind = ind + module_doc[ind + len_title :].find("---") + 2  # noqa
+    len_title = 2 * len(section) + 1  # section & underline
+    ind_section = module_doc.find(section)
+    if ind_section == -1:
+        raise IndexError(f"Section {section} does not exist.")
 
-    doc = module_doc[ind:end_ind]  # get section (+ next header)
+    ind = ind_section + len_title
+    end_ind = ind + module_doc[ind:].find("---")  # noqa
+
+    sub_doc = module_doc[ind:end_ind]  # get section (+ next header)
+
+    # drop next header
+    sec = "\n".join(sub_doc.split("\n")[:-2])
 
     # modify function with a basic decorator
     def decorator(func):
-        @functools.wraps(func, docstring=func.__doc__ + "\n\n" + doc)
+        @functools.wraps(func, docstring=(func.__doc__ or "") + "\n" + sec)
         def wrapper(*args, **kwargs):
             return func(*args, **kwargs)
 
         return wrapper
+
+    # /def
 
     return decorator
 
