@@ -5,6 +5,7 @@
 
 __all__ = [
     "test_shuffler",
+    "test_get_path_to_file",
 ]
 
 
@@ -59,6 +60,17 @@ def test_shuffle():
 
 # /def
 
+
+# ------------------------------------------------------------------------
+
+
+@pytest.mark.skip("TODO")
+def test_get_path_to_file():
+    """Test :func:`~utilipy.data_utils.utils.get_path_to_file`."""
+    return
+
+
+# /def
 
 # ------------------------------------------------------------------------
 
