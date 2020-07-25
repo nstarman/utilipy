@@ -111,6 +111,11 @@ def make_help_function(
     decorator : Callable
         decorator function to change the wrapped function's docstring.
 
+    Raises
+    ------
+    TypeError
+        if `look_for` is not None or str
+
     Notes
     -----
     .. todo::
@@ -121,7 +126,8 @@ def make_help_function(
 
     """
     if module is None:
-        mod_name = find_current_module(1).__name__
+        module = find_current_module(2)
+        mod_name = module.__name__
         module_doc = module.__doc__
     elif isinstance(module, ModuleType):
         module_doc = module.__doc__
@@ -151,9 +157,10 @@ def make_help_function(
     def help_function():
         print(doc)
 
+    # help_function._doc = doc
     help_function.__name__ = f"{name}_help"
     help_function.__module__ = mod_name
-    help_function.__doc__ = f"Help for {doctitle or name}."
+    help_function.__doc__ = f"Help for {doctitle or name}.\n\n" + (doc or "")
     # /def
 
     return help_function
