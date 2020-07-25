@@ -7,6 +7,10 @@ __all__ = [
     "test_WithDocstring",
     "test_WithMeta",
     "test_WithReference",
+    # -------
+    "test_MetaDataBase",
+    "test_ReferenceBase",
+    # -------
     "test_ObjDict_creation",
     "test_ObjDict_getitem",
     "test_ObjDict__setitem__",
