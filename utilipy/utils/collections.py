@@ -594,7 +594,7 @@ class ObjDict(OrderedDict):
     ):
         """Dump to pickle file.
 
-        uses .utils.pickle.dump
+        uses :func:`~utilipy.utils.pickle.dump`
 
         """
         _dump(
@@ -628,7 +628,7 @@ class ObjDict(OrderedDict):
     ):
         """Load from pickle file.
 
-        uses .utils.pickle.load
+        uses :func:`~utilipy.utils.pickle.load`
 
         """
         self = _load(

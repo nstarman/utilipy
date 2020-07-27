@@ -594,7 +594,6 @@ def test_ObjDict_save():
 # -----------------------------------------------------------------------------
 
 
-@pytest.mark.skip(reason="TODO")
 def test_ObjDict_load():
     """Test :func:`~utilipy.utils.collections.ObjDict.load`."""
     od = ObjDict(name="name", a=1, b=None, c="c")
