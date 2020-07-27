@@ -1,18 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : pickle
-#
-# ----------------------------------------------------------------------------
-
-"""Functions for making basic pickling easier.
-
-Notes
------
-TODO:
-    work save_pickles into here.
-"""
+"""Functions for making basic pickling easier."""
 
 __author__ = "Nathaniel Starkman"
 

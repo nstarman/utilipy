@@ -560,7 +560,7 @@ class ObjDict(OrderedDict):
     # ----------------------------------
     # Serialize (I/O)
 
-    def __reduce__(self) -> T.Tuple[T.Callable, str, odict_items]:
+    def __reduce__(self) -> T.Tuple[T.Callable, T.Tuple[str], odict_items]:
         """Reduction method for serialization.
 
         structured as:

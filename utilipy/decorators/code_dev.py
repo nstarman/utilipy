@@ -11,8 +11,6 @@ upon which this code is based.
 
 """
 
-__author__ = "Nathaniel Starkman"
-
 __all__ = [
     "indev",
     "indev_attribute",
@@ -22,7 +20,7 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 import functools
 import inspect

@@ -9,8 +9,6 @@ __all__ = ["test_imports"]
 ##############################################################################
 # IMPORTS
 
-# BUILT-IN
-
 # THIRD PARTY
 
 import pytest
