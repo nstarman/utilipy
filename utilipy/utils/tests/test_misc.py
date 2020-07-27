@@ -95,8 +95,6 @@ def test_make_help_function_pass_module():
 
     help_function = misc.make_help_function("test", module=module)
 
-    # import pdb; pdb.set_trace()
-
     assert help_function.__name__ == "test_help"
     assert help_function.__module__ == "null_module"
     assert help_function.__doc__ == "Help for test.\n\n" + _doc

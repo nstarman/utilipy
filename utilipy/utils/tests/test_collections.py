@@ -36,6 +36,8 @@ __all__ = [
 # BUILT-IN
 
 from collections import OrderedDict
+import os.path
+import tempfile
 
 # THIRD PARTY
 
@@ -180,14 +182,24 @@ def test_WithReference():
 # MetaDataBase
 
 
+def test_MetaDataBase_raises():
+    """Test :class:`~utilipy.utils.collections.MetaDataBase` Exceptions."""
+    with pytest.raises(TypeError):
+        collections.MetaDataBase()  # MetaDataBase must be subclassed
+
+
+# /def
+
+
 def test_MetaDataBase():
     """Test :class:`~utilipy.utils.collections.MetaDataBase`."""
+    # arguments into reference class
+    meta = OrderedDict([("m1", "meta 1"), ("m2", "meta 2")])
 
     class ChildClass(collections.MetaDataBase):
         pass
 
-    meta = OrderedDict([("m1", "meta 1"), ("m2", "meta 2")])
-    mdb = ChildClass(**meta)
+    mdb = ChildClass(**meta)  # has reference in meta
 
     assert mdb._meta == meta
     assert mdb.meta == meta
@@ -201,8 +213,18 @@ def test_MetaDataBase():
 # ReferenceBase
 
 
+def test_ReferenceBase_raises():
+    """Test :class:`~utilipy.utils.collections.ReferenceBase` Exceptions."""
+    with pytest.raises(TypeError):
+        collections.ReferenceBase()  # ReferenceBase must be subclassed
+
+
+# /def
+
+
 def test_ReferenceBase():
     """Test :class:`~utilipy.utils.collections.ReferenceBase`."""
+    # arguments into reference class
     meta = OrderedDict([("m1", "meta 1"), ("m2", "meta 2")])
     reference = "the reference"
 
@@ -211,6 +233,7 @@ def test_ReferenceBase():
 
     mdb = ChildClass(reference=reference, **meta)  # has reference in meta
 
+    # add reference into meta for comparisons
     meta["reference"] = reference
 
     assert mdb._meta == meta
@@ -218,6 +241,7 @@ def test_ReferenceBase():
     assert mdb.meta["reference"] == meta["reference"] == reference
     assert mdb.meta["m1"] == meta["m1"]
 
+    # test method
     assert mdb.__reference__ == reference
 
 
@@ -462,7 +486,6 @@ def test_ObjDict_items():
 # -----------------------------------------------------------------------------
 
 
-# @pytest.mark.skip(reason="TODO")
 def test_ObjDict_fromkeys():
     """Test :func:`~utilipy.utils.collections.ObjDict.fromkeys`."""
     od = ObjDict(name="name", a=1, b=None, c="c")
@@ -487,10 +510,11 @@ def test_ObjDict_fromkeys():
 # -----------------------------------------------------------------------------
 
 
-@pytest.mark.skip(reason="TODO")
 def test_ObjDict_keyslist():
     """Test :func:`~utilipy.utils.collections.ObjDict.keyslist`."""
-    pass
+    od = ObjDict(name="name", a=1, b=None, c="c")
+
+    assert set(od.keyslist()) == {"a", "b", "c"}
 
 
 # /def
@@ -499,10 +523,15 @@ def test_ObjDict_keyslist():
 # -----------------------------------------------------------------------------
 
 
-@pytest.mark.skip(reason="TODO")
 def test_ObjDict__reduce__():
     """Test :func:`~utilipy.utils.collections.ObjDict.__reduce__`."""
-    pass
+    od = ObjDict(name="name", a=1, b=None, c="c")
+
+    reduced = od.__reduce__()
+
+    assert reduced[0] == od.__class__
+    assert reduced[1] == (od.name,)
+    assert reduced[2] == OrderedDict(od.items())
 
 
 # /def
@@ -511,10 +540,14 @@ def test_ObjDict__reduce__():
 # -----------------------------------------------------------------------------
 
 
-@pytest.mark.skip(reason="TODO")
 def test_ObjDict__setstate__():
     """Test :func:`~utilipy.utils.collections.ObjDict.__setstate__`."""
-    pass
+    od = ObjDict(name="name", a=1, b=None, c="c")
+
+    new_od = ObjDict()
+    new_od.__setstate__(od)
+
+    assert new_od == od
 
 
 # /def
@@ -523,10 +556,17 @@ def test_ObjDict__setstate__():
 # -----------------------------------------------------------------------------
 
 
-@pytest.mark.skip(reason="TODO")
 def test_ObjDict_dump():
     """Test :func:`~utilipy.utils.collections.ObjDict.dump`."""
-    pass
+    od = ObjDict(name="name", a=1, b=None, c="c")
+
+    with tempfile.TemporaryDirectory() as tempdir:
+        tempath = os.path.join(tempdir, "temp.pkl")
+        od.dump(
+            tempath, protocol=None, fopt="b", fix_imports=True,
+        )
+
+    # /with
 
 
 # /def
@@ -535,10 +575,17 @@ def test_ObjDict_dump():
 # -----------------------------------------------------------------------------
 
 
-@pytest.mark.skip(reason="TODO")
 def test_ObjDict_save():
     """Test :func:`~utilipy.utils.collections.ObjDict.save`."""
-    pass
+    od = ObjDict(name="name", a=1, b=None, c="c")
+
+    with tempfile.TemporaryDirectory() as tempdir:
+        tempath = os.path.join(tempdir, "temp.pkl")
+        od.save(
+            tempath, protocol=None, fopt="b", fix_imports=True,
+        )
+
+    # /with
 
 
 # /def
@@ -550,7 +597,27 @@ def test_ObjDict_save():
 @pytest.mark.skip(reason="TODO")
 def test_ObjDict_load():
     """Test :func:`~utilipy.utils.collections.ObjDict.load`."""
-    pass
+    od = ObjDict(name="name", a=1, b=None, c="c")
+
+    with tempfile.TemporaryDirectory() as tempdir:
+        tempath = os.path.join(tempdir, "temp.pkl")
+        od.dump(
+            tempath, protocol=None, fopt="b", fix_imports=True,
+        )
+
+        new_od = ObjDict.load(
+            tempath,
+            fopt="b",
+            fix_imports=True,
+            encoding="ASCII",
+            errors="strict",
+        )
+
+    # /with
+
+    # test equality between new and old
+    assert new_od.name == od.name
+    assert new_od.items() == od.items()
 
 
 # /def
@@ -559,10 +626,15 @@ def test_ObjDict_load():
 # -----------------------------------------------------------------------------
 
 
-@pytest.mark.skip(reason="TODO")
-def test_ObjDict_print():
-    """Test :func:`~utilipy.utils.collections.ObjDict.print`."""
-    pass
+def test_ObjDict_print():  # TODO better test
+    """Test :func:`~utilipy.utils.collections.ObjDict.print`.
+
+    Right now, only testing that it doesn't error.
+
+    """
+    od = ObjDict(name="name", a=1, b=None, c="c")
+
+    od.print()
 
 
 # /def
