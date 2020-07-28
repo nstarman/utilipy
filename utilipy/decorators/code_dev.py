@@ -13,6 +13,7 @@ upon which this code is based.
 
 __all__ = [
     "indev",
+    "indev_doc",
     "indev_attribute",
 ]
 
@@ -61,13 +62,67 @@ class BetaDevelopmentWarning(DevelopmentWarning):
 ##############################################################################
 
 
+def indev_doc(old_doc: T.Union[str, None], message: str):
+    """Returns a given docstring with an in-dev message prepended.
+
+    .. todo::
+
+        process docstring better
+
+    Parameters
+    ----------
+    old_doc: str
+    message : str
+
+    Returns
+    -------
+    new_doc : str
+
+    """
+    if not old_doc:  # empty str or None
+        old_doc = ""
+
+    old_doc = textwrap.dedent(old_doc).strip("\n")
+
+    note_indev = (
+        "\n    .. versionchanged:: indev\n"
+        "\n        {message}\n".format(**{"message": message.strip()})
+    )
+
+    # TODO, process docstring better
+    _sections = [
+        "\n    Parameters\n    ----------",
+        "\n    Returns\n    -------",
+    ]
+    if _sections[0] in old_doc:  # check if has Parameters
+        descr, rest = old_doc.split(_sections[0])
+        descr += note_indev
+        new_doc = descr + _sections[0] + rest
+
+    elif _sections[1] in old_doc:  # maybe starts with Returns
+        descr, rest = old_doc.split(_sections[1])
+        descr += note_indev
+        new_doc = descr + _sections[1] + rest
+
+    else:  # just a regular doc
+        new_doc = old_doc + "\n" + note_indev + "\n"
+
+    return new_doc
+
+
+# /def
+
+
+# -------------------------------------------------------------------
+
+
 def indev(
-    message="",
-    name="",
-    alternative="",
-    todo="",
-    beta=False,
-    obj_type=None,
+    message: T.Union[str, T.Callable] = "",
+    name: str = "",
+    alternative: str = "",
+    todo: str = "",
+    beta: bool = False,
+    obj_type: T.Optional[str] = None,
     warning_type=DevelopmentWarning,
 ):
     """Used to mark a function or class as in the development phase.
@@ -125,57 +180,6 @@ def indev(
 
     """
     method_types = (classmethod, staticmethod, types.MethodType)
-
-    # -----------------------------------------------------
-
-    def indev_doc(old_doc: T.Union[str, None], message: str):
-        """Returns a given docstring with an in-dev message prepended.
-
-        .. todo::
-
-            process docstring better
-
-        Parameters
-        ----------
-        old_doc: str
-        message : str
-
-        Returns
-        -------
-        new_doc : str
-
-        """
-        if not old_doc:  # empty str or None
-            old_doc = ""
-
-        old_doc = textwrap.dedent(old_doc).strip("\n")
-
-        note_indev = (
-            "\n    .. versionchanged:: indev\n"
-            "\n        {message}\n".format(**{"message": message.strip()})
-        )
-
-        # TODO, process docstring better
-        _sections = [
-            "\n    Parameters\n    ----------",
-            "\n    Returns\n    -------",
-        ]
-        if _sections[0] in old_doc:  # check if has Parameters
-            descr, rest = old_doc.split(_sections[0])
-            descr += note_indev
-            new_doc = descr + _sections[0] + rest
-
-        elif _sections[1] in old_doc:  # maybe starts with Returns
-            descr, rest = old_doc.split(_sections[1])
-            descr += note_indev
-            new_doc = descr + _sections[1] + rest
-
-        else:  # just a regular doc
-            new_doc = old_doc + "\n" + note_indev + "\n"
-
-        return new_doc
-
-    # /def
 
     # -----------------------------------------------------
 
@@ -243,6 +247,7 @@ def indev(
 
         """
         cls.__doc__ = indev_doc(cls.__doc__, message)
+
         if cls.__new__ is object.__new__:
             cls.__init__ = indev_function(
                 get_function(cls.__init__), message, warning_type
@@ -251,6 +256,7 @@ def indev(
             cls.__new__ = indev_function(
                 get_function(cls.__new__), message, warning_type
             )
+
         return cls
 
     # /def
@@ -311,28 +317,26 @@ def indev(
                 )
             if alternative:
                 altmessage = f"\n        Use {alternative} instead."
-            if todomessage:
-                todomessage = f"\n        {todo}"
+            if todo:
+                todomessage = f"\n        TODO: {todo}"
 
         message = (
-            (
-                message.format(
-                    **{
-                        "func": name,
-                        "name": name,
-                        "alternative": alternative,
-                        "todo": todo,
-                        "obj_type": obj_type_name,
-                    }
-                )
+            message.format(
+                **{
+                    "func": name,
+                    "name": name,
+                    "alternative": alternative,
+                    "todo": todo,
+                    "obj_type": obj_type_name,
+                }
             )
             + altmessage
             + todomessage
         )
 
-        if isinstance(obj, type):
+        if isinstance(obj, type):  # decorate class
             return indev_class(obj, message, warning_type)
-        else:
+        else:  # decorate function
             return indev_function(obj, message, warning_type)
 
     # /def
