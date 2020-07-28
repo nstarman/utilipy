@@ -33,13 +33,13 @@ __all__ = ["merge_rest_docs"]
 ###############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 from collections import OrderedDict
 from inspect import cleandoc
 from string import punctuation
 
-from typing import Optional, Union, Dict
+import typing as T
 from typing_extensions import Literal
 
 
@@ -69,7 +69,7 @@ class Section(object):
 # /class
 
 
-def parse_rest_doc(doc: Union[str, None]) -> Dict[str, Section]:
+def parse_rest_doc(doc: T.Union[str, None]) -> T.Dict[str, Section]:
     """Extract the headers, delimiters, and text from reST-formatted docstrings.
 
     Parameters
@@ -131,9 +131,9 @@ def parse_rest_doc(doc: Union[str, None]) -> Dict[str, Section]:
 
 
 def merge_rest_docs(
-    prnt_doc: Optional[str] = None,
-    child_doc: Optional[str] = None,
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
+    prnt_doc: T.Optional[str] = None,
+    child_doc: T.Optional[str] = None,
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
 ) -> str:
     """See custom_inherit.style_store.reST for details."""
     prnt_sections = parse_rest_doc(prnt_doc)

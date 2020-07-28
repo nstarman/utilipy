@@ -4,7 +4,7 @@
 
 
 __all__ = [
-    "test_shuffler",
+    "test_shuffle",
     "test_get_path_to_file",
 ]
 
@@ -36,9 +36,6 @@ z = np.c_[x, y].T
 # TESTS
 ##############################################################################
 
-##########################################################################
-# idxDecorator
-
 
 def test_shuffle():
     """Test :func:`~utilipy.data_utils.utils.shuffle`."""
@@ -55,8 +52,6 @@ def test_shuffle():
     # unshufffling works
     assert all(arr[shuffler][undo] == arr)
 
-    return
-
 
 # /def
 
@@ -67,10 +62,11 @@ def test_shuffle():
 @pytest.mark.skip("TODO")
 def test_get_path_to_file():
     """Test :func:`~utilipy.data_utils.utils.get_path_to_file`."""
-    return
+    get_path_to_file
 
 
 # /def
+
 
 # ------------------------------------------------------------------------
 

@@ -35,7 +35,6 @@ import pytest
 @pytest.mark.skip(reason="TODO")
 def test_rest_parse_tools():
     """Test :mod:`~utilipy.utils.doc_parse_tools.rest_parse_tools`."""
-    pass
 
 
 # /def

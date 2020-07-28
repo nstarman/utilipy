@@ -123,8 +123,8 @@ def make_function(
             return_annotation=signature.return_annotation,
             # docstring=docstring  # not yet implemented
         )
-    else:
-        pass
+    # else:
+    #     pass
 
     # make function
     function = FunctionType(

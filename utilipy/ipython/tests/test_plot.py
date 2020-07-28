@@ -45,7 +45,6 @@ def test__all__():
 @pytest.mark.skip(reason="TODO")
 def test_plot():
     """Test :class:`~utilipy.ipython.plot`."""
-    pass
 
 
 # /def

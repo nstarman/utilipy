@@ -47,8 +47,7 @@ __all__ = ["merge_google_napoleon_docs", "merge_numpy_napoleon_docs"]
 from collections import OrderedDict
 from inspect import cleandoc
 
-import typing
-from typing import Union, Optional
+import typing as T
 from typing_extensions import Literal
 
 
@@ -57,7 +56,7 @@ from typing_extensions import Literal
 ###############################################################################
 
 
-def parse_napoleon_doc(doc: Union[str, None], style: str):
+def parse_napoleon_doc(doc: T.Union[str, None], style: str):
     """Extract the text from the sections of a numpy-formatted docstring.
 
     Parameters
@@ -144,10 +143,10 @@ def parse_napoleon_doc(doc: Union[str, None], style: str):
 
 def merge_section(
     key: str,
-    prnt_sec: Union[str, None],
-    child_sec: Union[str, None],
+    prnt_sec: T.Union[str, None],
+    child_sec: T.Union[str, None],
     style: str,
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
 ):
     """Synthesize a output napoleon docstring section.
 
@@ -200,10 +199,10 @@ def merge_section(
 
 
 def merge_all_sections(
-    prnt_sctns: typing.MutableMapping[str, Union[None, str]],
-    child_sctns: typing.MutableMapping[str, Union[None, str]],
+    prnt_sctns: T.MutableMapping[str, T.Union[None, str]],
+    child_sctns: T.MutableMapping[str, T.Union[None, str]],
     style: str,
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
 ):
     """Merge the doc-sections of the parent's and child's attribute.
 
@@ -242,9 +241,9 @@ def merge_all_sections(
 
 
 def merge_numpy_napoleon_docs(
-    prnt_doc: Optional[str] = None,
-    child_doc: Optional[str] = None,
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
+    prnt_doc: T.Optional[str] = None,
+    child_doc: T.Optional[str] = None,
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
 ):
     """Merge two numpy-style docstrings into one numpy-napolean docstring.
 
@@ -287,9 +286,9 @@ def merge_numpy_napoleon_docs(
 
 
 def merge_google_napoleon_docs(
-    prnt_doc: Optional[str] = None,
-    child_doc: Optional[str] = None,
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
+    prnt_doc: T.Optional[str] = None,
+    child_doc: T.Optional[str] = None,
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
 ):
     """Merge two google-style docstrings into one google-napoleon docstring.
 

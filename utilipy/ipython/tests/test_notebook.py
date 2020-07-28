@@ -33,7 +33,6 @@ from .. import notebook
 @pytest.mark.skip(reason="TODO")
 def test_notebook():
     """Test :class:`~utilipy.ipython.notebook`."""
-    pass
 
 
 # /def

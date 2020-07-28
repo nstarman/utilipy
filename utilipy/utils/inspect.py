@@ -84,8 +84,6 @@ _void = _void  # TODO: add to RTD
 class _placehold:
     """Placehold."""
 
-    pass
-
 
 # /class
 

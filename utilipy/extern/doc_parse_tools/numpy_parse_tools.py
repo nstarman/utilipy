@@ -47,8 +47,7 @@ __all__ = ["merge_numpy_docs"]
 from collections import OrderedDict
 from inspect import cleandoc
 
-import typing
-from typing import Union
+import typing as T
 from typing_extensions import Literal
 
 
@@ -118,10 +117,10 @@ def parse_numpy_doc(doc):
 
 def merge_section(
     key: str,
-    prnt_sec: Union[str, None],
-    child_sec: Union[str, None],
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
-) -> Union[str, None]:
+    prnt_sec: T.Union[str, None],
+    child_sec: T.Union[str, None],
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
+) -> T.Union[str, None]:
     """Synthesize a output numpy docstring section.
 
     Parameters
@@ -169,10 +168,10 @@ def merge_section(
 
 
 def merge_all_sections(
-    prnt_sctns: typing.MutableMapping[str, Union[None, str]],
-    child_sctns: typing.MutableMapping[str, Union[None, str]],
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
-) -> Union[str, None]:
+    prnt_sctns: T.MutableMapping[str, T.Union[None, str]],
+    child_sctns: T.MutableMapping[str, T.Union[None, str]],
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
+) -> T.Union[str, None]:
     """Merge the doc-sections of the parent's and child's attribute.
 
     Parameters
@@ -211,10 +210,10 @@ def merge_all_sections(
 
 
 def merge_numpy_docs(
-    prnt_doc: Union[str, None] = None,
-    child_doc: Union[str, None] = None,
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
-) -> Union[str, None]:
+    prnt_doc: T.Union[str, None] = None,
+    child_doc: T.Union[str, None] = None,
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
+) -> T.Union[str, None]:
     """Merge two numpy-style docstrings into a single docstring.
 
     Given the numpy-style docstrings from a parent and child's attributes,

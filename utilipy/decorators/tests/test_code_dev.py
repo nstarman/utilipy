@@ -108,7 +108,6 @@ def test_indev_func_message():
     # test function
     def _func():
         """Short Summary."""
-        pass
 
     # /dev
 
@@ -171,7 +170,6 @@ def test_indev_decorator_func():
     @cdev.indev(message="indev message")
     def func():
         """Short Summary."""
-        pass
 
     # /dev
 
@@ -186,7 +184,6 @@ def test_indev_decorator_func():
     @cdev.indev(name="new_name")
     def func():
         """Short Summary."""
-        pass
 
     # /dev
 
@@ -202,7 +199,6 @@ def test_indev_decorator_func():
     @cdev.indev(alternative="alternative")
     def func():
         """Short Summary."""
-        pass
 
     # /dev
 
@@ -219,7 +215,6 @@ def test_indev_decorator_func():
     @cdev.indev(todo="test")
     def func():
         """Short Summary."""
-        pass
 
     # /dev
 
@@ -236,7 +231,6 @@ def test_indev_decorator_func():
     @cdev.indev(beta=True)
     def func():
         """Short Summary."""
-        pass
 
     # /dev
 
@@ -255,7 +249,6 @@ def test_indev_decorator_func():
     @cdev.indev(obj_type="FUNCTION")
     def func():
         """Short Summary."""
-        pass
 
     # /dev
 
@@ -271,7 +264,6 @@ def test_indev_decorator_func():
     @cdev.indev(warning_type=UserWarning)
     def func():
         """Short Summary."""
-        pass
 
     # /dev
 

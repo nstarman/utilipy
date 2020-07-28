@@ -55,7 +55,6 @@ class LogPrint(object):
                 raise TypeError
 
             self.write(f"{header}Log:", endsection="=", print=show_header)
-        return
 
     # /def
 
@@ -143,7 +142,6 @@ class LogPrint(object):
         """
         print(start, end="")
         print(*text, sep=sep, end=end)
-        return
 
     # /def
 
@@ -153,7 +151,6 @@ class LogPrint(object):
         this is implemented solely to be overwritten by child classes
 
         """
-        pass
 
     # /def
 
@@ -165,7 +162,6 @@ class LogPrint(object):
         """
         self.print(*string, start=start, sep=sep, end=end)  # printing
         self._write(*string, start=start, sep=sep, end=end)  # writing
-        return
 
     # /def
 
@@ -193,7 +189,6 @@ class LogPrint(object):
             )
         else:
             self._write(full_div, title, start="\n", sep="\n", end="\n\n")
-        return
 
     # /def
 
@@ -240,7 +235,6 @@ class LogPrint(object):
                 self.newsection(div=endsection, print=print)
             else:
                 self.newsection(print=print)
-        return
 
     # /def
 
@@ -267,7 +261,6 @@ class LogPrint(object):
             endsection=endsection,
             print=False,
         )
-        return
 
     # /def
 
@@ -322,7 +315,6 @@ class LogPrint(object):
                 self.write(msg, print=print, **kw)
             else:
                 self.print(msg, **kw)
-        return
 
     # /def
 
@@ -334,7 +326,6 @@ class LogPrint(object):
         implemented solely to be overwritten by child classes.
 
         """
-        pass
 
     # /def
 

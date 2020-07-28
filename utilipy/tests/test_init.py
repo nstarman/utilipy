@@ -112,8 +112,8 @@ def test_top_level_imports():
         # test?
         if os.path.isdir(drct + "/" + file) and file not in donottest:
             assert file in all_top_imports
-        else:  # nope, chuck testa.
-            pass
+        # else:  # nope, chuck testa.
+        #     pass
 
 
 # /def
