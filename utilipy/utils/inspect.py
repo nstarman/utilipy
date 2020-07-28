@@ -216,7 +216,7 @@ def getfullerargspec(func: T.Callable) -> FullerArgSpec:
 
         args: T.Optional[T.List[str]] = spec.args[: -len(spec.defaults)]
         defargs: T.Optional[T.List[str, T.Any]] = spec.args[
-            -len(spec.defaults):
+            -len(spec.defaults) :
         ]
         defaults = {k: v for k, v in zip(defargs, spec.defaults)}
 
@@ -272,9 +272,11 @@ def get_annotations_from_signature(signature: Signature) -> T.Dict[str, T.Any]:
     annotations: T.Dict[str, T.Any] = {
         k: v.annotation
         for k, v in signature.parameters.items()
-        if v.annotation != _empty
+        if not _is_empty(v.annotation)
     }
-    annotations["return"] = signature.return_annotation
+    if not _is_empty(signature.return_annotation):
+        annotations["return"] = signature.return_annotation
+
     return annotations
 
 
@@ -717,7 +719,7 @@ class FullerSignature(Signature):
         sig = cls(
             parameters=signature.parameters.values(),
             return_annotation=signature.return_annotation,
-            obj=obj
+            obj=obj,
         )
 
         # TODO check on obj, that has matching sig as signature
