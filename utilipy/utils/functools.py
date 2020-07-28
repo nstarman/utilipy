@@ -32,8 +32,6 @@ Notes
 
 """
 
-__author__ = "Nathaniel Starkman"
-
 
 __all__ = [  # TODO use :allowed-package-names: `functools`
     "make_function",
@@ -50,25 +48,20 @@ __all__ = [  # TODO use :allowed-package-names: `functools`
 
 import typing as T
 
+from types import CodeType
+
 from functools import *  # so can be a drop-in for `functools`
 from functools import partial
 
-from inspect import signature as _get_signature
 from types import FunctionType
 
 
 # PROJECT-SPECIFIC
 
 from ..extern.doc_parse_tools import store as _store
-from .string import FormatTemplate
-from .inspect import (
-    FullerSignature as _FullerSignature,
-    cleandoc as _cleandoc,
-    getdoc as _getdoc,
-    VAR_POSITIONAL,
-    KEYWORD_ONLY,
-    VAR_KEYWORD,
-)
+from .string import FormatTemplate as _FormatTemplate
+from . import inspect as _nspct
+from .inspect import FullerSignature as _FullerSig
 
 
 # CLEAN MULTIPLE DEFINITIONS
@@ -82,17 +75,17 @@ del globals()["wraps"]
 
 
 def make_function(
-    code: T.Any,
+    code: CodeType,
     globals_: T.Any,
     name: str,
-    signature: _FullerSignature,
+    signature: _FullerSig,
     docstring: str = None,
     closure: T.Any = None,
     qualname: str = None,
     # options
-    _add_signature=False,
+    _add_signature: bool = False,
 ):
-    """Make a function with a specified signature and docstring.
+    r"""Make a function with a specified signature and docstring.
 
     This is pure python and may not make the fastest functions
 
@@ -100,17 +93,23 @@ def make_function(
     ----------
     code : code
         the .__code__ method of a function
-    globals_ :
+    globals_ : Any
     name : str
     signature : Signature
         inspect.Signature converted to utilipy.Signature
     docstring : str
-    closure :
+    closure : Any
+    qualname : str
 
     Returns
     -------
     function: Callable
         the created function
+
+    Other Parameters
+    ----------------
+    \_add_signature : bool
+        Whether to add `signature` as ``__signature__``.
 
     .. todo::
 
@@ -118,8 +117,8 @@ def make_function(
         __qualname__
 
     """
-    if not isinstance(signature, _FullerSignature):  # not my custom signature
-        signature = _FullerSignature(
+    if not isinstance(signature, _FullerSig):  # not my custom signature
+        signature = _FullerSig(
             parameters=signature.parameters.values(),
             return_annotation=signature.return_annotation,
             # docstring=docstring  # not yet implemented
@@ -165,7 +164,7 @@ def copy_function(func: T.Callable):
         func.__code__,
         func.__globals__,
         name=func.__name__,
-        signature=_get_signature(func),
+        signature=_nspct.fuller_signature(func),
         docstring=func.__doc__,
         closure=func.__closure__,
         qualname=func.__qualname__,
@@ -199,10 +198,142 @@ SIGNATURE_ASSIGNMENTS = ("__kwdefaults__", "__annotations__")
 WRAPPER_UPDATES = ("__dict__",)
 
 
+def __parse_sig_for_update_wrapper(
+    signature: T.Union[_FullerSig, None, bool], wrapped: T.Callable
+):
+    """Parse signature for `~update_wrapper`.
+
+    Parameters
+    ----------
+    signature : `~utilipy.utils.inspect.Signature` or None or bool
+
+    Returns
+    -------
+    signature : `~utilipy.utils.inspect.Signature` or None or False
+        If signature is True, returns `~utilipy.utils.inspect.Signature`
+
+    """
+    if signature is True:
+        _update_sig = True
+        signature = _FullerSig.from_callable(wrapped)
+    elif signature in (None, False):
+        pass
+    else:  # convert to my signature object
+        _update_sig = False
+        # if not (type(signature) == _FullerSig):
+        if not isinstance(signature, _FullerSig):
+            signature = _FullerSig(
+                parameters=signature.parameters.values(),
+                return_annotation=signature.return_annotation,
+                # docstring=docstring  # not yet implemented
+            )
+        elif isinstance(signature, _FullerSig):
+            pass  # docstring considerations not yet implemented
+        else:
+            raise ValueError("signature must be a Signature object")
+    # /if
+
+    return signature, _update_sig
+
+
+# /def
+
+
+def __update_wrapper_update_sig(
+    signature: T.Union[_FullerSig, None, bool],
+    wrapper_sig: _FullerSig,
+    _doc_fmt: T.Optional[dict],
+) -> T.Callable:
+    """Update signature for `~update_wrapper`."""
+    # go through parameters in wrapper_sig, merging into signature
+    for param in wrapper_sig.parameters.values():
+        # skip _nspct.VAR_POSITIONAL and _nspct.VAR_KEYWORD
+        if param.kind in {_nspct.VAR_POSITIONAL, _nspct.VAR_KEYWORD}:
+            pass
+        # already exists -> replace
+        elif param.name in signature.parameters:
+            # ensure kind matching
+            if param.kind != signature.parameters[param.name].kind:
+                raise TypeError(
+                    f"{param.name} must match kind in function signature"
+                )
+            # can only merge key-word only
+            if param.kind == _nspct.KEYWORD_ONLY:
+                signature = signature.modify_parameter(
+                    param.name,
+                    name=None,
+                    kind=None,  # inherit b/c matching
+                    default=param.default,
+                    annotation=param.annotation,
+                )
+
+                # track for docstring
+                _doc_fmt[param.name] = param.default
+
+        # add to signature
+        else:
+            # can only merge key-word only
+            if param.kind == _nspct.KEYWORD_ONLY:
+                signature = signature.insert_parameter(
+                    signature.index_end_keyword_only, param
+                )
+
+                # track for docstring
+                _doc_fmt[param.name] = param.default
+    # /for
+
+    return signature
+
+
+# /def
+
+
+def __update_wrapper_docstring(
+    wrapped: T.Callable,
+    docstring: T.Union[str, bool],
+    wrapper_doc: str,
+    _doc_style: T.Union[str, T.Callable, None],
+):
+    """Set docstring for `~update_wrapper`.
+
+    Parameters
+    ----------
+    docstring : str or bool
+    wrapper_doc : strr
+    _doc_style : str or Callable or None
+
+    Returns
+    -------
+    docstring : str
+
+    """
+    if isinstance(docstring, str):  # assign docstring
+        docstring = _nspct.cleandoc(docstring)
+    elif docstring is False:  # just inherit
+        docstring = wrapped.__doc__
+    else:  # merge wrapper docstring
+        wrapped_doc = _nspct.getdoc(wrapped) or ""
+        wrapper_doc = _nspct.cleandoc(wrapper_doc)
+
+        if _doc_style is None:  # use original wrapper docstring
+            docstring = wrapped_doc + "\n\n" + wrapper_doc
+
+        else:  # TODO implement the full set of options
+            docstring = _store[_doc_style](
+                wrapped_doc, wrapper_doc, method="merge",
+            )
+    # /if
+
+    return docstring
+
+
+# /def
+
+
 def update_wrapper(
     wrapper: T.Callable,
     wrapped: T.Callable,
-    signature: T.Union[_FullerSignature, None, bool] = True,  # not in functools
+    signature: T.Union[_FullerSig, None, bool] = True,  # not in functools
     docstring: T.Union[str, bool] = True,  # not in functools
     assigned: T.Sequence[str] = WRAPPER_ASSIGNMENTS,
     updated: T.Sequence[str] = WRAPPER_UPDATES,
@@ -214,9 +345,9 @@ def update_wrapper(
 
     Parameters
     ----------
-    wrapper
+    wrapper : Callable
         the function to be updated
-    wrapped
+    wrapped : Callable
        the original function
     signature : Signature or None or bool, optional
         signature to impose on `wrapper`.
@@ -256,28 +387,12 @@ def update_wrapper(
     # ---------------------------------------
     # preamble
 
-    if signature is True:
-        _update_sig = True
-        signature = _FullerSignature.from_callable(wrapped)
-    elif signature in (None, False):
-        pass
-    else:  # convert to my signature object
-        _update_sig = False
-        if not (type(signature) == _FullerSignature):
-            signature = _FullerSignature(
-                parameters=signature.parameters.values(),
-                return_annotation=signature.return_annotation,
-                # docstring=docstring  # not yet implemented
-            )
-        elif isinstance(signature, _FullerSignature):
-            pass  # docstring considerations not yet implemented
-        else:
-            raise ValueError("signature must be a Signature object")
+    signature, _update_sig = __parse_sig_for_update_wrapper(signature, wrapped)
 
     # need to get wrapper properties now
-    wrapper_sig = _FullerSignature.from_callable(wrapper)
+    wrapper_sig = _FullerSig.from_callable(wrapper)
 
-    wrapper_doc = _getdoc(wrapper) or ""
+    wrapper_doc = _nspct.getdoc(wrapper) or ""
     wrapper_doc = "\n".join(wrapper_doc.split("\n")[1:])  # drop title
 
     if _doc_fmt is None:
@@ -285,6 +400,7 @@ def update_wrapper(
 
     # ---------------------------------------
     # update wrapper (same as functools.update_wrapper)
+
     for attr in assigned:
         try:
             value = getattr(wrapped, attr)
@@ -292,6 +408,7 @@ def update_wrapper(
             pass
         else:
             setattr(wrapper, attr, value)
+
     for attr in updated:  # update whole dictionary
         getattr(wrapper, attr).update(getattr(wrapped, attr, {}))
 
@@ -303,42 +420,9 @@ def update_wrapper(
 
     elif _update_sig:  # merge wrapped and wrapper signature
 
-        # go through parameters in wrapper_sig, merging into signature
-        for param in wrapper_sig.parameters.values():
-            # skip VAR_POSITIONAL and VAR_KEYWORD
-            if param.kind in {VAR_POSITIONAL, VAR_KEYWORD}:
-                pass
-            # already exists -> replace
-            elif param.name in signature.parameters:
-                # ensure kind matching
-                if param.kind != signature.parameters[param.name].kind:
-                    raise TypeError(
-                        f"{param.name} must match kind in function signature"
-                    )
-                # can only merge key-word only
-                if param.kind == KEYWORD_ONLY:
-                    signature.modify_parameter(
-                        param.name,
-                        name=None,
-                        kind=None,  # inherit b/c matching
-                        default=param.default,
-                        annotation=param.annotation,
-                    )
-
-                    # track for docstring
-                    _doc_fmt[param.name] = param.default
-
-            # add to signature
-            else:
-                # can only merge key-word only
-                if param.kind == KEYWORD_ONLY:
-                    signature = signature.insert_parameter(
-                        signature.index_end_keyword_only, param
-                    )
-
-                    # track for docstring
-                    _doc_fmt[param.name] = param.default
-        # /for
+        signature = __update_wrapper_update_sig(
+            signature, wrapper_sig, _doc_fmt
+        )
 
         for attr in SIGNATURE_ASSIGNMENTS:
             value = getattr(signature, attr)
@@ -348,13 +432,13 @@ def update_wrapper(
 
     else:  # a signature object
         for attr in SIGNATURE_ASSIGNMENTS:
-            value = getattr(signature, attr)
-            setattr(wrapper, attr, value)
+            _value = getattr(signature, attr)
+            setattr(wrapper, attr, _value)
 
         # for docstring
         for param in wrapper_sig.parameters.values():
             # can only merge key-word only
-            if param.kind == KEYWORD_ONLY:
+            if param.kind == _nspct.KEYWORD_ONLY:
                 _doc_fmt[param.name] = param.default
 
         wrapper.__signature__ = signature.signature
@@ -363,24 +447,14 @@ def update_wrapper(
     # docstring
 
     if _doc_fmt:  # (not empty dict)
-        wrapper_doc = FormatTemplate(wrapper_doc).safe_substitute(**_doc_fmt)
+        wrapper_doc = _FormatTemplate(wrapper_doc).safe_substitute(**_doc_fmt)
 
-    if isinstance(docstring, str):  # assign docstring
-        wrapper.__doc__ = _cleandoc(docstring)
-    elif docstring is False:  # just inherit
-        wrapper.__doc__ = wrapped.__doc__
-    else:  # merge wrapper docstring
-        wrapped_doc = _getdoc(wrapped) or ""
-        wrapper_doc = _cleandoc(wrapper_doc)
-
-        if _doc_style is None:  # use original wrapper docstring
-            wrapper.__doc__ = wrapped_doc + "\n\n" + wrapper_doc
-
-        else:  # TODO implement the full set of options
-            wrapper.__doc__ = _store[_doc_style](
-                wrapped_doc, wrapper_doc, method="merge",
-            )
-    # /if
+    wrapper.__doc__ = __update_wrapper_docstring(
+        wrapped,
+        docstring=docstring,
+        wrapper_doc=wrapper_doc,
+        _doc_style=_doc_style,
+    )
 
     # Issue #17482: set __wrapped__ last so we don't inadvertently copy it
     # from the wrapped function when updating __dict__
@@ -397,7 +471,7 @@ def update_wrapper(
 
 def wraps(
     wrapped: T.Callable,
-    signature: T.Union[_FullerSignature, None, bool] = True,
+    signature: T.Union[_FullerSig, None, bool] = True,
     docstring: T.Union[str, None, bool] = None,
     assigned: T.Sequence[str] = WRAPPER_ASSIGNMENTS,
     updated: T.Sequence[str] = WRAPPER_UPDATES,
@@ -414,7 +488,7 @@ def wraps(
     Parameters
     ----------
     wrapped: Callable
-    signature: _FullerSignature or bool or None, optional
+    signature: _FullerSig or bool or None, optional
         True (default)
     docstring: str or bool or None, optional
         None
