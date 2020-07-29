@@ -84,8 +84,6 @@ _void = _void  # TODO: add to RTD
 class _placehold:
     """Placehold."""
 
-    pass
-
 
 # /class
 
@@ -272,9 +270,11 @@ def get_annotations_from_signature(signature: Signature) -> T.Dict[str, T.Any]:
     annotations: T.Dict[str, T.Any] = {
         k: v.annotation
         for k, v in signature.parameters.items()
-        if v.annotation != _empty
+        if not _is_empty(v.annotation)
     }
-    annotations["return"] = signature.return_annotation
+    if not _is_empty(signature.return_annotation):
+        annotations["return"] = signature.return_annotation
+
     return annotations
 
 
@@ -601,7 +601,7 @@ def drop_parameter(
         Signature object
     param: str, int, Parameter
         the parameter to drop in self.parameters
-        identified by either the name or index
+        identified by either the name (str) or index (int)
         (Parameter type calls name)
         If None, does not drop anything
 
@@ -711,13 +711,13 @@ class FullerSignature(Signature):
 
         Returns
         -------
-        FullerSignature
+        FullerSignature instance
 
         """
         sig = cls(
             parameters=signature.parameters.values(),
             return_annotation=signature.return_annotation,
-            obj=obj
+            obj=obj,
         )
 
         # TODO check on obj, that has matching sig as signature
@@ -1439,7 +1439,7 @@ class FullerSignature(Signature):
 # ------------------------------------------------------------------------
 
 
-def fuller_signature(obj: T.Any, *, follow_wrapped: bool = True):
+def fuller_signature(obj: T.Callable, *, follow_wrapped: bool = True):
     """Get a signature object for the passed callable."""
     return FullerSignature.from_callable(obj, follow_wrapped=follow_wrapped)
 

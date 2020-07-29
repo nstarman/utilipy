@@ -24,61 +24,9 @@ import typing as T
 from astropy.utils.data import find_current_module
 
 
-# PROJECT-SPECIFIC
-
-
-##############################################################################
-# PARAMETERS
-
-
 ##############################################################################
 # CODE
 ##############################################################################
-
-
-# @contextmanager
-# def temporary_namespace(module: ModuleType, keep: T.List[str] = []):
-#     """Temporary Namespace within ``with`` statement.
-
-#     1. Stores keys in ``__dict__`` (determined by ``__name__``)
-#     2. Enters ``with`` statement
-#     3. Deletes all new keys in ``__dict__`` except those specified in `keep`
-
-#     Parameters
-#     ----------
-#     module : module
-#         ``sys.modules[__name__]`` of module calling from.
-
-#         .. todo::
-
-#             not need to pass any module information. infer.
-
-#     keep : list, optional
-#         list of (str) variable names to keep.
-
-#     Yields
-#     ------
-#     module : module
-#         the specified module, for accessing namespace
-
-#     """
-#     # sys.modules[__name__]
-#     original_namespace: list = list(module.__dict__.keys())
-#     try:
-#         yield module
-#     finally:
-#         keys: tuple = tuple(module.__dict__.keys())
-#         to_keep: list = original_namespace + keep
-
-#         n: str
-#         for n in keys:
-#             if n not in to_keep:
-#                 del module.__dict__[n]
-#         # /for
-#     # /try
-
-
-# # /def
 
 
 @contextmanager
@@ -167,6 +115,11 @@ def make_help_function(
     decorator : Callable
         decorator function to change the wrapped function's docstring.
 
+    Raises
+    ------
+    TypeError
+        if `look_for` is not None or str
+
     Notes
     -----
     .. todo::
@@ -177,7 +130,8 @@ def make_help_function(
 
     """
     if module is None:
-        mod_name = find_current_module(1).__name__
+        module = find_current_module(2)
+        mod_name = module.__name__
         module_doc = module.__doc__
     elif isinstance(module, ModuleType):
         module_doc = module.__doc__
@@ -207,9 +161,10 @@ def make_help_function(
     def help_function():
         print(doc)
 
+    # help_function._doc = doc
     help_function.__name__ = f"{name}_help"
     help_function.__module__ = mod_name
-    help_function.__doc__ = f"Help for {doctitle or name}."
+    help_function.__doc__ = f"Help for {doctitle or name}.\n\n" + (doc or "")
     # /def
 
     return help_function

@@ -19,14 +19,9 @@ __all__ = [
 ###############################################################################
 # IMPORTS
 
-# THIRD PARTY
-
-import pytest
-
-
 # PROJECT-SPECIFIC
 
-from .. import functools
+from .. import functools, inspect
 
 
 ###############################################################################
@@ -62,226 +57,254 @@ def test_WRAPPER_UPDATES():
     """Test `~utilipy.utils.functools.WRAPPER_UPDATES`."""
     assert functools.WRAPPER_UPDATES == ("__dict__",)
 
+
+# /def
+
+##############################################################################
+# CODE
+##############################################################################
+
+#############################################################################
+# make_function
+
+
+def test_make_function():
+    """Test :func:`~utilipy.utils.functools.make_function`."""
+    # test function, to copy
+    def _test_func(x=None):
+        return x, 2
+
     # /def
 
-    ###############################################################################
-    # CODE
-    ###############################################################################
+    sig = inspect.signature(_test_func)
+    params = list(sig.parameters.values())
+    params[0] = params[0].replace(default=2)
+    sig = sig.replace(parameters=params)
 
-    ###############################################################################
-    # makeFunction
+    test_func = functools.make_function(
+        _test_func.__code__,
+        globals_=globals(),
+        name="made_func",
+        signature=sig,
+    )
 
-    # def test_makeFunction():
-    #     """test makeFunction."""
+    assert test_func.__name__ == "made_func"
 
-    #     def function_code_block():
+    assert _test_func() == (None, 2)
+    assert test_func() == (2, 2)
 
-    #     pass
+    assert test_func(1) == (1, 2)
 
-    # # /def
 
-    # --------------------------------------------------------------------------
+# /def
 
-    ###############################################################################
-    # copy_function
+# --------------------------------------------------------------------------
 
-    # def test_copy_function():
-    #     def test_func(
-    #         x: "args",
-    #         y,
-    #         a: "default args" = 2,
-    #         b=3,
-    #         *args: "var args",
-    #         p: "keyword args" = "L",
-    #         q="M",
-    #         **kwargs: "var kwargs"
-    #     ):
-    #         return x, y, a, b, args, p, q, kwargs
 
-    #     tfc = functools.copy_function(test_func)
+##############################################################################
+# copy_function
 
-    #     # ------------------------------------
-    #     # test properties
 
-    #     for attr in dir(test_func):
-    #         if attr not in (
-    #             "__call__",
-    #             "__delattr__",
-    #             "__dir__",
-    #             "__eq__",
-    #             "__format__",
-    #             "__ge__",
-    #             "__get__",
-    #             "__getattribute__",
-    #             "__gt__",
-    #             "__hash__",
-    #             "__init__",
-    #             "__le__",
-    #             "__lt__",
-    #             "__ne__",
-    #             "__reduce__",
-    #             "__reduce_ex__",
-    #             "__repr__",
-    #             "__setattr__",
-    #             "__sizeof__",
-    #             "__str__",
-    #         ):
-    #             assert getattr(tfc, attr) == getattr(test_func, attr)
+def test_copy_function():
+    def test_func(
+        x: "args",
+        y,
+        a: "default args" = 2,
+        b=3,
+        *args: "var args",
+        p: "keyword args" = "L",
+        q="M",
+        **kwargs: "var kwargs"
+    ):
+        return x, y, a, b, args, p, q, kwargs
 
-    #     # __call__
-    #     ba = inspect.signature(test_func).bind(
-    #         0,
-    #         [1, 1.5],
-    #         2.1,
-    #         3.1,
-    #         4.0,
-    #         4.33,
-    #         4.66,
-    #         p=5,
-    #         q=[6, 6.5],
-    #         r=7,
-    #         s=[8, 8.5],
-    #     )
-    #     assert tfc.__call__(*ba.args, **ba.kwargs) == test_func.__call__(
-    #         *ba.args, **ba.kwargs
-    #     )
+    tfc = functools.copy_function(test_func)
 
-    #     # __delattr__
-    #     assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
-    #     tfc.attr_to_del = "delete me"
-    #     test_func.attr_to_del = "delete me"
-    #     assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
-    #     assert tfc.attr_to_del == test_func.attr_to_del  # test equality
-    #     tfc.__delattr__("attr_to_del")
-    #     test_func.__delattr__("attr_to_del")
-    #     assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
+    # ------------------------------------
+    # test properties
 
-    #     # __setattr__
-    #     assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
-    #     tfc.__setattr__("attr_to_del", "delete me")
-    #     test_func.__setattr__("attr_to_del", "delete me")
-    #     assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
-    #     assert tfc.attr_to_del == test_func.attr_to_del  # and be equal
-    #     del tfc.attr_to_del, test_func.attr_to_del
-    #     assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
+    sep_tests = (  # require separate tests
+        "__call__",
+        "__delattr__",
+        "__dir__",
+        "__eq__",
+        "__format__",
+        "__ge__",
+        "__get__",
+        "__getattribute__",
+        "__gt__",
+        "__hash__",
+        "__init__",
+        "__le__",
+        "__lt__",
+        "__ne__",
+        "__reduce__",
+        "__reduce_ex__",
+        "__repr__",
+        "__setattr__",
+        "__sizeof__",
+        "__str__",
+    )
 
-    #     # __dir__
-    #     assert set(tfc.__dir__()) == set(test_func.__dir__())
+    for attr in set(dir(test_func)).difference(sep_tests):
+        assert getattr(tfc, attr) == getattr(test_func, attr), attr
 
-    #     # __getattribute__
-    #     assert set(tfc.__getattribute__("__dir__")()) == set(
-    #         test_func.__getattribute__("__dir__")()
-    #     )
+    # __call__
+    ba = inspect.signature(test_func).bind(
+        0,
+        [1, 1.5],
+        2.1,
+        3.1,
+        4.0,
+        4.33,
+        4.66,
+        p=5,
+        q=[6, 6.5],
+        r=7,
+        s=[8, 8.5],
+    )
+    assert tfc.__call__(*ba.args, **ba.kwargs) == test_func.__call__(
+        *ba.args, **ba.kwargs
+    )
 
-    #     # __eq__, __ge__, __gt__, '__le__', '__lt__', '__ne__'
-    #     for attr in ("__eq__", "__ge__", "__gt__", "__le__", "__lt__", "__ne__"):
-    #         assert tfc.__getattribute__(attr)(tfc) == test_func.__getattribute__(
-    #             attr
-    #         )(test_func)
-    #         assert tfc.__getattribute__(attr)(
-    #             test_func
-    #         ) == test_func.__getattribute__(attr)(tfc)
+    # __delattr__
+    assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
+    tfc.attr_to_del = "delete me"
+    test_func.attr_to_del = "delete me"
+    assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
+    assert tfc.attr_to_del == test_func.attr_to_del  # test equality
+    tfc.__delattr__("attr_to_del")
+    test_func.__delattr__("attr_to_del")
+    assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
 
-    #     # __format__
-    #     # TODO
+    # __setattr__
+    assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
+    tfc.__setattr__("attr_to_del", "delete me")
+    test_func.__setattr__("attr_to_del", "delete me")
+    assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
+    assert tfc.attr_to_del == test_func.attr_to_del  # and be equal
+    del tfc.attr_to_del, test_func.attr_to_del
+    assert hasattr(tfc, "attr_to_del") == hasattr(test_func, "attr_to_del")
 
-    #     # __get__
-    #     # TODO
+    # __dir__
+    assert set(tfc.__dir__()) == set(test_func.__dir__())
 
-    #     # __hash__
-    #     # TODO
+    # __getattribute__
+    assert set(tfc.__getattribute__("__dir__")()) == set(
+        test_func.__getattribute__("__dir__")()
+    )
 
-    #     # __init__
-    #     # TODO
+    # __eq__, __ge__, __gt__, '__le__', '__lt__', '__ne__'
+    for attr in ("__eq__", "__ge__", "__gt__", "__le__", "__lt__", "__ne__"):
+        assert tfc.__getattribute__(attr)(tfc) == test_func.__getattribute__(
+            attr
+        )(test_func)
+        assert tfc.__getattribute__(attr)(
+            test_func
+        ) == test_func.__getattribute__(attr)(tfc)
 
-    #     # __reduce__, __reduce_ex__ TypeError: can't pickle function objects
+    # __format__
+    # TODO
 
-    #     # __repr__
-    #     # TODO, right now they are the same. Problem?
+    # __get__
+    # TODO
 
-    #     # __sizeof__
-    #     assert tfc.__sizeof__() == test_func.__sizeof__()
+    # __hash__
+    # TODO
 
-    #     # __str__
-    #     assert tfc.__str__() != test_func.__str__()
-    #     assert tfc.__str__().split(" ")[:-1] == test_func.__str__().split(" ")[:-1]
+    # __init__
+    # TODO
 
-    #     # ------------------------------------
-    #     # test calling
+    # __reduce__, __reduce_ex__ TypeError: can't pickle function objects
 
-    #     # TODO
+    # __repr__
+    # TODO, right now they are the same. Problem?
 
-    #     return
+    # __sizeof__
+    assert tfc.__sizeof__() == test_func.__sizeof__()
 
-    # # /def
+    # __str__
+    assert tfc.__str__() != test_func.__str__()
+    assert tfc.__str__().split(" ")[:-1] == test_func.__str__().split(" ")[:-1]
 
-    ###############################################################################
-    # update_wrapper
+    # ------------------------------------
+    # test calling
 
-    # def test_update_wrapper_defaults():
+    # TODO
 
-    #     # ----------------------------------------------
-    #     # basic decorator
+    return
 
-    #     def decorator(function):
-    #         def wrapper(*args, **kwargs):
-    #             return function(*args, **kwargs)
 
-    #         return wrapper
+# /def
 
-    #     # /def
 
-    #     for name in _test_functools_util.__all__:
-    #         func = getattr(_test_functools_util, name)
-    #         f_sig = inspect.signature(func)
+# ##############################################################################
+# # update_wrapper
 
-    #         dec_func = functools.update_wrapper(decorator(func), func)
-    #         df_sig = inspect.signature(dec_func)
 
-    #         # assigned
-    #         uwsig = inspect.signature(functools.update_wrapper)
-    #         assigned = uwsig.parameters["assigned"].default
-    #         for attr in assigned:
-    #             assert getattr(dec_func, attr) == getattr(func, attr)
+# def test_update_wrapper_defaults():
 
-    #         # # updated  # doesn't work b/c stuff added to __dict__ after
-    #         # updated = uwsig.parameters["updated"].default
-    #         # for attr in updated:
-    #         #     assert getattr(dec_func, attr) == getattr(func, attr)
+#     # ----------------------------------------------
+#     # basic decorator
 
-    #         assert not hasattr(func, "__signature__")
-    #         assert hasattr(dec_func, "__signature__")
-    #         assert dec_func.__signature__ == df_sig
+#     def decorator(function):
+#         def wrapper(*args, **kwargs):
+#             return function(*args, **kwargs)
 
-    #         # signature
-    #         for attr in functools.SIGNATURE_ASSIGNMENTS:
-    #             assert getattr(dec_func, attr) == getattr(func, attr)
+#         return wrapper
 
-    #         assert df_sig == f_sig
+#     # /def
 
-    #         # wrapped
-    #         assert hasattr(dec_func, "__wrapped__")
-    #         assert dec_func.__wrapped__ == func
+#     for name in _test_functools_util.__all__:
+#         func = getattr(_test_functools_util, name)
+#         f_sig = inspect.signature(func)
 
-    #         # TODO more tests
+#         dec_func = functools.update_wrapper(decorator(func), func)
+#         df_sig = inspect.signature(dec_func)
 
-    #     # /for
+#         # assigned
+#         uwsig = inspect.signature(functools.update_wrapper)
+#         assigned = uwsig.parameters["assigned"].default
+#         for attr in assigned:
+#             assert getattr(dec_func, attr) == getattr(func, attr)
 
-    #     # ----------------------------------------------
-    #     # decorator with kwargs
+#         # # updated  # doesn't work b/c stuff added to __dict__ after
+#         # updated = uwsig.parameters["updated"].default
+#         # for attr in updated:
+#         #     assert getattr(dec_func, attr) == getattr(func, attr)
 
-    #     def decorator(function):
-    #         def wrapper(*args, kw1="test", **kwargs):
-    #             return function(*args, **kwargs)
+#         assert not hasattr(func, "__signature__")
+#         assert hasattr(dec_func, "__signature__")
+#         assert dec_func.__signature__ == df_sig
 
-    #         return wrapper
+#         # signature
+#         for attr in functools.SIGNATURE_ASSIGNMENTS:
+#             assert getattr(dec_func, attr) == getattr(func, attr)
 
-    #     # /def
+#         assert df_sig == f_sig
+
+#         # wrapped
+#         assert hasattr(dec_func, "__wrapped__")
+#         assert dec_func.__wrapped__ == func
+
+#         # TODO more tests
+
+#     # /for
+
+#     # ----------------------------------------------
+#     # decorator with kwargs
+
+#     def decorator(function):
+#         def wrapper(*args, kw1="test", **kwargs):
+#             return function(*args, **kwargs)
+
+#         return wrapper
+
+#     # /def
 
 
 #     for name in _test_functools_util.__all__:
 #         func = getattr(_test_functools_util, name)
-
 
 #         f_sig = inspect.signature(func)
 
@@ -305,9 +328,7 @@ def test_WRAPPER_UPDATES():
 
 #         # signature
 #         for attr in functools.SIGNATURE_ASSIGNMENTS:
-#             dfa = {
-#                 k: v for k, v in getattr(dec_func, attr).items() if k != "kw1"
-#             }
+#             dfa = {k: v for k, v in getattr(dec_func, attr).items() if k != "kw1"}
 #             assert dfa == (getattr(func, attr) or {})
 
 #         # same signature, except for 'kw1'
@@ -318,9 +339,7 @@ def test_WRAPPER_UPDATES():
 
 #         # signature adds 'kw1' after *args
 #         indx = list(df_sig.parameters.keys()).index("kw1")
-#         list(df_sig.parameters.values())[
-#             indx - 1
-#         ].kind == inspect._VAR_POSITIONAL
+#         list(df_sig.parameters.values())[indx - 1].kind == inspect._VAR_POSITIONAL
 
 #         # wrapped
 #         assert hasattr(dec_func, "__wrapped__")
@@ -330,90 +349,92 @@ def test_WRAPPER_UPDATES():
 
 #     # /for
 
-#     # ----------------------------------------------
-#     # decorator with args
+# # ----------------------------------------------
+# # decorator with args
 
-#     def decorator(function):
-#         def wrapper(x, *args, **kwargs):
-#             return function(*args, **kwargs)
 
-#         return wrapper
+# def decorator(function):
+#     def wrapper(x, *args, **kwargs):
+#         return function(*args, **kwargs)
 
-#     # /def
+#     return wrapper
 
-#     # TODO
 
-#     # ----------------------------------------------
+# # /def
 
+# # TODO
+
+# # ----------------------------------------------
+
+# return
+
+
+# # /def
+
+
+# # -----------------------------------------------------------------------------
+
+
+# @pytest.mark.skip(reason="TODO")
+# def test_update_wrapper_signature_true():
+#     """Test the case when `signature`=True."""
 #     return
 
 
 # # /def
 
 
-# -----------------------------------------------------------------------------
+# @pytest.mark.skip(reason="TODO")
+# def test_update_wrapper_signature_false():
+#     """Test the case when `signature`=False."""
+#     return
 
 
-@pytest.mark.skip(reason="TODO")
-def test_update_wrapper_signature_true():
-    """Test the case when `signature`=True."""
-    return
+# # /def
 
 
-# /def
+# @pytest.mark.skip(reason="TODO")
+# def test_update_wrapper_signature_None():
+#     """Test the case when `signature`=None."""
+#     return
 
 
-@pytest.mark.skip(reason="TODO")
-def test_update_wrapper_signature_false():
-    """Test the case when `signature`=False."""
-    return
+# # /def
 
 
-# /def
+# @pytest.mark.skip(reason="TODO")
+# def test_update_wrapper_signature_Signature():
+#     """Test the case when `signature`is an inspect.Signature object."""
+#     return
 
 
-@pytest.mark.skip(reason="TODO")
-def test_update_wrapper_signature_None():
-    """Test the case when `signature`=None."""
-    return
+# # /def
 
 
-# /def
+# @pytest.mark.skip(reason="TODO")
+# def test_update_wrapper_signature_FullerSignature():
+#     """Test the case when `signature`is an FullerSignature object."""
+#     return
 
 
-@pytest.mark.skip(reason="TODO")
-def test_update_wrapper_signature_Signature():
-    """Test the case when `signature`is an inspect.Signature object."""
-    return
+# # /def
 
 
-# /def
+# @pytest.mark.skip(reason="TODO")
+# def test_update_wrapper_signature_notSignature():
+#     """Test the case when `signature`is not a Signature object.
+#     This should raise an error.
+
+#     """
+#     return
 
 
-@pytest.mark.skip(reason="TODO")
-def test_update_wrapper_signature_FullerSignature():
-    """Test the case when `signature`is an FullerSignature object."""
-    return
+# # /def
 
 
-# /def
+# ###############################################################################
+# # wraps
 
 
-@pytest.mark.skip(reason="TODO")
-def test_update_wrapper_signature_notSignature():
-    """Test the case when `signature`is not a Signature object.
-    This should raise an error.
-
-    """
-    return
-
-
-# /def
-
-
-###############################################################################
-# wraps
-
-
-###############################################################################
-# END
+# ###############################################################################
+# # END
