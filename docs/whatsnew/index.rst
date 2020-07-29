@@ -4,8 +4,7 @@ Major Release History
 
 |Milestones| |Open Issues| |Last GitHub Release|
 
-Examples in these documents are frozen in time to respect the status of the API at the time of the release they are describing. Please refer to the main, up-to-date documentation if you run into any issues with the
-functionality highlighted in these pages.
+Examples in these documents are frozen in time to respect the status of the API at the time of the release they are describing. Please refer to the main, up-to-date documentation if you run into any issues with the functionality highlighted in these pages.
 
 
 .. toctree::

@@ -1,8 +1,8 @@
-########
+#######
 utilipy
-########
+#######
 
-Welcome to ``utilipy``, a collection of useful python codes. This is a centralized repository for non project-specific code. There are modules for making advanced decorators, interfacing with IPython environments, miscellaneous astronomical functions, data utilities, making fitting libraries inter-operable, improving astropy units and quantity-enabled functions, and much more.
+Welcome to ``utilipy``, a collection of useful python codes. This is a centralized repository for non project-specific code. There are modules for making advanced decorators, interfacing with IPython environments, data utilities, making fitting libraries inter-operable, and much more.
 
 The package is being actively developed in a `public repository on GitHub <https://github.com/nstarman/utilipy>`_ so if you have any trouble, `open an issue <https://github.com/nstarman/utilipy/issues>`_ there.
 
@@ -106,8 +106,8 @@ Project details
 .. |astropy| image:: http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat
    :target: http://www.astropy.org/
 
-.. |Build Status| image:: https://travis-ci.org/nstarman/utilipy.svg?branch=master
-   :target: https://travis-ci.org/nstarman/utilipy
+.. |Build Status| image:: https://travis-ci.com/nstarman/utilipy.svg?branch=master
+    :target: https://travis-ci.com/nstarman/utilipy
 
 .. |Documentation Status| image:: https://readthedocs.org/projects/utilipy/badge/?version=latest
    :target: https://utilipy.readthedocs.io/en/latest/?badge=latest
