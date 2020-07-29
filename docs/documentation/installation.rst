@@ -14,12 +14,30 @@ With `pip`
 
 	|PyPI| |PyPI Format|
 
+*utilipy* requires `Astropy <https://www.astropy.org>`_ as a pre-requisite, for package configuration.
 
 The easiest way to get *utilipy* is to install with `pip <https://pypi.org/project/utilipy/>`_. To install with pip::
 
     pip install utilipy
 
-See the `installation instructions <https://readthedocs.org/projects/utilipy/>`_ in the `documentation <https://readthedocs.org/projects/utilipy/>`_ for more information.
+
+***********
+From source
+***********
+
+To install the latest version, or from a branch, *utilipy* can be installed from `source <https://github.com/nstarman/utilipy.git>`_.
+
+From the command line.
+::
+
+	cd folder/in/which/to/install
+
+	git clone https://github.com/nstarman/utilipy.git
+
+	cd utilipy
+
+	python setup.py install
+
 
 
 .. |PyPI| image:: https://badge.fury.io/py/utilipy.svg

@@ -1,8 +1,8 @@
 .. _whatsnew-planned:
 
-***************************
-What's Planned for utilipy?
-***************************
+*****************************
+What's Planned for `utilipy`?
+*****************************
 
 |Last Commit|
 

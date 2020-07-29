@@ -45,21 +45,20 @@ Nothing.
 ##############################################################################
 
 
-@pytest.mark.skip()
-def test_temporary_namespace():
+def test_temporary_namespace():  # TODO FIX
     """Test :func:`~utilipy.utils.misc.temporary_namespace`."""
     x = 1
     y = 2
 
-    with misc.temporary_namespace(None, keep=["a",]):
-        a = 3
-        b = 4
+    with misc.temporary_namespace(locals(), keep=["a"]):
+        locals()["a"] = 3  # TODO FIX
+        locals()["b"] = 4
 
     assert x, y == (1, 2)
-    assert a == 3
-    # assert "a" in test_temporary_namespace.__dict__
-    # with pytest.raises(AssertionError):
-    #     assert "b" in test_temporary_namespace.__dict__
+    assert locals()["a"] == 3
+
+    with pytest.raises(AssertionError):
+        assert "b" in locals()
 
 
 # /def
