@@ -7,6 +7,9 @@ packagename.test
 
 """
 
+##############################################################################
+# IMPORTS
+
 import os
 import pytest
 
@@ -18,6 +21,7 @@ if astropy_version < "3.0":
 
     del pytest_report_header
     ASTROPY_HEADER = True
+
 else:
     try:
         from pytest_astropy_header.display import (
@@ -28,6 +32,12 @@ else:
         ASTROPY_HEADER = True
     except ImportError:
         ASTROPY_HEADER = False
+
+# /if
+
+##############################################################################
+# CODE
+##############################################################################
 
 
 def pytest_configure(config):
@@ -53,6 +63,8 @@ def pytest_configure(config):
         packagename = os.path.basename(os.path.dirname(__file__))
         TESTED_VERSIONS[packagename] = __version__
 
+
+# /def
 
 # ------------------------------------------------------
 # Added by @nstarman
@@ -82,8 +94,8 @@ def add_units(doctest_namespace):
 # ------------------------------------------------------
 
 
-# Uncomment the last two lines in this block to treat all DeprecationWarnings as
-# exceptions. For Astropy v2.0 or later, there are 2 additional keywords,
+# Uncomment the last two lines in this block to treat all DeprecationWarnings
+# as exceptions. For Astropy v2.0 or later, there are 2 additional keywords,
 # as follow (although default should work for most cases).
 # To ignore some packages that produce deprecation warnings on import
 # (in addition to 'compiler', 'scipy', 'pygments', 'ipykernel', and
@@ -94,3 +106,6 @@ def add_units(doctest_namespace):
 #     warnings_to_ignore_by_pyver={(MAJOR, MINOR): ['Message to ignore']}
 # from astropy.tests.helper import enable_deprecations_as_exceptions  # noqa
 # enable_deprecations_as_exceptions()
+
+##############################################################################
+# END
