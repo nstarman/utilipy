@@ -155,8 +155,7 @@ def run_imports(
     galpy: bool = False,
     amuse: bool = False,
     astronat: bool = False,
-    # autoreload
-    set_autoreload_to: T.Optional[int] = None,
+    # utils
     verbose_imports: T.Optional[bool] = None,
     # logging
     logger: LogFile = _LOGFILE,
@@ -192,9 +191,6 @@ def run_imports(
 
     Other Parameters
     ----------------
-    set_autoreload_to: int or None
-        (default None)
-        whether to change the autoreload state
     relative: bool or list of bools
         whether the `files` paths are relative or absolute
     verbose_imports: bool or None
@@ -276,11 +272,6 @@ def run_imports(
             verbose=verbose,
             logger_kw=logger_kw,
         )
-
-    # ---------------------------------------------
-    # autoreload
-
-    set_autoreload(set_autoreload_to)
 
     return
 
