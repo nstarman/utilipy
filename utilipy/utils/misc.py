@@ -36,13 +36,58 @@ from astropy.utils.data import find_current_module
 ##############################################################################
 
 
+# @contextmanager
+# def temporary_namespace(module: ModuleType, keep: T.List[str] = []):
+#     """Temporary Namespace within ``with`` statement.
+
+#     1. Stores keys in ``__dict__`` (determined by ``__name__``)
+#     2. Enters ``with`` statement
+#     3. Deletes all new keys in ``__dict__`` except those specified in `keep`
+
+#     Parameters
+#     ----------
+#     module : module
+#         ``sys.modules[__name__]`` of module calling from.
+
+#         .. todo::
+
+#             not need to pass any module information. infer.
+
+#     keep : list, optional
+#         list of (str) variable names to keep.
+
+#     Yields
+#     ------
+#     module : module
+#         the specified module, for accessing namespace
+
+#     """
+#     # sys.modules[__name__]
+#     original_namespace: list = list(module.__dict__.keys())
+#     try:
+#         yield module
+#     finally:
+#         keys: tuple = tuple(module.__dict__.keys())
+#         to_keep: list = original_namespace + keep
+
+#         n: str
+#         for n in keys:
+#             if n not in to_keep:
+#                 del module.__dict__[n]
+#         # /for
+#     # /try
+
+
+# # /def
+
+
 @contextmanager
-def temporary_namespace(module: ModuleType, keep: T.List[str] = []):
+def temporary_namespace(locals_ref, keep: T.List[str] = []):
     """Temporary Namespace within ``with`` statement.
 
-    1. Stores keys in ``__dict__`` (determined by ``__name__``)
+    1. copies current namespace from `locals_ref`
     2. Enters ``with`` statement
-    3. Deletes all new keys in ``__dict__`` except those specified in `keep`
+    3. restores original namespace except those specified in `keep`
 
     Parameters
     ----------
@@ -58,27 +103,38 @@ def temporary_namespace(module: ModuleType, keep: T.List[str] = []):
 
     Yields
     ------
-    module : module
-        the specified module, for accessing namespace
+    locals_ref : locals
+        for accessing namespace
+
+    Warnings
+    --------
+    Does NOT work within functions.
 
     """
-    # sys.modules[__name__]
-    original_namespace: list = list(module.__dict__.keys())
+    original_namespace = locals_ref.copy()
+
     try:
-        yield module
+        yield locals_ref
     finally:
-        keys: tuple = tuple(module.__dict__.keys())
-        to_keep: list = original_namespace + keep
+        # difference of current and old namespace
+        # without the keep keys
+        drop_keys = (
+            set(locals_ref.keys())
+            .difference(original_namespace.keys())
+            .difference(keep)
+        )
+        # kept values
+        keep_dict = {k: locals_ref[k] for k in keep}
 
-        n: str
-        for n in keys:
-            if n not in to_keep:
-                del module.__dict__[n]
-        # /for
+        # print("drop_keys", drop_keys, "keep_dict", keep_dict)
+
+        # Restoring Namespace
+        original_namespace.update(keep_dict)  # add keep values to original
+        locals_ref.update(original_namespace)  # restore original (+kept)
+        for key in drop_keys:  # drop unkept context-specific values
+            locals_ref.pop(key)
+
     # /try
-
-
-# /def
 
 
 # -------------------------------------------------------------------
