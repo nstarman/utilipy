@@ -4,6 +4,14 @@
 
 __author__ = "Nathaniel Starkman"
 
+__all__ = [
+    "conf",
+    # warning classes
+    "utilipyWarning",
+    "utilipyWarningVerbose",
+    # functions
+    "showwarning",
+]
 
 ##############################################################################
 # IMPORTS
@@ -12,23 +20,13 @@ __author__ = "Nathaniel Starkman"
 
 import typing as T
 import warnings
-
+import sys
 
 # THIRD PARTY
 
 from astropy import config as _config
+from astropy.utils.exceptions import AstropyWarning
 
-
-#############################################################################
-# PARAMETERS
-
-
-__all__: T.List[str] = [
-    "conf",
-    "utilipyWarning",
-    "utilipyWarningVerbose",
-    "_warning",
-]
 
 
 #############################################################################
@@ -39,9 +37,9 @@ class Conf(_config.ConfigNamespace):
     """Configuration parameters for :mod:`~utilipy.utils.exceptions`."""
 
     verbose_warnings = _config.ConfigItem(
-        False,
-        description="When True, use verbose warnings",
-        cfgtype="boolean(default=False)",
+        True,
+        description="When True, use verbose `utilipy` warnings",
+        cfgtype="boolean(default=True)",
     )
 
 
@@ -53,7 +51,7 @@ conf = Conf()
 ###############################################################################
 
 
-class utilipyWarning(Warning):
+class utilipyWarning(AstropyWarning):
     """:mod:`~utilipy` package warning."""
 
 
@@ -63,17 +61,22 @@ class utilipyWarning(Warning):
 # ----------------------------------------------------------------------------
 
 
-class utilipyWarningVerbose(Warning):
-    """Verbose :mod:`~utilipy` warning."""
+class utilipyWarningVerbose(utilipyWarning):
+    """Verbose :mod:`~utilipy` warning.
+
+    If used, the warning is verbose, regardless of the `conf` setting.
+
+    """
 
 
 # /class
 
 
 # ----------------------------------------------------------------------------
+# override built-in showwarning
 
 
-def _warning(
+def showwarning(
     message: T.Any,
     category: type = utilipyWarning,
     filename: str = "",
@@ -81,17 +84,63 @@ def _warning(
     file: None = None,
     line: None = None,
 ):
-    if issubclass(category, utilipyWarning):
-        if (
-            not issubclass(category, utilipyWarningVerbose)
-            or conf.verbose_warnings
-        ):
-            print("utilipyWarning: " + str(message))
+    """Override :func:`~warnings.showwarning`.
+
+    showwarning docs
+
+        Write a warning to a file. The default implementation calls
+        :func:`~warnings.formatwarning`(`message`, `category`, `filename`,
+        `lineno`, `line`) and writes the resulting string to file, which
+        defaults to :func:`~sys.stderr`. You may replace this function with
+        any callable by assigning to :func:`~warnings.showwarning`. line is a
+        line of source code to be included in the warning message; if line is
+        not supplied, :func:`~warnings.formatwarning` will try to read the
+        line specified by `filename` and `lineno`.
+
+    Parameters
+    ----------
+    message : Any
+    category : type, optional
+    filename : str, optional
+    lineno : int, optional
+    file : file-type or None, optional
+    line : str or None, optional
+
+    """
+    if file is None:
+        file = sys.stderr
+
+    # Three conditions for a non-verbose warning:
+    #   1) utilipyWarning (or subclass)
+    #   2) NOT utilipyWarningVerbose
+    #   3) verbosity setting is OFF
+    if (
+        issubclass(category, utilipyWarning)
+        and not issubclass(category, utilipyWarningVerbose)
+        and not conf.verbose_warnings
+    ):
+        print(
+            "utilipyWarning: " + str(message), file=file, flush=True,
+        )
+
+    # Normal warnings
     else:
-        print(warnings.formatwarning(message, category, filename, lineno))
+        print(
+            warnings.formatwarning(
+                message=message,
+                category=category,
+                filename=filename,
+                lineno=lineno,
+                line=line,
+            ),
+            file=file,
+            flush=True,
+        )
 
 
-warnings.showwarning = _warning  # TODO check how this is used
+# /def
+
+warnings.showwarning = showwarning
 
 
 ##############################################################################

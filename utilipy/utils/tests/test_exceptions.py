@@ -16,6 +16,7 @@ __all__ = [
 
 import warnings
 import unittest
+import sys
 import tempfile
 
 
@@ -73,7 +74,10 @@ def test_showwarning():
 
         tmp.seek(0)  # rewind file
 
-        assert tmp.readlines()[1] == "test\n", tmp.readline()
+        lines = tmp.readlines()
+        i = 1 if sys.version_info.minor > 6 else 3
+
+        assert lines[i] == "test\n", lines
 
     # /with
 
