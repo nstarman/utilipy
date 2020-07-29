@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
-"""initialization file for `inspect`."""
+"""Custom `inspect` module."""
 
 __author__ = "Nathaniel Starkman"
+
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 from inspect import *  # so can be a drop-in for `inspect`
 import inspect
@@ -22,6 +23,7 @@ from inspect import (
 import typing as T
 from typing_extensions import Literal
 from collections import namedtuple
+
 
 # THIRD PARTY
 

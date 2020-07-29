@@ -88,7 +88,7 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# THIRD PARTY
 
 from IPython import get_ipython
 from IPython.core.interactiveshell import InteractiveShell
@@ -103,8 +103,6 @@ from IPython.display import (
 
 # PROJECT-SPECIFIC
 
-# from ..utils.logging import LogPrint, LogFile
-# from ..imports import use_import_verbosity
 from ..utils import make_help_function
 
 from .setup_package import conf

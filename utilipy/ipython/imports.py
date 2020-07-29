@@ -59,11 +59,14 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 from pathlib import Path
-from IPython import get_ipython
 import typing as T
+
+# THIRD PARTY
+
+from IPython import get_ipython
 
 
 # PROJECT-SPECIFIC

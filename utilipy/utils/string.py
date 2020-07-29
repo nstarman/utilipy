@@ -2,20 +2,19 @@
 
 """String Utilities."""
 
-__author__ = "Nathaniel Starkman"
 
-__all__ = ["FormatTemplate"]
+__all__ = [
+    "FormatTemplate",
+]
 
 
 ###############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT=IN
 
 import re
 import string
-
-# from string import *
 
 
 ###############################################################################

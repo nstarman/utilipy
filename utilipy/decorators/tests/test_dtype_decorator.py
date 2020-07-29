@@ -1,19 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Test functions for dtype_decorator."""
-
-__author__ = "Nathaniel Starkman"
+"""Tests for :mod:`~utilipy.decorators.func_io.dtype_decorator`."""
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
-
-import pytest
+# THIRD PRTY
 
 import numpy as np
+import pytest
 
 
 # PROJECT-SPECIFIC
