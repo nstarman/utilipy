@@ -14,12 +14,11 @@ __all__ = [
 # THIRD PARTY
 
 import numpy as np
-import pytest
 
 
 # PROJECT-SPECIFIC
 
-from ..utils import shuffle, get_path_to_file
+from .. import utils
 
 
 ##############################################################################
@@ -35,15 +34,12 @@ z = np.c_[x, y].T
 # TESTS
 ##############################################################################
 
-##########################################################################
-# idxDecorator
 
-
-def test_shuffle():
+def test_make_shuffler():
     """Test :func:`~utilipy.data_utils.utils.shuffle`."""
     arr = np.arange(100)
 
-    shuffler, undo = shuffle(len(arr))
+    shuffler, undo = utils.make_shuffler(len(arr))
 
     # shuffling an identity index array yields the shuffler
     assert all((arr[shuffler] - shuffler) == 0.0)

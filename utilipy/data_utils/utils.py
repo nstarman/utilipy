@@ -4,7 +4,8 @@
 
 
 __all__ = [
-    "shuffle",
+    "intermix_arrays",
+    "make_shuffler",
     "get_path_to_file",
 ]
 
@@ -21,6 +22,7 @@ import typing as T
 # THIRD PARTY
 
 from astropy.utils.data import get_pkg_data_filenames
+from astropy.utils.decorators import deprecated
 
 import numpy as np
 
@@ -36,7 +38,7 @@ import numpy as np
 ##############################################################################
 
 
-def shuffle(
+def make_shuffler(
     length: int, rng=None
 ) -> T.Tuple[T.Sequence[int], T.Sequence[int]]:
     """Shuffle and Unshuffle arrays.
@@ -75,6 +77,9 @@ def shuffle(
 
 
 # /def
+
+
+shuffle = deprecated("v1.0")(make_shuffler)
 
 
 # -------------------------------------------------------------------
