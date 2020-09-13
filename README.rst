@@ -5,7 +5,7 @@ utilipy
 
 .. container::
 
-   |astropy| |Build Status| |Coveralls| |License| |Code style: black|
+   |astropy| |Build Status| |Codecov| |License| |Code style: black|
 
 
 Documentation
@@ -79,5 +79,5 @@ Copyright 2018- Nathaniel Starkman and contributors.
 .. |PyPI| image:: https://badge.fury.io/py/utilipy.svg
    :target: https://badge.fury.io/py/utilipy
 
-.. |Coveralls| image:: https://coveralls.io/repos/github/nstarman/utilipy/badge.svg?branch=master
-   :target: https://coveralls.io/github/nstarman/utilipy?branch=master
+.. |Codecov| image:: https://codecov.io/gh/nstarman/utilipy/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/nstarman/utilipy

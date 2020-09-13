@@ -22,8 +22,6 @@ IPython [1]_
 
 """
 
-__author__ = "Nathaniel Starkman"
-
 
 __all__ = [
     "set_autoreload",
@@ -34,9 +32,12 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 import typing as T
+
+
+# THIRD PARTY
 
 from IPython import get_ipython
 

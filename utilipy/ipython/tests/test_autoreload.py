@@ -33,7 +33,6 @@ from .. import autoreload
 @pytest.mark.skip(reason="TODO")
 def test_autoreload():
     """Test :class:`~utilipy.ipython.autoreload`."""
-    pass
 
 
 # /def

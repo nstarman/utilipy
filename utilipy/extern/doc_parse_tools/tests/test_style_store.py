@@ -35,7 +35,6 @@ import pytest
 @pytest.mark.skip(reason="TODO")
 def test_style_store():
     """Test :mod:`~utilipy.utils.doc_parse_tools._style_store`."""
-    pass
 
 
 # /def

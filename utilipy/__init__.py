@@ -132,7 +132,7 @@ def reload_config():
 # HELP FUNCTIONS
 
 
-def online_help(query: T.Union[None, str, T.Any] = None):
+def online_help(query: T.Union[None, str, T.Any] = None, version=__version__):
     """Search the online documentation for the given query.
 
     Opens the results in the default web browser.
@@ -168,17 +168,17 @@ def online_help(query: T.Union[None, str, T.Any] = None):
 
     """
     # first get version to search
-    version = __version__
     if "dev" in version:
         version = "latest"
     else:
-        version = "v" + version
+        version = version if version.startswith("v") else "v" + version
 
+    # look up objects
     if not isinstance(query, str) and query is not None:
         if version == "latest":
             version = None
-        find_api_page(query, version=version, openinbrowser=True)
-        return
+        return find_api_page(query, version=version, openinbrowser=True)
+
     # else:
 
     from urllib.parse import urlencode
@@ -196,6 +196,9 @@ def online_help(query: T.Union[None, str, T.Any] = None):
 
 
 # /def
+
+
+# -------------------------------------------------------------------
 
 
 @decorators.code_dev.indev
@@ -223,7 +226,7 @@ def lookup(query: T.Optional[str] = None, online: bool = False):
 
     """
     if online:
-        return online_help(query=query)
+        return online_help(query=query, version="latest")
     # else:
 
     print("This function is a work in progress")

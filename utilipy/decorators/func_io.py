@@ -12,17 +12,17 @@
 """
 
 __all__ = [
-    # func_io
     "store_function_input",
     "add_folder_backslash",
     "random_generator_from_seed",
+    "dtypeDecoratorMaker",
 ]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 import typing as T
 from typing_extensions import Literal

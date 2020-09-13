@@ -149,7 +149,7 @@ def idxDecorator(
     def wrapper(
         *args: T.Any, as_ind: bool = as_ind, **kwargs: T.Any
     ) -> T.Sequence:
-        """idxDecorator wrapper docstring, overwritten by `function`.
+        """Index-decorator wrapper docstring, overwritten by `function`.
 
         Other Parameters
         ----------------

@@ -11,12 +11,21 @@
 import os
 
 
+# THIRD PARTY
+
+import pytest
+
+
 # PROJECT-SPECIFIC
 
 from .. import (
     __all_top_imports__ as all_top_imports,
     __file__ as _file,
     __dict__ as D,
+    imports,
+    reload_config,
+    online_help,
+    lookup,
 )
 
 
@@ -27,6 +36,65 @@ from .. import (
 ##############################################################################
 # TEST FUNCTIONS
 ##############################################################################
+
+
+def test_reload_config():
+    """Test :func:`~utilipy.reload_config`."""
+    # get initial value
+    init_value = imports.conf.verbose_imports
+
+    # set changed value and test
+    imports.conf.verbose_imports = bool(~init_value)
+    assert imports.conf.verbose_imports == bool(~init_value)
+
+    # reload and test
+    reload_config()
+    assert imports.conf.verbose_imports == init_value
+
+
+# /def
+
+
+# --------------------------------------------------------------------------
+
+
+@pytest.mark.remote_data
+def test_online_help():  # TODO actual tests.
+    """Test :fun:`~utilipy.online_help`."""
+    # -----------
+    # by object
+    online_help(query=online_help)
+    online_help(query=online_help, version="1.0")
+
+    # -----------
+    # by str
+    online_help(query="online_help")
+    online_help(query="online_help", version="1.0")
+
+    # -----------
+    # blank
+    online_help(query=None)
+    online_help(query=None, version="1.0")
+
+
+# /def
+
+
+# --------------------------------------------------------------------------
+
+
+@pytest.mark.remote_data
+def test_lookup():  # TODO actual tests.
+    """Test :fun:`~utilipy.online_help`."""
+    lookup(query="lookup", online=True)
+
+    lookup(query="lookup", online=False)
+
+
+# /def
+
+
+# --------------------------------------------------------------------------
 
 
 def test_top_level_imports():
@@ -44,10 +112,8 @@ def test_top_level_imports():
         # test?
         if os.path.isdir(drct + "/" + file) and file not in donottest:
             assert file in all_top_imports
-        else:  # nope, chuck testa.
-            pass
-
-    return
+        # else:  # nope, chuck testa.
+        #     pass
 
 
 # /def
@@ -69,8 +135,6 @@ def test_specific_imports():
     assert utilipy.LogFile is LogFile
     assert utilipy.ObjDict is ObjDict
     assert utilipy.wraps is wraps
-
-    return
 
 
 # /def

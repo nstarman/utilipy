@@ -118,12 +118,13 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 import copy
 from abc import abstractmethod
 from collections import namedtuple
 import typing as T
+
 
 # PROJECT-SPECIFIC
 

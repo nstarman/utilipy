@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# ----------------------------------------------------------------------------
-#
-# TITLE   : Decorators
-# PROJECT : utilipy
-#
-# ----------------------------------------------------------------------------
 
 """Decorators."""
 
@@ -37,13 +31,9 @@ __all__ = [
     "wraps",
 ]
 
+
 ##############################################################################
 # IMPORTS
-
-# GENERAL
-
-# from astropy.utils.decorators import sharedmethod  # replaces semistaticmethod
-
 
 # PROJECT-SPECIFIC
 

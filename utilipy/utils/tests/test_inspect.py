@@ -85,7 +85,7 @@ class NS:
     def test_func(
         x: int, y, a: int = 1, b=2, *args: str, j: str = "a", k="b", **kw: dict
     ) -> bool:
-        """Docstring."""
+        """Function with all possible arguments."""
         x, y, a, b, args, j, k, kw  # pragma: no cover
         return True
 
@@ -93,20 +93,18 @@ class NS:
 
     @staticmethod
     def appendable_func(x, y):
-        """Docstring."""
-        pass
+        """Fumction with only positional-or-keyword arguments."""
 
     # /def
 
     @staticmethod
     def no_arg_func():
-        """Docstring."""
-        pass
+        """Function with no arguments."""
 
     # /def
 
     class ExceptEquality(object):
-        """Docstring for ExceptEquality."""
+        """Throw an Exception on any equality test."""
 
         def __eq__(self, other):
             """No Equality."""
@@ -148,12 +146,13 @@ class NS:
     # /def
 
 
+# /class
+
 NS.NEQ = NS.ExceptEquality()
 NS.normsig = nspct.Signature.from_callable(NS.test_func)
 NS.fullsig = inspect.FullerSignature.from_callable(NS.test_func)
 NS.noargsig = inspect.FullerSignature.from_callable(NS.no_arg_func)
 NS.appsig = inspect.FullerSignature.from_callable(NS.appendable_func)
-# /class
 
 
 ##############################################################################
@@ -270,7 +269,7 @@ def test__is_placeholder():
     assert not inspect._is_placeholder(1)
 
     # Exception
-    assert not inspect._is_placehold(NS.NEQ)
+    assert not inspect._is_placeholder(NS.NEQ)
 
 
 # /def

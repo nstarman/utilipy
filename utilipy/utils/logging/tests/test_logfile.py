@@ -33,7 +33,6 @@ from .._LogFile import LogFile
 @pytest.mark.skip(reason="TODO")
 def test_LogFile():
     """Test :class:`~utilipy.utils.logging._LogPrint.LogPrint`."""
-    pass
 
 
 # /def

@@ -26,14 +26,17 @@ IPython [#]_, Jupyter Notebook [#]_
 
 """
 
-__author__ = "Nathaniel Starkman"
 __credits__ = ["Jo Bovy"]
+
+__all__ = [
+    "add_raw_code_toggle",
+]
 
 
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# THIRD PARTY
 
 from IPython.display import HTML
 
@@ -76,6 +79,7 @@ def add_raw_code_toggle() -> HTML:
 
 
 # /def
+
 
 ##############################################################################
 # END

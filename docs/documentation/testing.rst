@@ -13,4 +13,15 @@ The tests are written assuming they will be run with `pytest <http://doc.pytest.
 
 2. By cloning the ``utilipy`` repository and running::
 
-    tox -e test
+    python setup.py test
+
+
+Reference/API
+=============
+
+The test functions.
+
+.. currentmodule:: utilipy.tests
+.. automodapi:: utilipy.tests
+	:include-all-objects:
+

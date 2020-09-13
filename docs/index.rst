@@ -8,7 +8,7 @@ The package is being actively developed in a `public repository on GitHub <https
 
 .. container::
 
-   |DOI| |PyPI| |Build Status| |Coveralls| |astropy|
+   |DOI| |PyPI| |Build Status| |Codecov| |astropy|
 
 
 *************
@@ -130,5 +130,5 @@ Project details
 .. |Last Commit| image:: https://img.shields.io/github/last-commit/nstarman/utilipy/master?style=flat
    :alt: GitHub last commit (branch)
 
-.. |Coveralls| image:: https://coveralls.io/repos/github/nstarman/utilipy/badge.svg?branch=master
-   :target: https://coveralls.io/github/nstarman/utilipy?branch=master
+.. |Codecov| image:: https://codecov.io/gh/nstarman/utilipy/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/nstarman/utilipy

@@ -1,26 +1,19 @@
 # -*- coding: utf-8 -*-
 
-"""Tests for :mod:`~utilipy.utils.doc_parse_tools.rest_parse_tools`."""
-
+"""Test contents of :mod:`~utilipy.decorators.docstring`."""
 
 __all__ = [
-    "test_rest_parse_tools",
+    "test_set_docstring_for_import_func",
 ]
 
 
 ##############################################################################
 # IMPORTS
 
-# BUILT-IN
-
-# THIRD PARTY
-
-import pytest
-
-
 # PROJECT-SPECIFIC
 
-# from .. import rest_parse_tools
+from .. import docstring
+from . import _null_imports
 
 
 ##############################################################################
@@ -32,9 +25,22 @@ import pytest
 ##############################################################################
 
 
-@pytest.mark.skip(reason="TODO")
-def test_rest_parse_tools():
-    """Test :mod:`~utilipy.utils.doc_parse_tools.rest_parse_tools`."""
+def test_set_docstring_for_import_func():
+    """Test :func:`~utilipy.decorators.docstring.set_docstring_for_import_func`."""
+
+    @docstring.set_docstring_for_import_func(
+        "tests/_null_imports.py",
+        package="utilipy.decorators",
+        section="Routine Listings",
+    )
+    def null_imports_func():
+        return
+
+    # /def
+
+    assert null_imports_func.__doc__ == "Nothing."
+
+    _null_imports
 
 
 # /def

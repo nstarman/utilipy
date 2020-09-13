@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # see LICENSE.rst
 
-"""Scripts Tests."""
+"""Tests for :mod:`~utilipy.scripts`."""
 
 # __all__ = [
 #     ""

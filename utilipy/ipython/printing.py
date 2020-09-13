@@ -115,7 +115,7 @@ def printMD(
     elif italic:
         styleattrs.append("font-style:italic")
 
-    elif highlight is not None:
+    if highlight is not None:
         styleattrs.append("background-color:{highlight}")
 
     # TODO: add more options
@@ -160,6 +160,12 @@ def printLTX(
         shortcuts) 'b' -> 'bmatrix'
     label: the label of the equation, etc.
         only used in equation or matrix
+
+    Notes
+    -----
+    .. todo::
+
+        optional PyLaTeX input
 
     """
     if label == "":

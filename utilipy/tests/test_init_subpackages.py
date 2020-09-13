@@ -320,8 +320,8 @@ def test_utils_top_level_imports():
         # test?
         if os.path.isdir(drct + "/" + file) and file not in donottest:
             assert file in utils.__all_top_imports__
-        else:  # nope, chuck testa.
-            pass
+        # else:  # nope, chuck testa.
+        #     pass
 
     return
 

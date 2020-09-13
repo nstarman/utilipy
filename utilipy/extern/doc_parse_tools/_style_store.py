@@ -60,11 +60,14 @@ __all__ = ["parent", "numpy", "reST", "google", "numpy_napoleon"]
 ###############################################################################
 # IMPORTS
 
-# GENERAL
-from typing import Union
+# BUILT-IN
+
+import typing as T
 from typing_extensions import Literal
 
+
 # PROJECT-SPECIFIC
+
 from .napoleon_parse_tools import (
     merge_google_napoleon_docs,
     merge_numpy_napoleon_docs,
@@ -79,7 +82,9 @@ from .rest_parse_tools import merge_rest_docs
 
 
 def parent(
-    prnt_doc: Union[str, None], child_doc: Union[str, None], method="replace"
+    prnt_doc: T.Union[str, None],
+    child_doc: T.Union[str, None],
+    method="replace",
 ):
     """Documentation strings are inherited if not overridden.
 
@@ -106,9 +111,9 @@ def parent(
 
 
 def numpy(
-    prnt_doc: Union[str, None],
-    child_doc: Union[str, None],
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
+    prnt_doc: T.Union[str, None],
+    child_doc: T.Union[str, None],
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
 ):
     """Merges numpy-styled docstrings from the parent and child.
 
@@ -198,9 +203,9 @@ def numpy(
 
 
 def reST(
-    prnt_doc: Union[str, None],
-    child_doc: Union[str, None],
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
+    prnt_doc: T.Union[str, None],
+    child_doc: T.Union[str, None],
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
 ):
     """Merge two reST-style docstrings into a single docstring.
 
@@ -273,9 +278,9 @@ def reST(
 
 
 def numpy_napoleon(
-    prnt_doc: Union[str, None],
-    child_doc: Union[str, None],
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
+    prnt_doc: T.Union[str, None],
+    child_doc: T.Union[str, None],
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
 ):
     """Behaves identically to the 'numpy' style, but abides by the docstring sections
     specified by the "Napoleon" standard.
@@ -355,9 +360,9 @@ def numpy_napoleon(
 
 
 def google(
-    prnt_doc: Union[str, None],
-    child_doc: Union[str, None],
-    method: Union[Literal["merge"], Literal["replace"]] = "replace",
+    prnt_doc: T.Union[str, None],
+    child_doc: T.Union[str, None],
+    method: T.Union[Literal["merge"], Literal["replace"]] = "replace",
 ):
     """Merge google-styled docstrings by the "Napoleon" standard.
 

@@ -6,10 +6,10 @@
 ##############################################################################
 # IMPORTS
 
-# GENERAL
+# BUILT-IN
 
 # fmt: off
-import warnings; warnings.simplefilter("ignore", RuntimeWarning)
+import warnings; warnings.simplefilter("ignore", RuntimeWarning)  # noqa
 # fmt: on
 
 
