@@ -1,18 +1,43 @@
-===================
-1.1dev (unreleased)
-===================
+================
+1.1 (unreleased)
+================
 
-- adopted Astropy's configuration system, removing the old `config` module.
+
+New Features
+------------
+
+API Changes
+-----------
+
+
+- Adopted Astropy's configuration system, removing the old `config` module.
 
     + utilipy.cfg sets the template
     + each module has the specific config code in the ``setup_package.py`` (preferred), ``__init__.py``, or the relevant python file.
+
+
+Bug Fixes
+---------
+
+N/A
+
+
+Other Changes and Additions
+---------------------------
+
+- Switch CI to GitHub, from Travis [#10]
+
+
 
 
 ==================
 1.0.1 (2020-04-05)
 ==================
 
-- fixed import inspect in ``utilipy.decorators.func_io`` from buit-in to utilipy's inspect module (``utilipy.utils.inspect``) since the function ``store_function_input`` needs ```fuller_signature`` <https://utilipy.readthedocs.io/en/latest/api/utilipy.decorators.store_function_input.html#utilipy.decorators.store_function_input>`_.
+Bug Fixes
+---------
+
+- fixed import inspect in ``utilipy.decorators.func_io`` from built-in to utilipy's inspect module (``utilipy.utils.inspect``) since the function ``store_function_input`` needs ```fuller_signature`` <https://utilipy.readthedocs.io/en/latest/api/utilipy.decorators.store_function_input.html#utilipy.decorators.store_function_input>`_.
 
 
 ================
