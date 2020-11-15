@@ -24,9 +24,9 @@ your code snippet. -->
 <!-- If necessary, sanitize your screen output to be pasted so you do not
 reveal secrets like tokens and passwords. -->
 
-1. [First Step]
-2. [Second Step]
-3. [and so on...]
+1.  [First Step]
+2.  [Second Step]
+3.  [and so on...]
 
 ```python
 # Put your Python code snippet here.
