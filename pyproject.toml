@@ -18,7 +18,7 @@ use_parentheses = "True"
 ensure_newline_before_comments = "True"
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 
-known_third_party = ["astropy", "astroquery", "extension_helpers", "numpy", "pybtex", "pytest", "setuptools", "typing_extensions"]
+known_third_party = ["IPython", "astropy", "matplotlib", "numpy", "pytest", "scipy", "setuptools", "tqdm", "typing_extensions", "wrapt"]
 known_firstparty = ["astronat", "utilipy"]
 known_localfolder = "utilipy"
 
