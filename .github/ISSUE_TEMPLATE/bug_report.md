@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report describing unexpected or incorrect behavior in `utilipy`.
-title: "[BUG] "
+title: '[BUG] '
 labels: Bug
 assignees: 'nstarman'
 
