@@ -12,19 +12,13 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import types
 
-
 # THIRD PARTY
-
 import pytest
 
-
 # PROJECT-SPECIFIC
-
-from .. import misc
-
+from utilipy.utils import misc
 
 ##############################################################################
 # PARAMETERS

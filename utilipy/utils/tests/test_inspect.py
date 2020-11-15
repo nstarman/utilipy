@@ -58,21 +58,15 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
-from collections import OrderedDict
 import inspect as nspct
+from collections import OrderedDict
 from types import MappingProxyType
 
-
 # THIRD PARTY
-
 import pytest
 
-
 # PROJECT-SPECIFIC
-
 from .. import inspect
-
 
 ##############################################################################
 # PARAMETERS
@@ -182,7 +176,7 @@ def test_parameters():
     assert type(inspect._placehold()) == inspect._placehold
 
     assert issubclass(inspect.FullerArgSpec, tuple)  # TODO full type check
-    FAS = inspect.FullerArgSpec(1, 2, 3, 4, 5, 6, 7, 8, 9,)
+    FAS = inspect.FullerArgSpec(1, 2, 3, 4, 5, 6, 7, 8, 9)
     assert all(
         (
             FAS.args == 1,

@@ -16,14 +16,10 @@ __all__ = [
 # IMPORTS
 
 # THIRD PARTY
-
 import pytest
 
-
 # PROJECT-SPECIFIC
-
-from .. import pickle  # TODO relative import
-
+from utilipy.utils import pickle
 
 ##############################################################################
 # Tests
@@ -32,7 +28,8 @@ from .. import pickle  # TODO relative import
 @pytest.mark.skip(reason="TODO")
 def test_dump():
     """Test :func:`~utilipy.utils.pickle.dump`."""
-    return
+    pickle
+    assert False
 
 
 # /def
@@ -41,7 +38,7 @@ def test_dump():
 @pytest.mark.skip(reason="TODO")
 def test_save():
     """Test :func:`~utilipy.utils.pickle.save`."""
-    return
+    assert False
 
 
 # /def
@@ -50,7 +47,7 @@ def test_save():
 @pytest.mark.skip(reason="TODO")
 def test_dump_many():
     """Test :func:`~utilipy.utils.pickle.dump_many`."""
-    return
+    assert False
 
 
 # /def
@@ -62,7 +59,7 @@ def test_dump_many():
 @pytest.mark.skip(reason="TODO")
 def test_load():
     """Test :func:`~utilipy.utils.pickle.load`."""
-    return
+    assert False
 
 
 # /def
@@ -71,7 +68,7 @@ def test_load():
 @pytest.mark.skip(reason="TODO")
 def test_load_many():
     """Test :func:`~utilipy.utils.pickle.load_many`."""
-    return
+    assert False
 
 
 # /def

@@ -7,12 +7,12 @@ __all__ = [
     "test_WRAPPER_ASSIGNMENTS",
     "test_SIGNATURE_ASSIGNMENTS",
     "test_WRAPPER_UPDATES",
-    "test_update_wrapper_signature_true",
-    "test_update_wrapper_signature_false",
-    "test_update_wrapper_signature_None",
-    "test_update_wrapper_signature_Signature",
-    "test_update_wrapper_signature_FullerSignature",
-    "test_update_wrapper_signature_notSignature",
+    # "test_update_wrapper_signature_true",
+    # "test_update_wrapper_signature_false",
+    # "test_update_wrapper_signature_None",
+    # "test_update_wrapper_signature_Signature",
+    # "test_update_wrapper_signature_FullerSignature",
+    # "test_update_wrapper_signature_notSignature",
 ]
 
 
@@ -20,9 +20,7 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
 from .. import functools, inspect
-
 
 ###############################################################################
 # PARAMETERS
