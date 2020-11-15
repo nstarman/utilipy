@@ -11,7 +11,7 @@ utilipy
 Documentation
 -------------
 
-|Documentation Status| 
+|Documentation Status|
 
 The documentation for ``utilipy`` is hosted on `Read the docs <https://readthedocs.org/projects/utilipy/badge/?version=latest>`_.
 
