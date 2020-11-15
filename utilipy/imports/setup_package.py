@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
 
 """Setup for :mod:`~utilipy.imports`."""
@@ -6,16 +7,14 @@
 ###############################################################################
 # IMPORTS
 
-# BUILT-IN
-
 from __future__ import absolute_import
-from contextlib import contextmanager
+
+# BUILT-IN
 import typing as T
+from contextlib import contextmanager
 
 # THIRD PARTY
-
 from astropy import config as _config
-
 
 ###############################################################################
 # CODE

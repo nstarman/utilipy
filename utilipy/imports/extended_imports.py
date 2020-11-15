@@ -67,15 +67,16 @@ __all__ = [
 ##############################################################################
 # HELPER FUNCTIONS
 
+# THIRD PARTY
+from numpy.linalg import norm
+from scipy.stats import binned_statistic as binned_stats
+
+# PROJECT-SPECIFIC
 from utilipy.imports import conf
 from utilipy.utils import make_help_function
 
 ##############################################################################
 # IMPORTS
-
-from numpy.linalg import norm
-
-from scipy.stats import binned_statistic as binned_stats
 
 
 ##############################################################################
