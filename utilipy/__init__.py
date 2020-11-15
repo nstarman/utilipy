@@ -76,39 +76,36 @@ __all_top_imports__ = (  # TODO deprecate
 ##############################################################################
 # IMPORTS
 
+# -----------------------------------------------
 # keep this content at the top. (sets the __version__)
-from ._astropy_init import *  # noqa
-from ._astropy_init import __version__  # noqa
+from ._astropy_init import *  # noqa  # isort:skip
+from ._astropy_init import __version__  # noqa  # isort:skip
 
+# -----------------------------------------------
+
+# BUILT-IN
 import typing as T
 
 # THIRD PARTY
-
 import astropy.config as config
 from astropy.utils.misc import find_api_page
 
-
 # PROJECT-SPECIFIC
-
-from .utils.logging import LogFile
-from .utils.collections import ObjDict
-from .utils.functools import wraps
-
-from .data_utils import data_graph
-
-# import packages into top-level namespace
-from . import (  # noqa
+from . import math  # noqa
+from . import (
     data_utils,
     decorators,
     extern,
     imports,
     ipython,
-    math,
     plot,
     scripts,
     utils,
 )
-
+from .data_utils import data_graph
+from .utils.collections import ObjDict
+from .utils.functools import wraps
+from .utils.logging import LogFile
 
 #############################################################################
 # CONFIG FUNCTIONS
