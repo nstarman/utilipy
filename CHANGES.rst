@@ -9,7 +9,10 @@ New Features
 API Changes
 -----------
 
-N/A
+- adopted Astropy's configuration system, removing the old `config` module.
+
+    + utilipy.cfg sets the template
+    + each module has the specific config code in the ``setup_package.py`` (preferred), ``__init__.py``, or the relevant python file.
 
 
 Bug Fixes
@@ -21,10 +24,10 @@ N/A
 Other Changes and Additions
 ---------------------------
 
-- adopted Astropy's configuration system, removing the old `config` module.
-
-    + utilipy.cfg sets the template
-    + each module has the specific config code in the ``setup_package.py`` (preferred), ``__init__.py``, or the relevant python file.
+Adopt pre-commit (
+`isort <https://pypi.org/project/isort/>`_
+-> `black <https://pypi.org/project/black/>`_
+-> `flake8 <https://pypi.org/project/flake8/>`_) [#11]
 
 - PR template [#12]
 
@@ -48,7 +51,7 @@ Version 1.0 is a reboot of ``utilipy``, so all features can be considered new.
 utilipy.__init__
 ^^^^^^^^^^^^^^^^^
 
-- Set up top-level namespace: `help`, `online_help`, 
+- Set up top-level namespace: `help`, `online_help`,
   `wraps` from ``util.functools.wraps``,
   `LogFile` from `util.logging`,
   `config` from configurations,
@@ -109,7 +112,7 @@ utilipy.data_utils
 - `ioRange`: multidimensional box selection and exclusion.
 - `ellipse`: elliptical selection of data in many dimensions.
 -  `circle`: circular selection of data in many dimensions.
-   
+
 utilipy.data_utils.fitting
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -258,7 +261,7 @@ loads into the top-level namespace:
 - help function
 - modules: `autoreload` , `imports`, `notebook`, `plot`, `printing`
 - functions: `set_autoreload`, `aimport`, `run_imports`, `import_from_file`, `add_raw_code_toggle`, `configure_matplotlib`, `printMD`, `printLTX`
-	  
+
 utilipy.ipython.autoreload
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -266,7 +269,7 @@ If in an IPython environment, sets the autoreload state to 1 (autoreload anythin
 
 - `set_autoreload` function to change the global imports setting.
 - `aimport` for autoreloading individual modules
-  
+
 
 utilipy.ipython.imports
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -282,7 +285,7 @@ utilipy.ipython.notebook
 Functions for Jupyter notebook / lab / hub.
 
 - `add_raw_code_toggle` function to show/hide code cells when Notebook is exported to HTML
-  
+
 utilipy.ipython.plot
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -305,7 +308,7 @@ utilipy.plot
 ^^^^^^^^^^^^
 
 - created folder, nothing implemented yet. See :ref:`whatsnew-planned`.
-  
+
 
 utilipy.scripts
 ^^^^^^^^^^^^^^^
@@ -379,7 +382,7 @@ added FullerArgSpec which better separates parts of a signature, like arguments 
 - `drop_parameter`
 - `FullerSignature`
 - `fuller_signature`
-  
+
 utilipy.utils.pickle
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -389,24 +392,24 @@ utilipy.utils.string
 ^^^^^^^^^^^^^^^^^^^^
 
 - `FormatTemplate` with string supporting `.format`, syntax.
-  
+
 utilipy.utils.typing
 ^^^^^^^^^^^^^^^^^^^^
 
 - `array_like`: typing.Sequence
-  
+
 utilipy.utils.logging
 ^^^^^^^^^^^^^^^^^^^^^
 
 Basic loggers that can both print and/or record to a file.
 
-- LogPrint: print logger 
+- LogPrint: print logger
 - LogFile: This class uses `open`
-  
+
 utilipy.utils.doc_parse_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Docstring inheritance-style implementations. Supports numpy and google docstrings. 
+Docstring inheritance-style implementations. Supports numpy and google docstrings.
 
 To implement your own inheritance file, simply write a function that fits the template
 
@@ -431,7 +434,7 @@ To permanently save your function
 
 1. define your function within `custom_inherit/_style_store.py`
 2. log it in `custom_inherit.style_store.__all__`.
-   
+
 utilipy.utils.collections
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
