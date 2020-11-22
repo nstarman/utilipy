@@ -16,7 +16,6 @@ import os
 
 # THIRD PARTY
 import pytest
-
 from astropy.version import version as astropy_version
 
 # For Astropy 3.0 and later, we can use the standalone pytest plugin
@@ -71,19 +70,17 @@ def pytest_configure(config):
 # /def
 
 # ------------------------------------------------------
-# Added by @nstarman
 
 
 @pytest.fixture(autouse=True)
-def add_units(doctest_namespace):
-    """Add Imports to Pytest.
+def add_astropy(doctest_namespace):
+    """Add Astropy stuff to Pytest.
 
     Parameters
     ----------
     doctest_namespace : namespace
 
     """
-    # import
     import astropy.units
 
     # add to namespace
