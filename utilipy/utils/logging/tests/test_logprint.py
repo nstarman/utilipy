@@ -13,7 +13,7 @@ __all__ = ["test_LogPrint"]
 import pytest
 
 # PROJECT-SPECIFIC
-from utilipy.utils.logging import LogPrint
+# from utilipy.utils.logging import LogPrint
 
 ##############################################################################
 # PARAMETERS
@@ -27,7 +27,6 @@ from utilipy.utils.logging import LogPrint
 @pytest.mark.skip(reason="TODO")
 def test_LogPrint():
     """Test :class:`~utilipy.utils.logging._LogPrint.LogPrint`."""
-    LogPrint
     assert False
 
 
