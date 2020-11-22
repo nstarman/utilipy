@@ -24,4 +24,3 @@ The test functions.
 .. currentmodule:: utilipy.tests
 .. automodapi:: utilipy.tests
 	:include-all-objects:
-

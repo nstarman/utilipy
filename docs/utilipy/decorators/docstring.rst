@@ -12,4 +12,3 @@ Reference/API
 =============
 
 .. automodapi:: utilipy.decorators.docstring
-	
