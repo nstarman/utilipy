@@ -349,10 +349,12 @@ class TransformGraph:
         """
         # ----------------------------------
         # special-case the 0 or 1-path
+
         if totype is fromtype:
             if fromtype not in self._graph[totype]:
                 # Means there's no transform necessary to go from it to itself.
                 return [totype], 0
+
         if fromtype in self._graph[totype]:
             # this will also catch the case where totype is fromtype, but has
             # a defined transform.
@@ -374,9 +376,11 @@ class TransformGraph:
             if fromtype in fpaths:
                 return fpaths[fromtype]
             else:
-                return None, inf
+                path, priority = None, inf
 
-        return self._construct_path(fromtype, totype)
+        path, priority = self._construct_path(fromtype, totype)
+
+        return path, priority
 
     # /def
 
