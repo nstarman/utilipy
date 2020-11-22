@@ -30,8 +30,8 @@ import typing as T
 import numpy as np
 
 # PROJECT-SPECIFIC
-from utilipy.utils.typing import EllipsisType
 from .decorators import idxDecorator
+from utilipy.utils.typing import EllipsisType
 
 #############################################################################
 # Functions
