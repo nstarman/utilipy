@@ -22,7 +22,7 @@ __all__ = [
     "xmatch",
     "non_xmatched",
     # utils
-    "shuffle",
+    "make_shuffler",
     "get_path_to_file",
 ]
 

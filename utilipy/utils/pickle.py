@@ -16,13 +16,15 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import pickle as _pickle
 import typing as T
 import warnings
 
-
 # THIRD PARTY
+from astropy.utils.decorators import format_doc
+
+# PROJECT-SPECIFIC
+from .logging import LogFile
 
 try:
     import dill
@@ -31,12 +33,6 @@ except ImportError:
     _HAS_DILL = False
 else:
     _HAS_DILL = True
-
-
-# PROJECT-SPECIFIC
-
-from ..decorators.docstring import format_doc
-from . import LogFile
 
 
 #############################################################################

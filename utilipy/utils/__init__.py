@@ -44,26 +44,22 @@ __all_top_imports__ = (  # TODO deprecate
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
-from .logging import LogPrint, LogFile
-from .collections import ObjDict, WithDocstring, WithMeta, WithReference
-from .misc import temporary_namespace, make_help_function
-
 # import modules
+from . import inspect  # doc_parse_tools,
 from . import (
     collections,
-    # doc_parse_tools,
-    logging,
     exceptions,
     functools,
-    inspect,
+    logging,
     metaclasses,
     misc,
     pickle,
     string,
     typing,
 )
-
+from .collections import ObjDict, WithDocstring, WithMeta, WithReference
+from .logging import LogFile, LogPrint
+from .misc import make_help_function, temporary_namespace
 
 ##############################################################################
 # CODE

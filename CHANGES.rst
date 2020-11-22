@@ -30,7 +30,7 @@ Adopt pre-commit (
 -> `flake8 <https://pypi.org/project/flake8/>`_) [#11]
 
 - PR template [#12]
-  
+
 - CI Workflows [#16]
 
     + dependabot 
