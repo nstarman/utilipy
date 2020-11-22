@@ -312,7 +312,9 @@ def __update_wrapper_docstring(
 
         else:  # TODO implement the full set of options
             docstring = _store[_doc_style](
-                wrapped_doc, wrapper_doc, method="merge",
+                wrapped_doc,
+                wrapper_doc,
+                method="merge",
             )
     # /if
 

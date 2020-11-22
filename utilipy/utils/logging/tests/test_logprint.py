@@ -12,7 +12,6 @@ __all__ = ["test_LogPrint"]
 # THIRD PARTY
 import pytest
 
-# PROJECT-SPECIFIC
 # from utilipy.utils.logging import LogPrint
 
 ##############################################################################

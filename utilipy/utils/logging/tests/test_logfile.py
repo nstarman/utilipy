@@ -12,7 +12,6 @@ __all__ = ["test_LogFile"]
 # THIRD PARTY
 import pytest
 
-# PROJECT-SPECIFIC
 # from .._LogFile import LogFile
 
 ##############################################################################

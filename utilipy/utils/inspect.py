@@ -1391,7 +1391,8 @@ class FullerSignature(Signature):
                     index = self.index_positional[-1] + 1
 
             signature = signature.insert_parameter(
-                index, Parameter(name, VAR_POSITIONAL),
+                index,
+                Parameter(name, VAR_POSITIONAL),
             )
 
         return signature
@@ -1422,7 +1423,9 @@ class FullerSignature(Signature):
             signature = self
 
         else:
-            signature = self.append_parameter(Parameter(name, VAR_KEYWORD),)
+            signature = self.append_parameter(
+                Parameter(name, VAR_KEYWORD),
+            )
 
         return signature
 
