@@ -242,6 +242,11 @@ class TransformGraph:
         fromtype
         totype
 
+        Returns
+        -------
+        path : list
+        priority : int
+
         """
         inf = float("inf")
 
@@ -292,7 +297,7 @@ class TransformGraph:
                 result[n] = (None, d)
                 for d, orderi, n, path in q:
                     result[n] = (None, d)
-                break
+                q = []  # break from while loop
             else:
                 result[n] = (path, d)
                 path.append(n)
