@@ -9,15 +9,10 @@ __all__ = ["test_get_path_to_file"]
 # IMPORTS
 
 # BUILT-IN
-
 import os.path
 
-# THIRD PARTY
-
 # PROJECT-SPECIFIC
-
 from .. import get_path_to_file
-
 
 ##############################################################################
 # PARAMETERS

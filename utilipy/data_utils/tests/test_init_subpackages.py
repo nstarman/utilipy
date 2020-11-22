@@ -14,9 +14,7 @@ __all__ = [
 
 
 # PROJECT-SPECIFIC
-
 from .. import fitting, xfm
-
 
 ##############################################################################
 # PARAMETERS

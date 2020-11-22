@@ -15,9 +15,7 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
-from . import test_decorators, test_select, test_init_subpackages
-
+from . import test_decorators, test_init_subpackages, test_select
 
 ##############################################################################
 # END
