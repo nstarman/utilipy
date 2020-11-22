@@ -14,7 +14,6 @@ __all__ = [
 # THIRD PARTY
 import pytest
 
-# PROJECT-SPECIFIC
 # from utilipy.ipython import notebook
 
 ##############################################################################
