@@ -28,10 +28,23 @@ N/A
 Other Changes and Additions
 ---------------------------
 
-Adopt pre-commit (
-   `isort <https://pypi.org/project/isort/>`_
--> `black <https://pypi.org/project/black/>`_
--> `flake8 <https://pypi.org/project/flake8/>`_) [#11]
+Adopt pre-commit [#13]
+
+    + `isort <https://pypi.org/project/isort/>`_
+    + `black <https://pypi.org/project/black/>`_
+    + `flake8 <https://pypi.org/project/flake8/>`_
+    + check-added-large-files
+    + check-case-conflict
+    + check-merge-conflict
+    + check-symlinks
+    + check-toml
+    + check-yaml
+    + debug-statements
+    + detect-private-key
+    + end-of-file-fixer
+    + fix-encoding-pragma
+    + requirements-txt-fixer
+    + trailing-whitespace
 
 - PR template [#12]
 
