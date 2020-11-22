@@ -49,15 +49,7 @@ from astropy.modeling.core import Model, FittableModel, CompoundModel
 # CODE
 ###############################################################################
 
-if sys.version_info.minor > 7:
-    OrderedDictType = T.OrderedDict
-else:  # because `typing` doesn't have OrderedDict for py3.6
-    from collections import OrderedDict
-
-    OrderedDictType = T.TypeVar(
-        "OrderedDictType", OrderedDict, T.Sequence[T.Tuple[str, T.Any]]
-    )
-
+OrderedDictType = T.OrderedDict
 EllipsisType = type(Ellipsis)
 
 
