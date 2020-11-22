@@ -102,7 +102,8 @@ def indev_function(func: T.Callable, message: str, warning_type):
     if isinstance(func, method_types):
         func_wrapper = type(func)
     else:
-        func_wrapper = lambda f: f  # noqa
+        def func_wrapper(func):
+            return func
 
     func = _get_function(func)
 
