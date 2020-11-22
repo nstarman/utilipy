@@ -28,9 +28,6 @@ env:  # Set defaults to avoid repeating in most cases
 
   SETUP_XVFB: True  # avoid issues if mpl tries to open a GUI window
 
-  # For private codecov
-  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
 
 #########################
 # The Tests
@@ -121,12 +118,13 @@ jobs:
       matrix:
         include:
 
-          - name: py3.8 - all deps, remote data | coverage
-            os: ubuntu-latest
-            python: 3.8
-            toxenv: py38-test-alldeps-cov
-            toxargs: -v --develop
-            toxposargs: --durations=50 --remote-data=any  # in case it runs long
+          # FIXME
+          # - name: py3.8 - all deps, remote data | coverage
+          #   os: ubuntu-latest
+          #   python: 3.8
+          #   toxenv: py38-test-alldeps-cov
+          #   toxargs: -v --develop
+          #   toxposargs: --durations=50 --remote-data=any  # in case it runs long
 
           # NOTE: In the build below we also check that tests do not open and
           # leave open any files. This has a performance impact on running the
