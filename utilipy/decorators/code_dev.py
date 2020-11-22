@@ -232,7 +232,6 @@ def indev(
     name: str = "",
     alternative: str = "",
     todo: str = "",
-    beta: bool = False,
     obj_type: T.Optional[str] = None,
     warning_type=DevelopmentWarning,
 ):
@@ -272,10 +271,6 @@ def indev(
         A todo about intended features and functionality. The in-dev warning
         will tell the user about this alternative if provided.
 
-    beta : bool, optional
-        If True, uses a BetaDevelopmentWarning instead of a
-        ``warning_type``.
-
     obj_type : str, optional
         The type of this object, if the automatically determined one
         needs to be overridden.
@@ -290,7 +285,7 @@ def indev(
     deprecation decorators in :func:`~astropy.util.exceptions.deprecated`
 
     """
-
+    # wrapper function
     def make_indev(
         obj,
         message=message,
@@ -380,7 +375,6 @@ def indev_attribute(
     message=None,
     alternative=None,
     todo=None,
-    beta=False,
     warning_type=DevelopmentWarning,
 ):
     """Mark a public attribute as in development.
@@ -410,10 +404,6 @@ def indev_attribute(
     todo : str, optional
         A todo about intended functionality. The in-dev warning
         will tell the user about this alternative if provided.
-
-    beta : bool, optional
-        If True, uses a BetaDevelopmentWarning instead of
-        ``warning_type``.
 
     warning_type : warning
         Warning to be issued.

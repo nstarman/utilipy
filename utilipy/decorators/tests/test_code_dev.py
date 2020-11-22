@@ -110,7 +110,6 @@ def test_indev_func_message():
         name="",
         alternative="",
         todo="",
-        beta=False,
         obj_type=None,
         warning_type=cdev.DevelopmentWarning,
     )
@@ -222,7 +221,7 @@ def test_indev_decorator_func():
 
     # --------------
 
-    @cdev.indev(beta=True)
+    @cdev.indev(cdev.BetaDevelopmentWarning)
     def func():
         """Short Summary."""
 
