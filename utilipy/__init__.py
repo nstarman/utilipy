@@ -78,7 +78,7 @@ __all_top_imports__ = (  # TODO deprecate
 
 # -----------------------------------------------
 # keep this content at the top. (sets the __version__)
-from ._astropy_init import *  # noqa  # isort:skip
+from ._astropy_init import *  # noqa: F401  # isort:skip
 from ._astropy_init import __version__  # noqa  # isort:skip
 
 # -----------------------------------------------

@@ -28,8 +28,7 @@ from utilipy.utils import pickle
 @pytest.mark.skip(reason="TODO")
 def test_dump():
     """Test :func:`~utilipy.utils.pickle.dump`."""
-    pickle
-    assert False
+    assert False, pickle
 
 
 # /def

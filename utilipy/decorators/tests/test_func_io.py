@@ -145,11 +145,11 @@ def test_add_folder_backslash():
     # decorate by pie-syntax
 
     @func_io.add_folder_backslash(arguments=["path"])
-    def wrapped_func(x, path):
+    def wrapped_pie_func(x, path):
         return path
 
-    assert wrapped_func(None, "~/Documents") == "~/Documents/"
-    assert wrapped_func.__wrapped__(None, "~/Documents") == "~/Documents"
+    assert wrapped_pie_func(None, "~/Documents") == "~/Documents/"
+    assert wrapped_pie_func.__wrapped__(None, "~/Documents") == "~/Documents"
 
 
 # /def
@@ -212,10 +212,12 @@ def test_random_generator_from_seed():
     # decorate by pie-syntax
 
     @func_io.random_generator_from_seed(seed_names="rng")
-    def wrapped_func(x, rng):
+    def wrapped_pie_func(x, rng):
         return rng
 
-    _assert_list_of_list_all_eq(wrapped_func(None, 0).get_state(), expected)
+    _assert_list_of_list_all_eq(
+        wrapped_pie_func(None, 0).get_state(), expected
+    )
 
 
 # /def

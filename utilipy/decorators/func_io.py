@@ -211,7 +211,6 @@ def random_generator_from_seed(
     function=None,
     seed_names=["random", "random_seed"],
     generator=np.random.RandomState,
-    *,
     raise_if_not_int=False,
 ):
     """Function decorator to convert random seed to random number generator.
