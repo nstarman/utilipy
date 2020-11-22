@@ -30,22 +30,18 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-# PACKAGE-SPECIFIC
-
+# PROJECT-SPECIFIC
+from . import crossmatch, decorators, fitting, select, utils, xfm
 from .crossmatch import (
     indices_xmatch_fields,
-    xmatch_fields,
-    xmatch,
     non_xmatched,
+    xmatch,
+    xmatch_fields,
 )
 from .decorators import idxDecorator
-from .xfm import data_graph, TransformGraph, DataTransform
-from .utils import shuffle, get_path_to_file
 from .select import *  # noqa
-
-# modules
-from . import decorators, select, fitting, xfm, crossmatch, utils
-
+from .utils import get_path_to_file, make_shuffler
+from .xfm import DataTransform, TransformGraph, data_graph
 
 # -------------------------------------------------------------------
 # __ALL__
