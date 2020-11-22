@@ -297,7 +297,7 @@ class TransformGraph:
                 result[n] = (None, d)
                 for d, orderi, n, path in q:
                     result[n] = (None, d)
-                q = []  # break from while loop
+                break
             else:
                 result[n] = (path, d)
                 path.append(n)
