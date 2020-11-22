@@ -14,6 +14,8 @@ API Changes
     + utilipy.cfg sets the template
     + each module has the specific config code in the ``setup_package.py`` (preferred), ``__init__.py``, or the relevant python file.
 
+- Rename ``data_utils/shuffle`` to data ``data_utils/shuffler`` [#17]
+
 
 Bug Fixes
 ---------

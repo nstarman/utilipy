@@ -31,8 +31,8 @@ from astropy.utils.decorators import format_doc
 from astropy.utils.metadata import MetaData
 
 # PROJECT-SPECIFIC
-from .pickle import dump as _dump
-from .pickle import load as _load
+from .pickle import dump as _dump  # nosec
+from .pickle import load as _load  # nosec
 
 ##############################################################################
 # PARAMETERS
