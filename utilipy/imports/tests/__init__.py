@@ -18,7 +18,6 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
 from . import (
     test_amuse_imports,
     test_astropy_imports,
@@ -26,7 +25,6 @@ from . import (
     test_extended_imports,
     test_galpy_imports,
 )
-
 
 ##############################################################################
 # END

@@ -10,12 +10,9 @@ __all__ = ["test_import_amuse"]
 # IMPORTS
 
 # BUILT-IN
-
 import warnings
 
-
 # THIRD PARTY
-
 import pytest
 
 try:

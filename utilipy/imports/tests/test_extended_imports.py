@@ -6,16 +6,12 @@
 ##############################################################################
 # IMPORTS
 
-# BUILT-IN
+# PROJECT-SPECIFIC
+from .. import extended_imports as imports
 
 # fmt: off
 import warnings; warnings.simplefilter("ignore", RuntimeWarning)  # noqa
 # fmt: on
-
-
-# PROJECT-SPECIFIC
-
-from .. import extended_imports as imports
 
 
 ##############################################################################

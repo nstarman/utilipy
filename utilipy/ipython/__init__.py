@@ -89,32 +89,23 @@ __all__ = [
 # IMPORTS
 
 # THIRD PARTY
-
 from IPython import get_ipython
-from IPython.core.interactiveshell import InteractiveShell
 from IPython.core.debugger import set_trace
-from IPython.display import (
-    display,  # display is a better print
-    Latex,  # for printing LaTeX
-    Markdown,
-    HTML,  # for printing Markdown & HTML
-)
-
+from IPython.core.interactiveshell import InteractiveShell
+from IPython.display import HTML  # for printing Markdown & HTML
+from IPython.display import Latex  # for printing LaTeX
+from IPython.display import display  # display is a better print
+from IPython.display import Markdown
 
 # PROJECT-SPECIFIC
-
 from ..utils import make_help_function
-
-from .setup_package import conf
-from .autoreload import set_autoreload, aimport
-from .imports import run_imports, import_from_file
+from .autoreload import aimport, set_autoreload
+from .imports import import_from_file, run_imports
 from .notebook import add_raw_code_toggle
 from .plot import configure_matplotlib
-from .printing import (
-    printMD,  # Markdown printing
-    printLTX,  # LaTeX printing
-)
-
+from .printing import printLTX  # LaTeX printing
+from .printing import printMD  # Markdown printing
+from .setup_package import conf
 
 ##############################################################################
 # PARAMETERS

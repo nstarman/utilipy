@@ -16,19 +16,13 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import warnings
 
-
 # THIRD PARTY
-
 import pytest
 
-
 # PROJECT-SPECIFIC
-
 from .. import code_dev as cdev
-
 
 ##############################################################################
 # CODE
