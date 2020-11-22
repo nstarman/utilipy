@@ -54,7 +54,7 @@ def test_store_function_input():
     store_func = func_io.store_function_input(
         test_func, store_inputs=True, _doc_style="numpy", _doc_fmt={}
     )
-    res, inputs = store_func(x, y)
+    res, inputs = store_func(x, y)  # pylint: disable=E1121
 
     assert res == (x, y)
     assert isinstance(inputs, inspect.BoundArguments)
@@ -64,7 +64,7 @@ def test_store_function_input():
     no_store_func = func_io.store_function_input(
         test_func, store_inputs=False, _doc_style="numpy", _doc_fmt={}
     )
-    res = no_store_func(x, y)
+    res = no_store_func(x, y)  # pylint: disable=E1121
 
     assert res == (x, y)
 
@@ -134,12 +134,15 @@ def test_add_folder_backslash():
 
     # call decorated
     wrapped_func = func_io.add_folder_backslash(test_func, arguments=["path"])
-    assert wrapped_func(None, "~/Documents") == "~/Documents/"
+    assert (
+        wrapped_func(None, "~/Documents") == "~/Documents/"
+    )  # pylint: disable=E1121
 
     # for str argument
     wrapped_func = func_io.add_folder_backslash(test_func, arguments="path")
-
-    assert wrapped_func(None, "~/Documents") == "~/Documents/"
+    assert (
+        wrapped_func(None, "~/Documents") == "~/Documents/"
+    )  # pylint: disable=E1121
 
     # ----------
     # decorate by pie-syntax
@@ -181,7 +184,9 @@ def test_random_generator_from_seed():
 
     # call decorated
     wrapped_func = func_io.random_generator_from_seed(test_func)
-    _assert_list_of_list_all_eq(wrapped_func(None, 0).get_state(), expected)
+    _assert_list_of_list_all_eq(
+        wrapped_func(None, 0).get_state(), expected
+    )  # pylint: disable=E1121
 
     # call wrapped partial
     wrapper = func_io.random_generator_from_seed()
@@ -199,14 +204,14 @@ def test_random_generator_from_seed():
     wrapped_func = func_io.random_generator_from_seed(
         test_func, seed_names="not_here"
     )
-    assert wrapped_func(None, 0) == 0
+    assert wrapped_func(None, 0) == 0  # pylint: disable=E1121
 
     # call with strict input typing
     wrapped_func = func_io.random_generator_from_seed(
         test_func, raise_if_not_int=True
     )
     with pytest.raises(TypeError):
-        wrapped_func(None, 0.1)
+        wrapped_func(None, 0.1)  # pylint: disable=E1121
 
     # ----------
     # decorate by pie-syntax
