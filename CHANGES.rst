@@ -25,7 +25,7 @@ Other Changes and Additions
 ---------------------------
 
 Adopt pre-commit (
-`isort <https://pypi.org/project/isort/>`_
+   `isort <https://pypi.org/project/isort/>`_
 -> `black <https://pypi.org/project/black/>`_
 -> `flake8 <https://pypi.org/project/flake8/>`_) [#11]
 
