@@ -34,14 +34,13 @@ __all__ = ["merge_rest_docs"]
 # IMPORTS
 
 # BUILT-IN
-
+import typing as T
 from collections import OrderedDict
 from inspect import cleandoc
 from string import punctuation
 
-import typing as T
+# THIRD PARTY
 from typing_extensions import Literal
-
 
 ###############################################################################
 # CODE

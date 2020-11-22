@@ -16,14 +16,12 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
 from . import (
-    test_rest_parse_tools,
-    test_numpy_parse_tools,
     test_napolean_parse_tools,
+    test_numpy_parse_tools,
+    test_rest_parse_tools,
     test_style_store,
 )
-
 
 ##############################################################################
 # END

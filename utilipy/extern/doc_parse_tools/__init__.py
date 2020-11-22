@@ -57,16 +57,13 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
+from . import _style_store
 from .napoleon_parse_tools import (
     merge_google_napoleon_docs,
     merge_numpy_napoleon_docs,
 )
 from .numpy_parse_tools import merge_numpy_docs
 from .rest_parse_tools import merge_rest_docs
-
-from . import _style_store
-
 
 ###############################################################################
 # CODE
@@ -237,7 +234,7 @@ def add_style(style_name, style_func):
 
 
 def remove_style(style):
-    """ Remove the specified style from the style store.
+    """Remove the specified style from the style store.
 
     Parameters
     ----------

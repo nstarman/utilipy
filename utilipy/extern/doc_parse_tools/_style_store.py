@@ -61,20 +61,18 @@ __all__ = ["parent", "numpy", "reST", "google", "numpy_napoleon"]
 # IMPORTS
 
 # BUILT-IN
-
 import typing as T
+
+# THIRD PARTY
 from typing_extensions import Literal
 
-
 # PROJECT-SPECIFIC
-
 from .napoleon_parse_tools import (
     merge_google_napoleon_docs,
     merge_numpy_napoleon_docs,
 )
 from .numpy_parse_tools import merge_numpy_docs
 from .rest_parse_tools import merge_rest_docs
-
 
 ###############################################################################
 # CODE

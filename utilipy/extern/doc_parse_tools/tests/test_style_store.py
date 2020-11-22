@@ -11,14 +11,8 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-# BUILT-IN
-
 # THIRD PARTY
-
 import pytest
-
-
-# PROJECT-SPECIFIC
 
 # from .. import _style_store
 
