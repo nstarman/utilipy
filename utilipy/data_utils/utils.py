@@ -131,9 +131,6 @@ def make_shuffler(
 # /def
 
 
-shuffle = deprecated("v1.0")(make_shuffler)
-
-
 # -------------------------------------------------------------------
 
 
@@ -142,6 +139,7 @@ def get_path_to_file(*data_name: str, package=None):
 
     Similar to :func:`~astropy.utils.data.get_pkg_data_filename`, but only
     gets the path to the file, does not check if the file exists.
+    The package directory must exist.
 
     Parameters
     ----------
