@@ -119,21 +119,14 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import copy
+import typing as T
 from abc import abstractmethod
 from collections import namedtuple
-import typing as T
-
 
 # PROJECT-SPECIFIC
-
-from ..utils import (
-    functools,
-    inspect,
-)
+from ..utils import functools, inspect
 from ..utils.string import FormatTemplate
-
 
 ##############################################################################
 # Parameters
@@ -412,7 +405,9 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 
     # /def
 
-    def __new__(cls: type, function: T.Optional[T.Callable] = None, **kwargs: T.Any):
+    def __new__(
+        cls: type, function: T.Optional[T.Callable] = None, **kwargs: T.Any
+    ):
         """Make new DecoratorBaseClass.
 
         Parameters

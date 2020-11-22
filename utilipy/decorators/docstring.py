@@ -13,16 +13,15 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import ast
 import typing as T
 
+# THIRD PARTY
+from astropy.utils.decorators import format_doc as _format_doc
 
 # PROJECT-SPECIFIC
-
-from ..utils import functools
 from ..data_utils import get_path_to_file
-
+from ..utils import functools
 
 ##############################################################################
 # CODE
@@ -33,8 +32,6 @@ from ..data_utils import get_path_to_file
 
 # TODO figure out automodapi's :allowed-package-names: so don't
 # need this jerry-rigged method
-
-from astropy.utils.decorators import format_doc as _format_doc
 
 
 def format_doc(

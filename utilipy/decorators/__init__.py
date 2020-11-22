@@ -36,34 +36,23 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
-from ..utils import functools
+from ..utils import functools, inspect
 from ..utils.functools import wraps
-from ..utils import inspect
-
-# base class
+from . import baseclass, code_dev, docstring, func_io
 from .baseclass import DecoratorBaseClass, classy_decorator
-
-# data-type decorators
 from .func_io import (
-    store_function_input,
-    add_folder_backslash,
-    # dtype
+    boolDecorator,
     dtypeDecorator,
     dtypeDecoratorMaker,
-    # standard types
-    intDecorator,
     floatDecorator,
-    strDecorator,
-    boolDecorator,
-    # numpy
+    intDecorator,
     ndarrayDecorator,
     ndfloat64Decorator,
+    store_function_input,
+    strDecorator,
 )
 
-# top-level
-from . import baseclass, docstring, func_io, code_dev
-
+from .func_io import add_folder_backslash  # dtype; standard types; numpy
 
 ##############################################################################
 # END

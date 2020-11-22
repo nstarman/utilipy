@@ -22,19 +22,15 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import functools
 import inspect
 import textwrap
 import types
-import warnings
 import typing as T
-
+import warnings
 
 # PROJECT-SPECIFIC
-
 from ..utils.exceptions import utilipyWarning
-
 
 ##############################################################################
 # CODE

@@ -14,20 +14,12 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import pathlib
 import typing as T
 
-
 # THIRD PARTY
-
-from astropy.utils.data import get_pkg_data_filenames
-from astropy.utils.decorators import deprecated
-
 import numpy as np
-
-# PROJECT-SPECIFIC
-
+from astropy.utils.data import get_pkg_data_filenames
 
 ##############################################################################
 # PARAMETERS
