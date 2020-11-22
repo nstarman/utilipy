@@ -1,0 +1,24 @@
+# General Labels
+GitHub:
+  - .github/**/*
+
+Notebooks:
+  - notebooks/**/*
+
+# Package Labels
+plot:
+  - discO/plot/**/*
+
+scripts:
+  - discO/scripts/**/*
+
+utils:
+  - discO/utils/**/*
+
+
+# Docs Labels
+Docs:
+  - docs/**/*
+
+docs.utils:
+  - docs/discO/utils/**/*
