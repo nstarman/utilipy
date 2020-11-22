@@ -16,7 +16,7 @@ This decorator **does**:
 
 * anything to the function input and output
 * make a function that looks exactly like the input function for quality introspection.
-* work when created with parenthesis 
+* work when created with parenthesis
 * accept (kw)arguments on application
 * add any extra (kw)arguments to control the `wrapper` also make the defaults be dynamically set on function creation.
 * document what the wrapper is doing.

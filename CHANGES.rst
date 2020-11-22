@@ -30,6 +30,8 @@ Adopt pre-commit (
 -> `flake8 <https://pypi.org/project/flake8/>`_) [#11]
 
 - PR template [#12]
+  
+- Clean docs [#15]
 
 
 ==================

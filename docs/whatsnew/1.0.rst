@@ -25,7 +25,7 @@ In particular, this release includes:
 * :ref:`whatsnew-1.0-scripts`
 * :ref:`whatsnew-1.0-utils`
 
-.. _whatsnew-1.0-framework:  
+.. _whatsnew-1.0-framework:
 
 Framework
 =========
@@ -123,34 +123,34 @@ These decorator can do:
     ...     kw1, kw2 : any, optional
     ...         key-word only arguments
     ...         sets the wrappeer's default values.
-    ... 
+    ...
     ...     Returns
     ...     -------
     ...     wrapper : types.FunctionType
     ...         wrapper for function
     ...         does a few things
     ...         includes the original function in a method `.__wrapped__`
-    ... 
+    ...
     ...     '''
     ...     if function is None: # allowing for optional arguments
     ...         return functools.partial(template_decorator, kw1=k1, kw2=kw2)
-    ...     
+    ...
     ...     @functools.wraps(function)
     ...     def wrapper(*args, kw1=kw1, kw2=kw2, kw3='not in decorator factory', **kw):
     ...         """wrapper docstring.
-    ... 
+    ...
     ...         Decorator
     ...         ---------
     ...         prints information about function
     ...         kw1, kw2: defaults {kw1}, {kw2}
-    ... 
+    ...
     ...         """
     ...         # do stuff here
     ...         return_ = function(*args, **kw)
     ...         # and here
     ...         return return_
     ...     # /def
-    ... 
+    ...
     ...     return wrapper
     ... # /def
 
@@ -170,17 +170,17 @@ These decorator can do:
     ...     '''
     ...     return x, y, a, b, args, k, l, kw
     ... # /def
- 
+
     >>> help(function) # doctest: +SKIP
 
     Help on function function in module __main__:
-    
+
     function(x: '1st arg', y: '2nd arg', a: '1st defarg' = 10, b=11, *args: 'args', k: '1st kwonly' = 'one', l: '2nd kwonly' = 'two', kw1=None, kw2=None, kw3='not in decorator factory', **kw: 'kwargs') -> tuple
         function for testing decoration
         This function has all 5 different types of arguments:
             1) arguments, 2) defaulted arguments, 3) variable arguments,
             4) keyword-only arguments, 5) variable keyword arguments
-            
+
         Decorator
         ---------
         prints information about function
@@ -249,7 +249,7 @@ utilipy imports
 
     - LogFile
     - ObjDict
-      
+
 .. _whatsnew-1.0-imports-extended:
 
 utilipy.imports.extended
@@ -333,7 +333,7 @@ helper function `amuse_imports_help`
 
 - imports `amuse`, `amuse.lab`, `amuse.units.units`, `amuse.units.constants`, `amuse.couple.bridge`
 - provides a help function, `amuse_imports_help`
-  
+
 .. _whatsnew-1.0-ipython:
 
 IPython
@@ -404,7 +404,7 @@ Plot
 ====
 
 nothing implemented yet. See :ref:`whatsnew-planned`.
-  
+
 .. _whatsnew-1.0-scripts:
 
 Scripts
@@ -483,7 +483,7 @@ added FullerArgSpec which better separates parts of a signature, like arguments 
 - `drop_parameter`
 - `FullerSignature`
 - `fuller_signature`
-  
+
 utilipy.utils.pickle
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -493,24 +493,24 @@ utilipy.utils.string
 ^^^^^^^^^^^^^^^^^^^^
 
 - `FormatTemplate` with string supporting `.format`, syntax.
-  
+
 utilipy.utils.typing
 ^^^^^^^^^^^^^^^^^^^^
 
 - `array_like`: typing.Sequence
-  
+
 utilipy.utils.logging
 ^^^^^^^^^^^^^^^^^^^^^
 
 Basic loggers that can both print and/or record to a file.
 
-- LogPrint: print logger 
+- LogPrint: print logger
 - LogFile: This class uses `open`
-  
+
 utilipy.utils.doc_parse_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Docstring inheritance-style implementations. Supports numpy and google docstrings. 
+Docstring inheritance-style implementations. Supports numpy and google docstrings.
 
 To implement your own inheritance file, simply write a function that fits the template
 
@@ -535,7 +535,7 @@ To permanently save your function
 
 1. define your function within `custom_inherit/_style_store.py`
 2. log it in `custom_inherit.style_store.__all__`.
-   
+
 utilipy.utils.collections
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
