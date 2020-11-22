@@ -14,8 +14,6 @@ __all__ = [
 # THIRD PARTY
 import pytest
 
-# from utilipy.ipython import notebook
-
 ##############################################################################
 # PARAMETERS
 
