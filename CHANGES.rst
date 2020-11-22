@@ -31,13 +31,13 @@ Adopt pre-commit (
 
 - PR template [#12]
   
-- Workflows
+- CI Workflows [#16]
 
-    + dependabot [#16]
-    + labeler [#16]
-    + ci_cron [#16]
-    + ci_tests [#16]
-    + pre-commit [#16]
+    + dependabot 
+    + labeler
+    + ci_cron
+    + ci_tests
+    + pre-commit
 
 - Remove Travis [#16]
 
