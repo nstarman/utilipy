@@ -17,7 +17,6 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
 from . import (
     test_autoreload,
     test_imports,
@@ -25,7 +24,6 @@ from . import (
     test_plot,
     test_printing,
 )
-
 
 ##############################################################################
 # END

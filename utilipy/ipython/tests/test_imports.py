@@ -10,14 +10,10 @@ __all__ = ["test_imports"]
 # IMPORTS
 
 # THIRD PARTY
-
 import pytest
 
-
 # PROJECT-SPECIFIC
-
 from .. import imports
-
 
 ##############################################################################
 # PARAMETERS

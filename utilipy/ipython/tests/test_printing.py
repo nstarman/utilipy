@@ -9,17 +9,8 @@ __all__ = ["test_printMD"]
 ##############################################################################
 # printing
 
-# BUILT-IN
-
-# THIRD PARTY
-
-import pytest
-
-
 # PROJECT-SPECIFIC
-
 from .. import printing
-
 
 ##############################################################################
 # PARAMETERS
@@ -44,7 +35,9 @@ def test_printMD():  # TODO actual test
 
     # all minor options
     printing.printMD(
-        "test", bold=True, italic=True,
+        "test",
+        bold=True,
+        italic=True,
     )
 
 
