@@ -25,18 +25,29 @@ Other Changes and Additions
 ---------------------------
 
 Adopt pre-commit (
-`isort <https://pypi.org/project/isort/>`_
+   `isort <https://pypi.org/project/isort/>`_
 -> `black <https://pypi.org/project/black/>`_
 -> `flake8 <https://pypi.org/project/flake8/>`_) [#11]
 
 - PR template [#12]
   
-- Clean docs [#15]
+- CI Workflows [#16]
+
+    + dependabot 
+    + labeler
+    + ci_cron
+    + ci_tests
+    + pre-commit
+
+- Remove Travis [#16]
 
 
 ==================
 1.0.1 (2020-04-05)
 ==================
+
+Bug Fixes
+---------
 
 - fixed import inspect in ``utilipy.decorators.func_io`` from buit-in to utilipy's inspect module (``utilipy.utils.inspect``) since the function ``store_function_input`` needs ```fuller_signature`` <https://utilipy.readthedocs.io/en/latest/api/utilipy.decorators.store_function_input.html#utilipy.decorators.store_function_input>`_.
 
