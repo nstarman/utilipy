@@ -9,6 +9,7 @@ __all__ = [
     "decorators",
     "select",
     "fitting",
+    "utils",
     "xfm",
     # functions
     "idxDecorator",
