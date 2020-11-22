@@ -14,28 +14,26 @@ compatible with lmfit
 # IMPORTS
 
 # BUILT-IN
-
 import typing as T
 
-
 # THIRD PARTY
-
 import numpy as np
 from wrapt import ObjectProxy
 
 try:
     import lmfit
+except ImportError:
+    HAS_LMFIT = False
+else:
+    HAS_LMFIT = True
 
 ##############################################################################
 # PARAMETERS
 
-except ImportError:
-    ParametersType = T.Any
+if HAS_LMFIT:
+    ParametersType = T.TypeVar("ParametersType", bound=lmfit.Parameters)
 else:
-    ParametersType = T.TypeVar(
-        "ParametersType", lmfit.Parameters, lmfit.Parameters
-    )
-
+    ParametersType = T.Any
 
 ##############################################################################
 # CODE
@@ -158,7 +156,7 @@ class scipy_residual_to_lmfit(ObjectProxy):
 def report_mcmc_fit(mcmc_res):
     """Report output of MCMC fit.
 
-    Code from https://lmfit.github.io/lmfit-py/fitting.html#minimizer-emcee-calculating-the-posterior-probability-distribution-of-parameters
+    Code from https://lmfit.github.io/lmfit-py/fitting.html
 
     """
     # -----------------------

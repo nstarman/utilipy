@@ -17,15 +17,11 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # BUILT-IN
-
 import typing as T
 
-
 # PROJECT-SPECIFIC
-
-from ._LogPrint import LogPrint
 from ..metaclasses import InheritDocstrings
-
+from ._LogPrint import LogPrint
 
 ##############################################################################
 # LogFile

@@ -10,10 +10,8 @@ __credits__ = ["astropy"]
 # IMPORTS
 
 # BUILT-IN
-
-import typing as T
 import inspect
-
+import typing as T
 
 ##############################################################################
 # CODE

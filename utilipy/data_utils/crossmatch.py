@@ -23,19 +23,14 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import functools
 import itertools
 import typing as T
 
-
 # THIRD PARTY
-
 import numpy as np
 
-
 # PROJECT-SPECIFIC
-
 from .decorators import idxDecorator
 
 # from .xfm import data_graph as old_data_graph, DataTransform
@@ -255,7 +250,8 @@ xmatch_tags = xmatch_fields  # just another name
 
 # @data_graph.decorate(cat1=np.recarray, cat2=np.recarray)
 def xmatch(
-    *catalogs, match_fields: T.Sequence,
+    *catalogs,
+    match_fields: T.Sequence,
 ) -> T.Tuple[T.List[T.Any], _INFO_TYPE]:
     """Cross-match two catalogs.
 

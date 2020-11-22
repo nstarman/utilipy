@@ -33,7 +33,7 @@ Notes
 """
 
 
-__all__ = [  # TODO use :allowed-package-names: `functools`
+__all__ = [
     "make_function",
     "copy_function",
     "update_wrapper",
@@ -45,24 +45,16 @@ __all__ = [  # TODO use :allowed-package-names: `functools`
 # IMPORTS
 
 # BUILT-IN
-
 import typing as T
-
-from types import CodeType
-
 from functools import *  # so can be a drop-in for `functools`
 from functools import partial
-
-from types import FunctionType
-
+from types import CodeType, FunctionType
 
 # PROJECT-SPECIFIC
-
 from ..extern.doc_parse_tools import store as _store
-from .string import FormatTemplate as _FormatTemplate
 from . import inspect as _nspct
 from .inspect import FullerSignature as _FullerSig
-
+from .string import FormatTemplate as _FormatTemplate
 
 # CLEAN MULTIPLE DEFINITIONS
 del globals()["update_wrapper"]

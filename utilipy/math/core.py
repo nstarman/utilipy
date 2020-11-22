@@ -19,18 +19,13 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import typing as T
 import warnings
 
-
 # THIRD PARTY
-
-from astropy.units import Quantity
-
 import numpy as np
+from astropy.units import Quantity
 from numpy.linalg import norm
-
 
 ##############################################################################
 # IMPORTS

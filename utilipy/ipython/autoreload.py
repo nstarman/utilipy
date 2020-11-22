@@ -33,19 +33,13 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import typing as T
 
-
 # THIRD PARTY
-
 from IPython import get_ipython
 
-
 # PROJECT-SPECIFIC
-
 from ..utils.logging import LogPrint
-
 
 ##############################################################################
 # PARAMETERS
@@ -147,9 +141,8 @@ def aimport(*modules: str, autoreload: T.Union[bool, list, tuple] = True):
 # SETTING STATE
 
 if _HAS_IPY is True:
-    if get_ipython() is not None:
-        get_ipython().magic("load_ext autoreload")  # autoreload extensions
-        set_autoreload(1)
+    get_ipython().magic("load_ext autoreload")  # autoreload extensions
+    set_autoreload(1)
 # /if
 
 ##############################################################################

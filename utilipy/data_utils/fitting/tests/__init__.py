@@ -12,9 +12,7 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
 from . import test_lmfit_utils
-
 
 ##############################################################################
 # END

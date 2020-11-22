@@ -17,17 +17,13 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
+import sys
 import typing as T
 import warnings
-import sys
 
 # THIRD PARTY
-
 from astropy import config as _config
 from astropy.utils.exceptions import AstropyWarning
-
-
 
 #############################################################################
 # CONFIGURATION
@@ -120,7 +116,9 @@ def showwarning(
         and not conf.verbose_warnings
     ):
         print(
-            "utilipyWarning: " + str(message), file=file, flush=True,
+            "utilipyWarning: " + str(message),
+            file=file,
+            flush=True,
         )
 
     # Normal warnings

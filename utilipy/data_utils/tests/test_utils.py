@@ -12,14 +12,10 @@ __all__ = [
 # IMPORTS
 
 # THIRD PARTY
-
 import numpy as np
 
-
 # PROJECT-SPECIFIC
-
 from .. import utils
-
 
 ##############################################################################
 # PARAMETERS

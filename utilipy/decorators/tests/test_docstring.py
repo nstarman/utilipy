@@ -11,10 +11,8 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
 from .. import docstring
 from . import _null_imports
-
 
 ##############################################################################
 # PARAMETERS

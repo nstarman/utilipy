@@ -22,24 +22,17 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
+import typing as T
 from collections import OrderedDict
 
-import typing as T
-
-
 # THIRD PARTY
-
+import wrapt
 from astropy.utils.decorators import format_doc
 from astropy.utils.metadata import MetaData
 
-import wrapt
-
-
 # PROJECT-SPECIFIC
-
-from .pickle import dump as _dump, load as _load
-
+from .pickle import dump as _dump  # nosec
+from .pickle import load as _load  # nosec
 
 ##############################################################################
 # PARAMETERS

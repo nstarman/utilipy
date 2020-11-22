@@ -9,17 +9,11 @@ __all__ = ["test_autoreload"]
 ##############################################################################
 # IMPORTS
 
-# BUILT-IN
-
 # THIRD PARTY
-
 import pytest
 
-
 # PROJECT-SPECIFIC
-
 from .. import autoreload
-
 
 ##############################################################################
 # PARAMETERS

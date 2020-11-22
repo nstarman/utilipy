@@ -37,9 +37,7 @@ __all__ = [
 # IMPORTS
 
 # THIRD PARTY
-
 from IPython.display import HTML
-
 
 ##############################################################################
 # CODE

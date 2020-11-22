@@ -7,27 +7,12 @@
 ##############################################################################
 # IMPORTS
 
-# THIRD PRTY
-
+# THIRD PARTY
 import numpy as np
 import pytest
 
-
 # PROJECT-SPECIFIC
-
-from utilipy.decorators.func_io import (
-    dtypeDecorator,
-    # dtypeDecoratorMaker,
-    # # standard types
-    # intDecorator,
-    # floatDecorator,
-    # strDecorator,
-    # boolDecorator,
-    # # numpy
-    # ndarrayDecorator,
-    # ndfloat64Decorator,
-)
-
+from utilipy.decorators.func_io import dtypeDecorator
 
 ##############################################################################
 # PARAMETERS

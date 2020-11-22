@@ -18,12 +18,8 @@ __all__ = [
 
 # BUILT IN
 
-# THIRD PARTY
-
 # PROJECT-SPECIFIC
-
 from . import doc_parse_tools
-
 
 ##############################################################################
 # END

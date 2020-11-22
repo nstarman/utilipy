@@ -14,6 +14,10 @@ API Changes
     + utilipy.cfg sets the template
     + each module has the specific config code in the ``setup_package.py`` (preferred), ``__init__.py``, or the relevant python file.
 
+- Rename ``data_utils/shuffle`` to data ``data_utils/shuffler`` [#17]
+  
+- Deprecate custom ``format_doc`` in favor or Astropy's [#17]
+
 
 Bug Fixes
 ---------
@@ -30,7 +34,7 @@ Adopt pre-commit (
 -> `flake8 <https://pypi.org/project/flake8/>`_) [#11]
 
 - PR template [#12]
-  
+
 - CI Workflows [#16]
 
     + dependabot 
@@ -40,6 +44,8 @@ Adopt pre-commit (
     + pre-commit
 
 - Remove Travis [#16]
+
+- Clean code spacing and import labels [#17]
 
 
 ==================

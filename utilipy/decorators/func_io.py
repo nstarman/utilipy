@@ -23,17 +23,14 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import typing as T
+
+# THIRD PARTY
+import numpy as np
 from typing_extensions import Literal
 
-import numpy as np
-
-
 # PROJECT-SPECIFIC
-
-from ..utils import functools, inspect
-
+from utilipy.utils import functools, inspect
 
 ##############################################################################
 # CODE
@@ -45,7 +42,7 @@ def store_function_input(
     *,
     store_inputs: bool = True,
     _doc_style: str = "numpy",
-    _doc_fmt: T.Dict[str, T.Any] = {}
+    _doc_fmt: T.Dict[str, T.Any] = {},
 ):
     """Store Function Inputs.
 

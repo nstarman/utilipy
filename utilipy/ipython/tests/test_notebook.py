@@ -9,17 +9,11 @@ __all__ = ["test_notebook"]
 ##############################################################################
 # notebook
 
-# BUILT-IN
-
 # THIRD PARTY
-
 import pytest
 
-
 # PROJECT-SPECIFIC
-
 from .. import notebook
-
 
 ##############################################################################
 # PARAMETERS

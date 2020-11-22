@@ -4,7 +4,7 @@
 
 
 __all__ = [
-    "format_doc",
+    # "format_doc",
     "set_docstring_for_import_func",
 ]
 
@@ -13,46 +13,16 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import ast
 import typing as T
 
-
 # PROJECT-SPECIFIC
-
-from ..utils import functools
 from ..data_utils import get_path_to_file
-
+from ..utils import functools
 
 ##############################################################################
 # CODE
 ##############################################################################
-
-##############################################################################
-# Format Doc
-
-# TODO figure out automodapi's :allowed-package-names: so don't
-# need this jerry-rigged method
-
-from astropy.utils.decorators import format_doc as _format_doc
-
-
-def format_doc(
-    docstring: T.Optional[str], *args: T.Any, **kwargs: T.Any
-) -> T.Callable:
-    """Astropy's Format Docstring Function.
-
-    .. deprecated:: 1.0.0
-
-    """
-    return _format_doc(docstring, *args, **kwargs)
-
-
-format_doc.__doc__ = _format_doc.__doc__
-# /def
-
-
-#####################################################################
 
 
 def set_docstring_for_import_func(

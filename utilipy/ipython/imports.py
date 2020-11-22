@@ -60,25 +60,19 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
-from pathlib import Path
 import typing as T
+from pathlib import Path
 
 # THIRD PARTY
-
 from IPython import get_ipython
 
-
 # PROJECT-SPECIFIC
-
 from ..data_utils import get_path_to_file
 from ..decorators.docstring import set_docstring_for_import_func
 from ..imports import use_import_verbosity
 from ..utils import functools
 from ..utils.logging import LogFile
-
 from .autoreload import aimport, set_autoreload
-
 
 ##############################################################################
 # SETUP

@@ -20,12 +20,9 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import os
 
-
 # PROJECT-SPECIFIC
-
 from .. import (
     data_utils,
     decorators,
@@ -36,7 +33,6 @@ from .. import (
     scripts,
     utils,
 )
-
 
 ##############################################################################
 # TESTS
@@ -67,7 +63,7 @@ def test_init_data_utils():
         "non_xmatched",
         # utils
         "get_path_to_file",
-        "shuffle",
+        "make_shuffler",
     ]
     local += data_utils.select.__all__
 

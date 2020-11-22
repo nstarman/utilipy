@@ -44,13 +44,12 @@ __all__ = ["merge_google_napoleon_docs", "merge_numpy_napoleon_docs"]
 # IMPORTS
 
 # BUILT-IN
-
 import typing as T
-from typing_extensions import Literal
-
 from collections import OrderedDict
 from inspect import cleandoc
 
+# THIRD PARTY
+from typing_extensions import Literal
 
 ###############################################################################
 # CODE

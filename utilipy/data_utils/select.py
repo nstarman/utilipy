@@ -24,20 +24,14 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import typing as T
 
-
 # THIRD PARTY
-
 import numpy as np
 
-
 # PROJECT-SPECIFIC
-
+from utilipy.utils.typing import EllipsisType
 from .decorators import idxDecorator
-from..utils.typing import EllipsisType
-
 
 #############################################################################
 # Functions

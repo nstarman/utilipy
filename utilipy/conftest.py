@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Configure Test Suite.
 
 This file is used to configure the behavior of pytest when using the Astropy
@@ -10,7 +11,10 @@ packagename.test
 ##############################################################################
 # IMPORTS
 
+# BUILT-IN
 import os
+
+# THIRD PARTY
 import pytest
 
 from astropy.version import version as astropy_version

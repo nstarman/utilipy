@@ -37,9 +37,11 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
-from IPython import get_ipython
+# BUILT-IN
 import warnings
 
+# THIRD PARTY
+from IPython import get_ipython
 
 ##############################################################################
 # CODE

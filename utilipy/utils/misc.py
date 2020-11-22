@@ -13,16 +13,12 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
+import typing as T
 from contextlib import contextmanager
 from types import ModuleType
-import typing as T
-
 
 # THIRD PARTY
-
 from astropy.utils.data import find_current_module
-
 
 ##############################################################################
 # CODE

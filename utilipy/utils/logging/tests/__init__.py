@@ -14,9 +14,7 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
-from . import test_logprint, test_logfile
-
+from . import test_logfile, test_logprint
 
 ##############################################################################
 # END

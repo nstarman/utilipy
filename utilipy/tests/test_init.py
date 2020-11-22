@@ -7,34 +7,19 @@
 # IMPORTS
 
 # BUILT-IN
-
 import os
 
-
 # THIRD PARTY
-
 import pytest
 
-
 # PROJECT-SPECIFIC
-
-from .. import (
-    __all_top_imports__ as all_top_imports,
-    __file__ as _file,
-    __dict__ as D,
-    imports,
-    reload_config,
-    online_help,
-    lookup,
-)
-
+from utilipy import __all_top_imports__ as all_top_imports
+from utilipy import __dict__ as D
+from utilipy import __file__ as _file
+from utilipy import imports, lookup, online_help, reload_config
 
 ##############################################################################
-# PARAMETERS
-
-
-##############################################################################
-# TEST FUNCTIONS
+# TESTS
 ##############################################################################
 
 

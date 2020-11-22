@@ -13,21 +13,13 @@ __all__ = ["TransformGraph"]
 # IMPORTS
 
 # BUILT-IN
-
 import heapq
 import typing as T
-
 from collections import defaultdict
 
-
-# THIRD PARTY
-
-from .transformations import (
-    CompositeTransform,
-    _default_xfm_set,
-)
-from ...utils import inspect, functools
-
+# PROJECT-SPECIFIC
+from ...utils import functools, inspect
+from .transformations import CompositeTransform, _default_xfm_set
 
 ##############################################################################
 # PARAMETERS

@@ -39,11 +39,13 @@ __all__ = [
 ##############################################################################
 # IMPORTS
 
+# BUILT-IN
 import typing as T
 
-from IPython.display import display  # display is a better print
-from IPython.display import Latex, Markdown  # , HTML
+# THIRD PARTY
+from IPython.display import Latex, Markdown
 
+from IPython.display import display  # , HTML; display is a better print
 
 ##############################################################################
 # CODE

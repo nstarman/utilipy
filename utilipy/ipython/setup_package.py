@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
 
 """Setup for :mod:`~utilipy.ipython`."""
@@ -6,16 +7,13 @@
 ###############################################################################
 # IMPORTS
 
-# BUILT-IN
-
 from __future__ import absolute_import
+
+# BUILT-IN
 import typing as T
 
-
 # THIRD PARTY
-
 from astropy import config as _config
-
 
 ###############################################################################
 # CODE
