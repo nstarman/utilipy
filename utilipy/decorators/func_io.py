@@ -48,6 +48,10 @@ def store_function_input(
 
     Store the function inputs as a BoundArguments.
 
+    .. todo::
+
+        Allow for decorating a class, storing it on an attribute.
+
     Parameters
     ----------
     function : T.Callable or None, optional
@@ -122,7 +126,11 @@ def store_function_input(
 
 
 def add_folder_backslash(
-    function=None, *, arguments=[], _doc_style="numpy", _doc_fmt={}
+    function=None,
+    *,
+    arguments: T.List[str] = [],
+    _doc_style="numpy",
+    _doc_fmt={},
 ):
     """Add backslashes to str arguments.
 
@@ -154,6 +162,9 @@ def add_folder_backslash(
         parameter to `~utilipy.wraps`
 
     """
+    if isinstance(arguments, str):
+        arguments = [arguments]
+
     if function is None:  # allowing for optional arguments
         return functools.partial(
             add_folder_backslash,
@@ -161,6 +172,8 @@ def add_folder_backslash(
             _doc_style=_doc_style,
             _doc_fmt=_doc_fmt,
         )
+
+    sig = inspect.signature(function)
 
     @functools.wraps(function, _doc_style=_doc_style, _doc_fmt=_doc_fmt)
     def wrapper(*args, **kw):
@@ -172,24 +185,20 @@ def add_folder_backslash(
             whether to store function inputs in a BoundArguments instance
             default {store_inputs}
 
-        .. todo::
-
-            need to do by inspect, since can pass args as kwargs
-
         """
-        args = list(args)
-        for itm in arguments:
-            if isinstance(itm, int):
-                # print('TODO fix')
-                if not args[itm].endswith("/"):
-                    args[itm] = args[itm] + "/"
-            elif isinstance(itm, str):
-                if not kw[itm].endswith("/"):
-                    kw[itm] = kw[itm] + "/"
+        ba = sig.bind_partial(*args, **kw)
+
+        for name in arguments:
+            if isinstance(name, int):
+                if not ba.args[name].endswith("/"):
+                    ba.args[name] += "/"
+            elif isinstance(name, str):
+                if not ba.arguments[name].endswith("/"):
+                    ba.arguments[name] += "/"
             else:
                 raise TypeError("elements of `args` must be int or str")
 
-        return function(*args, **kw)
+        return function(*ba.args, **ba.kwargs)
 
     # /def
 
@@ -203,9 +212,10 @@ def add_folder_backslash(
 
 
 def random_generator_from_seed(
-    function=None,
-    seed_names=["random", "random_seed"],
-    generator=np.random.RandomState,
+    function: T.Callable = None,
+    seed_names: T.Union[str, T.Sequence[str]] = ["random", "random_seed"],
+    generator: T.Callable = np.random.RandomState,
+    raise_if_not_int: bool = False,
 ):
     """Function decorator to convert random seed to random number generator.
 
@@ -219,6 +229,9 @@ def random_generator_from_seed(
     generator : ClassType, optional
         ex :class:`numpy.random.default_rng`, :class:`numpy.random.RandomState`
 
+    raise_if_not_int : bool, optional
+        raise TypeError if seed argument is not an int.
+
     Returns
     -------
     wrapper : types.FunctionType
@@ -226,11 +239,14 @@ def random_generator_from_seed(
         converts random seeds to random number generators before calling.
         includes the original function in a method `.__wrapped__`
 
+    Raises
+    ------
+    TypeError
+        If `raise_if_not_int` is True and seed argument is not an int.
+
     """
     if isinstance(seed_names, str):  # correct a bare string to list
-        seed_names = [
-            seed_names,
-        ]
+        seed_names = [seed_names]
 
     if function is None:  # allowing for optional arguments
         return functools.partial(
@@ -265,6 +281,8 @@ def random_generator_from_seed(
             if name in pnames:  # see if present
                 if isinstance(ba.arguments[name], int):  # seed -> generator
                     ba.arguments[name] = generator(ba.arguments[name])
+                elif raise_if_not_int:
+                    raise TypeError(f"{name} must be <int>")
                 else:  # do not replace
                     pass
         # /for
@@ -400,6 +418,168 @@ class dtypeDecorator:
 
 # -------------------------------------------------------------------
 
+# define class
+class dtypeDecoratorBase:
+    """Ensure arguments are type `dtype`.
+
+    Parameters
+    ----------
+    func : function, optional
+        function to decorate
+    inargs : 'all' or iterable or slice or tuple, optional
+        - None (default), does nothing
+        - 'all': converts all arguments to dtype
+        - iterable: convert arguments at index speficied in iterable
+            ex: [0, 2] converts arguments 0 & 2
+        - slice: convert all arguments specified by slicer
+    outargs : 'all' or iterable or tuple or slice
+        - None (default), does nothing
+        - 'all': converts all arguments to dtype
+        - iterable: convert arguments at index speficied in iterable
+            ex: [0, 2] converts arguments 0 & 2
+        - slice: convert all arguments specified by slicer
+
+    these arguments, except func, should be specified by key word
+    if inargs is forgotten and func is not a function, then func is
+    assumed to be inargs.
+
+    Examples
+    --------
+    >>> intDecorator = dtypeDecoratorMaker(int)
+    >>> @intDecorator(inargs=[0, 1], outargs=2)
+    ... def func(x, y, z):
+    ...     return x, y, z, (x, y, z)
+    ... # /def
+    >>> x, y, z, orig = func(1.1, 2.2, 3.3)
+    >>> print(x, y, z, orig)
+    1 2 3 (1, 2, 3.3)
+
+    """
+
+    def __init_subclass__(cls, dtype=None):
+        super().__init_subclass__()
+
+        cls._dtype = dtype
+
+    # /def
+
+    @property
+    def dtype(self):
+        return self._dtype
+
+    def __new__(
+        cls,
+        func: T.Callable = None,
+        inargs: T.Union[Literal["all"], slice, T.Iterable] = None,
+        outargs: T.Union[Literal["all"], slice, T.Iterable] = None,
+    ):
+        self = super().__new__(cls)  # making instance of self
+
+        # correcting if forgot to specify inargs and did not provide a func
+        # in this case, *inargs* is stored in *func*
+        # need to do func->None, inarags<-func, and outargs<-inargs
+        if not isinstance(func, T.Callable):
+            # moving arguments 'forward'
+            outargs = inargs
+            inargs = func
+            func = None
+
+        # allowing for wrapping with calling the class
+        if func is not None:
+            self.__init__(inargs, outargs)
+            return self(func)
+        else:
+            return self
+
+    # /def
+
+    def __init__(
+        self,
+        inargs: T.Union[Literal["all"], slice, T.Iterable] = None,
+        outargs: T.Union[Literal["all"], slice, T.Iterable] = None,
+    ) -> None:
+        super().__init__()
+
+        # inargs
+        if inargs == "all":
+            self._inargs = slice(None)
+        else:
+            self._inargs = inargs
+
+        # outargs
+        if outargs == "all":
+            self._outargs = slice(None)
+        elif np.isscalar(outargs):
+            self._outargs = [outargs]
+        else:
+            self._outargs = outargs
+
+    # /def
+
+    def __call__(self, wrapped_func: T.Callable) -> T.Callable:
+        # print(self._inargs)
+
+        @functools.wraps(wrapped_func)
+        def wrapper(*args: T.Any, **kw: T.Any) -> T.Any:
+
+            args = list(args)  # allowing modifications
+
+            # PRE
+            # making arguments self._dtype
+            if self._inargs is None:  # no conversion needed
+                pass
+            elif isinstance(self._inargs, slice):
+                # converting inargs to list of indices
+                inargs = list(range(len(args)))[self._inargs]
+                for i in inargs:
+                    # converting to desired dtype
+                    args[i] = self._dtype(args[i])
+            else:
+                for i in self._inargs:
+                    # converting to desired dtype
+                    args[i] = self._dtype(args[i])
+            # /PRE
+
+            # CALLING
+            return_ = wrapped_func(*args, **kw)
+            # /CALLING
+
+            # POST
+            if self._outargs is None:  # no conversion needed
+                return return_
+            else:
+                try:  # figure out whether return_ is a scalar or list
+                    return_[0]
+                except IndexError:  # scalar output
+                    inds = np.arange(len(args), dtype=self._dtype)[
+                        self._outargs
+                    ]
+                    if inds == 0:
+                        return self._dtype(return_)
+                    else:  # inds doesn't match return_
+                        raise ValueError
+                else:
+                    return_ = list(return_)
+                    inds = np.arange(len(args), dtype=self._dtype)[
+                        self._outargs
+                    ]
+                    for i in inds:
+                        return_[i] = self._dtype(return_[i])
+
+                return return_
+            # /POST
+            # /def
+
+        return wrapper
+
+    # /def
+
+
+# /class
+
+
+# -------------------------------------------------------------------
+
 
 def dtypeDecoratorMaker(dtype: T.Any):
     """Function to make a dtype decorator.
@@ -426,156 +606,13 @@ def dtypeDecoratorMaker(dtype: T.Any):
     1 2 3 (1, 2, 3.3)
 
     """
-    # define class
-    class dtypeDecorator:
-        """Ensure arguments are type `dtype`.
+    # make subclass
+    class dtypeDecorator(dtypeDecoratorBase, dtype=dtype):
+        pass
 
-        Parameters
-        ----------
-        func : function, optional
-            function to decorate
-        inargs : 'all' or iterable or slice or tuple, optional
-            - None (default), does nothing
-            - 'all': converts all arguments to dtype
-            - iterable: convert arguments at index speficied in iterable
-                ex: [0, 2] converts arguments 0 & 2
-            - slice: convert all arguments specified by slicer
-        outargs : 'all' or iterable or tuple or slice
-            - None (default), does nothing
-            - 'all': converts all arguments to dtype
-            - iterable: convert arguments at index speficied in iterable
-                ex: [0, 2] converts arguments 0 & 2
-            - slice: convert all arguments specified by slicer
+    # /class
 
-        these arguments, except func, should be specified by key word
-        if inargs is forgotten and func is not a function, then func is
-        assumed to be inargs.
-
-        Examples
-        --------
-        >>> intDecorator = dtypeDecoratorMaker(int)
-        >>> @intDecorator(inargs=[0, 1], outargs=2)
-        ... def func(x, y, z):
-        ...     return x, y, z, (x, y, z)
-        ... # /def
-        >>> x, y, z, orig = func(1.1, 2.2, 3.3)
-        >>> print(x, y, z, orig)
-        1 2 3 (1, 2, 3.3)
-
-        """
-
-        def __new__(
-            cls,
-            func: T.Callable = None,
-            inargs: T.Union[Literal["all"], slice, T.Iterable] = None,
-            outargs: T.Union[Literal["all"], slice, T.Iterable] = None,
-        ):
-            """__new__."""
-            self = super().__new__(cls)  # making instance of self
-
-            # correcting if forgot to specify inargs and did not provide a func
-            # in this case, *inargs* is stored in *func*
-            # need to do func->None, inarags<-func, and outargs<-inargs
-            if not isinstance(func, T.Callable):
-                # moving arguments 'forward'
-                outargs = inargs
-                inargs = func
-                func = None
-
-            # allowing for wrapping with calling the class
-            if func is not None:
-                self.__init__(inargs, outargs)
-                return self(func)
-            else:
-                return self
-
-        # /def
-
-        def __init__(
-            self,
-            inargs: T.Union[Literal["all"], slice, T.Iterable] = None,
-            outargs: T.Union[Literal["all"], slice, T.Iterable] = None,
-        ) -> None:
-            super().__init__()
-
-            # data type
-            self._dtype = dtype  # getting from outside
-            if dtype is None:  # dtype is kept as-is
-                self.dtype = lambda x: x
-
-            # inargs
-            if inargs == "all":
-                self._inargs = slice(None)
-            else:
-                self._inargs = inargs
-
-            # outargs
-            if outargs == "all":
-                self._outargs = slice(None)
-            elif np.isscalar(outargs):
-                self._outargs = [outargs]
-            else:
-                self._outargs = outargs
-
-        # /def
-
-        def __call__(self, wrapped_func: T.Callable) -> T.Callable:
-            # print(self._inargs)
-
-            @functools.wraps(wrapped_func)
-            def wrapper(*args: T.Any, **kw: T.Any) -> T.Any:
-
-                args = list(args)  # allowing modifications
-
-                # PRE
-                # making arguments self._dtype
-                if self._inargs is None:  # no conversion needed
-                    pass
-                elif isinstance(self._inargs, slice):
-                    # converting inargs to list of indices
-                    inargs = list(range(len(args)))[self._inargs]
-                    for i in inargs:
-                        # converting to desired dtype
-                        args[i] = self._dtype(args[i])
-                else:
-                    for i in self._inargs:
-                        # converting to desired dtype
-                        args[i] = self._dtype(args[i])
-                # /PRE
-
-                # CALLING
-                return_ = wrapped_func(*args, **kw)
-                # /CALLING
-
-                # POST
-                if self._outargs is None:  # no conversion needed
-                    return return_
-                else:
-                    try:  # figure out whether return_ is a scalar or list
-                        return_[0]
-                    except IndexError:  # scalar output
-                        inds = np.arange(len(args), dtype=self._dtype)[
-                            self._outargs
-                        ]
-                        if inds == 0:
-                            return self._dtype(return_)
-                        else:  # inds doesn't match return_
-                            raise ValueError
-                    else:
-                        return_ = list(return_)
-                        inds = np.arange(len(args), dtype=self._dtype)[
-                            self._outargs
-                        ]
-                        for i in inds:
-                            return_[i] = self._dtype(return_[i])
-
-                    return return_
-                # /POST
-                # /def
-
-            return wrapper
-
-        # /def
+    dtypeDecorator.__name__ = f"{dtype}Decorator"
 
     return dtypeDecorator
 

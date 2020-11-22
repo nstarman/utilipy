@@ -7,12 +7,12 @@ __all__ = [
     "test_WRAPPER_ASSIGNMENTS",
     "test_SIGNATURE_ASSIGNMENTS",
     "test_WRAPPER_UPDATES",
-    "test_update_wrapper_signature_true",
-    "test_update_wrapper_signature_false",
-    "test_update_wrapper_signature_None",
-    "test_update_wrapper_signature_Signature",
-    "test_update_wrapper_signature_FullerSignature",
-    "test_update_wrapper_signature_notSignature",
+    # "test_update_wrapper_signature_true",
+    # "test_update_wrapper_signature_false",
+    # "test_update_wrapper_signature_None",
+    # "test_update_wrapper_signature_Signature",
+    # "test_update_wrapper_signature_FullerSignature",
+    # "test_update_wrapper_signature_notSignature",
 ]
 
 
@@ -20,9 +20,7 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
 from .. import functools, inspect
-
 
 ###############################################################################
 # PARAMETERS
@@ -106,16 +104,9 @@ def test_make_function():
 
 
 def test_copy_function():
-    def test_func(
-        x: "args",
-        y,
-        a: "default args" = 2,
-        b=3,
-        *args: "var args",
-        p: "keyword args" = "L",
-        q="M",
-        **kwargs: "var kwargs"
-    ):
+    """Test `~utilipy.utils.functools.copy_function`."""
+    # test function
+    def test_func(x: float, y, a=2, b=3, *args, p="L", q="M", **kwargs):
         return x, y, a, b, args, p, q, kwargs
 
     tfc = functools.copy_function(test_func)

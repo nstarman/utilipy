@@ -73,51 +73,58 @@ __author__ = "Nathaniel Starkman"
 
 
 __all__ = [
+    # modules
+    "os",
+    "sys",
+    "time",
+    "warnings",
+    "np",
+    "scipy",
+    "TQDM",
+    "tqdm",
+    "tqdmn",
+    "conf",
+    "ObjDict",
+    "make_help_function",
+    "LogFile",
+    # functions
     "base_imports_help",
 ]
 
 
 ##############################################################################
-# PARAMETERS
-
-from utilipy.imports import conf
-from utilipy.utils import make_help_function
-
-
-##############################################################################
 # IMPORTS
 
-# +---------------------------------------------------------------------------+
-# Basic
-
+# BUILT-IN
 import os
 import sys  # operating system
 import time  # timing
-import pdb  # debugging
 import warnings  # warning
 
-# Numpy
+# THIRD PARTY
 import numpy as np  # numerical python
 import scipy  # scientific python
-
-# TODO implement when no TqdmExperimentalWarning
-# from tqdm.autonotebook import tqdm
 import tqdm as TQDM
-from tqdm import tqdm as tqdm, tqdm_notebook as tqdmn
+from tqdm import tqdm as tqdm
+from tqdm import tqdm_notebook as tqdmn
 
-
-# CUSTOM
-
+# PROJECT-SPECIFIC
+from utilipy.imports import conf
 from utilipy.utils import ObjDict  # custom dictionary-like object
+from utilipy.utils import make_help_function
 from utilipy.utils.logging import LogFile  # LoggerFile  # custom logging
 
+# from tqdm.autonotebook import tqdm
+
+
+##############################################################################
 
 # +--------------------------------------------------------------------------+
 # IPython
 
 try:
 
-    _HAS_IPYTHON: bool = False
+    HAS_IPYTHON: bool = False
 
     get_ipython()
 
@@ -130,7 +137,7 @@ except NameError:
 
 else:
 
-    _HAS_IPYTHON = True
+    HAS_IPYTHON = True
 
     from IPython.core.interactiveshell import InteractiveShell
     from IPython.core.debugger import set_trace
@@ -151,11 +158,26 @@ else:
         add_raw_code_toggle,  # notebook
     )
 
+    __all__ += [
+        "InteractiveShell",
+        "set_trace",
+        "display",
+        "Latex",
+        "Markdown",
+        "printMD",
+        "printLTX",
+        "set_autoreload",
+        "aimport",
+        "run_imports",
+        "import_from_file",
+        "add_raw_code_toggle",
+    ]
+
 
 ##############################################################################
 # Running Imported Functions
 
-if _HAS_IPYTHON:
+if HAS_IPYTHON:
 
     InteractiveShell.ast_node_interactivity = "all"
 
@@ -163,9 +185,7 @@ if _HAS_IPYTHON:
 ##############################################################################
 # Printing Information
 
-base_imports_help = make_help_function(
-    "base", __doc__, look_for="Returns"
-)
+base_imports_help = make_help_function("base", __doc__, look_for="Returns")
 
 
 if conf.verbose_imports:

@@ -55,9 +55,7 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
 from .setup_package import conf, use_import_verbosity
-
 
 ##############################################################################
 # END

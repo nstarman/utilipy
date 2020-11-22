@@ -46,7 +46,7 @@ __all__ = [
 
 # BUILT-IN
 import typing as T
-from functools import *  # so can be a drop-in for `functools`
+from functools import *  # noqa # so can be a drop-in for `functools`
 from functools import partial
 from types import CodeType, FunctionType
 
@@ -312,7 +312,9 @@ def __update_wrapper_docstring(
 
         else:  # TODO implement the full set of options
             docstring = _store[_doc_style](
-                wrapped_doc, wrapper_doc, method="merge",
+                wrapped_doc,
+                wrapper_doc,
+                method="merge",
             )
     # /if
 

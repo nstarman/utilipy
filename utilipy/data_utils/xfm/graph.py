@@ -234,58 +234,21 @@ class TransformGraph:
 
     # /def
 
-    def find_shortest_path(self, fromtype, totype):
-        """Compute shortest path along graph from one system to another.
+    def _construct_path(self, fromtype, totype):
+        """Construct path using Dijkstra's algorithm.
 
         Parameters
         ----------
-        fromtype : class
-            The coordinate frame class to start from.
-        totype : class
-            The coordinate frame class to transform into.
+        fromtype
+        totype
 
         Returns
         -------
-        path : list of classes or `None`
-            The path from ``fromtype`` to ``totype`` as an in-order sequence
-            of classes.  This list includes *both* ``fromtype`` and
-            ``totype``. Is `None` if there is no possible path.
-        distance : number
-            The total distance/priority from ``fromtype`` to ``totype``.  If
-            priorities are not set this is the number of transforms
-            needed. Is ``inf`` if there is no possible path.
+        path : list
+        priority : int
 
         """
-        # ----------------------------------
-        # special-case the 0 or 1-path
-        if totype is fromtype:
-            if fromtype not in self._graph[totype]:
-                # Means there's no transform necessary to go from it to itself.
-                return [totype], 0
-        if fromtype in self._graph[totype]:
-            # this will also catch the case where totype is fromtype, but has
-            # a defined transform.
-            t = self._graph[totype][fromtype]
-            return (
-                [fromtype, totype],
-                float(t.priority if hasattr(t, "priority") else 1),
-            )
-
-        # ----------------------------------
-        # otherwise, need to construct the path:
-
         inf = float("inf")
-
-        # TODO verify this works for catch-alls
-        if totype in self._shortestpaths:
-            # already have a cached result
-            fpaths = self._shortestpaths[totype]
-            if fromtype in fpaths:
-                return fpaths[fromtype]
-            else:
-                return None, inf
-
-        # use Dijkstra's algorithm to find shortest path in all other cases
 
         nodes = []
         # first make the list of nodes
@@ -364,6 +327,65 @@ class TransformGraph:
         # FIXME
         path, d = result[fromtype]
         return path[::-1], d
+
+    # /def
+
+    def find_shortest_path(self, fromtype, totype):
+        """Compute shortest path along graph from one system to another.
+
+        Parameters
+        ----------
+        fromtype : class
+            The coordinate frame class to start from.
+        totype : class
+            The coordinate frame class to transform into.
+
+        Returns
+        -------
+        path : list of classes or `None`
+            The path from ``fromtype`` to ``totype`` as an in-order sequence
+            of classes.  This list includes *both* ``fromtype`` and
+            ``totype``. Is `None` if there is no possible path.
+        distance : number
+            The total distance/priority from ``fromtype`` to ``totype``.  If
+            priorities are not set this is the number of transforms
+            needed. Is ``inf`` if there is no possible path.
+
+        """
+        # ----------------------------------
+        # special-case the 0 or 1-path
+
+        if totype is fromtype:
+            if fromtype not in self._graph[totype]:
+                # Means there's no transform necessary to go from it to itself.
+                return [totype], 0
+
+        if fromtype in self._graph[totype]:
+            # this will also catch the case where totype is fromtype, but has
+            # a defined transform.
+            t = self._graph[totype][fromtype]
+            return (
+                [fromtype, totype],
+                float(t.priority if hasattr(t, "priority") else 1),
+            )
+
+        # ----------------------------------
+        # otherwise, need to construct the path:
+
+        inf = float("inf")
+
+        # TODO verify this works for catch-alls
+        if totype in self._shortestpaths:
+            # already have a cached result
+            fpaths = self._shortestpaths[totype]
+            if fromtype in fpaths:
+                return fpaths[fromtype]
+            else:
+                path, priority = None, inf
+
+        path, priority = self._construct_path(fromtype, totype)
+
+        return path, priority
 
     # /def
 

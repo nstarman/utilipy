@@ -13,17 +13,13 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
-import warnings
-import unittest
 import sys
 import tempfile
-
+import unittest
+import warnings
 
 # PROJECT-SPECIFIC
-
 from .. import exceptions
-
 
 ##############################################################################
 # Tests
@@ -104,6 +100,7 @@ def test_showwarning():
         # /with
 
     # /with
+
 
 # /def
 

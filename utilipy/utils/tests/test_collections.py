@@ -34,21 +34,16 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
-from collections import OrderedDict
 import os.path
 import tempfile
+from collections import OrderedDict
 
 # THIRD PARTY
-
 import pytest
 
-
 # PROJECT-SPECIFIC
-
 from .. import collections
 from ..collections import ObjDict
-
 
 ###############################################################################
 # PARAMETERS
@@ -563,7 +558,10 @@ def test_ObjDict_dump():
     with tempfile.TemporaryDirectory() as tempdir:
         tempath = os.path.join(tempdir, "temp.pkl")
         od.dump(
-            tempath, protocol=None, fopt="b", fix_imports=True,
+            tempath,
+            protocol=None,
+            fopt="b",
+            fix_imports=True,
         )
 
     # /with
@@ -582,7 +580,10 @@ def test_ObjDict_save():
     with tempfile.TemporaryDirectory() as tempdir:
         tempath = os.path.join(tempdir, "temp.pkl")
         od.save(
-            tempath, protocol=None, fopt="b", fix_imports=True,
+            tempath,
+            protocol=None,
+            fopt="b",
+            fix_imports=True,
         )
 
     # /with
@@ -601,7 +602,10 @@ def test_ObjDict_load():
     with tempfile.TemporaryDirectory() as tempdir:
         tempath = os.path.join(tempdir, "temp.pkl")
         od.dump(
-            tempath, protocol=None, fopt="b", fix_imports=True,
+            tempath,
+            protocol=None,
+            fopt="b",
+            fix_imports=True,
         )
 
         new_od = ObjDict.load(

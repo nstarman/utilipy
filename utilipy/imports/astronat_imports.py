@@ -46,9 +46,9 @@ __all__ = [
 ##############################################################################
 # HELPER FUNCTIONS
 
+# PROJECT-SPECIFIC
 from utilipy.imports import conf
 from utilipy.utils import make_help_function
-
 
 ##############################################################################
 # IMPORTS

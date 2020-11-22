@@ -47,21 +47,17 @@ __all__ = [
 ##############################################################################
 # HELPER FUNCTIONS
 
-from utilipy.imports import conf
-from utilipy.utils import make_help_function
-
-
-##############################################################################
-# IMPORTS
-
-# +---------------------------------------------------------------------------+
-# Plotting
-
+# THIRD PARTY
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib import cm, colors
 
+# PROJECT-SPECIFIC
+from utilipy.imports import conf
+from utilipy.utils import make_help_function
+
 # from mpl_toolkits.mplot3d import Axes3D
+
 
 # +--------------------------------------------------------------------------+
 # IPython Magic

@@ -2,9 +2,6 @@
 
 """Typing library utilities."""
 
-__author__ = "Nathaniel Starkman"
-
-
 __all__ = [
     # compat
     "OrderedDictType",
@@ -28,22 +25,15 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
-import sys
 import typing as T
 from typing import *  # noqa
 
-
 # THIRD PARTY
-
-import numpy as np
-
 import astropy.coordinates as coord
 import astropy.units as u
-
+import numpy as np
 from astropy import table
-from astropy.modeling.core import Model, FittableModel, CompoundModel
-
+from astropy.modeling.core import CompoundModel, FittableModel, Model
 
 ###############################################################################
 # CODE

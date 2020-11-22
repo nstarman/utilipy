@@ -12,14 +12,7 @@ __all__ = [
 # IMPORTS
 
 # THIRD PARTY
-
 import pytest
-
-
-# PROJECT-SPECIFIC
-
-from .. import typing
-
 
 ##############################################################################
 # Tests

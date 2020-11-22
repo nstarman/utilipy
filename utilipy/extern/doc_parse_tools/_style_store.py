@@ -141,57 +141,57 @@ def numpy(
 
     Examples
     --------
-        - parent's docstring:
+    parent's docstring:
 
-            ''' Parent's line
+        ''' Parent's line
 
-                Parameters
-                ----------
-                x: int
-                    description of x
-                y: Union[None, int]
-                    description of y
+            Parameters
+            ----------
+            x: int
+                description of x
+            y: Union[None, int]
+                description of y
 
-                Raises
-                ------
-                NotImplemented Error
+            Raises
+            ------
+            NotImplemented Error
 
-            '''
+        '''
 
-        - child's docstring:
+    child's docstring:
 
-            ''' Child's line
+        ''' Child's line
 
-                Returns
-                -------
-                int
+            Returns
+            -------
+            int
 
-                Notes
-                -----
-                notes blah blah
+            Notes
+            -----
+            notes blah blah
 
-            '''
+        '''
 
-        - docstring that is ultimately inherited:
+    docstring that is ultimately inherited:
 
-            ''' Child's line
+        ''' Child's line
 
-                Parameters
-                ----------
-                x: int
-                    description of x
-                y: Union[None, int]
-                    description of y
+            Parameters
+            ----------
+            x: int
+                description of x
+            y: Union[None, int]
+                description of y
 
-                Returns
-                -------
-                int
+            Returns
+            -------
+            int
 
-                Notes
-                -----
-                notes blah blah
+            Notes
+            -----
+            notes blah blah
 
-            '''
+        '''
 
     """
     return merge_numpy_docs(prnt_doc, child_doc, method=method)
@@ -207,15 +207,17 @@ def reST(
 ):
     """Merge two reST-style docstrings into a single docstring.
 
-    Given the reST-style docstrings from a parent and child's attributes, merge the docstring
-    sections such that the child's section is used, wherever present, otherwise the parent's
-    section is used.
+    Given the reST-style docstrings from a parent and child's attributes,
+    merge the docstring sections such that the child's section is used,
+    wherever present, otherwise the parent's section is used.
 
-    Sections are delimited by any type of reST section title. For more details, see:
+    Sections are delimited by any type of reST section title. For more
+    details, see:
     http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#sections
 
-    Any whitespace that can be uniformly removed from a docstring's second line and onwards is
-    removed. Sections in the resulting docstring will be separated by a single blank line.
+    Any whitespace that can be uniformly removed from a docstring's second
+    line and onwards is removed. Sections in the resulting docstring will be
+    separated by a single blank line.
 
     Parameters
     ----------
@@ -229,45 +231,55 @@ def reST(
 
     Examples
     --------
-      parent - ''' Header1
-                   -------
-                   parent's content for Header 1
-                       - indented material
-                   Header2
-                   ~~~~~~~
-                   content for Header2
+    parent:
 
-               '''
+        '''
+        Header1
+        -------
+        parent's content for Header 1
+           - indented material
 
-      child -  ''' Front-matter
-                   ~~~~~~~~~
-                   NewHeader
-                   ~~~~~~~~~
-                   content for NewHeader
+        Header2
+        ~~~~~~~
+        content for Header2
 
-                   Header2
-                   +++++++
-                   child's content for Header2
+       '''
 
-               '''
+    child:
 
-      merged - ''' Front-matter
+        '''Front-matter
 
-                   Header1
-                   -------
-                   content for Header 1
-                       - indented material
+        ~~~~~~~~~
+        NewHeader
+        ~~~~~~~~~
+        content for NewHeader
 
-                   Header2
-                   +++++++
-                   child's content for Header2
+        Header2
+        +++++++
+        child's content for Header2
 
-                   ~~~~~~~~~
-                   NewHeader
-                   ~~~~~~~~~
-                   content for NewHeader
+       '''
 
-               '''
+    merged:
+
+        '''Front-matter
+
+        Header1
+        -------
+        content for Header 1
+           - indented material
+
+        Header2
+        +++++++
+        child's content for Header2
+
+        ~~~~~~~~~
+        NewHeader
+        ~~~~~~~~~
+        content for NewHeader
+
+       '''
+
     """
     return merge_rest_docs(prnt_doc, child_doc, method=method)
 
@@ -298,57 +310,57 @@ def numpy_napoleon(
 
     Examples
     --------
-        - parent's docstring:
+    parent's docstring:
 
-            ''' Parent's line
+        '''Parent's line
 
-                Keyword Arguments
-                -----------------
-                x: int
-                    description of x
-                y: Union[None, int]
-                    description of y
+        Keyword Arguments
+        -----------------
+        x: int
+            description of x
+        y: Union[None, int]
+            description of y
 
-                Raises
-                ------
-                NotImplemented Error
+        Raises
+        ------
+        NotImplemented Error
 
-            '''
+        '''
 
-        - child's docstring:
+    child's docstring:
 
-            ''' Child's line
+        '''Child's line
 
-                Returns
-                -------
-                int
+        Returns
+        -------
+        int
 
-                Notes
-                -----
-                notes blah blah
+        Notes
+        -----
+        notes blah blah
 
-            '''
+        '''
 
-        - docstring that is ultimately inherited:
+    docstring that is ultimately inherited:
 
-            ''' Child's line
+        '''Child's line
 
-                Keyword Arguments
-                -----------------
-                x: int
-                    description of x
-                y: Union[None, int]
-                    description of y
+        Keyword Arguments
+        -----------------
+        x: int
+            description of x
+        y: Union[None, int]
+            description of y
 
-                Returns
-                -------
-                int
+        Returns
+        -------
+        int
 
-                Notes
-                -----
-                notes blah blah
+        Notes
+        -----
+        notes blah blah
 
-            '''
+        '''
 
     """
     return merge_numpy_napoleon_docs(prnt_doc, child_doc, method=method)
@@ -393,50 +405,50 @@ def google(
 
     Examples
     --------
-        - parent's docstring:
+    parent's docstring:
 
-            ''' Parent's line
+        '''Parent's line
 
-                Args:
-                    x: int
-                        description of x
-                    y: Union[None, int]
-                        description of y
+        Args:
+            x: int
+                description of x
+            y: Union[None, int]
+                description of y
 
-                Raises:
-                    NotImplemented Error
+        Raises:
+            NotImplemented Error
 
-            '''
+        '''
 
-        - child's docstring:
+    child's docstring:
 
-            ''' Child's line
+        '''Child's line
 
-                Returns:
-                    int
+        Returns:
+            int
 
-                Notes:
-                    notes blah blah
+        Notes:
+            notes blah blah
 
-            '''
+        '''
 
-        - docstring that is ultimately inherited:
+    docstring that is ultimately inherited:
 
-            ''' Child's line
+        '''Child's line
 
-                Parameters:
-                    x: int
-                        description of x
-                    y: Union[None, int]
-                        description of y
+        Parameters:
+            x: int
+                description of x
+            y: Union[None, int]
+                description of y
 
-                Returns:
-                    int
+        Returns:
+            int
 
-                Notes:
-                    notes blah blah
+        Notes:
+            notes blah blah
 
-            '''
+        '''
 
     """
     return merge_google_napoleon_docs(prnt_doc, child_doc, method=method)

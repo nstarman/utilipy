@@ -3,7 +3,9 @@
 """Tests for :mod:`~utilipy.ipython.notebook`."""
 
 
-__all__ = ["test_notebook"]
+__all__ = [
+    "test_notebook",
+]
 
 
 ##############################################################################
@@ -11,9 +13,6 @@ __all__ = ["test_notebook"]
 
 # THIRD PARTY
 import pytest
-
-# PROJECT-SPECIFIC
-from .. import notebook
 
 ##############################################################################
 # PARAMETERS

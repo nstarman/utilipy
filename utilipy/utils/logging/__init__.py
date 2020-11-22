@@ -2,14 +2,14 @@
 
 """logging."""
 
-__author__ = "Nathaniel Starkman"
+__all__ = [
+    "LogFile",
+    "LogPrint",
+]
 
 
 ##############################################################################
 # IMPORTS
-
-# BUILT-IN
-import logging
 
 # PROJECT-SPECIFIC
 from ._LogFile import LogFile

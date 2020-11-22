@@ -12,9 +12,7 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
-from .. import string
-
+from utilipy.utils import string
 
 ##############################################################################
 # Tests
