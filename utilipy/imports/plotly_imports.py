@@ -38,6 +38,7 @@ __author__ = "Nathaniel Starkman"
 
 __all__ = [
     "plotly_imports_help",
+    "HAS_PLOTLY",
 ]
 
 
