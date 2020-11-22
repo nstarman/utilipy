@@ -129,20 +129,18 @@ def test_add_folder_backslash():
 
     # /def
 
+    args = (None, "~/Documents")
+
     # call as-is
-    assert test_func(None, "~/Documents") == "~/Documents"
+    assert test_func(*args) == "~/Documents"
 
     # call decorated
     wrapped_func = func_io.add_folder_backslash(test_func, arguments=["path"])
-    assert (
-        wrapped_func(None, "~/Documents") == "~/Documents/"
-    )  # pylint: disable=E1121
+    assert wrapped_func(*args) == "~/Documents/"  # pylint: disable=E1121
 
     # for str argument
     wrapped_func = func_io.add_folder_backslash(test_func, arguments="path")
-    assert (
-        wrapped_func(None, "~/Documents") == "~/Documents/"
-    )  # pylint: disable=E1121
+    assert wrapped_func(*args) == "~/Documents/"  # pylint: disable=E1121
 
     # ----------
     # decorate by pie-syntax
@@ -161,7 +159,8 @@ def test_add_folder_backslash():
 # -------------------------------------------------------------------
 
 
-def _assert_list_of_list_all_eq(list1, list2):
+def _assert_LofLeq(list1, list2):
+    """Assert nested lists are equal."""
     assert all(
         all(l1 == l2) if isinstance(l1, np.ndarray) else (l1 == l2)
         for l1, l2 in zip(list1, list2)
@@ -170,7 +169,7 @@ def _assert_list_of_list_all_eq(list1, list2):
 
 def test_random_generator_from_seed():
     """Test :func:`~utilipy.decorators.func_io.random_generator_from_seed`."""
-    expected = np.random.RandomState(0).get_state()
+    exp = np.random.RandomState(0).get_state()
     # ----------
     # decorate by function call
 
@@ -179,39 +178,39 @@ def test_random_generator_from_seed():
 
     # /def
 
+    args = (None, 0)
+
     # call as-is
-    assert test_func(None, 0) == 0
+    assert test_func(*args) == 0
 
     # call decorated
-    wrapped_func = func_io.random_generator_from_seed(test_func)
-    _assert_list_of_list_all_eq(
-        wrapped_func(None, 0).get_state(), expected
-    )  # pylint: disable=E1121
+    wrapped_fn = func_io.random_generator_from_seed(test_func)
+    _assert_LofLeq(wrapped_fn(*args).get_state(), exp)  # pylint: disable=E1121
 
     # call wrapped partial
     wrapper = func_io.random_generator_from_seed()
     assert isinstance(wrapper, functools.partial)
-    wrapped_func = wrapper(test_func)
-    _assert_list_of_list_all_eq(wrapped_func(None, 0).get_state(), expected)
+    wrapped_fn = wrapper(test_func)
+    _assert_LofLeq(wrapped_fn(*args).get_state(), exp)
 
     # call with str seed_names argument
-    wrapped_func = func_io.random_generator_from_seed(
+    wrapped_fn = func_io.random_generator_from_seed(
         test_func, seed_names="random"
     )
-    _assert_list_of_list_all_eq(wrapped_func(None, 0).get_state(), expected)
+    _assert_LofLeq(wrapped_fn(*args).get_state(), exp)  # pylint: disable=E1121
 
     # call with incorrect seed_names argument
-    wrapped_func = func_io.random_generator_from_seed(
+    wrapped_fn = func_io.random_generator_from_seed(
         test_func, seed_names="not_here"
     )
-    assert wrapped_func(None, 0) == 0  # pylint: disable=E1121
+    assert wrapped_fn(*args) == 0  # pylint: disable=E1124
 
     # call with strict input typing
-    wrapped_func = func_io.random_generator_from_seed(
+    wrapped_fn = func_io.random_generator_from_seed(
         test_func, raise_if_not_int=True
     )
     with pytest.raises(TypeError):
-        wrapped_func(None, 0.1)  # pylint: disable=E1121
+        wrapped_fn(None, 0.1)  # pylint: disable=E1124
 
     # ----------
     # decorate by pie-syntax
@@ -220,9 +219,7 @@ def test_random_generator_from_seed():
     def wrapped_pie_func(x, rng):
         return rng
 
-    _assert_list_of_list_all_eq(
-        wrapped_pie_func(None, 0).get_state(), expected
-    )
+    _assert_LofLeq(wrapped_pie_func(None, 0).get_state(), exp)
 
 
 # /def
