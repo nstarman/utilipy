@@ -16,14 +16,11 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import inspect
 import typing as T
-
 from abc import ABCMeta, abstractmethod
 from collections import defaultdict
 from contextlib import suppress
-
 
 ##############################################################################
 # CODE
@@ -389,9 +386,9 @@ _default_xfm_set = defaultdict(
                 k: DataTransform(lambda x: dict(x), k, dict)
                 for k in (tuple, list, dict)
             },
-            **{  # None to dict
+            **{
                 None: DataTransform(lambda x: dict(), None, dict)
-            },
+            },  # None to dict
         },
     },
 )

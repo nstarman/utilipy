@@ -49,15 +49,10 @@ __all__ = [
 
 # BUILT IN
 
-# THIRD PARTY
-
 # PROJECT-SPECIFIC
-
-from .graph import TransformGraph
-from .transformations import DataTransform, CompositeTransform
-
 from . import graph, transformations
-
+from .graph import TransformGraph
+from .transformations import CompositeTransform, DataTransform
 
 ##############################################################################
 # PARAMETERS

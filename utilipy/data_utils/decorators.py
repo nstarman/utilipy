@@ -7,21 +7,15 @@
 # IMPORTS
 
 # BUILT-IN
-
 import sys
 import typing as T
 
-
 # THIRD PARTY
-
-from typing_extensions import Literal
 import numpy as np
-
+from typing_extensions import Literal
 
 # PROJECT-SPECIFIC
-
 from ..utils import functools
-
 
 ##############################################################################
 # PARAMETERS
