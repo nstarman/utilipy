@@ -94,7 +94,7 @@ def test_store_function_input():
     # decorate by called pie-syntax
 
     @func_io.store_function_input(store_inputs=True)  # just explicitly
-    def store_func(x, y):
+    def store_pie_func2(x, y):
         """Test Function.
 
         Parameters
@@ -106,7 +106,7 @@ def test_store_function_input():
 
     # /def
 
-    res, inputs = store_func(x, y)
+    res, inputs = store_pie_func2(x, y)
 
     assert res == (x, y)
     assert isinstance(inputs, inspect.BoundArguments)

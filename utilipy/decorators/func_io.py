@@ -48,6 +48,10 @@ def store_function_input(
 
     Store the function inputs as a BoundArguments.
 
+    .. todo::
+
+        Allow for decorating a class, storing it on an attribute.
+
     Parameters
     ----------
     function : T.Callable or None, optional
@@ -208,10 +212,10 @@ def add_folder_backslash(
 
 
 def random_generator_from_seed(
-    function=None,
-    seed_names=["random", "random_seed"],
-    generator=np.random.RandomState,
-    raise_if_not_int=False,
+    function: T.Callable = None,
+    seed_names: T.Union[str, T.Sequence[str]] = ["random", "random_seed"],
+    generator: T.Callable = np.random.RandomState,
+    raise_if_not_int: bool = False,
 ):
     """Function decorator to convert random seed to random number generator.
 
