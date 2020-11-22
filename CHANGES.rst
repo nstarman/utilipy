@@ -31,7 +31,15 @@ Adopt pre-commit (
 
 - PR template [#12]
   
-- Clean docs [#15]
+- Workflows
+
+    + dependabot [#16]
+    + labeler [#16]
+    + ci_cron [#16]
+    + ci_tests [#16]
+    + pre-commit [#16]
+
+- Remove Travis [#16]
 
 
 ==================
