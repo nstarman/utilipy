@@ -23,21 +23,15 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import os
 
-
 # THIRD PARTY
-
 import astropy.units as u
 import numpy as np
 import pytest
 
-
 # PROJECT-SPECIFIC
-
 from .. import core
-
 
 ##############################################################################
 # PARAMETERS

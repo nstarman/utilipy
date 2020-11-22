@@ -20,12 +20,9 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-
 import os
 
-
 # PROJECT-SPECIFIC
-
 from .. import (
     data_utils,
     decorators,
@@ -36,7 +33,6 @@ from .. import (
     scripts,
     utils,
 )
-
 
 ##############################################################################
 # TESTS

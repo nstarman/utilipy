@@ -16,9 +16,7 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-
 from . import test_init, test_init_subpackages
-
 
 ##############################################################################
 # END

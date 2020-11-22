@@ -9,17 +9,11 @@ __all__ = ["test_LogFile"]
 ##############################################################################
 # IMPORTS
 
-# BUILT-IN
-
 # THIRD PARTY
-
 import pytest
 
-
 # PROJECT-SPECIFIC
-
 from .._LogFile import LogFile
-
 
 ##############################################################################
 # PARAMETERS
@@ -33,6 +27,8 @@ from .._LogFile import LogFile
 @pytest.mark.skip(reason="TODO")
 def test_LogFile():
     """Test :class:`~utilipy.utils.logging._LogPrint.LogPrint`."""
+    LogFile
+    assert False
 
 
 # /def
