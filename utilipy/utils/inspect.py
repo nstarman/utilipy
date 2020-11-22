@@ -9,26 +9,17 @@ __author__ = "Nathaniel Starkman"
 # IMPORTS
 
 # BUILT-IN
-
-from inspect import *  # so can be a drop-in for `inspect`
 import inspect
-from inspect import (
-    getfullargspec,
-    FullArgSpec,
-    Parameter,
-    Signature as Signature,
-    _void,
-)
-
 import typing as T
-from typing_extensions import Literal
 from collections import namedtuple
-
+from inspect import *  # so can be a drop-in for `inspect`
+from inspect import FullArgSpec, Parameter
+from inspect import Signature as Signature
+from inspect import _void, getfullargspec
 
 # THIRD PARTY
-
 from astropy.utils.decorators import format_doc
-
+from typing_extensions import Literal
 
 ##############################################################################
 # PARAMETERS
