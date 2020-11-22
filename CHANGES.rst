@@ -15,7 +15,7 @@ API Changes
     + each module has the specific config code in the ``setup_package.py`` (preferred), ``__init__.py``, or the relevant python file.
 
 - Rename ``data_utils/shuffle`` to data ``data_utils/shuffler`` [#17]
-  
+
 - Deprecate custom ``format_doc`` in favor or Astropy's [#17]
 
 
@@ -37,7 +37,7 @@ Adopt pre-commit (
 
 - CI Workflows [#16]
 
-    + dependabot 
+    + dependabot
     + labeler
     + ci_cron
     + ci_tests

@@ -33,6 +33,11 @@ import warnings
 from ..utils.exceptions import utilipyWarning
 
 ##############################################################################
+# PARAMETERS
+
+method_types = (classmethod, staticmethod, types.MethodType)
+
+##############################################################################
 # CODE
 ##############################################################################
 
@@ -54,6 +59,116 @@ class BetaDevelopmentWarning(DevelopmentWarning):
 
 # /class
 
+##############################################################################
+
+
+def _get_function(func):
+    """Get function object given function.
+
+    Returns
+    -------
+    func : Callable
+        The function from the function wrapper.
+
+    """
+    if isinstance(func, method_types):
+        func = func.__func__
+    return func
+
+
+# /def
+
+
+# -------------------------------------------------------------------
+
+
+def indev_function(func: T.Callable, message: str, warning_type):
+    """Wrap function to display ``warning_type`` when called.
+
+    Parameters
+    ----------
+    func : Callable
+    message : str
+        The warning message
+    warning_type : type
+        Warning class.
+
+    Returns
+    -------
+    Callable
+        Wrapped function.
+
+    """
+    if isinstance(func, method_types):
+        func_wrapper = type(func)
+    else:
+        func_wrapper = lambda f: f  # noqa
+
+    func = _get_function(func)
+
+    def upcoming_func(*args, **kwargs):
+        warnings.warn(message, warning_type, stacklevel=2)
+
+        return func(*args, **kwargs)
+
+    # If this is an extension function, we can't call
+    # functools.wraps on it, but we normally don't care.
+    # This crazy way to get the type of a wrapper descriptor is
+    # straight out of the Python 3.3 inspect module docs.
+    if type(func) is not type(str.__dict__["__add__"]):  # noqa
+        upcoming_func = functools.wraps(func)(upcoming_func)
+
+    upcoming_func.__doc__ = indev_doc(upcoming_func.__doc__, message)
+
+    return func_wrapper(upcoming_func)
+
+
+# /def
+
+
+# -------------------------------------------------------------------
+
+
+def indev_class(cls, message: str, warning_type):
+    """Class in-dev.
+
+    Update the docstring and wrap the ``__init__`` in-place (or ``__new__``
+    if the class or any of the bases overrides ``__new__``) so it will give
+    an in-dev warning when an instance is created.
+
+    This won't work for extension classes because these can't be modified
+    in-place and the alternatives don't work in the general case:
+
+    - Using a new class that looks and behaves like the original doesn't
+      work because the __new__ method of extension types usually makes sure
+      that it's the same class or a subclass.
+    - Subclassing the class and return the subclass can lead to problems
+      with pickle and will look weird in the Sphinx docs.
+
+    Returns
+    -------
+    cls : ClassType
+
+    """
+    cls.__doc__ = indev_doc(cls.__doc__, message)
+
+    if cls.__new__ is object.__new__:
+        cls.__init__ = indev_function(
+            _get_function(cls.__init__),
+            message=message,
+            warning_type=warning_type,
+        )
+    else:
+        cls.__new__ = indev_function(
+            _get_function(cls.__new__),
+            message=message,
+            warning_type=warning_type,
+        )
+
+    return cls
+
+
+# /def
 
 ##############################################################################
 
@@ -175,96 +290,12 @@ def indev(
     deprecation decorators in :func:`~astropy.util.exceptions.deprecated`
 
     """
-    method_types = (classmethod, staticmethod, types.MethodType)
-
-    # -----------------------------------------------------
-
-    def get_function(func):
-        """Get function object given function."""
-        if isinstance(func, method_types):
-            func = func.__func__
-        return func
-
-    # /def
-
-    def indev_function(func, message, warning_type=warning_type):
-        """Returns a wrapped function that displays ``warning_type`` when called."""
-        if isinstance(func, method_types):
-            func_wrapper = type(func)
-        else:
-            func_wrapper = lambda f: f  # noqa
-
-        func = get_function(func)
-
-        def upcoming_func(*args, **kwargs):
-            if beta:
-                category = BetaDevelopmentWarning
-            else:
-                category = warning_type
-
-            warnings.warn(message, category, stacklevel=2)
-
-            return func(*args, **kwargs)
-
-        # If this is an extension function, we can't call
-        # functools.wraps on it, but we normally don't care.
-        # This crazy way to get the type of a wrapper descriptor is
-        # straight out of the Python 3.3 inspect module docs.
-        if type(func) is not type(str.__dict__["__add__"]):  # noqa
-            upcoming_func = functools.wraps(func)(upcoming_func)
-
-        upcoming_func.__doc__ = indev_doc(upcoming_func.__doc__, message)
-
-        return func_wrapper(upcoming_func)
-
-    # /def
-
-    # -----------------------------------------------------
-
-    def indev_class(cls, message, warning_type=warning_type):
-        """Class in-dev.
-
-        Update the docstring and wrap the ``__init__`` in-place (or ``__new__``
-        if the class or any of the bases overrides ``__new__``) so it will give
-        an in-dev warning when an instance is created.
-
-        This won't work for extension classes because these can't be modified
-        in-place and the alternatives don't work in the general case:
-
-        - Using a new class that looks and behaves like the original doesn't
-          work because the __new__ method of extension types usually makes sure
-          that it's the same class or a subclass.
-        - Subclassing the class and return the subclass can lead to problems
-          with pickle and will look weird in the Sphinx docs.
-
-        Returns
-        -------
-        cls : ClassType
-
-        """
-        cls.__doc__ = indev_doc(cls.__doc__, message)
-
-        if cls.__new__ is object.__new__:
-            cls.__init__ = indev_function(
-                get_function(cls.__init__), message, warning_type
-            )
-        else:
-            cls.__new__ = indev_function(
-                get_function(cls.__new__), message, warning_type
-            )
-
-        return cls
-
-    # /def
-
-    # -----------------------------------------------------
 
     def make_indev(
         obj,
         message=message,
         name=name,
         alternative=alternative,
-        beta=beta,
         warning_type=warning_type,
     ):
         """Mark object as in-development.
@@ -275,7 +306,6 @@ def indev(
         message : str
         name : str
         alternative : str
-        beta : bool
         warning_type : ClassType
 
         Returns
@@ -296,21 +326,15 @@ def indev(
             obj_type_name = obj_type
 
         if not name:
-            name = get_function(obj).__name__
+            name = _get_function(obj).__name__
 
         altmessage = ""
         todomessage = ""
-        if not message or type(message) is type(make_indev):
-            if beta:
-                message = (
-                    "The {func} {obj_type} will be added in a "
-                    "future version."
-                )
-            else:
-                message = (
-                    "The {func} {obj_type} is in development and may "
-                    "be added in a future version."
-                )
+        if not message or (type(message) is type(make_indev)):
+            message = (
+                "The {func} {obj_type} is in development and may "
+                "be added in a future version."
+            )
             if alternative:
                 altmessage = f"\n        Use {alternative} instead."
             if todo:
@@ -331,9 +355,11 @@ def indev(
         )
 
         if isinstance(obj, type):  # decorate class
-            return indev_class(obj, message, warning_type)
+            return indev_class(obj, message=message, warning_type=warning_type)
         else:  # decorate function
-            return indev_function(obj, message, warning_type)
+            return indev_function(
+                obj, message=message, warning_type=warning_type
+            )
 
     # /def
 
