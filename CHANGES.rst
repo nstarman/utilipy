@@ -28,7 +28,9 @@ N/A
 Other Changes and Additions
 ---------------------------
 
-Adopt pre-commit [#13]
+- PR template [#12]
+
+- Adopt pre-commit: [#13]
 
     + `isort <https://pypi.org/project/isort/>`_
     + `black <https://pypi.org/project/black/>`_
@@ -45,8 +47,6 @@ Adopt pre-commit [#13]
     + fix-encoding-pragma
     + requirements-txt-fixer
     + trailing-whitespace
-
-- PR template [#12]
 
 - CI Workflows [#16]
 
