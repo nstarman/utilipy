@@ -104,16 +104,9 @@ def test_make_function():
 
 
 def test_copy_function():
-    def test_func(
-        x: "args",
-        y,
-        a: "default args" = 2,
-        b=3,
-        *args: "var args",
-        p: "keyword args" = "L",
-        q="M",
-        **kwargs: "var kwargs"
-    ):
+    """Test `~utilipy.utils.functools.copy_function`."""
+    # test function
+    def test_func(x: float, y, a=2, b=3, *args, p="L", q="M", **kwargs):
         return x, y, a, b, args, p, q, kwargs
 
     tfc = functools.copy_function(test_func)

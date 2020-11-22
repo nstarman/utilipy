@@ -2,9 +2,6 @@
 
 """Typing library utilities."""
 
-__author__ = "Nathaniel Starkman"
-
-
 __all__ = [
     # compat
     "OrderedDictType",
@@ -28,7 +25,6 @@ __all__ = [
 # IMPORTS
 
 # BUILT-IN
-import sys
 import typing as T
 from typing import *  # noqa
 

@@ -46,7 +46,7 @@ __all__ = [
 
 # BUILT-IN
 import typing as T
-from functools import *  # so can be a drop-in for `functools`
+from functools import *  # noqa # so can be a drop-in for `functools`
 from functools import partial
 from types import CodeType, FunctionType
 

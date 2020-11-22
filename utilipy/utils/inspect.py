@@ -12,7 +12,7 @@ __author__ = "Nathaniel Starkman"
 import inspect
 import typing as T
 from collections import namedtuple
-from inspect import *  # so can be a drop-in for `inspect`
+from inspect import *  # noqa  # so can be a drop-in for `inspect`
 from inspect import FullArgSpec, Parameter
 from inspect import Signature as Signature
 from inspect import _void, getfullargspec

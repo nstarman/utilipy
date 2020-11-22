@@ -60,7 +60,11 @@ __author__ = "Nathaniel Starkman"
 
 
 __all__ = [
+    # functions
     "extended_imports_help",
+    # imports
+    "norm",
+    "binned_stats",
 ]
 
 

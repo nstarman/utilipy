@@ -13,7 +13,7 @@ __all__ = ["test_autoreload"]
 import pytest
 
 # PROJECT-SPECIFIC
-from .. import autoreload
+from utilipy.ipython import autoreload
 
 ##############################################################################
 # PARAMETERS
@@ -27,6 +27,7 @@ from .. import autoreload
 @pytest.mark.skip(reason="TODO")
 def test_autoreload():
     """Test :class:`~utilipy.ipython.autoreload`."""
+    assert False, autoreload
 
 
 # /def

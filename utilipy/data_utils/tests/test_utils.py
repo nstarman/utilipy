@@ -4,7 +4,8 @@
 
 
 __all__ = [
-    "test_shuffler",
+    "test_make_shuffler",
+    "test_intermix_arrays",
 ]
 
 
@@ -15,7 +16,7 @@ __all__ = [
 import numpy as np
 
 # PROJECT-SPECIFIC
-from .. import utils
+from utilipy.data_utils import utils
 
 ##############################################################################
 # PARAMETERS

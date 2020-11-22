@@ -221,7 +221,7 @@ def test_indev_decorator_func():
 
     # --------------
 
-    @cdev.indev(cdev.BetaDevelopmentWarning)
+    @cdev.indev(warning_type=cdev.BetaDevelopmentWarning)
     def func():
         """Short Summary."""
 
@@ -230,7 +230,8 @@ def test_indev_decorator_func():
     assert func.__doc__ == (
         "Short Summary.\n\n"
         "    .. versionchanged:: indev\n\n"
-        "        The func function will be added in a future version.\n\n"
+        "        The func function is in development "
+        "and may be added in a future version.\n\n"
     )
 
     with pytest.warns(cdev.BetaDevelopmentWarning):

@@ -20,7 +20,6 @@ def test_import_base():
         "os",
         "sys",
         "time",
-        "pdb",
         "warnings",
         "np",
         "scipy",
@@ -30,7 +29,7 @@ def test_import_base():
         "ObjDict",
         "LogFile",
     ):
-        assert hasattr(imports, obj)
+        assert hasattr(imports, obj), f"{obj}"
 
     return
 

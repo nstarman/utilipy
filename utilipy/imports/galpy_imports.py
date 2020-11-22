@@ -47,7 +47,7 @@ from utilipy.utils import make_help_function
 
 try:
 
-    from galpy import __version__
+    import galpy
 
 except ImportError:
 
@@ -56,8 +56,6 @@ except ImportError:
     warnings.warn("Cannot import galpy")
 
 else:
-
-    import galpy
 
     # potential
     from galpy import potential
