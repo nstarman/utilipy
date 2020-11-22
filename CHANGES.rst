@@ -41,6 +41,8 @@ Adopt pre-commit (
 
 - Remove Travis [#16]
 
+- Clean code spacing and import labels [#17]
+
 
 ==================
 1.0.1 (2020-04-05)
