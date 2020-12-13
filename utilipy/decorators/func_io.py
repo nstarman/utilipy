@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Function Input and Output Decorators.
-
-.. todo::
-
-    support argument 'all' in [(index, dtype),] as the IndexError
-    supoort single argumens so that (index, dtype) works w/out [(), ]
-    full support of numpy.dtype
-    add in_dtype and out_dtype kw to wrapped functions to override defaults
-
-"""
+"""Function Input and Output Decorators."""
 
 __all__ = [
     "store_function_input",
@@ -47,10 +38,6 @@ def store_function_input(
     """Store Function Inputs.
 
     Store the function inputs as a BoundArguments.
-
-    .. todo::
-
-        Allow for decorating a class, storing it on an attribute.
 
     Parameters
     ----------
@@ -128,22 +115,24 @@ def store_function_input(
 def add_folder_backslash(
     function=None,
     *,
-    arguments: T.List[str] = [],
+    arguments: T.List[T.Union[str, int]] = [],
     _doc_style="numpy",
     _doc_fmt={},
 ):
     """Add backslashes to str arguments.
 
-    For use in ensuring directory filepaths end in '/'
+    For use in ensuring directory file-paths end in '/', when
+    ``os.join`` just won't do.
 
     Parameters
     ----------
     function : T.Callable or None, optional
         the function to be decoratored
         if None, then returns decorator to apply.
-    arguments : list of strings, optional
+    arguments : list of string or int, optional
         arguments to which to append '/', if not already present
-        strings are names of arguments
+        strings are names of arguments.
+        Can also be int, which only applies to args
 
     Returns
     -------
@@ -161,9 +150,27 @@ def add_folder_backslash(
         default None
         parameter to `~utilipy.wraps`
 
+    Examples
+    --------
+    For modifying a single argument
+
+    >>> @add_folder_backslash(arguments='path')
+    ... def func(path):
+    ...     return path
+    >>> func("~/Documents")
+    '~/Documents/'
+
+    When several arguments need modification.
+
+    >>> @add_folder_backslash(arguments=('path1', 'path2'))
+    ... def func(path1, path2):
+    ...     return (path1, path2)
+    >>> func("~/Documents", "~Desktop")
+    ('~/Documents/', '~Desktop/')
+
     """
-    if isinstance(arguments, str):
-        arguments = [arguments]
+    if isinstance(arguments, (str, int)):  # recast as tuple
+        arguments = (arguments, )
 
     if function is None:  # allowing for optional arguments
         return functools.partial(
@@ -189,10 +196,13 @@ def add_folder_backslash(
         ba = sig.bind_partial(*args, **kw)
 
         for name in arguments:
-            if isinstance(name, int):
+            if not isinstance(ba.arguments[name], str):
+                continue
+
+            elif isinstance(name, int):  # only applies to args
                 if not ba.args[name].endswith("/"):
                     ba.args[name] += "/"
-            elif isinstance(name, str):
+            elif isinstance(name, str):  # args or kwargs
                 if not ba.arguments[name].endswith("/"):
                     ba.arguments[name] += "/"
             else:
