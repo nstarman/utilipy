@@ -91,10 +91,9 @@ def test_top_level_imports():
 
     # Next test that top-levels are all the possible top-levels
     drct: str = os.path.split(_file)[0]  # directory
-    donottest = ("tests", "__pycache__")  # stuff not to test
+    donottest = ("tests", "__pycache__", "ipython")  # stuff not to test
 
     for file in os.listdir(drct):  # iterate through directory
-        # test?
         if os.path.isdir(drct + "/" + file) and file not in donottest:
             assert file in all_top_imports
         # else:  # nope, chuck testa.
