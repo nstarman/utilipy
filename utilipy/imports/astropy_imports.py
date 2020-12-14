@@ -35,7 +35,6 @@ __author__ = "Nathaniel Starkman"
 
 __all__ = [
     "astropy_imports_help",
-    # "quantity_support",
     "astropy",
     "u",
     "const",
@@ -58,15 +57,13 @@ __all__ = [
 # THIRD PARTY
 import astropy
 import astropy.constants as const
-import astropy.coordinates as coord  # coordinates
+import astropy.coordinates as coord
 import astropy.cosmology as cosmology
-import astropy.units as u  # units TODO replace with mine
-
-# modeling
+import astropy.units as u
 from astropy import modeling
 from astropy.coordinates import SkyCoord
 from astropy.modeling import fitting, models
-from astropy.table import QTable, Table  # table data structure
+from astropy.table import QTable, Table
 from astropy.visualization import (
     astropy_mpl_style,
     quantity_support,
@@ -76,16 +73,6 @@ from astropy.visualization import (
 # PROJECT-SPECIFIC
 from utilipy.imports import conf
 from utilipy.utils import make_help_function
-
-##############################################################################
-# IMPORTS
-
-
-if float(astropy.__version__[:3]) > 4.1:
-    from astropy.modeling import custom_model
-
-    __all__ += ("custom_model",)
-
 
 ##############################################################################
 # Cleaning Up
