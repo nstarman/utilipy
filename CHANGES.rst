@@ -5,6 +5,11 @@
 New Features
 ------------
 
+utilipy.imports
+^^^^^^^^^^^^^^^
+
+- add constants and cosmology to astropy imports [#8]
+
 
 API Changes
 -----------
