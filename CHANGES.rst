@@ -57,7 +57,7 @@ Other Changes and Additions
     + labeler
     + ci_cron
     + ci_tests
-    + pre-commit
+    + pre-commit [#22]
 
 - Remove Travis [#16]
 
