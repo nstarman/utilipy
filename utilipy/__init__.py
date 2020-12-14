@@ -90,15 +90,7 @@ from astropy.utils.misc import find_api_page
 
 # PROJECT-SPECIFIC
 from . import math  # noqa
-from . import (
-    data_utils,
-    decorators,
-    extern,
-    imports,
-    plot,
-    scripts,
-    utils,
-)
+from . import data_utils, decorators, extern, imports, plot, scripts, utils
 from .data_utils import data_graph
 from .utils.collections import ObjDict
 from .utils.functools import wraps
