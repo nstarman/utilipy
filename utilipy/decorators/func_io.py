@@ -231,6 +231,7 @@ def add_folder_backslash(
 def random_generator_from_seed(
     function: T.Callable = None,
     seed_names: T.Union[str, T.Sequence[str]] = ["random", "random_seed"],
+    *,
     generator: T.Callable = np.random.RandomState,
     raise_if_not_int: bool = False,
 ):
@@ -238,15 +239,15 @@ def random_generator_from_seed(
 
     Parameters
     ----------
-    function : types.FunctionType or None, optional
+    function : types.FunctionType or None (optional)
         the function to be decoratored
         if None, then returns decorator to apply.
-    seed_names : list, optional
+    seed_names : list (optional, key-word only)
         possible parameter names for the random seed
-    generator : ClassType, optional
+    generator : ClassType (optional, key-word only)
         ex :class:`numpy.random.default_rng`, :class:`numpy.random.RandomState`
 
-    raise_if_not_int : bool, optional
+    raise_if_not_int : bool (optional, key-word only)
         raise TypeError if seed argument is not an int.
 
     Returns
@@ -263,7 +264,7 @@ def random_generator_from_seed(
 
     """
     if isinstance(seed_names, str):  # correct a bare string to list
-        seed_names = [seed_names]
+        seed_names = (seed_names, )
 
     if function is None:  # allowing for optional arguments
         return functools.partial(
