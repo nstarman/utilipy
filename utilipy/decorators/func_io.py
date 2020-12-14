@@ -132,7 +132,7 @@ def add_folder_backslash(
     arguments : list of string or int, optional
         arguments to which to append '/', if not already present
         strings are names of arguments.
-        Can also be int, which only applies to args
+        Can also be int, which only applies to args.
 
     Returns
     -------
@@ -170,7 +170,7 @@ def add_folder_backslash(
 
     """
     if isinstance(arguments, (str, int)):  # recast as tuple
-        arguments = (arguments, )
+        arguments = (arguments,)
 
     if function is None:  # allowing for optional arguments
         return functools.partial(
@@ -193,18 +193,25 @@ def add_folder_backslash(
             default {store_inputs}
 
         """
+        # bind args & kwargs to function
         ba = sig.bind_partial(*args, **kw)
+        ba.apply_defaults()
 
-        for name in arguments:
-            if not isinstance(ba.arguments[name], str):
+        for name in arguments:  # iter through args
+            # first check it's a string
+            if not isinstance(ba.arguments[name], (str, bytes)):
                 continue
+            else:
+                str_type = type(ba.arguments[name])  # get string type
 
-            elif isinstance(name, int):  # only applies to args
-                if not ba.args[name].endswith("/"):
-                    ba.args[name] += "/"
+            backslash = str_type("/")  # so we can work with any type
+
+            if isinstance(name, int):  # only applies to args
+                if not ba.args[name].endswith(backslash):
+                    ba.args[name] += backslash
             elif isinstance(name, str):  # args or kwargs
-                if not ba.arguments[name].endswith("/"):
-                    ba.arguments[name] += "/"
+                if not ba.arguments[name].endswith(backslash):
+                    ba.arguments[name] += backslash
             else:
                 raise TypeError("elements of `args` must be int or str")
 
