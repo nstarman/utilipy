@@ -58,6 +58,7 @@ Other Changes and Additions
     + ci_cron
     + ci_tests
     + pre-commit [#22]
+    + Auto-publish to PyPI on release [#21]
 
 - Remove Travis [#16]
 
