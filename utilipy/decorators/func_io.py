@@ -264,7 +264,7 @@ def random_generator_from_seed(
 
     """
     if isinstance(seed_names, str):  # correct a bare string to list
-        seed_names = (seed_names, )
+        seed_names = (seed_names,)
 
     if function is None:  # allowing for optional arguments
         return functools.partial(
@@ -442,22 +442,22 @@ class dtypeDecoratorBase:
 
     Parameters
     ----------
-    func : function, optional
+    func : function (optional)
         function to decorate
-    inargs : 'all' or iterable or slice or tuple, optional
+    inargs : 'all' or iterable or slice or tuple (optional)
         - None (default), does nothing
         - 'all': converts all arguments to dtype
         - iterable: convert arguments at index speficied in iterable
             ex: [0, 2] converts arguments 0 & 2
         - slice: convert all arguments specified by slicer
-    outargs : 'all' or iterable or tuple or slice
+    outargs : Ellipsis or iterable or tuple or slice (optional)
         - None (default), does nothing
-        - 'all': converts all arguments to dtype
         - iterable: convert arguments at index speficied in iterable
             ex: [0, 2] converts arguments 0 & 2
         - slice: convert all arguments specified by slicer
+        - Ellipsis : convert all arguments
 
-    these arguments, except func, should be specified by key word
+    these arguments, except func, should be specified by key word.
     if inargs is forgotten and func is not a function, then func is
     assumed to be inargs.
 
@@ -468,28 +468,30 @@ class dtypeDecoratorBase:
     ... def func(x, y, z):
     ...     return x, y, z, (x, y, z)
     ... # /def
-    >>> x, y, z, orig = func(1.1, 2.2, 3.3)
-    >>> print(x, y, z, orig)
+    >>> print(func(1.1, 2.2, 3.3))
     1 2 3 (1, 2, 3.3)
 
     """
 
-    def __init_subclass__(cls, dtype=None):
+    def __init_subclass__(cls, dtype: T.Any = None):
+        """Initialize subclass & store dtype."""
         super().__init_subclass__()
-
         cls._dtype = dtype
 
     # /def
 
     @property
     def dtype(self):
+        """Get dtype. read-only access."""
         return self._dtype
+
+    # /def
 
     def __new__(
         cls,
         func: T.Callable = None,
-        inargs: T.Union[Literal["all"], slice, T.Iterable] = None,
-        outargs: T.Union[Literal["all"], slice, T.Iterable] = None,
+        inargs: T.Union[Ellipsis, slice, T.Iterable, None] = None,
+        outargs: T.Union[Ellipsis, slice, T.Iterable, None] = None,
     ):
         self = super().__new__(cls)  # making instance of self
 
@@ -504,6 +506,7 @@ class dtypeDecoratorBase:
 
         # allowing for wrapping with calling the class
         if func is not None:
+            # need to initialize b/c not returning `self`
             self.__init__(inargs, outargs)
             return self(func)
         else:
@@ -513,19 +516,19 @@ class dtypeDecoratorBase:
 
     def __init__(
         self,
-        inargs: T.Union[Literal["all"], slice, T.Iterable] = None,
-        outargs: T.Union[Literal["all"], slice, T.Iterable] = None,
+        inargs: T.Union[Ellipsis, slice, T.Iterable, None] = None,
+        outargs: T.Union[Ellipsis, slice, T.Iterable, None] = None,
     ) -> None:
         super().__init__()
 
         # inargs
-        if inargs == "all":
+        if inargs is Ellipsis:  # convert all
             self._inargs = slice(None)
         else:
             self._inargs = inargs
 
         # outargs
-        if outargs == "all":
+        if outargs is Ellipsis:
             self._outargs = slice(None)
         elif np.isscalar(outargs):
             self._outargs = [outargs]
@@ -535,7 +538,17 @@ class dtypeDecoratorBase:
     # /def
 
     def __call__(self, wrapped_func: T.Callable) -> T.Callable:
-        # print(self._inargs)
+        """Wrap function.
+
+        Works by making a wrapper which will convert input and
+        output arguments to the specified data type.
+
+        Parameters
+        ----------
+        wrapped_func : callable
+            Function to wrap.
+
+        """
 
         @functools.wraps(wrapped_func)
         def wrapper(*args: T.Any, **kw: T.Any) -> T.Any:
@@ -552,15 +565,12 @@ class dtypeDecoratorBase:
                 for i in inargs:
                     # converting to desired dtype
                     args[i] = self._dtype(args[i])
-            else:
+            else:  # any iterable
                 for i in self._inargs:
-                    # converting to desired dtype
                     args[i] = self._dtype(args[i])
             # /PRE
 
-            # CALLING
             return_ = wrapped_func(*args, **kw)
-            # /CALLING
 
             # POST
             if self._outargs is None:  # no conversion needed
@@ -569,22 +579,21 @@ class dtypeDecoratorBase:
                 try:  # figure out whether return_ is a scalar or list
                     return_[0]
                 except IndexError:  # scalar output
-                    inds = np.arange(len(args), dtype=self._dtype)[
-                        self._outargs
-                    ]
+                    allinds = np.arange(len(args), dtype=self._dtype)
+                    inds = allinds[self._outargs]
                     if inds == 0:
                         return self._dtype(return_)
                     else:  # inds doesn't match return_
                         raise ValueError
                 else:
                     return_ = list(return_)
-                    inds = np.arange(len(args), dtype=self._dtype)[
-                        self._outargs
-                    ]
+                    allinds = np.arange(len(args), dtype=self._dtype)
+                    inds = [self._outargs]
+
                     for i in inds:
                         return_[i] = self._dtype(return_[i])
 
-                return return_
+                    return tuple(return_)
             # /POST
             # /def
 
