@@ -88,8 +88,8 @@ New Features
 
 Version 1.0 is a reboot of ``utilipy``, so all features can be considered new.
 
-utilipy.__init__
-^^^^^^^^^^^^^^^^^
+utilipy
+^^^^^^^
 
 - Set up top-level namespace: `help`, `online_help`,
   `wraps` from ``util.functools.wraps``,
