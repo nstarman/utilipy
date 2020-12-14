@@ -38,7 +38,9 @@ __all__ = [
     # "quantity_support",
     "astropy",
     "u",
+    "const",
     "coord",
+    "cosmology",
     "SkyCoord",
     "Table",
     "QTable",
@@ -53,11 +55,20 @@ __all__ = [
 ##############################################################################
 # HELPER FUNCTIONS
 
-# THIRD PARTY
+from utilipy.imports import conf
+from utilipy.utils import make_help_function
+
+
+##############################################################################
+# IMPORTS
+
 import astropy
+
+import astropy.constants as const
+import astropy.cosmology as cosmology
 import astropy.coordinates as coord  # coordinates
 import astropy.units as u  # units TODO replace with mine
-from astropy import modeling
+
 from astropy.coordinates import SkyCoord
 from astropy.modeling import fitting, models
 from astropy.table import QTable, Table  # table data structure
@@ -65,15 +76,12 @@ from astropy.visualization import (
     astropy_mpl_style,
     quantity_support,
     time_support,
+    astropy_mpl_style,
 )
 
-# PROJECT-SPECIFIC
-from utilipy.imports import conf
-from utilipy.utils import make_help_function
-
-##############################################################################
-# IMPORTS
-
+# modeling
+from astropy import modeling
+from astropy.modeling import models, fitting
 
 if float(astropy.__version__[:3]) > 4.1:
     from astropy.modeling import custom_model
