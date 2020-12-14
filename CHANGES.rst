@@ -22,7 +22,7 @@ API Changes
 - Rename ``data_utils/shuffle`` to data ``data_utils/shuffler`` [#17]
 
 - Deprecate custom ``format_doc`` in favor or Astropy's [#17]
-  
+
 - Module ``ipython`` is not imported to top-level namespace [#20]
   because this is not always used in an ipython environment.
 
