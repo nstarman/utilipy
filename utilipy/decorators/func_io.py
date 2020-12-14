@@ -82,12 +82,12 @@ def store_function_input(
         Parameters
         ----------
         store_inputs: bool
-            whether to store function inputs in a BoundArguments instance
-            default {store_inputs}
+            whether to store function inputs in a `~inspect.BoundArguments`
+            instance default {store_inputs}
 
         Returns
         -------
-        inputs: BoundArguments
+        inputs: `~inspect.BoundArguments`
             the inputs to ``{wrapped_function}``
             only returned if `store_inputs` is True
             other returned values are in now in a tuple
