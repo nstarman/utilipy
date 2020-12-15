@@ -43,9 +43,9 @@ class Conf(_config.ConfigNamespace):
     """Configuration parameters for :mod:`~utilipy.utils.exceptions`."""
 
     use_dill = _config.ConfigItem(
-        True,
+        False,
         description="When True, try to use `dill` instead of `pickle`.",
-        cfgtype="boolean(default=True)",
+        cfgtype="boolean(default=False)",
     )
 
 
