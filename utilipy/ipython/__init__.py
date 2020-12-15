@@ -98,7 +98,6 @@ from IPython.display import display  # display is a better print
 from IPython.display import Markdown
 
 # PROJECT-SPECIFIC
-from ..utils import make_help_function
 from .autoreload import aimport, set_autoreload
 from .imports import import_from_file, run_imports
 from .notebook import add_raw_code_toggle
@@ -106,6 +105,7 @@ from .plot import configure_matplotlib
 from .printing import printLTX  # LaTeX printing
 from .printing import printMD  # Markdown printing
 from .setup_package import conf
+from utilipy.utils import make_help_function
 
 ##############################################################################
 # PARAMETERS

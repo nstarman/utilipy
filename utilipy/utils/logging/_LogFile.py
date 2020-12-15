@@ -20,8 +20,8 @@ __author__ = "Nathaniel Starkman"
 import typing as T
 
 # PROJECT-SPECIFIC
-from ..metaclasses import InheritDocstrings
 from ._LogPrint import LogPrint
+from utilipy.utils.metaclasses import InheritDocstrings
 
 ##############################################################################
 # LogFile

@@ -17,8 +17,8 @@ import ast
 import typing as T
 
 # PROJECT-SPECIFIC
-from ..data_utils import get_path_to_file
-from ..utils import functools
+from utilipy.data_utils import get_path_to_file
+from utilipy.utils import functools
 
 ##############################################################################
 # CODE

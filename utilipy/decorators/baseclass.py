@@ -125,8 +125,8 @@ from abc import abstractmethod
 from collections import namedtuple
 
 # PROJECT-SPECIFIC
-from ..utils import functools, inspect
-from ..utils.string import FormatTemplate
+from utilipy.utils import functools, inspect
+from utilipy.utils.string import FormatTemplate
 
 ##############################################################################
 # Parameters

@@ -6,13 +6,16 @@
 ##############################################################################
 # IMPORTS
 
+# BUILT-IN
+import warnings
+
 # PROJECT-SPECIFIC
-from .. import extended_imports as imports
+from utilipy.imports import extended_imports as imports
 
-# fmt: off
-import warnings; warnings.simplefilter("ignore", RuntimeWarning)  # noqa
-# fmt: on
+##############################################################################
+# PARAMETERS
 
+warnings.simplefilter("ignore", RuntimeWarning)
 
 ##############################################################################
 

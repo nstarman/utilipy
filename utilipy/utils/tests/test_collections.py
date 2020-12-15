@@ -42,8 +42,8 @@ from collections import OrderedDict
 import pytest
 
 # PROJECT-SPECIFIC
-from .. import collections
-from ..collections import ObjDict
+from utilipy.utils import collections
+from utilipy.utils.collections import ObjDict
 
 ###############################################################################
 # PARAMETERS

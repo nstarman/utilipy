@@ -13,7 +13,7 @@ __all__ = ["test_plot"]
 import pytest
 
 # PROJECT-SPECIFIC
-from .. import plot
+from utilipy.ipython import plot
 
 ##############################################################################
 # PARAMETERS

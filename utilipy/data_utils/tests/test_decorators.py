@@ -18,7 +18,7 @@ __all__ = [
 import numpy as np
 
 # PROJECT-SPECIFIC
-from ..decorators import idxDecorator
+from utilipy.data_utils.decorators import idxDecorator
 
 ##############################################################################
 # PARAMETERS

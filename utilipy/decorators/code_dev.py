@@ -30,7 +30,7 @@ import typing as T
 import warnings
 
 # PROJECT-SPECIFIC
-from ..utils.exceptions import utilipyWarning
+from utilipy.utils.exceptions import utilipyWarning
 
 ##############################################################################
 # PARAMETERS

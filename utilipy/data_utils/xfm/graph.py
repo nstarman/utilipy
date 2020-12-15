@@ -6,7 +6,9 @@ __author__ = "Nathaniel Starkman"
 __credits__ = ["Astropy"]
 
 
-__all__ = ["TransformGraph"]
+__all__ = [
+    "TransformGraph",
+]
 
 
 ##############################################################################
@@ -18,8 +20,8 @@ import typing as T
 from collections import defaultdict
 
 # PROJECT-SPECIFIC
-from ...utils import functools, inspect
 from .transformations import CompositeTransform, _default_xfm_set
+from utilipy.utils import functools, inspect
 
 ##############################################################################
 # PARAMETERS

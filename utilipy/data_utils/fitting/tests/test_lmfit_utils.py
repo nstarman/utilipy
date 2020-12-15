@@ -19,7 +19,7 @@ import numpy as np
 import pytest
 
 # PROJECT-SPECIFIC
-from ..lmfit_utils import scipy_residual_to_lmfit
+from utilipy.data_utils.fitting.lmfit_utils import scipy_residual_to_lmfit
 
 ##############################################################################
 # PARAMETERS

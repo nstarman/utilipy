@@ -19,7 +19,7 @@ import unittest
 import warnings
 
 # PROJECT-SPECIFIC
-from .. import exceptions
+from utilipy.utils import exceptions
 
 ##############################################################################
 # Tests

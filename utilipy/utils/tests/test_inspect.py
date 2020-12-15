@@ -66,7 +66,7 @@ from types import MappingProxyType
 import pytest
 
 # PROJECT-SPECIFIC
-from .. import inspect
+from utilipy.utils import inspect
 
 ##############################################################################
 # PARAMETERS

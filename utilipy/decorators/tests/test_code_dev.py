@@ -22,7 +22,7 @@ import warnings
 import pytest
 
 # PROJECT-SPECIFIC
-from .. import code_dev as cdev
+from utilipy.decorators import code_dev as cdev
 
 ##############################################################################
 # CODE
