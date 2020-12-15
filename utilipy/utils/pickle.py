@@ -26,6 +26,8 @@ from astropy.utils.decorators import format_doc
 # PROJECT-SPECIFIC
 from .logging import LogFile
 
+from utilipy.decorators.func_io import replace_from_config
+
 try:
     import dill
 except ImportError:
@@ -45,6 +47,7 @@ _LOGFILE = LogFile(header=False)
 # CODE
 
 
+@replace_from_config(config=conf)
 @format_doc(None, odoc="\n\t".join(_pickle.dump.__doc__.split("\n")))
 def dump(
     obj: T.Any,
@@ -53,7 +56,7 @@ def dump(
     *,
     fopt: str = "b",
     fix_imports: bool = True,
-    use_dill=False,
+    use_dill=None,
     # logger
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
@@ -98,12 +101,13 @@ save = dump
 # --------------------------------------------------------------------------
 
 
+@replace_from_config(config=conf)
 def dump_many(
     *objs: T.Tuple[T.Any, str],
     protocol: T.Any = None,
     fopt: str = "b",
     fix_imports: bool = True,
-    use_dill=False,
+    use_dill=None,
     # logger
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
@@ -145,6 +149,7 @@ def dump_many(
 ##########################################################################
 
 
+@replace_from_config(config=conf)
 @format_doc(None, odoc="\n\t".join(_pickle.load.__doc__.split("\n")))
 def load(
     *fnames: str,
@@ -152,7 +157,7 @@ def load(
     fix_imports: bool = True,
     encoding: str = "ASCII",
     errors: str = "strict",
-    use_dill=False,
+    use_dill=None,
     # logger
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
