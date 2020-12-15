@@ -13,6 +13,7 @@
 
 __all__ = [
     "store_function_input",
+    "replace_from_config",
     "add_folder_backslash",
     "random_generator_from_seed",
     "dtypeDecoratorMaker",
@@ -31,6 +32,8 @@ from typing_extensions import Literal
 
 # PROJECT-SPECIFIC
 from utilipy.utils import functools, inspect
+
+EllipsisType = type(Ellipsis)  # TODO move elsewhere
 
 ##############################################################################
 # CODE
@@ -54,7 +57,7 @@ def store_function_input(
 
     Parameters
     ----------
-    function : T.Callable or None, optional
+    function : callable or None, optional
         the function to be decoratored
         if None, then returns decorator to apply.
     store_inputs : bool, optional
@@ -62,7 +65,7 @@ def store_function_input(
 
     Returns
     -------
-    wrapper : T.Callable
+    wrapper : callable
         Wrapper for `function` that can store function inputs
         in a BoundArguments instance.
         Includes the original function in a method `.__wrapped__`
@@ -125,6 +128,95 @@ def store_function_input(
 # -------------------------------------------------------------------
 
 
+def replace_from_config(
+    function=None,
+    *,
+    config,
+    arguments: T.Union[EllipsisType, T.List[str]] = Ellipsis,
+    _doc_style="numpy",
+    _doc_fmt={},
+):
+    """Replace config inputs to functions with their config values.
+
+    Parameters
+    ----------
+    function : callable or None, optional
+        the function to be decoratored
+        if None, then returns decorator to apply.
+    config : :class:`~astropy.config.ConfigNamespace` instance
+        The configuration instance.
+    arguments : list of strings or Ellipsis (optional, key-word only)
+        Function arguments to be mapped from None to their `config` value.
+        The name of the input must match a `config` attribute.
+        If Ellipsis (default), tries to match all names in `config`
+
+    Returns
+    -------
+    wrapper : callable
+        wrapper for function
+
+    Other Parameters
+    ----------------
+    _doc_style: str or formatter, optional
+        default 'numpy'
+        parameter to `~utilipy.wraps`
+    _doc_fmt: dict, optional
+        default None
+        parameter to `~utilipy.wraps`
+
+    Examples
+    --------
+    >>> from utilipy.utils.exceptions import conf
+    >>> @replace_from_config(config=conf)
+    ... def return_warning_verbosity(verbose_warnings=None):
+    ...     return verbose_warnings
+    >>> return_warning_verbosity()
+    True
+
+    """
+    if function is None:  # allowing for optional arguments
+        return functools.partial(
+            replace_from_config,
+            config=config,
+            arguments=arguments,
+            _doc_style=_doc_style,
+            _doc_fmt=_doc_fmt,
+        )
+
+    if arguments is Ellipsis:
+        arguments = config.keys()  # keep as view so updates
+    elif isinstance(arguments, str):  # type munging
+        arguments = [arguments]
+
+    sig = inspect.signature(function)
+
+    @functools.wraps(function, _doc_style=_doc_style, _doc_fmt=_doc_fmt)
+    def wrapper(*args, **kw):
+        """Wrapper docstring."""
+        ba = sig.bind_partial(*args, **kw)
+        ba.apply_defaults()  # need this to check all arguments
+
+        for name in arguments:
+            if name not in ba.arguments:  # skip anything not in func sig.
+                continue
+
+            # replace
+            if ba.arguments[name] is None:
+                ba.arguments[name] = getattr(config, name)
+
+        return function(*ba.args, **ba.kwargs)
+
+    # /def
+
+    return wrapper
+
+
+# /def
+
+
+# -------------------------------------------------------------------
+
+
 def add_folder_backslash(
     function=None,
     *,
@@ -138,7 +230,7 @@ def add_folder_backslash(
 
     Parameters
     ----------
-    function : T.Callable or None, optional
+    function : callable or None, optional
         the function to be decoratored
         if None, then returns decorator to apply.
     arguments : list of strings, optional
@@ -147,7 +239,7 @@ def add_folder_backslash(
 
     Returns
     -------
-    wrapper : T.Callable
+    wrapper : callable
         wrapper for function
         does a few things
         includes the original function in a method ``.__wrapped__``
