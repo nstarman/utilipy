@@ -76,7 +76,7 @@ def dump(
     *,
     fopt: str = "b",
     fix_imports: bool = True,
-    use_dill=False,
+    use_dill=None,
     # logger
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
@@ -91,7 +91,10 @@ def dump(
         {odoc}
 
     """
-    if use_dill and not _HAS_DILL:
+    if use_dill is None:
+        use_dill = conf.use_dill
+
+    if use_dill and not HAS_DILL:
         raise ValueError("dill is not installed. cannot use dill.")
 
     logger.report(
@@ -126,7 +129,7 @@ def dump_many(
     protocol: T.Any = None,
     fopt: str = "b",
     fix_imports: bool = True,
-    use_dill=False,
+    use_dill=None,
     # logger
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
@@ -175,7 +178,7 @@ def load(
     fix_imports: bool = True,
     encoding: str = "ASCII",
     errors: str = "strict",
-    use_dill=False,
+    use_dill=None,
     # logger
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
@@ -190,7 +193,10 @@ def load(
         {odoc}
 
     """
-    if use_dill and not _HAS_DILL:
+    if use_dill is None:
+        use_dill = conf.use_dill
+
+    if use_dill and not HAS_DILL:
         raise ValueError("dill is not installed. cannot use dill.")
 
     res: list = [None] * len(fnames)  # preload results list
