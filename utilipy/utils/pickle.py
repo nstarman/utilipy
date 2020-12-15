@@ -21,8 +21,8 @@ import typing as T
 import warnings
 
 # THIRD PARTY
-from astropy.utils.decorators import format_doc
 from astropy import config as _config
+from astropy.utils.decorators import format_doc
 
 # PROJECT-SPECIFIC
 from .logging import LogFile
