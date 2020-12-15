@@ -33,10 +33,10 @@ def test_config():
         A unified method of testing configs
 
     """
-    assert pickle.conf.use_pickle is False
+    assert pickle.conf.use_dill is False
 
-    with pickle.conf.set_temp("use_pickle", True):
-        assert pickle.conf.use_pickle is True
+    with pickle.conf.set_temp("use_dill", True):
+        assert pickle.conf.use_dill is True
 
 
 # /def
