@@ -31,7 +31,7 @@ import numpy as np
 import pytest
 
 # PROJECT-SPECIFIC
-from .. import core
+from utilipy.math import core
 
 ##############################################################################
 # PARAMETERS

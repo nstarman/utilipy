@@ -23,7 +23,7 @@ __all__ = [
 import os
 
 # PROJECT-SPECIFIC
-from .. import (
+from utilipy import (
     data_utils,
     decorators,
     imports,

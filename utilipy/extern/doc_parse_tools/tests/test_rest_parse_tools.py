@@ -14,9 +14,6 @@ __all__ = [
 # THIRD PARTY
 import pytest
 
-# from .. import rest_parse_tools
-
-
 ##############################################################################
 # PARAMETERS
 

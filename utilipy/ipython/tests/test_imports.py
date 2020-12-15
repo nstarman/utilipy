@@ -13,7 +13,7 @@ __all__ = ["test_imports"]
 import pytest
 
 # PROJECT-SPECIFIC
-from .. import imports
+from utilipy import imports
 
 ##############################################################################
 # PARAMETERS

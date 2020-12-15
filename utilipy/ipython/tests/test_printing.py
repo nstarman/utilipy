@@ -10,7 +10,7 @@ __all__ = ["test_printMD"]
 # printing
 
 # PROJECT-SPECIFIC
-from .. import printing
+from utilipy.ipython import printing
 
 ##############################################################################
 # PARAMETERS

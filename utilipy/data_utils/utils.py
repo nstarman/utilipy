@@ -30,6 +30,7 @@ from astropy.utils.data import get_pkg_data_filenames
 ##############################################################################
 
 
+# TODO stride option for block sizes
 def intermix_arrays(*arrs: T.Sequence, axis=-1):
     """Intermix arrays.
 
@@ -44,7 +45,7 @@ def intermix_arrays(*arrs: T.Sequence, axis=-1):
 
     Examples
     --------
-    Mix single scalar array
+    Mix single scalar array (does nothing)
 
         >>> x = np.arange(5)
         >>> intermix_arrays(x)

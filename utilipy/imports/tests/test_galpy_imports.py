@@ -35,7 +35,7 @@ else:
 def test_import_amuse():
     """Test AMUSE imports."""
     warnings.filterwarnings("ignore", category=DeprecationWarning)
-    from .. import amuse_imports as imports
+    from utilipy.imports import amuse_imports as imports
 
     for obj in (
         "galpy",

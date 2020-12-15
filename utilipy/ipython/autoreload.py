@@ -39,7 +39,7 @@ import typing as T
 from IPython import get_ipython
 
 # PROJECT-SPECIFIC
-from ..utils.logging import LogPrint
+from utilipy.utils.logging import LogPrint
 
 ##############################################################################
 # PARAMETERS

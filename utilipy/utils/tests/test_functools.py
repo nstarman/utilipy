@@ -20,7 +20,7 @@ __all__ = [
 # IMPORTS
 
 # PROJECT-SPECIFIC
-from .. import functools, inspect
+from utilipy.utils import functools, inspect
 
 ###############################################################################
 # PARAMETERS

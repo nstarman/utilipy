@@ -14,7 +14,7 @@ __all__ = [
 
 
 # PROJECT-SPECIFIC
-from .. import fitting, xfm
+from utilipy.data_utils import fitting, xfm
 
 ##############################################################################
 # PARAMETERS

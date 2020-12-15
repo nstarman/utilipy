@@ -2,7 +2,9 @@
 
 """Test Code in __init__."""
 
-__all__ = ["test_get_path_to_file"]
+__all__ = [
+    "test_get_path_to_file",
+]
 
 
 ##############################################################################
@@ -12,7 +14,7 @@ __all__ = ["test_get_path_to_file"]
 import os.path
 
 # PROJECT-SPECIFIC
-from .. import get_path_to_file
+from utilipy.data_utils.utils import get_path_to_file
 
 ##############################################################################
 # PARAMETERS

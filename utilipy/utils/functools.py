@@ -51,10 +51,10 @@ from functools import partial
 from types import CodeType, FunctionType
 
 # PROJECT-SPECIFIC
-from ..extern.doc_parse_tools import store as _store
 from . import inspect as _nspct
 from .inspect import FullerSignature as _FullerSig
 from .string import FormatTemplate as _FormatTemplate
+from utilipy.extern.doc_parse_tools import store as _store
 
 # CLEAN MULTIPLE DEFINITIONS
 del globals()["update_wrapper"]

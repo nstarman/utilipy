@@ -15,7 +15,7 @@ import numpy as np
 from typing_extensions import Literal
 
 # PROJECT-SPECIFIC
-from ..utils import functools
+from utilipy.utils import functools
 
 ##############################################################################
 # PARAMETERS
