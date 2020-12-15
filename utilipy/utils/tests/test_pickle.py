@@ -25,6 +25,26 @@ from utilipy.utils import pickle
 # Tests
 
 
+def test_config():
+    """Test `~utilipy.utils.pickle.conf`.
+
+    .. todo::
+
+        A unified method of testing configs
+
+    """
+    assert pickle.conf.use_pickle is False
+
+    with pickle.conf.set_temp("use_pickle", True):
+        assert pickle.conf.use_pickle is True
+
+
+# /def
+
+
+# --------------------------------------------------------------------------
+
+
 @pytest.mark.skip(reason="TODO")
 def test_dump():
     """Test :func:`~utilipy.utils.pickle.dump`."""
