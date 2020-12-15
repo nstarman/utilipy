@@ -22,6 +22,7 @@ import warnings
 
 # THIRD PARTY
 from astropy.utils.decorators import format_doc
+from astropy import config as _config
 
 # PROJECT-SPECIFIC
 from .logging import LogFile
@@ -29,10 +30,32 @@ from .logging import LogFile
 try:
     import dill
 except ImportError:
-    warnings.warn("can't import dill. Will only use pickle.")
-    _HAS_DILL = False
+    HAS_DILL = False
 else:
-    _HAS_DILL = True
+    HAS_DILL = True
+
+
+#############################################################################
+# CONFIGURATION
+
+
+class Conf(_config.ConfigNamespace):
+    """Configuration parameters for :mod:`~utilipy.utils.exceptions`."""
+
+    use_dill = _config.ConfigItem(
+        True,
+        description="When True, try to use `dill` instead of `pickle`.",
+        cfgtype="boolean(default=True)",
+    )
+
+
+conf = Conf()
+
+
+# Warn if want to but cannot use dill
+if conf.use_dill and not HAS_DILL:
+
+    warnings.warn("`dill` cannot be imported. Will use `pickle` instead.")
 
 
 #############################################################################
