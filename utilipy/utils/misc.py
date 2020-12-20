@@ -147,8 +147,8 @@ def make_help_function(
         doc = "\n".join(doc.split("\n")[:-2])  # strip next header
 
         if look_for == "Routine Listings":  # skip 'Routine Listings' & line
-            Name = name.capitalize()
-            doc = f"\n{Name} Returns\n{'-'*(len(name) + 1)}-------\n" + doc
+            # Name = name.capitalize()
+            doc = f"\nReturns\n{'-'*(len(name) + 1)}-------\n" + doc
 
     else:
         raise TypeError

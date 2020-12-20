@@ -21,6 +21,7 @@ import typing as T
 import warnings
 
 # THIRD PARTY
+from astropy import config as _config
 from astropy.utils.decorators import format_doc
 
 # PROJECT-SPECIFIC
@@ -29,10 +30,32 @@ from .logging import LogFile
 try:
     import dill
 except ImportError:
-    warnings.warn("can't import dill. Will only use pickle.")
-    _HAS_DILL = False
+    HAS_DILL = False
 else:
-    _HAS_DILL = True
+    HAS_DILL = True
+
+
+#############################################################################
+# CONFIGURATION
+
+
+class Conf(_config.ConfigNamespace):
+    """Configuration parameters for :mod:`~utilipy.utils.exceptions`."""
+
+    use_dill = _config.ConfigItem(
+        False,
+        description="When True, try to use `dill` instead of `pickle`.",
+        cfgtype="boolean(default=False)",
+    )
+
+
+conf = Conf()
+# /class
+
+# Warn if want to but cannot use dill
+if conf.use_dill and not HAS_DILL:
+
+    warnings.warn("`dill` cannot be imported. Will use `pickle` instead.")
 
 
 #############################################################################
@@ -49,11 +72,11 @@ _LOGFILE = LogFile(header=False)
 def dump(
     obj: T.Any,
     fname: str,
-    protocol: T.Any = None,
+    protocol: T.Optional[int] = None,
     *,
     fopt: str = "b",
     fix_imports: bool = True,
-    use_dill=False,
+    use_dill: T.Optional[bool] = None,
     # logger
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
@@ -68,7 +91,10 @@ def dump(
         {odoc}
 
     """
-    if use_dill and not _HAS_DILL:
+    if use_dill is None:
+        use_dill = conf.use_dill
+
+    if use_dill and not HAS_DILL:
         raise ValueError("dill is not installed. cannot use dill.")
 
     logger.report(
@@ -103,7 +129,7 @@ def dump_many(
     protocol: T.Any = None,
     fopt: str = "b",
     fix_imports: bool = True,
-    use_dill=False,
+    use_dill=None,
     # logger
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
@@ -152,7 +178,7 @@ def load(
     fix_imports: bool = True,
     encoding: str = "ASCII",
     errors: str = "strict",
-    use_dill=False,
+    use_dill=None,
     # logger
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
@@ -167,7 +193,10 @@ def load(
         {odoc}
 
     """
-    if use_dill and not _HAS_DILL:
+    if use_dill is None:
+        use_dill = conf.use_dill
+
+    if use_dill and not HAS_DILL:
         raise ValueError("dill is not installed. cannot use dill.")
 
     res: list = [None] * len(fnames)  # preload results list
