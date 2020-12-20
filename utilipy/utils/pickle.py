@@ -50,7 +50,7 @@ class Conf(_config.ConfigNamespace):
 
 
 conf = Conf()
-
+# /class
 
 # Warn if want to but cannot use dill
 if conf.use_dill and not HAS_DILL:
@@ -72,11 +72,11 @@ _LOGFILE = LogFile(header=False)
 def dump(
     obj: T.Any,
     fname: str,
-    protocol: T.Any = None,
+    protocol: T.Optional[int] = None,
     *,
     fopt: str = "b",
     fix_imports: bool = True,
-    use_dill=None,
+    use_dill: T.Optional[bool] = None,
     # logger
     logger: LogFile = _LOGFILE,
     verbose: T.Optional[int] = None,
