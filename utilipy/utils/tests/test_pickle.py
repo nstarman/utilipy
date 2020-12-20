@@ -65,11 +65,6 @@ def test_config():
 class Test_dump(BaseClassDependentTests, klass=pickle.dump):
     """Test `~utilipy.utils.pickle.dump`."""
 
-    def setup_class(cls):
-        cls.objs = objs
-
-    # /def
-
     @pytest.mark.parametrize("obj", objs)
     @staticmethod
     def test_can_dump_objs(obj):
@@ -94,7 +89,8 @@ class Test_dump(BaseClassDependentTests, klass=pickle.dump):
     # /def
 
     @pytest.mark.skipif(pickle.HAS_DILL, reason="`dill` installed.")
-    def test_fail_use_dill(self):
+    @staticmethod
+    def test_fail_use_dill():
         """Test failed use of dill.
 
         Skip if has dill, since want it to fail.
