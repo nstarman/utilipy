@@ -5,11 +5,9 @@
 
 __all__ = [
     "test_config",
-    "test_dump",
-    "test_save",
+    "Test_dump",
     "test_dump_many",
     "test_load",
-    "test_load_many",
 ]
 
 
@@ -20,12 +18,12 @@ __all__ = [
 import tempfile
 
 # THIRD PARTY
-import pytest
 import numpy as np
+import pytest
 
 # PROJECT-SPECIFIC
-from utilipy.utils import pickle
 from utilipy.tests.helper import BaseClassDependentTests
+from utilipy.utils import pickle
 
 ##############################################################################
 # PARAMETERS
