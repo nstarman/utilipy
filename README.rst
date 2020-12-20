@@ -61,8 +61,8 @@ Copyright 2018- Nathaniel Starkman and contributors.
 .. |astropy| image:: http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat
    :target: http://www.astropy.org/
 
-.. |Build Status| image:: https://travis-ci.org/nstarman/utilipy.svg?branch=master
-   :target: https://travis-ci.org/nstarman/utilipy
+.. |Build Status| image:: https://github.com/nstarman/utilipy/workflows/CI/badge.svg
+   :target: https://github.com/nstarman/utilipy/workflows/CI
 
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
