@@ -5,6 +5,17 @@
 New Features
 ------------
 
+utilipy.tests.helper
+^^^^^^^^^^^^^^^^^^^^
+
+- BaseClassDependentTests: Unit tests for classes are often best organized
+  into a class structure. This is a baseclass for these unit-tests so that
+  they accept an argument to the class specifying the class to test. [#27]
+
+- PDB and close-to-zero safe element-wise |Quantity| array comparisons [#27]
+
+  + phase-wrap support
+
 
 API Changes
 -----------
