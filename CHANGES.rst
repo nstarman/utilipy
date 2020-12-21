@@ -1,6 +1,6 @@
-================
-1.1 (unreleased)
-================
+==================
+1.1 (Dec 21, 2020)
+==================
 
 New Features
 ------------
@@ -39,9 +39,6 @@ API Changes
 
 - Deprecate custom ``format_doc`` in favor or Astropy's [#17]
 
-- Module ``ipython`` is not imported to top-level namespace [#20]
-  because this is not always used in an ipython environment.
-
 - Changed default from True to False in dill-over-pickle config [#26]
 
 - Change argument ``dtypeDecoratorBase`` for iterating over all function
@@ -51,7 +48,8 @@ API Changes
 Bug Fixes
 ---------
 
-N/A
+- Module ``ipython`` is not imported to top-level namespace [#20]
+  because this is not always used in an ipython environment.
 
 
 Other Changes and Additions
