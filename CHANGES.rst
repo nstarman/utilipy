@@ -16,12 +16,15 @@ utilipy.tests.helper
 
   + phase-wrap support
 
-
 utilipy.utils.pickle
 ^^^^^^^^^^^^^^^^^^^^
 
 - Added configuration for using dill over pickle [#26]
   Changed default from True to False
+
+utilipy.decorators
+^^^^^^^^^^^^^^^^^^
+
 
 
 API Changes
@@ -39,8 +42,10 @@ API Changes
 - Module ``ipython`` is not imported to top-level namespace [#20]
   because this is not always used in an ipython environment.
 
-
 - Changed default from True to False in dill-over-pickle config [#26]
+  
+- Change argument ``dtypeDecoratorBase`` for iterating over all function
+  arguments from 'all'  to `~Ellipsis` [#19]
 
 
 Bug Fixes

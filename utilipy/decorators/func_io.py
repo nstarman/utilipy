@@ -451,7 +451,7 @@ class dtypeDecoratorBase:
         - iterable: convert arguments at index speficied in iterable
             ex: [0, 2] converts arguments 0 & 2
         - slice: convert all arguments specified by slicer
-    outargs : Ellipsis or iterable or tuple or slice (optional)
+    outargs : Ellipsis or iterable or tuple or slice or None (optional)
         - None (default), does nothing
         - iterable: convert arguments at index speficied in iterable
             ex: [0, 2] converts arguments 0 & 2
