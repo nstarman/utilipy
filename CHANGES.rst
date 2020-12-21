@@ -43,7 +43,7 @@ API Changes
   because this is not always used in an ipython environment.
 
 - Changed default from True to False in dill-over-pickle config [#26]
-  
+
 - Change argument ``dtypeDecoratorBase`` for iterating over all function
   arguments from 'all'  to `~Ellipsis` [#19]
 

@@ -18,7 +18,6 @@ import typing as T
 
 # THIRD PARTY
 import numpy as np
-from typing_extensions import Literal
 
 # PROJECT-SPECIFIC
 from utilipy.utils import functools, inspect
