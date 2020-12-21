@@ -249,7 +249,7 @@ def __update_wrapper_update_sig(
                 raise TypeError(
                     f"{param.name} must match kind in function signature"
                 )
-            # can only merge key-word only
+            # can only merge keyword-only
             if param.kind == _nspct.KEYWORD_ONLY:
                 signature = signature.modify_parameter(
                     param.name,
@@ -264,7 +264,7 @@ def __update_wrapper_update_sig(
 
         # add to signature
         else:
-            # can only merge key-word only
+            # can only merge keyword-only
             if param.kind == _nspct.KEYWORD_ONLY:
                 signature = signature.insert_parameter(
                     signature.index_end_keyword_only, param
@@ -431,7 +431,7 @@ def update_wrapper(
 
         # for docstring
         for param in wrapper_sig.parameters.values():
-            # can only merge key-word only
+            # can only merge keyword-only
             if param.kind == _nspct.KEYWORD_ONLY:
                 _doc_fmt[param.name] = param.default
 

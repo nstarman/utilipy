@@ -224,7 +224,7 @@ class DecoratorBaseMeta(type):
         name: str
         param: inspect.Parameter
         for i, (name, param) in enumerate(callsig.parameters.items()):
-            # only key-word only args (most since added var_positional)
+            # only keyword-only args (most since added var_positional)
             if (name in dct["__kwdefaults__"]) and (  # yup
                 param.kind == inspect.KEYWORD_ONLY
             ):  # key-word
@@ -463,7 +463,7 @@ class DecoratorBaseClass(metaclass=DecoratorBaseMeta):
 
         # replacing defaults if in __kwdefaults__
         for i, (name, param) in enumerate(self._callsig.parameters.items()):
-            # only key-word only args (most since added var_positional)
+            # only keyword-only args (most since added var_positional)
             if (
                 (name in self.__kwdefaults__)  # yup
                 and (param.kind == inspect.KEYWORD_ONLY)  # key-word
