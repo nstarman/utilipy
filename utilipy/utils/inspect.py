@@ -194,8 +194,8 @@ def getfullerargspec(func: T.Callable) -> FullerArgSpec:
         defargs          : arguments with defaults
         defaults         : dictionary of defaults to `defargs`
         varargs          : variable arguments (args)
-        kwonlyargs       : key-word only arguments
-        kwonlydefaults   : key-word only argument defaults
+        kwonlyargs       : keyword-only arguments
+        kwonlydefaults   : keyword-only argument defaults
         varkw            : variable key-word arguments (kwargs)
         annotations      : function annotations
         docstring        : function docstring
@@ -317,7 +317,7 @@ def get_defaults_from_signature(signature: Signature) -> tuple:
 
 
 def get_kwdefaults_from_signature(signature: Signature) -> dict:
-    """Get key-word only defaults from Signature object.
+    """Get keyword-only defaults from Signature object.
 
     Parameters
     ----------
@@ -861,7 +861,7 @@ class FullerSignature(Signature):
 
     @property
     def __kwdefaults__(self) -> T.Optional[dict]:
-        """Get key-word only defaults.
+        """Get keyword-only defaults.
 
         Returns
         -------
@@ -882,7 +882,7 @@ class FullerSignature(Signature):
 
     @property
     def kwdefaults(self) -> T.Optional[dict]:
-        """Get key-word only defaults.
+        """Get keyword-only defaults.
 
         Returns
         -------
@@ -903,7 +903,7 @@ class FullerSignature(Signature):
 
     @property
     def kwonlydefaults(self) -> T.Optional[dict]:
-        """Get key-word only defaults.
+        """Get keyword-only defaults.
 
         Returns
         -------
