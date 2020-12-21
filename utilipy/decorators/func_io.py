@@ -434,6 +434,8 @@ class dtypeDecorator:
     # /def
 
 
+# /class
+
 # -------------------------------------------------------------------
 
 # define class
@@ -444,15 +446,15 @@ class dtypeDecoratorBase:
     ----------
     func : function (optional)
         function to decorate
-    inargs : 'all' or iterable or slice or tuple (optional)
+    inargs : Ellipsis or iterable or slice or None (optional)
         - None (default), does nothing
-        - 'all': converts all arguments to dtype
-        - iterable: convert arguments at index speficied in iterable
+        - Ellipsis: converts all arguments to dtype
+        - iterable: convert arguments at index specified in iterable
             ex: [0, 2] converts arguments 0 & 2
         - slice: convert all arguments specified by slicer
-    outargs : Ellipsis or iterable or tuple or slice or None (optional)
+    outargs : Ellipsis or iterable or slice or None (optional)
         - None (default), does nothing
-        - iterable: convert arguments at index speficied in iterable
+        - iterable: convert arguments at index specified in iterable
             ex: [0, 2] converts arguments 0 & 2
         - slice: convert all arguments specified by slicer
         - Ellipsis : convert all arguments
@@ -469,7 +471,7 @@ class dtypeDecoratorBase:
     ...     return x, y, z, (x, y, z)
     ... # /def
     >>> print(func(1.1, 2.2, 3.3))
-    1 2 3 (1, 2, 3.3)
+    (1, 2, 3, (1, 2, 3.3))
 
     """
 
@@ -527,6 +529,8 @@ class dtypeDecoratorBase:
         else:
             self._inargs = inargs
 
+        # TODO validate inputs
+
         # outargs
         if outargs is Ellipsis:
             self._outargs = slice(None)
@@ -549,11 +553,13 @@ class dtypeDecoratorBase:
             Function to wrap.
 
         """
+        sig = inspect.signature(wrapped_func)
 
         @functools.wraps(wrapped_func)
-        def wrapper(*args: T.Any, **kw: T.Any) -> T.Any:
+        def wrapper(*args: T.Any, **kwargs: T.Any) -> T.Any:
 
-            args = list(args)  # allowing modifications
+            ba = sig.bind_partial(*args, **kwargs)
+            ba.apply_defaults()
 
             # PRE
             # making arguments self._dtype
@@ -561,41 +567,48 @@ class dtypeDecoratorBase:
                 pass
             elif isinstance(self._inargs, slice):
                 # converting inargs to list of indices
-                inargs = list(range(len(args)))[self._inargs]
-                for i in inargs:
-                    # converting to desired dtype
-                    args[i] = self._dtype(args[i])
+                lna = len(ba.args)
+
+                inkeys = tuple(ba.arguments.keys())[:lna][self._inargs]
+                inargs = tuple(range(lna))[self._inargs]
+
+                # converting to desired dtype
+                for k, i in zip(inkeys, inargs):
+                    ba.arguments[k] = self._dtype(ba.args[i])
             else:  # any iterable
+
+                lna = len(ba.args)
+                argkeys = tuple(ba.arguments.keys())
+
                 for i in self._inargs:
-                    args[i] = self._dtype(args[i])
+                    if isinstance(i, int):  # it's for args
+                        ba.arguments[argkeys[i]] = self._dtype(args[i])
+                    else:  # isinstance(i, str)
+                        ba.arguments[i] = self._dtype(ba.arguments[i])
+
             # /PRE
 
-            return_ = wrapped_func(*args, **kw)
+            return_ = wrapped_func(*ba.args, **ba.kwargs)
 
             # POST
-            if self._outargs is None:  # no conversion needed
+            # no conversion needed
+            if self._outargs is None or not isinstance(return_, tuple):
                 return return_
+            # slice
+            elif isinstance(self._outargs, slice):
+                iterable = tuple(range(len(return_)))[self._outargs]
             else:
-                try:  # figure out whether return_ is a scalar or list
-                    return_[0]
-                except IndexError:  # scalar output
-                    allinds = np.arange(len(args), dtype=self._dtype)
-                    inds = allinds[self._outargs]
-                    if inds == 0:
-                        return self._dtype(return_)
-                    else:  # inds doesn't match return_
-                        raise ValueError
-                else:
-                    return_ = list(return_)
-                    allinds = np.arange(len(args), dtype=self._dtype)
-                    inds = [self._outargs]
+                iterable = self._outargs
 
-                    for i in inds:
-                        return_[i] = self._dtype(return_[i])
+            return_ = list(return_)
 
-                    return tuple(return_)
+            for i in iterable:
+                return_[i] = self._dtype(return_[i])
+
+            return tuple(return_)
             # /POST
-            # /def
+
+        # /def
 
         return wrapper
 
