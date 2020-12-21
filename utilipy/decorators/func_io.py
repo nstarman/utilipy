@@ -22,6 +22,7 @@ from typing_extensions import Literal
 
 # PROJECT-SPECIFIC
 from utilipy.utils import functools, inspect
+from utilipy.utils.typing import EllipsisType
 
 ##############################################################################
 # CODE
@@ -490,8 +491,8 @@ class dtypeDecoratorBase:
     def __new__(
         cls,
         func: T.Callable = None,
-        inargs: T.Union[Ellipsis, slice, T.Iterable, None] = None,
-        outargs: T.Union[Ellipsis, slice, T.Iterable, None] = None,
+        inargs: T.Union[EllipsisType, slice, T.Iterable, None] = None,
+        outargs: T.Union[EllipsisType, slice, T.Iterable, None] = None,
     ):
         self = super().__new__(cls)  # making instance of self
 
@@ -516,8 +517,8 @@ class dtypeDecoratorBase:
 
     def __init__(
         self,
-        inargs: T.Union[Ellipsis, slice, T.Iterable, None] = None,
-        outargs: T.Union[Ellipsis, slice, T.Iterable, None] = None,
+        inargs: T.Union[EllipsisType, slice, T.Iterable, None] = None,
+        outargs: T.Union[EllipsisType, slice, T.Iterable, None] = None,
     ) -> None:
         super().__init__()
 

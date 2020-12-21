@@ -5,6 +5,7 @@
 __all__ = [
     # compat
     "OrderedDictType",
+    "EllipsisType",
     # numpy
     "array_like",
     # Astropy
