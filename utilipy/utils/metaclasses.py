@@ -64,7 +64,6 @@ class InheritDocstrings(type):
                 and is_public_member(key)
                 and val.__doc__ is None
             ):
-
                 for base in cls.__mro__[1:]:
                     super_method = getattr(base, key, None)
                     if super_method is not None:

@@ -287,6 +287,7 @@ def indev(
     deprecation decorators in :func:`~astropy.util.exceptions.deprecated`
 
     """
+
     # wrapper function
     def make_indev(
         obj,

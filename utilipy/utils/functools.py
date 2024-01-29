@@ -413,7 +413,6 @@ def update_wrapper(
         pass
 
     elif _update_sig:  # merge wrapped and wrapper signature
-
         signature = __update_wrapper_update_sig(
             signature, wrapper_sig, _doc_fmt
         )

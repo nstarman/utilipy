@@ -123,7 +123,6 @@ from utilipy.utils.logging import LogFile  # LoggerFile  # custom logging
 # IPython
 
 try:
-
     HAS_IPYTHON: bool = False
 
     get_ipython()
@@ -132,11 +131,9 @@ try:
         raise NameError
 
 except NameError:
-
     pass
 
 else:
-
     HAS_IPYTHON = True
 
     from IPython.core.interactiveshell import InteractiveShell
@@ -178,7 +175,6 @@ else:
 # Running Imported Functions
 
 if HAS_IPYTHON:
-
     InteractiveShell.ast_node_interactivity = "all"
 
 

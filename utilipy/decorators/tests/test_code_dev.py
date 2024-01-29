@@ -35,7 +35,6 @@ from utilipy.decorators import code_dev as cdev
 def test_DevelopmentWarning():
     """Test `~utilipy.decorators.code_dev.DevelopmentWarning`."""
     with pytest.warns(cdev.DevelopmentWarning):
-
         warnings.warn(cdev.DevelopmentWarning())
 
     # /with
@@ -50,7 +49,6 @@ def test_DevelopmentWarning():
 def test_BetaDevelopmentWarning():
     """Test `~utilipy.decorators.code_dev.BetaDevelopmentWarning`."""
     with pytest.warns(cdev.BetaDevelopmentWarning):
-
         warnings.warn(cdev.BetaDevelopmentWarning())
 
     # /with
@@ -99,6 +97,7 @@ def test_indev_doc():
 
 def test_indev_func_message():
     """Test :func:`~utilipy.decorators.code_dev.indev` function message."""
+
     # test function
     def _func():
         """Short Summary."""

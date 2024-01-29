@@ -115,7 +115,6 @@ def import_from_file(
         relative = is_relative
 
     with use_import_verbosity(verbose_imports):  # handle verbose-imports
-
         for file, rltv in zip(files, relative):  # loop over imports
             if rltv:
                 file = str(Path(file).resolve())

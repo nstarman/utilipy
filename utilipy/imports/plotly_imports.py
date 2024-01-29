@@ -53,7 +53,6 @@ from utilipy.utils import make_help_function
 # IMPORTS
 
 try:
-
     import plotly
 
 except ImportError:
@@ -64,7 +63,6 @@ except ImportError:
     HAS_PLOTLY: bool = False
 
 else:
-
     HAS_PLOTLY: bool = True
 
     import plotly.express as px

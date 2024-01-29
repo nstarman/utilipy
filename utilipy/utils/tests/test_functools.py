@@ -68,6 +68,7 @@ def test_WRAPPER_UPDATES():
 
 def test_make_function():
     """Test :func:`~utilipy.utils.functools.make_function`."""
+
     # test function, to copy
     def _test_func(x=None):
         return x, 2
@@ -105,6 +106,7 @@ def test_make_function():
 
 def test_copy_function():
     """Test `~utilipy.utils.functools.copy_function`."""
+
     # test function
     def test_func(x: float, y, a=2, b=3, *args, p="L", q="M", **kwargs):
         return x, y, a, b, args, p, q, kwargs

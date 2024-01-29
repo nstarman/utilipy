@@ -204,7 +204,7 @@ def test_qsquare():
     """
     x = 2 * u.m
     y = core.qsquare(x)
-    assert y == x ** 2
+    assert y == x**2
 
 
 # /def
@@ -238,7 +238,6 @@ def test_qnorm():
         assert y == 5.0
 
     else:
-
         # norm a scalar
         x = -2 * u.m
         y = core.qnorm(x)

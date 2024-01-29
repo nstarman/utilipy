@@ -37,7 +37,6 @@ def test_import_matplotlib_has_ipython():
         pass
 
     else:
-
         imports.configure_matplotlib
 
     return

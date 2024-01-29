@@ -63,7 +63,6 @@ from utilipy.utils import make_help_function
 # IPython Magic
 
 try:
-
     _HAS_IPYTHON = False
 
     get_ipython()
@@ -72,11 +71,9 @@ try:
         raise NameError
 
 except NameError:
-
     pass
 
 else:
-
     _HAS_IPYTHON = True
 
     from utilipy.ipython.plot import configure_matplotlib
@@ -90,7 +87,6 @@ else:
 # Running Imported Functions
 
 if _HAS_IPYTHON:
-
     configure_matplotlib(backend="inline", figure_format="retina")
 
 

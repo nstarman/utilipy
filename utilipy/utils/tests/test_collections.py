@@ -303,7 +303,11 @@ def test_ObjDict_getitem():
 
     # plural
     assert od.__getitem__(["a", "b"]) == [1, None]
-    assert od.__getitem__(["c",]) == [  # noqa
+    assert od.__getitem__(
+        [
+            "c",
+        ]
+    ) == [  # noqa
         ObjDict("inner"),
     ]
 
@@ -327,7 +331,11 @@ def test_ObjDict_getitem():
 
     # plural
     assert od.getitem(["a", "b"]) == [1, None]
-    assert od.getitem(["c",]) == [  # noqa
+    assert od.getitem(
+        [
+            "c",
+        ]
+    ) == [  # noqa
         ObjDict("inner"),
     ]
 

@@ -84,7 +84,6 @@ def set_autoreload(reload_type: T.Optional[int] = None):
 
     """
     if reload_type is not None:
-
         # set autoreload type
         get_ipython().magic(f"autoreload {reload_type}")
 

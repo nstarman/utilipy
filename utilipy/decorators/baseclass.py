@@ -348,7 +348,6 @@ class DecoratorBaseMeta(type):
                 and is_public_member(key)
                 and val.__doc__ is None
             ):
-
                 # traverse MRO
                 for base in cls.__mro__[1:]:
                     super_method = getattr(base, key, None)
@@ -615,7 +614,6 @@ def classy_decorator(decorator_function: T.Callable = None):
     # /def
 
     class Decorator(DecoratorBaseClass):
-
         __base_kwdefaults__: dict = kwd
 
         # /def

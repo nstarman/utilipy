@@ -54,17 +54,14 @@ from utilipy.utils import make_help_function
 # IMPORTS
 
 try:
-
     import astronat
 
 except ImportError:
-
     import warnings
 
     warnings.warn("Cannot import astronat")
 
 else:
-
     # modules
     from astronat import constants, dynamics, units, utils
 
