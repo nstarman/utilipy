@@ -679,7 +679,6 @@ def test_FullerSignature_kinds():
 
 
 def test_FullerSignature_names():
-
     assert NS.fullsig.names == ("x", "y", "a", "b", "args", "j", "k", "kw")
 
 

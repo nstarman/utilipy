@@ -71,7 +71,6 @@ class Test_dump(BaseClassDependentTests, klass=pickle.dump):
         """Test can dump a few different objects. Unpickle later."""
         # temporary file
         with tempfile.NamedTemporaryFile() as fname:
-
             pickle.dump(obj, fname=fname)
 
     # /def
@@ -83,7 +82,6 @@ class Test_dump(BaseClassDependentTests, klass=pickle.dump):
         """Test can dump a few different objects with dill."""
         # temporary file
         with tempfile.NamedTemporaryFile() as fname:
-
             pickle.dump(obj, fname=fname, use_dill=True)
 
     # /def
@@ -97,10 +95,8 @@ class Test_dump(BaseClassDependentTests, klass=pickle.dump):
         """
         # expect error
         with pytest.raises(ValueError):
-
             # make temporary file
             with tempfile.NamedTemporaryFile() as fname:
-
                 pickle.dump([1, 2, 3], fname=fname, use_dill=True)
 
     # /def

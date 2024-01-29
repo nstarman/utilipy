@@ -391,6 +391,7 @@ class dtypeDecorator:
             function to be wrapped
 
         """
+
         # make wrapper
         @functools.wraps(wrapped_func)
         def wrapper(*args: T.Any, **kw: T.Any) -> T.Any:
@@ -436,6 +437,7 @@ class dtypeDecorator:
 # /class
 
 # -------------------------------------------------------------------
+
 
 # define class
 class dtypeDecoratorBase:
@@ -556,7 +558,6 @@ class dtypeDecoratorBase:
 
         @functools.wraps(wrapped_func)
         def wrapper(*args: T.Any, **kwargs: T.Any) -> T.Any:
-
             ba = sig.bind_partial(*args, **kwargs)
             ba.apply_defaults()
 
@@ -575,7 +576,6 @@ class dtypeDecoratorBase:
                 for k, i in zip(inkeys, inargs):
                     ba.arguments[k] = self._dtype(ba.args[i])
             else:  # any iterable
-
                 lna = len(ba.args)
                 argkeys = tuple(ba.arguments.keys())
 
@@ -645,6 +645,7 @@ def dtypeDecoratorMaker(dtype: T.Any):
     1 2 3 (1, 2, 3.3)
 
     """
+
     # make subclass
     class dtypeDecorator(dtypeDecoratorBase, dtype=dtype):
         pass

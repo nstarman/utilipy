@@ -39,6 +39,7 @@ z = np.c_[x, y].T
 
 def test_idxDecorator_standard():
     """Test standard use of idxDecorator."""
+
     # defining function
     @idxDecorator
     def func1(x):
@@ -63,6 +64,7 @@ def test_idxDecorator_standard():
 
 def test_idxDecorator_defaults():
     """Test setting default in idxDecorator."""
+
     # defining function
     @idxDecorator(as_ind=True)
     def func2(x):
@@ -114,6 +116,7 @@ def test_idxDecorator_new_decorator():
 
 def test_idxDecorator_existing_function():
     """Test wrapping existing function with idxDecorator."""
+
     # defining function
     def func(x):
         return x < 1

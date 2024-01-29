@@ -204,7 +204,6 @@ def getfullerargspec(func: T.Callable) -> FullerArgSpec:
     spec: FullArgSpec = getfullargspec(func)  # get argspec
 
     if spec.defaults is not None:  # separate out argument types
-
         args: T.Optional[T.List[str]] = spec.args[: -len(spec.defaults)]
         defargs: T.Optional[T.List[str, T.Any]] = spec.args[
             -len(spec.defaults) :
@@ -1372,7 +1371,6 @@ class FullerSignature(Signature):
             pass
 
         else:  # doesn't have ``*``
-
             if index is not None:
                 # promote default-valued positional arguments to kwargs
                 if index in self.index_positional_defaulted:

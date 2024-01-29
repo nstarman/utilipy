@@ -75,7 +75,6 @@ def _inRange(
 
     """
     if len(x.shape) == 1:  # 1D
-
         if lbi and ubi:  # both true
             return (rng[0] <= x) & (x <= rng[1])
         elif lbi:  # only lbi is true
@@ -86,7 +85,6 @@ def _inRange(
             return (rng[0] < x) & (x < rng[1])
 
     else:  # ND
-
         # iterate over rows
         out = np.zeros_like(x, dtype=bool)
         for i, (row, lu) in enumerate(zip(x, rng)):

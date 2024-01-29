@@ -54,7 +54,6 @@ conf = Conf()
 
 # Warn if want to but cannot use dill
 if conf.use_dill and not HAS_DILL:
-
     warnings.warn("`dill` cannot be imported. Will use `pickle` instead.")
 
 
@@ -149,7 +148,7 @@ def dump_many(
     verbose: int or None, optional
 
     """
-    for (obj, fname) in objs:
+    for obj, fname in objs:
         dump(
             obj=obj,
             fname=fname,
@@ -201,7 +200,6 @@ def load(
 
     res: list = [None] * len(fnames)  # preload results list
     for i, fname in enumerate(fnames):  # iterate through files
-
         logger.report(
             f"loading obj at {fname}",
             (

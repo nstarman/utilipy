@@ -31,6 +31,7 @@ w = np.array([7, 8.8])
 
 def test_dtypeDecorator_blank():
     """Test no-conversion mode of dtypeDecorator."""
+
     # defining function
     @dtypeDecorator()
     def func(x):
@@ -54,6 +55,7 @@ def test_dtypeDecorator_blank():
 
 def test_dtypeDecorator_python_scalars():
     """Test standard use of dtypeDecorator."""
+
     # defining function
     @dtypeDecorator(in_dtype=[(0, int)], out_dtype=[(0, float)])
     def func(x):

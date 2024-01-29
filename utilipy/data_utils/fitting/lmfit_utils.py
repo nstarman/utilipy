@@ -99,6 +99,7 @@ class scipy_residual_to_lmfit(ObjectProxy):
     @classmethod
     def decorator(cls, param_order: T.Sequence) -> T.Callable:
         """Decorator."""
+
         # @functools.wraps(cls)  # not needed when using ObjectProxy
         def wrapper(func: T.Callable) -> T.Callable:
             """scipy_residual_to_lmfit wrapper."""

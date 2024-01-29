@@ -526,6 +526,7 @@ class TransformGraph:
                 return tuple(data)
 
         """
+
         # create decorator
         def register_xfm_decorator(func: T.Callable):
             # this doesn't do anything directly with the transform because
@@ -632,7 +633,6 @@ class TransformGraph:
             ba = sig.bind_partial_with_defaults(*args, **kwargs)
 
             for name, outtype in arguments.items():
-
                 data = ba.arguments[name]  # get the data to be transformed
 
                 # The values are either the desired output type

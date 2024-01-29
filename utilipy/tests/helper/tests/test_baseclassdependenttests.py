@@ -44,6 +44,7 @@ class Test_BaseClassDependentTests:
 
     def test_make_subclass(self):
         """Test make subclass with klass."""
+
         # make class
         class SubClass(helper.BaseClassDependentTests, klass=int):
             pass
@@ -58,6 +59,7 @@ class Test_BaseClassDependentTests:
 
     def test_fail_make_subsubclass(self):
         """Test make subclass without passing klass."""
+
         # make class
         class SubClass(helper.BaseClassDependentTests, klass=int):
             pass
@@ -73,6 +75,7 @@ class Test_BaseClassDependentTests:
 
     def test_make_subsubclass(self):
         """Test make sub-subclass with klass."""
+
         # make class
         class SubClass(helper.BaseClassDependentTests, klass=int):
             pass

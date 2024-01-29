@@ -31,7 +31,7 @@ from utilipy.data_utils.fitting.lmfit_utils import scipy_residual_to_lmfit
 
 
 def _model(x, amp, phaseshift, freq, decay):
-    return amp * np.sin(x * freq + phaseshift) * np.exp(-(x ** 2) * decay)
+    return amp * np.sin(x * freq + phaseshift) * np.exp(-(x**2) * decay)
 
 
 # /def
@@ -99,7 +99,7 @@ def test_lmfit_residual():
                 self[p.name] = p
 
         def add_many(self, params_list):
-            for (n, v) in params_list:
+            for n, v in params_list:
                 self[n] = _ParameterProxy(n, v)
 
         def valuesdict(self):

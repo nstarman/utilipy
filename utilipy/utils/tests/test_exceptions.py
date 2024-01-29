@@ -58,7 +58,6 @@ def test_showwarning():
     """Test :func:`~utilipy.utils.exceptions._showwarning`."""
     # First test UserWarning
     with tempfile.NamedTemporaryFile(mode="w+") as tmp:
-
         exceptions.showwarning(
             message="\ntest",
             category=UserWarning,
@@ -81,9 +80,7 @@ def test_showwarning():
     # have to make a temporary file
     # turn off the verbosity, and pass a utilipyWarning
     with tempfile.NamedTemporaryFile(mode="w+") as tmp:
-
         with exceptions.conf.set_temp("verbose_warnings", False):
-
             exceptions.showwarning(
                 message="test",
                 category=exceptions.utilipyWarning,

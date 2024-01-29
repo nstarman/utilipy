@@ -117,7 +117,8 @@ class _DocMergeStore:
         style_name : Any
             The identifier of the style being logged
         style_func: Callable[[Optional[str], Optional[str]], Optional[str]]
-            The style function that merges two docstrings into a single docstring."""
+            The style function that merges two docstrings into a single docstring.
+        """
         try:
             _check_style_function(style_func)
         except TypeError:
@@ -154,7 +155,7 @@ class _DocMergeStore:
     # /def
 
     def keys(self):
-        """ D.keys() -> a set-like object providing a view on D's keys"""
+        """D.keys() -> a set-like object providing a view on D's keys"""
         return self._store.keys()
 
     # /def

@@ -46,17 +46,14 @@ from utilipy.utils import make_help_function
 # IMPORTS
 
 try:
-
     import galpy
 
 except ImportError:
-
     import warnings
 
     warnings.warn("Cannot import galpy")
 
 else:
-
     # potential
     from galpy import potential
     from galpy.potential import MWPotential2014
