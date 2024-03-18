@@ -65,6 +65,7 @@ def configure_matplotlib(
         )
         return
 
+    # THIRD PARTY
     from IPython.terminal.pt_inputhooks import UnknownBackend
 
     try:

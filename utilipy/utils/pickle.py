@@ -28,6 +28,7 @@ from astropy.utils.decorators import format_doc
 from .logging import LogFile
 
 try:
+    # THIRD PARTY
     import dill
 except ImportError:
     HAS_DILL = False

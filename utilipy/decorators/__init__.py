@@ -38,6 +38,7 @@ __all__ = [
 # PROJECT-SPECIFIC
 from . import baseclass, code_dev, docstring, func_io
 from .baseclass import DecoratorBaseClass, classy_decorator
+from .func_io import add_folder_backslash  # dtype; standard types; numpy
 from .func_io import (
     boolDecorator,
     dtypeDecorator,
@@ -51,8 +52,6 @@ from .func_io import (
 )
 from utilipy.utils import functools, inspect
 from utilipy.utils.functools import wraps
-
-from .func_io import add_folder_backslash  # dtype; standard types; numpy
 
 ##############################################################################
 # END

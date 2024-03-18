@@ -11,6 +11,7 @@ __all__ = ["test_import_astropy"]
 
 def test_import_astropy():
     """Test _inRange."""
+    # PROJECT-SPECIFIC
     from utilipy.imports import astropy_imports as imports
 
     for obj in (

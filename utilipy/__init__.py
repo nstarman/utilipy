@@ -167,8 +167,9 @@ def online_help(query: T.Union[None, str, T.Any] = None, version=__version__):
 
     # else:
 
-    from urllib.parse import urlencode
+    # BUILT-IN
     import webbrowser
+    from urllib.parse import urlencode
 
     # process the query
     if query is None:  # empty query, empty search

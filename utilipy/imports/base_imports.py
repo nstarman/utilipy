@@ -136,24 +136,23 @@ except NameError:
 else:
     HAS_IPYTHON = True
 
-    from IPython.core.interactiveshell import InteractiveShell
+    # THIRD PARTY
     from IPython.core.debugger import set_trace
+    from IPython.core.interactiveshell import InteractiveShell
     from IPython.display import (
-        display,  # display is a better print
-        Latex,
         Markdown,  # for printing LaTeX or Markdown strings
     )
+    from IPython.display import display  # display is a better print
+    from IPython.display import Latex
 
+    # PROJECT-SPECIFIC
     # %run runs in the main namespace, so need to run as 'src.', not '.''
-    from utilipy.ipython import (
-        printMD,  # markdown printing
-        printLTX,  # LaTeX printing
-        set_autoreload,
-        aimport,  # imports
-        run_imports,
-        import_from_file,  # imports
-        add_raw_code_toggle,  # notebook
-    )
+    from utilipy.ipython import add_raw_code_toggle  # notebook
+    from utilipy.ipython import aimport  # imports
+    from utilipy.ipython import import_from_file  # imports
+    from utilipy.ipython import printLTX  # LaTeX printing
+    from utilipy.ipython import printMD  # markdown printing
+    from utilipy.ipython import run_imports, set_autoreload
 
     __all__ += [
         "InteractiveShell",

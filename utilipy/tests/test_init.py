@@ -109,11 +109,11 @@ def test_top_level_imports():
 def test_specific_imports():
     """Test specific imports."""
     # imports same as __init__
+    # PROJECT-SPECIFIC
     import utilipy
-
-    from utilipy.utils.logging import LogFile
     from utilipy.utils.collections import ObjDict
     from utilipy.utils.functools import wraps
+    from utilipy.utils.logging import LogFile
 
     # test equality
     assert utilipy.LogFile is LogFile

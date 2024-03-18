@@ -21,10 +21,8 @@ import numpy as np
 import pytest
 
 # PROJECT-SPECIFIC
-from utilipy.data_utils.select import _inRange, ioRange, outRange
-
 from utilipy.data_utils.select import inRange  # ellipse,; circle,
-
+from utilipy.data_utils.select import _inRange, ioRange, outRange
 
 ##############################################################################
 # PARAMETERS

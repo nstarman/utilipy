@@ -8,6 +8,7 @@
 
 def test_import_matplotlib():
     """Test import matplotlib."""
+    # PROJECT-SPECIFIC
     from utilipy.imports import matplotlib_imports as imports
 
     for obj in ("mpl", "plt", "cm", "colors"):
@@ -26,6 +27,7 @@ def test_import_matplotlib_has_ipython():
     combines with test_import_matplotlib to test all imports.
 
     """
+    # PROJECT-SPECIFIC
     from utilipy.imports import matplotlib_imports as imports
 
     try:

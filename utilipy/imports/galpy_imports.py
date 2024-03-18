@@ -46,25 +46,26 @@ from utilipy.utils import make_help_function
 # IMPORTS
 
 try:
+    # THIRD PARTY
     import galpy
 
 except ImportError:
+    # BUILT-IN
     import warnings
 
     warnings.warn("Cannot import galpy")
 
 else:
     # potential
+    # THIRD PARTY
     from galpy import potential
-    from galpy.potential import MWPotential2014
 
     # orbit
     from galpy.orbit import Orbit
+    from galpy.potential import MWPotential2014
 
     # util
-    from galpy.util import bovy_conversion, bovy_coords
-
-    from galpy.util import galpyWarning
+    from galpy.util import bovy_conversion, bovy_coords, galpyWarning
 
     __all__ += [
         # modules

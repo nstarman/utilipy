@@ -68,17 +68,20 @@ from utilipy.utils import make_help_function
 # IMPORTS
 
 try:
+    # THIRD PARTY
     import amuse
 
 except ImportError:
+    # BUILT-IN
     import warnings
 
     warnings.warn("Cannot import amuse")
 
 else:
+    # THIRD PARTY
     from amuse import lab
-    from amuse.units import units, constants
     from amuse.couple import bridge
+    from amuse.units import constants, units
 
     __all__ += [
         "amuse",

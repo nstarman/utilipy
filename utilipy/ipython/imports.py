@@ -248,13 +248,15 @@ def run_imports(
 
     # when combined
     if astropy & matplotlib:
-        from matplotlib import pyplot
+        # THIRD PARTY
         from astropy.visualization import astropy_mpl_style
+        from matplotlib import pyplot
 
         pyplot.style.use(astropy_mpl_style)
 
     # TODO, embed in galpy_imports using argparse
     if galpy & amuse:
+        # THIRD PARTY
         from galpy.potential import to_amuse  # noqa
 
     # other import filess
