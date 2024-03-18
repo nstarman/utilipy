@@ -76,6 +76,7 @@ from utilipy.utils import make_help_function
 
 
 if float(astropy.__version__[:3]) > 4.1:
+    # THIRD PARTY
     from astropy.modeling import custom_model
 
     __all__ += ("custom_model",)

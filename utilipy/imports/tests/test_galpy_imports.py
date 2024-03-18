@@ -16,6 +16,7 @@ import warnings
 import pytest
 
 try:
+    # THIRD PARTY
     import galpy
 except ImportError:
     HAS_GALPY = False
@@ -35,6 +36,7 @@ else:
 def test_import_amuse():
     """Test AMUSE imports."""
     warnings.filterwarnings("ignore", category=DeprecationWarning)
+    # PROJECT-SPECIFIC
     from utilipy.imports import amuse_imports as imports
 
     for obj in (

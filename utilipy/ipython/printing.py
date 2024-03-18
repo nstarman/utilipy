@@ -43,9 +43,8 @@ __all__ = [
 import typing as T
 
 # THIRD PARTY
-from IPython.display import Latex, Markdown
-
 from IPython.display import display  # , HTML; display is a better print
+from IPython.display import Latex, Markdown
 
 ##############################################################################
 # CODE

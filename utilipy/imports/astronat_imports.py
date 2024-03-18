@@ -54,25 +54,25 @@ from utilipy.utils import make_help_function
 # IMPORTS
 
 try:
+    # THIRD PARTY
     import astronat
 
 except ImportError:
+    # BUILT-IN
     import warnings
 
     warnings.warn("Cannot import astronat")
 
 else:
     # modules
-    from astronat import constants, dynamics, units, utils
-
+    # THIRD PARTY
     # functions
-    from astronat import (
-        reload_config as astronat_reload_config,
-        online_help as astronat_online_help,
-        help as astronat_help,
-    )
-
-    from astronat.utils.table import TableList, QTableList, TablesList
+    from astronat import constants, dynamics
+    from astronat import help as astronat_help
+    from astronat import online_help as astronat_online_help
+    from astronat import reload_config as astronat_reload_config
+    from astronat import units, utils
+    from astronat.utils.table import QTableList, TableList, TablesList
 
 
 # /if

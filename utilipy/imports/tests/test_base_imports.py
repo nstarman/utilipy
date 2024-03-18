@@ -14,6 +14,7 @@ __all__ = [
 
 def test_import_base():
     """Test base imports when not in ipython environment."""
+    # PROJECT-SPECIFIC
     from utilipy.imports import base_imports as imports
 
     for obj in (
@@ -43,6 +44,7 @@ def test_import_base_has_ipython():
     combines with test_import_base to test all imports.
 
     """
+    # PROJECT-SPECIFIC
     from utilipy.imports import base_imports as imports
 
     try:

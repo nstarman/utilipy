@@ -76,6 +76,7 @@ except NameError:
 else:
     _HAS_IPYTHON = True
 
+    # PROJECT-SPECIFIC
     from utilipy.ipython.plot import configure_matplotlib
 
     __all__ += [

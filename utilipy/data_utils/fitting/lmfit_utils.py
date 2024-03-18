@@ -21,6 +21,7 @@ import numpy as np
 from wrapt import ObjectProxy
 
 try:
+    # THIRD PARTY
     import lmfit
 except ImportError:
     HAS_LMFIT = False

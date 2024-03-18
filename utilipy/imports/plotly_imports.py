@@ -53,9 +53,11 @@ from utilipy.utils import make_help_function
 # IMPORTS
 
 try:
+    # THIRD PARTY
     import plotly
 
 except ImportError:
+    # BUILT-IN
     import warnings
 
     warnings.warn("Cannot import plotly")
@@ -65,6 +67,7 @@ except ImportError:
 else:
     HAS_PLOTLY: bool = True
 
+    # THIRD PARTY
     import plotly.express as px
     import plotly.graph_objects as go
     import plotly.io as pio
